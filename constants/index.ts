@@ -234,6 +234,11 @@ export const navLinks: Record<UserRole, {title: string, icon: any, url: string}[
             url: "/general-blood-tests",
         },
         {
+            title: "Hayvonlar",
+            icon: PawPrint,
+            url: "/animals",
+        },
+        {
             title: "Qon serum tahlili",
             icon: FlaskRound,
             url: "/blood-serum-tests",

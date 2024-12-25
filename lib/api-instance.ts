@@ -23,9 +23,10 @@ export const apiInstance = Axios.create({
 apiInstance.interceptors.response.use(
     (response: AxiosResponse) => response,
     async (error: AxiosError) => {
+        console.log(error)
         const originalRequest: any = error.config!
         if (error.response?.status === 401 && !originalRequest?._retry) {
-            if (!refreshToken) {
+            if (!refreshToken || error.config?.url === '/auth/login') {
                 return Promise.reject(error)
             }
 

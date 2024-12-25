@@ -6,7 +6,7 @@ import { Region } from "~/lib/type"
 import { useForm } from "react-hook-form"
 import { Button } from '~/components/ui/button'
 import { zodResolver } from "@hookform/resolvers/zod"
-import { regionsControllerFindAll, regionsControllerCreate, regionsControllerRemove, regionsControllerUpdate } from '~/app/api'
+import { regionsControllerFindAll, regionsControllerCreate, regionsControllerRemove, regionsControllerUpdate } from '~/lib/api'
 
 export function useRegions() {
     const COLUMNS = [

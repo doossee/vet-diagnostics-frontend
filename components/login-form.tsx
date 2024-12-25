@@ -4,7 +4,7 @@ import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { useRouter } from 'next/navigation'
 import { Input } from "~/components/ui/input"
-import { authControllerLogin } from '~/app/api'
+import { authControllerLogin } from '~/lib/api'
 import { Button } from "~/components/ui/button"
 import { useAuthData } from '~/hooks/use-auth-data'
 import { zodResolver } from "@hookform/resolvers/zod"

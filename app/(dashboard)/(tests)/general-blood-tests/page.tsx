@@ -15,7 +15,7 @@ import type { Animal, GeneralBloodTest } from "~/lib/type"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
-import { generalBloodTestControllerCreate, generalBloodTestControllerFindAll, generalBloodTestControllerUpdate, generalBloodTestControllerRemove, animalsControllerFindAll } from '~/app/api'
+import { generalBloodTestControllerCreate, generalBloodTestControllerFindAll, generalBloodTestControllerUpdate, generalBloodTestControllerRemove, animalsControllerFindAll } from '~/lib/api'
 
 type GENERAL_BLOOD = keyof typeof GENERAL_BLOOD_TESTS
 

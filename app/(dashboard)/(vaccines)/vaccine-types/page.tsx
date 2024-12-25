@@ -11,7 +11,7 @@ import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
-import { vaccineTypesControllerCreate, vaccineTypesControllerFindAll, vaccineTypesControllerRemove, vaccineTypesControllerUpdate } from '~/app/api'
+import { vaccineTypesControllerCreate, vaccineTypesControllerFindAll, vaccineTypesControllerRemove, vaccineTypesControllerUpdate } from '~/lib/api'
 
 export default function VaccineTypes() {
     const COLUMNS = [

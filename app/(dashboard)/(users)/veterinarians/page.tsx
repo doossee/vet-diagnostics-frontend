@@ -10,11 +10,11 @@ import { DataTable } from '~/components/data-table'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { DatePicker } from '~/components/date-picker'
-import type { District, VetStation, User, Veterinarian } from "~/lib/type"
+import type { District, User, Veterinarian } from "~/lib/type"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
-import { districtsControllerFindAll, veterinariansControllerFindAll, veterinariansControllerCreate, veterinariansControllerRemove, veterinariansControllerUpdate } from '~/app/api'
+import { districtsControllerFindAll, veterinariansControllerFindAll, veterinariansControllerCreate, veterinariansControllerRemove, usersControllerUpdate } from '~/lib/api'
 
 export default function Veterinarians() {
     const COLUMNS = [
@@ -28,7 +28,7 @@ export default function Veterinarians() {
             return item.user?.address
         }  },
         { title: 'Jinsi', key: 'gender', render(item: Veterinarian) {
-            return GENDERS.find(g => g.value === item.user.gender)?.name
+            return GENDERS.find(g => g.value === item.user?.gender)?.name
         } },
         { title: 'Tug\'gilgan kuni', key: 'birthdate', render(item: Veterinarian) {
             return new Date(item.user?.birthDate!).toDateString()
@@ -63,12 +63,12 @@ export default function Veterinarians() {
         phone: z.string(),
         gender: z.string(),
         address: z.string(),
+        birthDate: z.date(),
         password: z.string(),
         lastName: z.string(),
         firstName: z.string(),
-        birthDate: z.date().nullable(),
+        districtId: z.number(),
         middleName: z.string().optional(),
-        districtId: z.number().nullable(),
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -83,7 +83,7 @@ export default function Veterinarians() {
             gender: "MALE",
             birthDate: null,
             districtId: null,
-        },
+        } as any,
     })
 
     useEffect(() => {
@@ -101,7 +101,7 @@ export default function Veterinarians() {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         if (itemId) {
-            const data: any = await veterinariansControllerUpdate(itemId, values as any)
+            const data: any = await usersControllerUpdate(itemId, values as any)
             setItems(p => p.map(i => {
                 if(i.id === itemId) return data
                 return i
@@ -147,10 +147,10 @@ export default function Veterinarians() {
         form.setValue('lastName', item.lastName)
         form.setValue('firstName', item.firstName)
         form.setValue('address', item.address||'')
-        form.setValue('birthDate', item.birthDate!)
         form.setValue('gender', item.gender||'MALE')
         form.setValue('districtId', item.districtId)
         form.setValue('middleName', item.middleName||'')
+        form.setValue('birthDate', new Date(item.birthDate!))
     }
 
     function handleClose() {

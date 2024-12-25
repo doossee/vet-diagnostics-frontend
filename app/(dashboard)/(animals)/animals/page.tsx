@@ -11,20 +11,23 @@ import { useAuthData } from '~/hooks/use-auth-data'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { DatePicker } from '~/components/date-picker'
-import type { Color, Animal, AnimalType } from "~/lib/type"
+import type { Color, Animal, AnimalType, Gender, Breed } from "~/lib/type"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
-import { colorsControllerFindAll, animalTypesControllerFindAll, animalsControllerFindAll, animalsControllerCreate, animalsControllerRemove, animalsControllerUpdate } from '~/app/api'
+import { colorsControllerFindAll, animalTypesControllerFindAll, animalsControllerFindAll, animalsControllerCreate, animalsControllerRemove, animalsControllerUpdate } from '~/lib/api'
+import { Card, CardContent } from "~/components/ui/card"
 
 export default function Animals() {
     const COLUMNS = [
         { title: 'Nomi', key: 'name' },
-        { title: 'Yoshi', key: 'age' },
-        { title: 'Turi', key: 'type', render(item: Animal) {
+        { title: 'Tug\'ilgan kuni', key: 'birthDate', sorting: 'byBirthDate', render(item: Animal) {
+            return new Date(item.birthDate!).toLocaleDateString()
+        } },
+        { title: 'Turi', key: 'type', sorting: 'byTypeId', render(item: Animal) {
             return item.type?.name
         } },
-        { title: 'Rangi', key: 'color', render(item: Animal) {
+        { title: 'Rangi', key: 'color', sorting: 'byColorId', render(item: Animal) {
             return item.color?.name
         } },
         { title: 'Vazni', key: 'weight' },
@@ -33,36 +36,38 @@ export default function Animals() {
         } },
         { title: 'Id Kodi', key: 'idCode' },
         { title: 'Manzili', key: 'address' },
-        {
-            title: 'Jinsi', key: 'gender', render(item: Animal) {
-                return GENDERS.find(g => g.value === item.gender)?.name
-            }
-        },
-        {
-            title: 'Zoti', key: 'breed', render(item: Animal) {
-                return BREED.find(b => b.value === item.breed)?.name
-            }
-        },
-        { title: 'Keltirilgan kuni', key: 'arrivalDate' },
-        {
-            title: 'Boshqarish', key: 'actions', render(item: Animal) {
-                return (<div className="flex gap-2 items-center">
-                    <Button onClick={() => handleEditItem(item)} size='sm'>
-                        O'zgartirish
-                    </Button>
-                    <Button onClick={() => handleDelete(item.id)} size='sm'>
-                        O'chirish
-                    </Button>
-                </div>)
-            }
-        },
+        { title: 'Jinsi', key: 'gender', sorting: 'byGender', render(item: Animal) {
+            return GENDERS.find(g => g.value === item.gender)?.name
+        } },
+        { title: 'Zoti', key: 'breed', sorting: 'byBreed', render(item: Animal) {
+            return BREED.find(b => b.value === item.breed)?.name
+        } },
+        { title: 'Keltirilgan kuni', key: 'arrivalDate', render(item: Animal) {
+            return new Date(item.arrivalDate!).toLocaleDateString()
+        } },
+        { title: 'Boshqarish', key: 'actions', render(item: Animal) {
+            return (<div className="flex gap-2 items-center">
+                <Button onClick={() => handleEditItem(item)} size='sm'>
+                    O'zgartirish
+                </Button>
+                <Button onClick={() => handleDelete(item.id)} size='sm'>
+                    O'chirish
+                </Button>
+            </div>)
+        } },
     ]
 
     const { userData } = useAuthData()
+    const [filters, setFilters] = useState({
+        typeId: null as number | null,
+        colorId: null as number | null,
+        gender: null as Gender | null,
+        breed: null as Breed | null,
+    })
     const [dialog, setDialog] = useState(false)
     const [loading, setLoading] = useState(true)
-    const [items, setItems] = useState<Animal[]>([])
     const [totalItems, setTotalItems] = useState(0)
+    const [items, setItems] = useState<Animal[]>([])
     const [itemId, setItemId] = useState<number | null>(null)
     const [animalColors, setAnimalColors] = useState<Color[]>([])
     const [animalTypes, setAnimalTypes] = useState<AnimalType[]>([])
@@ -71,12 +76,12 @@ export default function Animals() {
         name: z.string(),
         weight: z.number(),
         idCode: z.string(),
-        typeId: z.number().nullable(),
-        birthDate: z.date().nullable(),
-        colorId: z.number().nullable(),
+        typeId: z.number(),
+        birthDate: z.date(),
+        colorId: z.number(),
+        arrivalDate: z.date(),
         farmerId: z.number().nullable(),
         breed: z.enum(["MEAT", "MILK"]),
-        arrivalDate: z.date().nullable(),
         gender: z.enum(["MALE", "FEMALE"]),
     })
 
@@ -93,11 +98,10 @@ export default function Animals() {
             gender: "MALE",
             birthDate: null,
             arrivalDate: null,
-        },
+        } as any,
     })
 
     useEffect(() => {
-        form.setValue('farmerId', userData?.userId!)
         handleGetColorsAndTypes()
     }, [])
 
@@ -164,29 +168,71 @@ export default function Animals() {
         form.setValue('weight', item.weight)
         form.setValue('typeId', item.typeId)
         form.setValue('colorId', item.colorId)
-        form.setValue('birthDate', item.birthDate)
-        form.setValue('arrivalDate', item.arrivalDate)
+        form.setValue('birthDate', new Date(item.birthDate))
+        form.setValue('arrivalDate', new Date(item.arrivalDate))
     }
 
     function handleClose() {
+        form.reset()
         setItemId(null)
         setDialog(false)
-        form.resetField('name')
-        form.resetField('breed')
-        form.resetField('gender')
-        form.resetField('idCode')
-        form.resetField('weight')
-        form.resetField('typeId')
-        form.resetField('colorId')
-        form.resetField('birthDate')
-        form.resetField('arrivalDate')
     }
 
     return (
         <div>
+            <Card className="rounded-md shadow-none mb-4">
+                <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 p-2">
+                    <Select value={filters.typeId?String(filters.typeId):""} onValueChange={e => setFilters({...filters, typeId: +e})}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Tur bo'yicha saralash" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value={null as any}>Barchasi</SelectItem>
+                            {
+                                animalTypes.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                            }
+                        </SelectContent>
+                    </Select>
+                    <Select value={filters.gender?filters.gender:""} onValueChange={e => setFilters({...filters, gender: e as any})}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Jinsi bo'yicha saralash" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value={null as any}>Barchasi</SelectItem>
+                            {
+                                GENDERS.map(g => <SelectItem key={g.value} value={g.value}>{g.name}</SelectItem>)
+                            }
+                        </SelectContent>
+                    </Select>
+                    <Select value={filters.breed?filters.breed:""} onValueChange={e => setFilters({...filters, breed: e as any})}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Zoti bo'yicha saralash" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value={null as any}>Barchasi</SelectItem>
+                            {
+                                BREED.map(b => <SelectItem key={b.value} value={b.value}>{b.name}</SelectItem>)
+                            }
+                        </SelectContent>
+                    </Select>
+                    <Select value={filters.colorId?String(filters.colorId):""} onValueChange={e => setFilters({...filters, colorId: +e})}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Rangi bo'yicha saralash" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value={null as any}>Barchasi</SelectItem>
+                            {
+                                animalColors.map(b => <SelectItem key={b.id} value={String(b.id)}>{b.name}</SelectItem>)
+                            }
+                        </SelectContent>
+                    </Select>
+                </CardContent>
+            </Card>
+
             <DataTable
                 loading={loading}
                 columns={COLUMNS}
+                filters={filters}
                 items={items as any}
                 totalItems={totalItems}
                 callback={handleGetItems}

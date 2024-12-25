@@ -2813,12 +2813,7 @@ components:
         password:
           type: string
           description: The user's password (hashed)
-          example: hashed_password_string
-        refreshToken:
-          type: string
-          description: The user's refresh token
-          example: refresh_token_string
-          nullable: true
+          example: 123qazwsx
         firstName:
           type: string
           description: The user's first name
@@ -2840,7 +2835,7 @@ components:
             - FEMALE
           nullable: true
           example: MALE
-        birthdate:
+        birthDate:
           type: object
           description: The user's birthdate
           example: '2000-01-01'
@@ -2989,12 +2984,7 @@ components:
         password:
           type: string
           description: The user's password (hashed)
-          example: hashed_password_string
-        refreshToken:
-          type: string
-          description: The user's refresh token
-          example: refresh_token_string
-          nullable: true
+          example: 123qazwsx
         firstName:
           type: string
           description: The user's first name
@@ -3016,7 +3006,7 @@ components:
             - FEMALE
           nullable: true
           example: MALE
-        birthdate:
+        birthDate:
           type: object
           description: The user's birthdate
           example: '2000-01-01'
@@ -3080,11 +3070,6 @@ components:
           type: string
           description: The user's password (hashed)
           example: hashed_password_string
-        refreshToken:
-          type: string
-          description: The user's refresh token
-          example: refresh_token_string
-          nullable: true
         firstName:
           type: string
           description: The user's first name
@@ -3106,7 +3091,7 @@ components:
             - FEMALE
           nullable: true
           example: MALE
-        birthdate:
+        birthDate:
           type: object
           description: The user's birthdate
           example: '2000-01-01'
@@ -3183,11 +3168,6 @@ components:
           type: string
           description: The user's password (hashed)
           example: hashed_password_string
-        refreshToken:
-          type: string
-          description: The user's refresh token
-          example: refresh_token_string
-          nullable: true
         firstName:
           type: string
           description: The user's first name
@@ -3209,7 +3189,7 @@ components:
             - FEMALE
           nullable: true
           example: MALE
-        birthdate:
+        birthDate:
           type: object
           description: The user's birthdate
           example: '2000-01-01'
@@ -3510,6 +3490,8 @@ components:
       properties:
         name:
           type: string
+          description: The name of the region
+          example: North
       required:
         - name
     RegionEntity:
@@ -3543,13 +3525,19 @@ components:
       properties:
         name:
           type: string
+          description: The name of the region
+          example: North
     CreateDistrictDto:
       type: object
       properties:
         name:
           type: string
+          description: The name of the district
+          example: Downtown
         regionId:
           type: number
+          description: The ID of the region
+          example: 1
       required:
         - name
         - regionId
@@ -3589,17 +3577,27 @@ components:
       properties:
         name:
           type: string
+          description: The name of the district
+          example: Downtown
         regionId:
           type: number
+          description: The ID of the region
+          example: 1
     CreateVetStationDto:
       type: object
       properties:
         name:
           type: string
+          description: The name of the vet station
+          example: Downtown Vet Station
         address:
           type: string
+          description: The address of the vet station
+          example: 123 Main St
         districtId:
           type: number
+          description: The ID of the district
+          example: 1
       required:
         - name
         - address
@@ -3657,10 +3655,16 @@ components:
       properties:
         name:
           type: string
+          description: The name of the vet station
+          example: Downtown Vet Station
         address:
           type: string
+          description: The address of the vet station
+          example: 123 Main St
         districtId:
           type: number
+          description: The ID of the district
+          example: 1
     CreateAnimalTypeDto:
       type: object
       properties:
@@ -3704,8 +3708,12 @@ components:
       properties:
         name:
           type: string
+          description: The name of the color
+          example: Red
         hex:
           type: string
+          description: The hex code of the color
+          example: '#FF0000'
       required:
         - name
         - hex
@@ -3745,13 +3753,19 @@ components:
       properties:
         name:
           type: string
+          description: The name of the color
+          example: Red
         hex:
           type: string
+          description: The hex code of the color
+          example: '#FF0000'
     CreateUrineColorDto:
       type: object
       properties:
         name:
           type: string
+          description: The name of the urine color
+          example: Yellow
       required:
         - name
     UrineColorEntity:
@@ -3785,11 +3799,15 @@ components:
       properties:
         name:
           type: string
+          description: The name of the urine color
+          example: Yellow
     CreateDungColorDto:
       type: object
       properties:
         name:
           type: string
+          description: The name of the dung color
+          example: Brown
       required:
         - name
     DungColorEntity:
@@ -3823,11 +3841,15 @@ components:
       properties:
         name:
           type: string
+          description: The name of the dung color
+          example: Brown
     CreateVaccineTypeDto:
       type: object
       properties:
         name:
           type: string
+          description: The name of the vaccine type
+          example: Flu Vaccine
       required:
         - name
     VaccineTypeEntity:
@@ -3861,11 +3883,15 @@ components:
       properties:
         name:
           type: string
+          description: The name of the vaccine type
+          example: Flu Vaccine
     CreateDiseaseTypeDto:
       type: object
       properties:
         name:
           type: string
+          description: The name of the disease type
+          example: Flu
       required:
         - name
     DiseaseTypeEntity:
@@ -3899,6 +3925,8 @@ components:
       properties:
         name:
           type: string
+          description: The name of the disease type
+          example: Flu
     CreateGeneralInspectionDto:
       type: object
       properties:
@@ -4343,7 +4371,7 @@ components:
             The count of leukocytes (white blood cells) measured in thousands
             per microliter.
           example: 6.8
-        thrombocyCount:
+        thrombocyteCount:
           type: number
           description: >-
             The count of thrombocytes (platelets) measured in thousands per
@@ -4384,7 +4412,7 @@ components:
         - conclusion
         - erythrocyteCount
         - leukocyteCount
-        - thrombocyCount
+        - thrombocyteCount
         - coe
         - waterPercentage
         - dryResiduePercentage
@@ -4495,7 +4523,7 @@ components:
             The count of leukocytes (white blood cells) measured in thousands
             per microliter.
           example: 6.8
-        thrombocyCount:
+        thrombocyteCount:
           type: number
           description: >-
             The count of thrombocytes (platelets) measured in thousands per
@@ -4574,7 +4602,7 @@ components:
           type: number
           description: The glucose level in the blood serum (mg/dL).
           example: 90
-        totalBilburbin:
+        totalBilirubin:
           type: number
           description: The total bilirubin level in the blood serum (mg/dL).
           example: 0.8
@@ -4598,7 +4626,7 @@ components:
           type: number
           description: The lactic acid level in the blood serum (mmol/L).
           example: 1.5
-        pyruvicAid:
+        pyruvicAcid:
           type: number
           description: The pyruvic acid level in the blood serum (mg/dL).
           example: 1.2
@@ -4629,13 +4657,13 @@ components:
         - creatine
         - alkalineReserve
         - glucose
-        - totalBilburbin
+        - totalBilirubin
         - cholesterol
         - totalLipids
         - vitaminA
         - vitaminB
         - lacticAcid
-        - pyruvicAid
+        - pyruvicAcid
         - citricAcid
         - urea
         - ureaAcid
@@ -4821,7 +4849,7 @@ components:
           type: number
           description: The glucose level in the blood serum (mg/dL).
           example: 90
-        totalBilburbin:
+        totalBilirubin:
           type: number
           description: The total bilirubin level in the blood serum (mg/dL).
           example: 0.8
@@ -4845,7 +4873,7 @@ components:
           type: number
           description: The lactic acid level in the blood serum (mmol/L).
           example: 1.5
-        pyruvicAid:
+        pyruvicAcid:
           type: number
           description: The pyruvic acid level in the blood serum (mg/dL).
           example: 1.2

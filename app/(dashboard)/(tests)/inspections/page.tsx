@@ -12,7 +12,7 @@ import type { Color, Inspection, Disease, Animal } from "~/lib/type"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
-import { animalsControllerFindAll, diseasesControllerFindAll, inspectionsControllerFindAll, inspectionsControllerCreate, inspectionsControllerRemove, inspectionsControllerUpdate } from '~/app/api'
+import { animalsControllerFindAll, diseasesControllerFindAll, inspectionsControllerFindAll, inspectionsControllerCreate, inspectionsControllerRemove, inspectionsControllerUpdate } from '~/lib/api'
 
 export default function Inspections() {
     const COLUMNS = [

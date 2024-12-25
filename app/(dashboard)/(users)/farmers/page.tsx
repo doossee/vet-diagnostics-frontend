@@ -14,7 +14,8 @@ import type { District, User, Farmer } from "~/lib/type"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
-import { farmersControllerCreate, districtsControllerFindAll, farmersControllerFindAll, farmersControllerRemove, farmersControllerUpdate, usersControllerUpdate } from '~/app/api'
+import { farmersControllerCreate, districtsControllerFindAll, farmersControllerFindAll, farmersControllerRemove, farmersControllerUpdate, usersControllerUpdate } from '~/lib/api'
+import { useAuthData } from "~/hooks/use-auth-data"
 
 export default function Veterinarians() {
     const COLUMNS = [
@@ -56,10 +57,12 @@ export default function Veterinarians() {
         },
     ]
 
+    
+    const { userData } = useAuthData()
     const [dialog, setDialog] = useState(false)
     const [loading, setLoading] = useState(true)
-    const [items, setItems] = useState<Farmer[]>([])
     const [totalItems, setTotalItems] = useState(0)
+    const [items, setItems] = useState<Farmer[]>([])
     const [itemId, setItemId] = useState<number | null>(null)
     const [districts, setDistricts] = useState<District[]>([])
 
@@ -73,6 +76,7 @@ export default function Veterinarians() {
         birthDate: z.date().nullable(),
         middleName: z.string().optional(),
         districtId: z.number().nullable(),
+        veterinarianId: z.number().nullable()
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -91,6 +95,7 @@ export default function Veterinarians() {
     })
 
     useEffect(() => {
+        form.setValue('veterinarianId', userData?.userId!)
         handleGetDistricts()
     }, [])
 
@@ -104,6 +109,7 @@ export default function Veterinarians() {
     }
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
+        form.setValue('veterinarianId', userData?.userId!)
         if (itemId) {
             const data: any = await usersControllerUpdate(itemId, values as any)
             setItems(p => p.map(i => {
@@ -111,7 +117,7 @@ export default function Veterinarians() {
                 return i
             }))
         } else {
-            const data: any = await farmersControllerCreate({...values, veterinarianId: 4} as any) // TODO: add user Id in veterinar Id
+            const data: any = await farmersControllerCreate({...values} as any)
             setItems(p => [...p, data])
         }
 
@@ -243,7 +249,7 @@ export default function Veterinarians() {
                                     </FormItem>
                                 )}
                             />
-                            {/* <FormField
+                            <FormField
                                 name="password"
                                 control={form.control}
                                 render={({ field }) => (
@@ -255,7 +261,7 @@ export default function Veterinarians() {
                                         <FormMessage />
                                     </FormItem>
                                 )}
-                            /> */}
+                            />
                             <FormField
                                 name="gender"
                                 control={form.control}
@@ -278,7 +284,7 @@ export default function Veterinarians() {
                                     </FormItem>
                                 )}
                             />
-                            {/* <FormField
+                            <FormField
                                 name="birthDate"
                                 control={form.control}
                                 render={({ field }) => (
@@ -290,7 +296,7 @@ export default function Veterinarians() {
                                         <FormMessage />
                                     </FormItem>
                                 )}
-                            /> */}
+                            />
                             <FormField
                                 name="districtId"
                                 control={form.control}

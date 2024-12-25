@@ -13,7 +13,7 @@ import type { Disease, Animal, DungTest, DungColor } from "~/lib/type"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
-import { animalsControllerFindAll, diseasesControllerFindAll, dungColorsControllerFindAll, dungTestsControllerCreate, dungTestsControllerFindAll, dungTestsControllerRemove, dungTestsControllerUpdate } from '~/app/api'
+import { animalsControllerFindAll, diseasesControllerFindAll, dungColorsControllerFindAll, dungTestsControllerCreate, dungTestsControllerFindAll, dungTestsControllerRemove, dungTestsControllerUpdate } from '~/lib/api'
 
 export default function DungTests() {
     const COLUMNS = [

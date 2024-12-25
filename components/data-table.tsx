@@ -19,6 +19,7 @@ interface DataTableColumn<T> {
 interface DataTableProps<T> {
   items: T[]
   callback: any
+  filters?: any,
   loading?: boolean
   totalItems: number
   hideBottom?: boolean
@@ -26,18 +27,21 @@ interface DataTableProps<T> {
   columns: DataTableColumn<T>[],
 }
 
-export function DataTable<T extends { id: any }>({ columns, items, totalItems, loading, topSlot, callback, hideBottom }: DataTableProps<T>) {
+export function DataTable<T extends { id: any }>({ columns, items, totalItems, loading, topSlot, callback, hideBottom, filters }: DataTableProps<T>) {
   const [page, setPage] = useState(1)
-  const [perPage, setPerPage] = useState(20)
   const [search, setSearch] = useState("")
+  const [perPage, setPerPage] = useState(20)
   const [sorting, setSorting] = useState<{[k: string]: 'asc' | 'desc'}>({})
 
   useEffect(() => {
     handleFetch()
-  }, [page, perPage, search, sorting])
+  }, [page, perPage, search, sorting, filters])
 
   const handleFetch = () => {
     const params = { page, perPage, ...sorting }
+    filters && Object.keys(filters).map(key => {
+      if(filters[key]) Object.assign(params, {[key]: filters[key]})
+    })
     search && Object.assign(params, { search })
     callback(params)
   }

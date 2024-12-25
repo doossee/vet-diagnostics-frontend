@@ -2,7 +2,7 @@ module.exports = {
     'main': {
         input: './schema.yaml',
         output: {
-            target: './app/api/index.ts',
+            target: './lib/api.ts',
             prettier: true,
             override: {
                 mutator: {

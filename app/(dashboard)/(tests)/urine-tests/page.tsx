@@ -13,7 +13,7 @@ import type { UrineTest, Disease, Animal, UrineColor } from "~/lib/type"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
-import { animalsControllerFindAll, diseasesControllerFindAll, urineColorsControllerFindAll, urineTestsControllerFindAll, urineTestsControllerCreate, urineTestsControllerRemove, urineTestsControllerUpdate } from '~/app/api'
+import { animalsControllerFindAll, diseasesControllerFindAll, urineColorsControllerFindAll, urineTestsControllerFindAll, urineTestsControllerCreate, urineTestsControllerRemove, urineTestsControllerUpdate } from '~/lib/api'
 
 export default function UrineTests() {
     const COLUMNS = [

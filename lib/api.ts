@@ -5,8 +5,8 @@
  * The dr-ikramov API description
  * OpenAPI spec version: 0.1
  */
-import { createInstance } from '../../lib/api-instance';
-import type { BodyType } from '../../lib/api-instance';
+import { createInstance } from './api-instance';
+import type { BodyType } from './api-instance';
 export type DiseaseTypesControllerFindAllById = typeof DiseaseTypesControllerFindAllById[keyof typeof DiseaseTypesControllerFindAllById];
 
 
@@ -1164,9 +1164,9 @@ export interface UpdateBloodSerumTestDto {
   /** The level of organic phosphorus in the blood serum (mg/dL). */
   organicPhosphorus?: number;
   /** The pyruvic acid level in the blood serum (mg/dL). */
-  pyruvicAid?: number;
+  pyruvicAcid?: number;
   /** The total bilirubin level in the blood serum (mg/dL). */
-  totalBilburbin?: number;
+  totalBilirubin?: number;
   /** The total calcium level in the blood serum (mg/dL). */
   totalCalcium?: number;
   /** The total lipid concentration in the blood serum (mg/dL). */
@@ -1265,9 +1265,9 @@ export interface CreateBloodSerumTestDto {
   /** The level of organic phosphorus in the blood serum (mg/dL). */
   organicPhosphorus: number;
   /** The pyruvic acid level in the blood serum (mg/dL). */
-  pyruvicAid: number;
+  pyruvicAcid: number;
   /** The total bilirubin level in the blood serum (mg/dL). */
-  totalBilburbin: number;
+  totalBilirubin: number;
   /** The total calcium level in the blood serum (mg/dL). */
   totalCalcium: number;
   /** The total lipid concentration in the blood serum (mg/dL). */
@@ -1304,7 +1304,7 @@ export interface UpdateGeneralBloodTestDto {
   /** The count of leukocytes (white blood cells) measured in thousands per microliter. */
   leukocyteCount?: number;
   /** The count of thrombocytes (platelets) measured in thousands per microliter. */
-  thrombocyCount?: number;
+  thrombocyteCount?: number;
   /** The percentage of water in the blood sample. */
   waterPercentage?: number;
 }
@@ -1365,7 +1365,7 @@ export interface CreateGeneralBloodTestDto {
   /** The count of leukocytes (white blood cells) measured in thousands per microliter. */
   leukocyteCount: number;
   /** The count of thrombocytes (platelets) measured in thousands per microliter. */
-  thrombocyCount: number;
+  thrombocyteCount: number;
   /** The percentage of water in the blood sample. */
   waterPercentage: number;
 }
@@ -1697,6 +1697,7 @@ export interface CreateGeneralInspectionDto {
 }
 
 export interface UpdateDiseaseTypeDto {
+  /** The name of the disease type */
   name?: string;
 }
 
@@ -1713,10 +1714,12 @@ export interface PaginatedDiseaseTypesEntity {
 }
 
 export interface CreateDiseaseTypeDto {
+  /** The name of the disease type */
   name: string;
 }
 
 export interface UpdateVaccineTypeDto {
+  /** The name of the vaccine type */
   name?: string;
 }
 
@@ -1733,10 +1736,12 @@ export interface PaginatedVaccineTypesEntity {
 }
 
 export interface CreateVaccineTypeDto {
+  /** The name of the vaccine type */
   name: string;
 }
 
 export interface UpdateDungColorDto {
+  /** The name of the dung color */
   name?: string;
 }
 
@@ -1753,10 +1758,12 @@ export interface PaginatedDungColorsEntity {
 }
 
 export interface CreateDungColorDto {
+  /** The name of the dung color */
   name: string;
 }
 
 export interface UpdateUrineColorDto {
+  /** The name of the urine color */
   name?: string;
 }
 
@@ -1773,11 +1780,14 @@ export interface PaginatedUrineColorsEntity {
 }
 
 export interface CreateUrineColorDto {
+  /** The name of the urine color */
   name: string;
 }
 
 export interface UpdateColorDto {
+  /** The hex code of the color */
   hex?: string;
+  /** The name of the color */
   name?: string;
 }
 
@@ -1796,7 +1806,9 @@ export interface PaginatedColorsEntity {
 }
 
 export interface CreateColorDto {
+  /** The hex code of the color */
   hex: string;
+  /** The name of the color */
   name: string;
 }
 
@@ -1821,8 +1833,11 @@ export interface CreateAnimalTypeDto {
 }
 
 export interface UpdateVetStationDto {
+  /** The address of the vet station */
   address?: string;
+  /** The ID of the district */
   districtId?: number;
+  /** The name of the vet station */
   name?: string;
 }
 
@@ -1847,13 +1862,18 @@ export interface PaginatedVetStationsEntity {
 }
 
 export interface CreateVetStationDto {
+  /** The address of the vet station */
   address: string;
+  /** The ID of the district */
   districtId: number;
+  /** The name of the vet station */
   name: string;
 }
 
 export interface UpdateDistrictDto {
+  /** The name of the district */
   name?: string;
+  /** The ID of the region */
   regionId?: number;
 }
 
@@ -1872,11 +1892,14 @@ export interface PaginatedDistrictsEntity {
 }
 
 export interface CreateDistrictDto {
+  /** The name of the district */
   name: string;
+  /** The ID of the region */
   regionId: number;
 }
 
 export interface UpdateRegionDto {
+  /** The name of the region */
   name?: string;
 }
 
@@ -1893,6 +1916,7 @@ export interface PaginatedRegionsEntity {
 }
 
 export interface CreateRegionDto {
+  /** The name of the region */
   name: string;
 }
 
@@ -2111,7 +2135,7 @@ export const UpdateFarmerDtoGender = {
  * The user's birthdate
  * @nullable
  */
-export type UpdateFarmerDtoBirthdate = { [key: string]: unknown } | null;
+export type UpdateFarmerDtoBirthDate = { [key: string]: unknown } | null;
 
 export interface UpdateFarmerDto {
   /**
@@ -2123,7 +2147,7 @@ export interface UpdateFarmerDto {
    * The user's birthdate
    * @nullable
    */
-  birthdate?: UpdateFarmerDtoBirthdate;
+  birthDate?: UpdateFarmerDtoBirthDate;
   /** The identifier of the user's district */
   districtId?: number;
   /** The user's first name */
@@ -2144,11 +2168,6 @@ export interface UpdateFarmerDto {
   password?: string;
   /** The user's phone number in international format */
   phone?: string;
-  /**
-   * The user's refresh token
-   * @nullable
-   */
-  refreshToken?: string | null;
   /** The identifier of the user's district */
   veterinarianId?: number;
 }
@@ -2188,7 +2207,7 @@ export const CreateFarmerDtoGender = {
  * The user's birthdate
  * @nullable
  */
-export type CreateFarmerDtoBirthdate = { [key: string]: unknown } | null;
+export type CreateFarmerDtoBirthDate = { [key: string]: unknown } | null;
 
 export interface CreateFarmerDto {
   /**
@@ -2200,7 +2219,7 @@ export interface CreateFarmerDto {
    * The user's birthdate
    * @nullable
    */
-  birthdate?: CreateFarmerDtoBirthdate;
+  birthDate?: CreateFarmerDtoBirthDate;
   /** The identifier of the user's district */
   districtId: number;
   /** The user's first name */
@@ -2221,11 +2240,6 @@ export interface CreateFarmerDto {
   password: string;
   /** The user's phone number in international format */
   phone: string;
-  /**
-   * The user's refresh token
-   * @nullable
-   */
-  refreshToken?: string | null;
   /** The identifier of the user's district */
   veterinarianId: number;
 }
@@ -2260,7 +2274,7 @@ export const UpdateUserDtoGender = {
  * The user's birthdate
  * @nullable
  */
-export type UpdateUserDtoBirthdate = { [key: string]: unknown } | null;
+export type UpdateUserDtoBirthDate = { [key: string]: unknown } | null;
 
 export interface UpdateUserDto {
   /**
@@ -2272,7 +2286,7 @@ export interface UpdateUserDto {
    * The user's birthdate
    * @nullable
    */
-  birthdate?: UpdateUserDtoBirthdate;
+  birthDate?: UpdateUserDtoBirthDate;
   /** The identifier of the user's district */
   districtId?: number;
   /** The user's first name */
@@ -2293,11 +2307,6 @@ export interface UpdateUserDto {
   password?: string;
   /** The user's phone number in international format */
   phone?: string;
-  /**
-   * The user's refresh token
-   * @nullable
-   */
-  refreshToken?: string | null;
   /** The user's role in the system */
   role?: UpdateUserDtoRole;
 }
@@ -2412,7 +2421,7 @@ export const CreateUserDtoGender = {
  * The user's birthdate
  * @nullable
  */
-export type CreateUserDtoBirthdate = { [key: string]: unknown } | null;
+export type CreateUserDtoBirthDate = { [key: string]: unknown } | null;
 
 export interface CreateUserDto {
   /**
@@ -2424,7 +2433,7 @@ export interface CreateUserDto {
    * The user's birthdate
    * @nullable
    */
-  birthdate?: CreateUserDtoBirthdate;
+  birthDate?: CreateUserDtoBirthDate;
   /** The identifier of the user's district */
   districtId: number;
   /** The user's first name */
@@ -2445,11 +2454,6 @@ export interface CreateUserDto {
   password: string;
   /** The user's phone number in international format */
   phone: string;
-  /**
-   * The user's refresh token
-   * @nullable
-   */
-  refreshToken?: string | null;
   /** The user's role in the system */
   role: CreateUserDtoRole;
 }

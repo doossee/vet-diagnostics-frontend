@@ -12,7 +12,7 @@ import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { CUSTOMER_TYPES, OBESITY_TYPES, BODY_TYPES, BODY_STRUCTURES } from '~/constants'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
-import { animalsControllerFindAll, colorsControllerFindAll, generalInspectionControllerCreate, generalInspectionControllerFindAll, generalInspectionControllerRemove, generalInspectionControllerUpdate } from '~/app/api'
+import { animalsControllerFindAll, colorsControllerFindAll, generalInspectionControllerCreate, generalInspectionControllerFindAll, generalInspectionControllerRemove, generalInspectionControllerUpdate } from '~/lib/api'
 
 export default function GeneralInspections() {
     const COLUMNS = [

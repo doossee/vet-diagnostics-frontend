@@ -1,7 +1,7 @@
 'use client'
 
 import { DataTable } from '~/components/data-table'
-import { districtsControllerFindAll, districtsControllerCreate, districtsControllerUpdate, districtsControllerRemove, regionsControllerFindAll } from '~/app/api'
+import { districtsControllerFindAll, districtsControllerCreate, districtsControllerUpdate, districtsControllerRemove, regionsControllerFindAll } from '~/lib/api'
 
 import { z } from "zod"
 import { useForm } from "react-hook-form"

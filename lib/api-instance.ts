@@ -1,4 +1,6 @@
+import { toast } from 'sonner'
 import { useAuthData } from '~/hooks/use-auth-data'
+import { ALERT_MESSAGES, TOAST_OPTIONS } from '~/constants'
 import Axios, { AxiosError, AxiosResponse, AxiosRequestConfig } from 'axios'
 
 const baseURL = '/api'
@@ -21,9 +23,15 @@ export const apiInstance = Axios.create({
 })
 
 apiInstance.interceptors.response.use(
-    (response: AxiosResponse) => response,
+    (response: AxiosResponse) => {
+        console.log(response);
+        
+        if(response.statusText === "Created" && ['POST', 'post'].includes(response.config.method!)) toast(ALERT_MESSAGES.DATA_CREATED, TOAST_OPTIONS)
+        if(response.statusText === "OK" && ['DELETE', 'delete'].includes(response.config.method!)) toast(ALERT_MESSAGES.DATA_DELETED, TOAST_OPTIONS)
+        if(response.statusText === "OK" && ['PUT', 'PATCH', 'put', 'patch'].includes(response.config.method!)) toast(ALERT_MESSAGES.DATA_UPDATED, TOAST_OPTIONS)
+        return response
+    },
     async (error: AxiosError) => {
-        console.log(error)
         const originalRequest: any = error.config!
         if (error.response?.status === 401 && !originalRequest?._retry) {
             if (!refreshToken || error.config?.url === '/auth/login') {

@@ -1,8 +1,8 @@
 import "./globals.css"
 import type { Metadata } from "next"
 import localFont from "next/font/local"
+import { Toaster } from "~/components/ui/sonner"
 import { ThemeProvider } from "~/components/theme-provider"
-// import { ReactQueryProvider } from './react-query-provider'
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,7 +33,8 @@ export default function RootLayout({
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange>
-            {children}
+          {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

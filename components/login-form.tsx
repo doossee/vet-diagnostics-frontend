@@ -1,7 +1,9 @@
 'use client'
 
 import { z } from "zod"
+import { toast } from "sonner"
 import { useForm } from "react-hook-form"
+import { TOAST_OPTIONS } from '~/constants'
 import { useRouter } from 'next/navigation'
 import { Input } from "~/components/ui/input"
 import { authControllerLogin } from '~/lib/api'
@@ -35,7 +37,7 @@ export function LoginForm() {
       setAuthData(JSON.stringify(user), 'USER_DATA')
       router.push('/'+user.userRole.toLocaleLowerCase())
     } catch (error) {
-      console.log(error)
+      toast("Telefon yoki Parol noto'g'ri", TOAST_OPTIONS)
     }
   }
 

@@ -3,19 +3,20 @@
 import { z } from "zod"
 import { GENDERS } from '~/constants'
 import { useForm } from "react-hook-form"
-import { useEffect, useState } from 'react'
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
+import { useAuthData } from "~/hooks/use-auth-data"
 import { DataTable } from '~/components/data-table'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { DatePicker } from '~/components/date-picker'
-import type { District, User, Farmer } from "~/lib/type"
+import { useCallback, useEffect, useState } from 'react'
+import { Card, CardContent } from "~/components/ui/card"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
+import type { District, User, Farmer, Veterinarian, Gender } from "~/lib/type"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
-import { farmersControllerCreate, districtsControllerFindAll, farmersControllerFindAll, farmersControllerRemove, farmersControllerUpdate, usersControllerUpdate } from '~/lib/api'
-import { useAuthData } from "~/hooks/use-auth-data"
+import { veterinariansControllerFindAll, regionsControllerFindAll, farmersControllerCreate, districtsControllerFindAll, farmersControllerFindAll, farmersControllerRemove, farmersControllerUpdate, usersControllerUpdate } from '~/lib/api'
 
 export default function Veterinarians() {
     const COLUMNS = [
@@ -57,25 +58,33 @@ export default function Veterinarians() {
         },
     ]
 
-    
+    const [filters, setFilters] = useState({
+        gender: null as Gender | null,
+        birthDate: null as null | Date,
+        regionId: null as null | number,
+        districtId: null as null | number,
+    })
     const { userData } = useAuthData()
     const [dialog, setDialog] = useState(false)
     const [loading, setLoading] = useState(true)
     const [totalItems, setTotalItems] = useState(0)
     const [items, setItems] = useState<Farmer[]>([])
+    const [regions, setRegions] = useState<District[]>([])
     const [itemId, setItemId] = useState<number | null>(null)
     const [districts, setDistricts] = useState<District[]>([])
+    const [regionId, setRegionId] = useState<number|null>(null)
+    const [veterinarians, setVeterinarians] = useState<Veterinarian[]>([])
 
     const formSchema = z.object({
-        phone: z.string(),
-        gender: z.string(),
-        address: z.string(),
-        lastName: z.string(),
-        password: z.string(),
-        firstName: z.string(),
-        birthDate: z.date().nullable(),
+        phone: z.string().regex(/\+998\d{9}/, "Telefon to'g'ri formatda kiritilishi shart"),
+        gender: z.string().min(1, "Jins tanlanishi shart"),
+        address: z.string().optional(),
+        birthDate: z.date(),
+        password: z.string().min(1, "Ism kiritilishi shart"),
+        lastName: z.string().min(1, "Ism kiritilishi shart"),
+        firstName: z.string().min(1, "Ism kiritilishi shart"),
+        districtId: z.number(),
         middleName: z.string().optional(),
-        districtId: z.number().nullable(),
         veterinarianId: z.number().nullable()
     })
 
@@ -91,25 +100,26 @@ export default function Veterinarians() {
             middleName: "",
             birthDate: null,
             districtId: null,
-        },
+        } as any,
     })
 
-    useEffect(() => {
-        form.setValue('veterinarianId', userData?.userId!)
-        handleGetDistricts()
-    }, [])
-
-    async function handleGetDistricts() {
+    async function handleGetDistrictsAndRegions(role: string) {
         try {
-            const {data}: any = await districtsControllerFindAll({page: 1, perPage: 100})
-            setDistricts(data)
+            const promises = [
+                regionsControllerFindAll({page: 1, perPage: 1000}),
+                districtsControllerFindAll({page: 1, perPage: 1000}),]
+            if(role === 'ADMIN') promises.push(veterinariansControllerFindAll({page: 1, perPage: 1000}) as any)
+            const [R, D, V]: any = await Promise.all(promises)
+            setRegions(R.data)
+            setDistricts(D.data)
+            if(role === 'ADMIN') setVeterinarians(V.data)
         } catch (error) {
             console.log(error)
         }
     }
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        form.setValue('veterinarianId', userData?.userId!)
+        if(userData?.userRole === 'VETERINARIAN') form.setValue('veterinarianId', userData?.userId!)
         if (itemId) {
             const data: any = await usersControllerUpdate(itemId, values as any)
             setItems(p => p.map(i => {
@@ -167,9 +177,57 @@ export default function Veterinarians() {
         setDialog(false)
     }
 
+    const filteredDistricts = useCallback(() => {
+        if(regionId) return districts.filter(d => d.regionId === regionId)
+        else return []
+    }, [regionId])
+
+    useEffect(() => {
+        handleGetDistrictsAndRegions(userData?.userRole!)
+    }, [])
+
     return (
         <div>
+            <Card className="rounded-md shadow-none mb-4">
+                <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 p-2">
+                    <Select value={filters.gender?filters.gender:""} onValueChange={e => setFilters({...filters, gender: e as any})}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Jinsi bo'yicha saralash" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value={null as any}>Barchasi</SelectItem>
+                            {
+                                GENDERS.map(g => <SelectItem key={g.value} value={g.value}>{g.name}</SelectItem>)
+                            }
+                        </SelectContent>
+                    </Select>
+                    <Select value={filters.regionId ? String(filters.regionId) : ""} onValueChange={e => setFilters({...filters, regionId: +e})}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Viloyat bo'yicha saralash" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value={null as any}>Barchasi</SelectItem>
+                            {
+                                regions.map(r => <SelectItem key={r.id} value={String(r.id)}>{r.name}</SelectItem>)
+                            }
+                        </SelectContent>
+                    </Select>
+                    <Select value={filters.districtId ? String(filters.districtId) : ""} onValueChange={e => setFilters({...filters, districtId: +e})}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Tuman bo'yicha saralash" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value={null as any}>Barchasi</SelectItem>
+                            {
+                                districts.filter(d => d.regionId === filters.regionId).map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                            }
+                        </SelectContent>
+                    </Select>
+                </CardContent>
+            </Card>
+
             <DataTable
+                filters={filters}
                 loading={loading}
                 columns={COLUMNS}
                 items={items as any}
@@ -179,7 +237,7 @@ export default function Veterinarians() {
             />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
-                <DialogContent style={{ maxHeight: '95vh', maxWidth: 600, overflow: 'auto' }} aria-describedby={undefined}>
+                <DialogContent className="overflow-auto max-h-screen md:max-h-[95vh] max-w-[650px]" aria-describedby={undefined}>
                     <DialogHeader>
                         <DialogTitle>Fermer Qo'shish</DialogTitle>
                     </DialogHeader>
@@ -297,20 +355,35 @@ export default function Veterinarians() {
                                     </FormItem>
                                 )}
                             />
+                            <div className="grid gap-2 pt-2">
+                                <FormLabel>Viloyat</FormLabel>
+                                <FormControl>
+                                    <Select value={String(regionId)} onValueChange={e => setRegionId(+e)}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Viloyat" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {
+                                                regions.map(r => <SelectItem key={r.id} value={String(r.id)}>{r.name}</SelectItem>)
+                                            }
+                                        </SelectContent>
+                                    </Select>
+                                </FormControl>
+                            </div>
                             <FormField
                                 name="districtId"
                                 control={form.control}
                                 render={({ field: { value, onChange, ...others } }) => (
                                     <FormItem>
-                                        <FormLabel>Tuman nomi</FormLabel>
+                                        <FormLabel>Tuman</FormLabel>
                                         <FormControl>
                                             <Select value={value ? String(value) : ""} onValueChange={e => onChange(+e)} {...others}>
                                                 <SelectTrigger>
-                                                    <SelectValue placeholder="Tuman nomi" />
+                                                    <SelectValue placeholder="Tuman" />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        districts.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                                        filteredDistricts().map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>
@@ -319,6 +392,28 @@ export default function Veterinarians() {
                                     </FormItem>
                                 )}
                             />
+                            {userData?.userRole === 'ADMIN' && <FormField
+                                name="veterinarianId"
+                                control={form.control}
+                                render={({ field: { value, onChange, ...others } }) => (
+                                    <FormItem>
+                                        <FormLabel>Veterinar</FormLabel>
+                                        <FormControl>
+                                            <Select value={value ? String(value) : ""} onValueChange={e => onChange(+e)} {...others}>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Veterinar" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {
+                                                        veterinarians.filter(v => form.getValues('districtId') ? v.user.districtId === form.getValues('districtId') : true).map((v, i) => <SelectItem key={i} value={String(v.user?.id)}>{v.user?.firstName} {v.user.lastName}</SelectItem>)
+                                                    }
+                                                </SelectContent>
+                                            </Select>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />}
                             <Button type="submit" className="col-span-1 md:col-span-2">Saqlash</Button>
                         </form>
                     </Form>

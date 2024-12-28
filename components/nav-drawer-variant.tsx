@@ -1,5 +1,7 @@
 'use client'
 
+import Link from "next/link"
+import { cn } from "~/lib/utils"
 import { useEffect, useState } from "react"
 import { ChevronRight } from "lucide-react"
 import { navLinksVariant } from '~/constants'
@@ -7,8 +9,6 @@ import { usePathname } from "next/navigation"
 import { useAuthData } from "~/hooks/use-auth-data"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@radix-ui/react-collapsible"
 import { Sidebar, SidebarContent, SidebarGroup, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem } from "~/components/ui/sidebar"
-import Link from "next/link"
-import { cn } from "~/lib/utils"
 
 export function AppSidebar() {
     const pathname = usePathname()
@@ -21,7 +21,7 @@ export function AppSidebar() {
 
     return(
         <Sidebar collapsible="icon" className="bg-card">
-            <SidebarContent>
+            <SidebarContent className="bg-card h-screen">
                 <SidebarGroup>
                     <SidebarMenu>
                         {links.map((item) => (

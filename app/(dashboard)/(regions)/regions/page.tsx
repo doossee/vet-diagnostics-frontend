@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 
 export default function Regions() {
-    const { form, regions, dialog, loading, COLUMNS, total, setDialog, handleClose, handleGetRegions, onSubmit } = useRegions()
+    const { form, itemId, regions, dialog, loading, COLUMNS, total,  setDialog, handleClose, handleGetRegions, onSubmit } = useRegions()
 
     return (
         <div>
@@ -22,9 +22,9 @@ export default function Regions() {
                 topSlot={<Button onClick={() => setDialog(true)} className="w-full sm:w-fit">Viloyat yaratish</Button>} />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
-                <DialogContent style={{ maxHeight: '95vh', overflow: 'auto'}} aria-describedby={undefined}>
+                <DialogContent className="bg-card overflow-auto max-h-screen md:max-h-[95vh]" aria-describedby={undefined}>
                     <DialogHeader>
-                        <DialogTitle>Viloyat yaratish</DialogTitle>
+                        <DialogTitle>{itemId?"Viloyatni o'zgartirish":"Viloyat yaratish"}</DialogTitle>
                     </DialogHeader>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

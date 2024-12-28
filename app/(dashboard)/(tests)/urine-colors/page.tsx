@@ -15,7 +15,7 @@ import { urineColorsControllerCreate, urineColorsControllerFindAll, urineColorsC
 
 export default function AnimalColors() {
     const COLUMNS = [
-        { title: 'Rang nomi', key: 'name', sorting: 'name' },
+        { title: 'Rang nomi', key: 'name' },
         {
             title: 'Boshqarish', key: 'actions', render(item: Color) {
                 return (<div className="flex gap-2 items-center">
@@ -37,7 +37,7 @@ export default function AnimalColors() {
     const [itemId, setItemId] = useState<number | null>(null)
 
     const formSchema = z.object({
-        name: z.string(),
+        name: z.string().min(1, "Rang nomi kiritilishi shart"),
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -106,13 +106,13 @@ export default function AnimalColors() {
                 items={items as any}
                 totalItems={totalItems}
                 callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Hayvon turi yaratish</Button>}
+                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Siydik rangi yaratish</Button>}
             />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
-                <DialogContent style={{ maxHeight: '95vh', maxWidth: 500, overflow: 'auto' }} aria-describedby={undefined}>
+                <DialogContent className="overflow-auto max-h-screen md:max-h-[95vh] max-w-[500px]" aria-describedby={undefined}>
                     <DialogHeader>
-                        <DialogTitle>Rang yaratish</DialogTitle>
+                        <DialogTitle>{itemId?"Rangni o'zgartirish":"Rang yaratish"}</DialogTitle>
                     </DialogHeader>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

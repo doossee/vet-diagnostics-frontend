@@ -8,7 +8,7 @@ import { Button } from '~/components/ui/button'
 import { DataTable } from '~/components/data-table'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
-import type { Color, Inspection, Disease, Animal } from "~/lib/type"
+import type { Inspection, Disease, Animal } from "~/lib/type"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
@@ -48,13 +48,13 @@ export default function Inspections() {
     const [itemId, setItemId] = useState<number | null>(null)
 
     const formSchema = z.object({
-        pulse: z.coerce.number(),
-        rumination: z.coerce.number(),
-        temperature: z.coerce.number(),
-        animalId: z.number().nullable(),
-        diseaseId: z.number().nullable(),
-        respiratoryRate: z.coerce.number(),
-        generalInspectionId: z.number().nullable(),
+        animalId: z.number(),
+        diseaseId: z.number(),
+        generalInspectionId: z.number(),
+        pulse: z.coerce.number().min(1, "Puls 0 dan katta qiymat kiritilshi shart"),
+        rumination: z.coerce.number().min(1, "Ruminatsiya 0 dan katta qiymat kiritilshi shart"),
+        temperature: z.coerce.number().min(1, "Harorat 0 dan katta qiymat kiritilshi shart"),
+        respiratoryRate: z.coerce.number().min(1, "Nafas olish tezligi 0 dan katta qiymat kiritilshi shart"),
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -67,12 +67,8 @@ export default function Inspections() {
             diseaseId: null,
             respiratoryRate: 0,
             generalInspectionId: null,
-        },
+        } as any,
     })
-
-    useEffect(() => {
-        handleGetAnimalsAndDiseases()
-    }, [])
 
     async function handleGetAnimalsAndDiseases() {
         try {
@@ -144,6 +140,10 @@ export default function Inspections() {
         setItemId(null)
         setDialog(false)
     }
+    
+    useEffect(() => {
+        handleGetAnimalsAndDiseases()
+    }, [])
 
     return (
         <div>
@@ -156,9 +156,9 @@ export default function Inspections() {
                 topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Tekshiruv yaratish</Button>} />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
-                <DialogContent style={{ maxHeight: '95vh', maxWidth: 500, overflow: 'auto' }} aria-describedby={undefined}>
+                <DialogContent className="overflow-auto max-h-screen md:max-h-[95vh] max-w-[500px]" aria-describedby={undefined}>
                     <DialogHeader>
-                        <DialogTitle>Tekshiruv yaratish</DialogTitle>
+                        <DialogTitle>{itemId?"Tekshiruvni o'zgartirish":"Tekshiruv yaratish"}</DialogTitle>
                     </DialogHeader>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

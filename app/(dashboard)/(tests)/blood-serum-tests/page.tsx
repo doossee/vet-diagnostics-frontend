@@ -17,6 +17,14 @@ import { animalsControllerFindAll, bloodSerumTestsControllerCreate, bloodSerumTe
 
 type BLOOD_SERUM = keyof typeof BLOOD_SERUM_TESTS
 
+const defaultValues: any = {}
+const formSchemaValues: any = {}
+
+Object.keys(BLOOD_SERUM_TESTS).map(key => {
+    defaultValues[key] = 0
+    formSchemaValues[key] = z.coerce.number().min(1, BLOOD_SERUM_TESTS[key as BLOOD_SERUM] + " 0 dan katta qiymant kiritilishi shart")
+})
+
 export default function BloodSerumTests() {
     const COLUMNS = [
         ...Object.keys(BLOOD_SERUM_TESTS).map(key => ({
@@ -50,59 +58,17 @@ export default function BloodSerumTests() {
     const [itemId, setItemId] = useState<number | null>(null)
     
     const formSchema = z.object({
-        urea: z.coerce.number(),
-        glucose: z.coerce.number(),
-        albumen: z.coerce.number(),
-        creatine: z.coerce.number(),
-        vitaminA: z.coerce.number(),
-        vitaminB: z.coerce.number(),
-        ureaAcid: z.coerce.number(),
-        citricAcid: z.coerce.number(),
-        lacticAcid: z.coerce.number(),
-        pyruvicAcid: z.coerce.number(),
-        cholesterol: z.coerce.number(),
-        totalLipids: z.coerce.number(),
-        totalProtein: z.coerce.number(),
-        totalCalcium: z.coerce.number(),
-        betaGlobulin: z.coerce.number(),
-        gammaGlobulin: z.coerce.number(),
-        alphaGlobulin: z.coerce.number(),
-        totalBilirubin: z.coerce.number(),
-        alkalineReserve: z.coerce.number(),
-        organicPhosphorus: z.coerce.number(),
-        animalId: z.number().nullable(),
+        animalId: z.number().min(1, "Hayvon tanlanishi shart shart"),
+        ...formSchemaValues
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            urea: 0,
-            albumen: 0,
-            glucose: 0,
-            ureaAcid: 0,
-            vitaminA: 0,
-            vitaminB: 0,
-            creatine: 0,
-            citricAcid: 0,
-            lacticAcid: 0,
             animalId: null,
-            cholesterol: 0,
-            totalLipids: 0,
-            pyruvicAcid: 0,
-            totalProtein: 0,
-            totalCalcium: 0,
-            betaGlobulin: 0,
-            gammaGlobulin: 0,
-            alphaGlobulin: 0,
-            totalBilirubin: 0,
-            alkalineReserve: 0,
-            organicPhosphorus: 0,
-        },
+            ...defaultValues,
+        } as any,
     })
-
-    useEffect(() => {
-        handleGetAnimals()
-    }, [])
 
     async function handleGetAnimals() {
         try {
@@ -167,6 +133,10 @@ export default function BloodSerumTests() {
         setDialog(false)
     }
 
+    useEffect(() => {
+        handleGetAnimals()
+    }, [])
+
     return (
         <div>
             <DataTable
@@ -179,9 +149,9 @@ export default function BloodSerumTests() {
             />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
-                <DialogContent style={{ maxHeight: '95vh', maxWidth: 600, overflow: 'auto' }} aria-describedby={undefined}>
+                <DialogContent className="overflow-auto max-h-screen md:max-h-[95vh] max-w-[600px]" aria-describedby={undefined}>
                     <DialogHeader>
-                        <DialogTitle>Qon serum tahlil yaratish</DialogTitle>
+                        <DialogTitle>{itemId?"Qon serum tahlilini o'zgartirish":"Qon serum tahlil yaratish"}</DialogTitle>
                     </DialogHeader>
                     
                     <Form {...form}>

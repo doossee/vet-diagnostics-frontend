@@ -69,8 +69,8 @@ export default function GeneralInspections() {
     const [items, setItems] = useState<GeneralInspection[]>([])
 
     const formSchema = z.object({
-        colorId: z.number().nullable(),
-        animalId: z.number().nullable(),
+        colorId: z.number(),
+        animalId: z.number(),
         customerType: z.enum(["MOBILE", "CALM"]),
         bodyType: z.enum(["WEAK", "MEDIUM", "STRONG"]),
         obesity: z.enum(["HIGH","MEDIUM","LOW","LEAN","CACHEXIA"]),
@@ -80,18 +80,14 @@ export default function GeneralInspections() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            animalId: null,
-            bodyStructure: "COARSE",
-            bodyType: "MEDIUM",
             colorId: null,
-            customerType: "CALM",
+            animalId: null,
+            bodyType: "MEDIUM",
             obesity: "CACHEXIA",
-        },
+            customerType: "CALM",
+            bodyStructure: "COARSE",
+        } as any,
     })
-
-    useEffect(() => {
-        handleGetAnimalsDiseasesColors()
-    }, [])
 
     async function handleGetAnimalsDiseasesColors() {
         try {
@@ -162,6 +158,10 @@ export default function GeneralInspections() {
         setDialog(false)
     }
 
+    useEffect(() => {
+        handleGetAnimalsDiseasesColors()
+    }, [])
+
     return (
         <div>
             <DataTable
@@ -173,9 +173,9 @@ export default function GeneralInspections() {
                 topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Umummiy tekshiruv yaratish</Button>} />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
-                <DialogContent style={{ maxHeight: '95vh', maxWidth: 500, overflow: 'auto' }} aria-describedby={undefined}>
+                <DialogContent className="overflow-auto max-h-screen md:max-h-[95vh] max-w-[500px]" aria-describedby={undefined}>
                     <DialogHeader>
-                        <DialogTitle>Umummiy tekshiruv yaratish</DialogTitle>
+                        <DialogTitle>{itemId?"Umummiy tekshiruvni o'zgartirish":"Umummiy tekshiruv yaratish"}</DialogTitle>
                     </DialogHeader>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

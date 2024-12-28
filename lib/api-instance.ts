@@ -1,6 +1,6 @@
-import { toast } from 'sonner'
+import { ALERT_MESSAGES } from '~/constants'
+import { createToast } from '~/hooks/use-toast'
 import { useAuthData } from '~/hooks/use-auth-data'
-import { ALERT_MESSAGES, TOAST_OPTIONS } from '~/constants'
 import Axios, { AxiosError, AxiosResponse, AxiosRequestConfig } from 'axios'
 
 const baseURL = '/api'
@@ -24,14 +24,21 @@ export const apiInstance = Axios.create({
 
 apiInstance.interceptors.response.use(
     (response: AxiosResponse) => {
-        console.log(response);
-        
-        if(response.statusText === "Created" && ['POST', 'post'].includes(response.config.method!)) toast(ALERT_MESSAGES.DATA_CREATED, TOAST_OPTIONS)
-        if(response.statusText === "OK" && ['DELETE', 'delete'].includes(response.config.method!)) toast(ALERT_MESSAGES.DATA_DELETED, TOAST_OPTIONS)
-        if(response.statusText === "OK" && ['PUT', 'PATCH', 'put', 'patch'].includes(response.config.method!)) toast(ALERT_MESSAGES.DATA_UPDATED, TOAST_OPTIONS)
+        if(response.statusText === "Created" && ['POST', 'post'].includes(response.config.method!) && response.config.url !== '/auth/login')
+            createToast(ALERT_MESSAGES.DATA_CREATED, "SUCCESS")
+        if(response.statusText === "OK" && ['DELETE', 'delete'].includes(response.config.method!))
+            createToast(ALERT_MESSAGES.DATA_DELETED, "SUCCESS")
+        if(response.statusText === "OK" && ['PUT', 'PATCH', 'put', 'patch'].includes(response.config.method!))
+            createToast(ALERT_MESSAGES.DATA_UPDATED, "SUCCESS")
         return response
     },
     async (error: AxiosError) => {
+        console.log(error)
+        if(error.status === 400) {
+            const { message } = error.response?.data as { message: string[] }
+
+            message.map(m => createToast(m, 'WARNING'))
+        }
         const originalRequest: any = error.config!
         if (error.response?.status === 401 && !originalRequest?._retry) {
             if (!refreshToken || error.config?.url === '/auth/login') {

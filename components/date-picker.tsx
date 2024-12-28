@@ -3,7 +3,6 @@
 import * as React from "react"
 import { cn } from "~/lib/utils"
 import { format } from "date-fns"
-import { FormControl } from "./ui/form"
 import { CalendarIcon } from "lucide-react"
 import { Button } from "~/components/ui/button"
 import { CalendarComponent } from "~/components/ui/calendar"
@@ -15,16 +14,15 @@ interface DatePickerProps {
 }
 
 export function DatePicker({field}: DatePickerProps) {
-  return (
-    <Popover>
+    return (<Popover>
         <PopoverTrigger asChild>
-            <FormControl>
+            {/* <FormControl> */}
                 <Button variant={"outline"} className={cn("pl-3 text-left font-normal", !field.value && "text-muted-foreground")}>
                     {field.value ? (format(field.value, "PPP")) : (
                     <span>Sanani belgilang</span>)}
                     <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                 </Button>
-            </FormControl>
+            {/* </FormControl> */}
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">
             <CalendarComponent
@@ -35,6 +33,5 @@ export function DatePicker({field}: DatePickerProps) {
                 disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
             />
         </PopoverContent>
-    </Popover>
-  )
+    </Popover>)
 }

@@ -53,10 +53,10 @@ export default function Diseases() {
 
     const formSchema = z.object({
         conclusion: z.string(),
-        endTime: z.date().nullable(),
-        typeId: z.number().nullable(),
-        startTime: z.date().nullable(),
-        animalId: z.number().nullable(),
+        endTime: z.date(),
+        typeId: z.number(),
+        startTime: z.date(),
+        animalId: z.number(),
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -67,12 +67,8 @@ export default function Diseases() {
             animalId: null,
             conclusion: "",
             startTime: null,
-        },
+        } as any,
     })
-
-    useEffect(() => {
-        handleGetAnimalsAndDiseases()
-    }, [])
 
     async function handleGetAnimalsAndDiseases() {
         try {
@@ -144,6 +140,10 @@ export default function Diseases() {
         setDialog(false)
     }
 
+    useEffect(() => {
+        handleGetAnimalsAndDiseases()
+    }, [])
+
     return (
         <div>
             <DataTable
@@ -155,9 +155,9 @@ export default function Diseases() {
                 topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Kasallik yaratish</Button>} />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
-                <DialogContent style={{ maxHeight: '95vh', maxWidth: 500, overflow: 'auto' }} aria-describedby={undefined}>
+                <DialogContent className="overflow-auto max-h-screen md:max-h-[95vh] max-w-[500px]" aria-describedby={undefined}>
                     <DialogHeader>
-                        <DialogTitle>Kasallik yaratish</DialogTitle>
+                        <DialogTitle>{itemId?"Kasallikni o'zgartirish":"Kasallik yaratish"}</DialogTitle>
                     </DialogHeader>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

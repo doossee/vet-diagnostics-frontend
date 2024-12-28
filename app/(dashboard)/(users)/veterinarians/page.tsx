@@ -3,22 +3,24 @@
 import { z } from "zod"
 import { GENDERS } from '~/constants'
 import { useForm } from "react-hook-form"
-import { useEffect, useState } from 'react'
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
+import { useAuthData } from "~/hooks/use-auth-data"
 import { DataTable } from '~/components/data-table'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { DatePicker } from '~/components/date-picker'
-import type { District, User, Veterinarian } from "~/lib/type"
+import { Card, CardContent } from "~/components/ui/card"
+import { useCallback, useEffect, useState } from 'react'
+import type { District, Gender, User, Veterinarian } from "~/lib/type"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
-import { districtsControllerFindAll, veterinariansControllerFindAll, veterinariansControllerCreate, veterinariansControllerRemove, usersControllerUpdate } from '~/lib/api'
+import { districtsControllerFindAll, regionsControllerFindAll, veterinariansControllerFindAll, veterinariansControllerCreate, veterinariansControllerRemove, usersControllerUpdate } from '~/lib/api'
 
 export default function Veterinarians() {
     const COLUMNS = [
-        { title: 'Ism Familiyasi', key: 'name', sorting: 'firstName', render(item: Veterinarian) {
+        { title: 'Ism Familiyasi', key: 'name', render(item: Veterinarian) {
             return `${item.user?.firstName} ${item.user?.lastName}`
         }  },
         { title: 'Telefoni', key: 'phone', render(item: Veterinarian) {
@@ -27,14 +29,14 @@ export default function Veterinarians() {
         { title: 'Manzili', key: 'address', render(item: Veterinarian) {
             return item.user?.address
         }  },
-        { title: 'Jinsi', key: 'gender', render(item: Veterinarian) {
+        { title: 'Jinsi', key: 'gender', sorting: 'byGender', render(item: Veterinarian) {
             return GENDERS.find(g => g.value === item.user?.gender)?.name
         } },
-        { title: 'Tug\'gilgan kuni', key: 'birthdate', render(item: Veterinarian) {
+        { title: 'Tug\'gilgan kuni', key: 'birthdate', sorting: 'byBirthDate', render(item: Veterinarian) {
             return new Date(item.user?.birthDate!).toDateString()
         }  },
         {
-            title: 'Tuman nomi', key: 'district', render(item: Veterinarian) {
+            title: 'Tuman nomi', key: 'district', sorting: 'byDistrictId', render(item: Veterinarian) {
                 return item.user?.district?.name
             }
         },
@@ -52,21 +54,29 @@ export default function Veterinarians() {
         },
     ]
 
+    const [filters, setFilters] = useState({
+        gender: null as Gender | null,
+        birthDate: null as null | Date,
+        regionId: null as null | number,
+        districtId: null as null | number,
+    })
     const [dialog, setDialog] = useState(false)
     const [loading, setLoading] = useState(true)
     const [totalItems, setTotalItems] = useState(0)
     const [items, setItems] = useState<Veterinarian[]>([])
-    const [itemId, setItemId] = useState<number | null>(null)
+    const [regions, setRegions] = useState<District[]>([])
+    const [itemId, setItemId] = useState<number|null>(null)
     const [districts, setDistricts] = useState<District[]>([])
-
+    const [regionId, setRegionId] = useState<number|null>(null)
+    
     const formSchema = z.object({
-        phone: z.string(),
-        gender: z.string(),
-        address: z.string(),
+        phone: z.string().regex(/a/, "Telefon to'g'ri formatda kiritilishi shart"),
+        gender: z.string().min(1, "Jins tanlanishi shart"),
+        address: z.string().optional(),
         birthDate: z.date(),
-        password: z.string(),
-        lastName: z.string(),
-        firstName: z.string(),
+        password: z.string().min(1, "Ism kiritilishi shart"),
+        lastName: z.string().min(1, "Ism kiritilishi shart"),
+        firstName: z.string().min(1, "Ism kiritilishi shart"),
         districtId: z.number(),
         middleName: z.string().optional(),
     })
@@ -86,14 +96,14 @@ export default function Veterinarians() {
         } as any,
     })
 
-    useEffect(() => {
-        handleGetDistricts()
-    }, [])
-
-    async function handleGetDistricts() {
+    async function handleGetDistrictsAndRegions() {
         try {
-            const { data }: any = await districtsControllerFindAll({page: 1, perPage: 1000})
-            setDistricts(data)
+            const [R, D]: any = await Promise.all([
+                regionsControllerFindAll({page: 1, perPage: 1000}),
+                districtsControllerFindAll({page: 1, perPage: 1000}),
+            ])
+            setRegions(R.data)
+            setDistricts(D.data)
         } catch (error) {
             console.log(error)
         }
@@ -119,8 +129,6 @@ export default function Veterinarians() {
             setLoading(true)
             const { data, meta } = await veterinariansControllerFindAll(params)
             setItems(data as any)
-            console.log(data);
-            
             setTotalItems(meta.total)
         } catch (error) {
             console.log(error)
@@ -142,6 +150,7 @@ export default function Veterinarians() {
     function handleEditItem(item: User) {
         setDialog(true)
         setItemId(item.id)
+        handleSetRegionId(item.districtId)
 
         form.setValue('phone', item.phone)
         form.setValue('lastName', item.lastName)
@@ -153,16 +162,71 @@ export default function Veterinarians() {
         form.setValue('birthDate', new Date(item.birthDate!))
     }
 
+    function handleSetRegionId(id: number) {
+        const d = districts.find(_ => _.id === id)
+        if(!d) return
+        setRegionId(d.regionId)
+    }
+
     function handleClose() {
         form.reset()
         setItemId(null)
         setDialog(false)
+        setRegionId(null)
     }
+    
+    useEffect(() => {
+        handleGetDistrictsAndRegions()
+    }, [])
+
+    const filteredDistricts = useCallback(() => {
+        if(regionId) return districts.filter(d => d.regionId === regionId)
+        else return []
+    }, [regionId])
 
     return (
         <div>
+            <Card className="rounded-md shadow-none mb-4">
+                <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 p-2">
+                    <Select value={filters.gender?filters.gender:""} onValueChange={e => setFilters({...filters, gender: e as any})}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Jinsi bo'yicha saralash" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value={null as any}>Barchasi</SelectItem>
+                            {
+                                GENDERS.map(g => <SelectItem key={g.value} value={g.value}>{g.name}</SelectItem>)
+                            }
+                        </SelectContent>
+                    </Select>
+                    <Select value={filters.regionId ? String(filters.regionId) : ""} onValueChange={e => setFilters({...filters, regionId: +e})}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Viloyat bo'yicha saralash" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value={null as any}>Barchasi</SelectItem>
+                            {
+                                regions.map(r => <SelectItem key={r.id} value={String(r.id)}>{r.name}</SelectItem>)
+                            }
+                        </SelectContent>
+                    </Select>
+                    <Select value={filters.districtId ? String(filters.districtId) : ""} onValueChange={e => setFilters({...filters, districtId: +e})}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Tuman bo'yicha saralash" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value={null as any}>Barchasi</SelectItem>
+                            {
+                                districts.filter(d => d.regionId === filters.regionId).map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                            }
+                        </SelectContent>
+                    </Select>
+                </CardContent>
+            </Card>
+
             <DataTable
                 loading={loading}
+                filters={filters}
                 columns={COLUMNS}
                 items={items as any}
                 totalItems={totalItems}
@@ -171,7 +235,7 @@ export default function Veterinarians() {
             />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
-                <DialogContent style={{ maxHeight: '95vh', maxWidth: 600, overflow: 'auto' }} aria-describedby={undefined}>
+                <DialogContent className="overflow-auto max-h-screen md:max-h-[95vh] max-w-[650px]" aria-describedby={undefined}>
                     <DialogHeader>
                         <DialogTitle>Veterinar Qo'shish</DialogTitle>
                     </DialogHeader>
@@ -288,20 +352,35 @@ export default function Veterinarians() {
                                     </FormItem>
                                 )}
                             />
+                            <div className="grid gap-2 pt-2">
+                                <FormLabel>Viloyat</FormLabel>
+                                <FormControl>
+                                    <Select value={String(regionId)} onValueChange={e => setRegionId(+e)}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Viloyat" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {
+                                                regions.map(r => <SelectItem key={r.id} value={String(r.id)}>{r.name}</SelectItem>)
+                                            }
+                                        </SelectContent>
+                                    </Select>
+                                </FormControl>
+                            </div>
                             <FormField
                                 name="districtId"
                                 control={form.control}
                                 render={({ field: { value, onChange, ...others } }) => (
                                     <FormItem>
-                                        <FormLabel>Tuman nomi</FormLabel>
+                                        <FormLabel>Tuman</FormLabel>
                                         <FormControl>
                                             <Select value={value ? String(value) : ""} onValueChange={e => onChange(+e)} {...others}>
                                                 <SelectTrigger>
-                                                    <SelectValue placeholder="Tuman nomi" />
+                                                    <SelectValue placeholder="Tuman" />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        districts.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                                        filteredDistricts().map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>

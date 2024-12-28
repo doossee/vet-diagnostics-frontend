@@ -1,8 +1,8 @@
 'use client'
 
 import { z } from "zod"
+import { useState } from 'react'
 import { useForm } from "react-hook-form"
-import { useEffect, useState } from 'react'
 import type { AnimalType } from "~/lib/type"
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
@@ -15,7 +15,7 @@ import { animalTypesControllerFindAll, animalTypesControllerCreate, animalTypesC
 
 export default function AnimalTypes() {
     const COLUMNS = [
-        { title: 'Tur nomi', key: 'name', sorting: 'name' },
+        { title: 'Tur nomi', key: 'name' },
         {
             title: 'Boshqarish', key: 'actions', render(item: AnimalType) {
                 return (<div className="flex gap-2 items-center">
@@ -37,7 +37,7 @@ export default function AnimalTypes() {
     const [itemId, setItemId] = useState<number | null>(null)
 
     const formSchema = z.object({
-        name: z.string()
+        name: z.string().min(1, "Tur nomi kiritilishi shart")
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -110,9 +110,9 @@ export default function AnimalTypes() {
             />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
-                <DialogContent style={{ maxHeight: '95vh', maxWidth: 500, overflow: 'auto' }} aria-describedby={undefined}>
+                <DialogContent className="bg-card overflow-auto max-h-screen md:max-h-[95vh] max-w-[500px]" aria-describedby={undefined}>
                     <DialogHeader>
-                        <DialogTitle>Hayvon turi yaratish</DialogTitle>
+                        <DialogTitle>{itemId? "Turni o'zgartirish" : 'Tur yaratish'}</DialogTitle>
                     </DialogHeader>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

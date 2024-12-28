@@ -55,12 +55,12 @@ export default function UrineTests() {
     const [itemId, setItemId] = useState<number | null>(null)
 
     const formSchema = z.object({
-        consistency: z.coerce.number(),
-        colorId: z.number().nullable(),
-        animalId: z.number().nullable(),
-        diseaseId: z.number().nullable(),
+        colorId: z.number(),
+        animalId: z.number(),
+        diseaseId: z.number(),
         clarity: z.enum(["CLEAR", "NOT_CLEAR"]),
         smell: z.enum(["PUNGENT", "WEAK", "HAS", "NO"]),
+        consistency: z.coerce.number().min(1, "Konsentratsiya 0 dan katta qiymat kiritilishi shart"),
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -72,12 +72,8 @@ export default function UrineTests() {
             consistency: 0,
             diseaseId: null,
             clarity: "CLEAR",
-        },
+        } as any,
     })
-
-    useEffect(() => {
-        handleGetAnimalsDiseasesColors()
-    }, [])
 
     async function handleGetAnimalsDiseasesColors() {
         try {
@@ -147,6 +143,10 @@ export default function UrineTests() {
         setItemId(null)
         setDialog(false)
     }
+    
+    useEffect(() => {
+        handleGetAnimalsDiseasesColors()
+    }, [])
 
     return (
         <div>
@@ -159,9 +159,9 @@ export default function UrineTests() {
                 topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Siydik tahlili yaratish</Button>} />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
-                <DialogContent style={{ maxHeight: '95vh', maxWidth: 500, overflow: 'auto' }} aria-describedby={undefined}>
+                <DialogContent className="overflow-auto max-h-screen md:max-h-[95vh] max-w-[500px]" aria-describedby={undefined}>
                     <DialogHeader>
-                        <DialogTitle>Siydik tahlili yaratish</DialogTitle>
+                        <DialogTitle>{itemId?"Siydik tahlilini o'zgartirish":"Siydik tahlili yaratish"}</DialogTitle>
                     </DialogHeader>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

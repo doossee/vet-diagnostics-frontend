@@ -1,7 +1,6 @@
 import { ReactNode } from "react"
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { NavDrawer } from '~/components/nav-drawer'
 import { ModeToggle } from "~/components/theme-toggler"
 import { SidebarProvider, SidebarTrigger } from "~/components/ui/sidebar"
 
@@ -15,7 +14,7 @@ export default async function Page({children}: {children: ReactNode}) {
     <div className="flex h-screen relative">
       <SidebarProvider>
         <AppSidebar />
-        <main className="flex-1 p-4 h-full overflow-y-auto pl-[calc(57px+1rem)] md:pl-4">
+        <main className="flex-1 p-4 h-full overflow-y-auto">
           <div className="mb-4 flex items-center gap-2 w-fit">
             <SidebarTrigger />
             <ModeToggle />

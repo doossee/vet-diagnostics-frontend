@@ -1,7 +1,5 @@
 'use client'
 
-import { DataTable } from '~/components/data-table'
-import { districtsControllerFindAll, districtsControllerCreate, districtsControllerUpdate, districtsControllerRemove, regionsControllerFindAll } from '~/lib/api'
 
 import { z } from "zod"
 import { useForm } from "react-hook-form"
@@ -9,11 +7,13 @@ import { useEffect, useState } from 'react'
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
 import type { District, Region } from "~/lib/type"
+import { DataTable } from '~/components/data-table'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
+import { districtsControllerFindAll, districtsControllerCreate, districtsControllerUpdate, districtsControllerRemove, regionsControllerFindAll } from '~/lib/api'
 
 export default function Districts() {
     const COLUMNS = [
@@ -21,7 +21,7 @@ export default function Districts() {
         { title: 'Viloyat', key: 'region', render(item: District) {
             return item.region?.name
         } },
-        { title: 'Boshqarish', key: 'actions', render(item: District) {
+        { title: 'Boshqarish', key: 'actions', hideTitleInMobile: true, render(item: District) {
             return (<div className="flex gap-2 items-center">
                 <Button onClick={() => handleEditItem(item)} size='sm'>
                     O'zgartirish
@@ -39,10 +39,13 @@ export default function Districts() {
     const [items, setItems] = useState<District[]>([])
     const [regions, setRegions] = useState<Region[]>([])
     const [itemId, setItemId] = useState<number|null>(null)
+    // const [filters, setFilters] = useState({
+    //     regionId: null as number | null,
+    // })
 
     const formSchema = z.object({
-        name: z.string().min(1),
-        regionId: z.number().nullable(),
+        name: z.string().min(1, "Tuman nomi kiritilishi shart"),
+        regionId: z.number().min(1, "Viloyat kiritilishi shart"),
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -50,7 +53,7 @@ export default function Districts() {
         defaultValues: {
           name: "",
           regionId: null
-        },
+        } as any,
     })
 
     useEffect(() => {
@@ -61,7 +64,6 @@ export default function Districts() {
         const {data}: any = await regionsControllerFindAll({page: 1, perPage: 100})
         setRegions(data)
     }
-
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         if(itemId) {
@@ -108,8 +110,24 @@ export default function Districts() {
 
     return (
         <div>
+            {/* <Card className="rounded-md shadow-none mb-4">
+                <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 p-2">
+                    <Select value={filters.regionId?String(filters.regionId):""} onValueChange={e => setFilters({...filters, regionId: +e})}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Viloyat bo'yicha saralash" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value={null as any}>Barchasi</SelectItem>
+                            {
+                                regions.map(r => <SelectItem key={r.id} value={String(r.id)}>{r.name}</SelectItem>)
+                            }
+                        </SelectContent>
+                    </Select>
+                </CardContent>
+            </Card> */}
+
             <DataTable
-                hideBottom
+                // filters={filters}
                 loading={loading}
                 columns={COLUMNS}
                 totalItems={total}
@@ -121,9 +139,9 @@ export default function Districts() {
             />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
-                <DialogContent style={{ maxHeight: '95vh', maxWidth: 500, overflow: 'auto'}} aria-describedby={undefined}>
+                <DialogContent className="bg-card overflow-auto max-h-screen md:max-h-[95vh] max-w-[500px]" aria-describedby={undefined}>
                     <DialogHeader>
-                        <DialogTitle>Tuman yaratish</DialogTitle>
+                        <DialogTitle>{itemId?"Tumanni o'zgartirish":"Tuman yaratish"}</DialogTitle>
                     </DialogHeader>
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

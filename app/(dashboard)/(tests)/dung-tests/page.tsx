@@ -69,14 +69,14 @@ export default function DungTests() {
     const [itemId, setItemId] = useState<number | null>(null)
 
     const formSchema = z.object({
-        worms: z.coerce.number(),
-        consistency: z.coerce.number(),
-        colorId: z.number().nullable(),
-        animalId: z.number().nullable(),
-        diseaseId: z.number().nullable(),
+        colorId: z.number(),
+        animalId: z.number(),
+        diseaseId: z.number(),
         clarity: z.enum(["CLEAR", "NOT_CLEAR"]),
         smell: z.enum(["PUNGENT", "WEAK", "HAS", "NO"]),
         form: z.enum(["NORMAL", "SOLID", "LIQUID", "MEDIUM"]),
+        worms: z.coerce.number().min(1, "Gijja 0 dan katta qiymat kiritilishi shart"),
+        consistency: z.coerce.number().min(1, "Konsentratsiya 0 dan katta qiymat kiritilishi shart"),
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -90,12 +90,8 @@ export default function DungTests() {
             form: "LIQUID",
             diseaseId: null,
             clarity: "CLEAR",
-        },
+        } as any,
     })
-
-    useEffect(() => {
-        handleGetAnimalsDiseasesColors()
-    }, [])
 
     async function handleGetAnimalsDiseasesColors() {
         try {
@@ -170,6 +166,10 @@ export default function DungTests() {
         setDialog(false)
     }
 
+    useEffect(() => {
+        handleGetAnimalsDiseasesColors()
+    }, [])
+
     return (
         <div>
             <DataTable
@@ -181,9 +181,9 @@ export default function DungTests() {
                 topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Tezak tahlili yaratish</Button>} />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
-                <DialogContent style={{ maxHeight: '95vh', maxWidth: 500, overflow: 'auto' }} aria-describedby={undefined}>
+                <DialogContent className="overflow-auto max-h-screen md:max-h-[95vh] max-w-[500px]" aria-describedby={undefined}>
                     <DialogHeader>
-                        <DialogTitle>Tezak tahlili yaratish</DialogTitle>
+                        <DialogTitle>{itemId?"Tezak tahlini o'zgartirish":"Tezak tahlili yaratish"}</DialogTitle>
                     </DialogHeader>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

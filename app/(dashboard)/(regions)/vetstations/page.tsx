@@ -2,22 +2,22 @@
 
 import { z } from "zod"
 import { useForm } from "react-hook-form"
-import { useEffect, useState } from 'react'
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
 import { DataTable } from '~/components/data-table'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
-import type { District, VetStation } from "~/lib/type"
+import { useCallback, useEffect, useState } from 'react'
+import type { District, VetStation, Region } from "~/lib/type"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
-import { vetStationsControllerFindAll, vetStationsControllerCreate, vetStationsControllerUpdate, vetStationsControllerRemove, districtsControllerFindAll } from '~/lib/api'
+import { regionsControllerFindAll, vetStationsControllerFindAll, vetStationsControllerCreate, vetStationsControllerUpdate, vetStationsControllerRemove, districtsControllerFindAll } from '~/lib/api'
 
 export default function VetStations() {
     const COLUMNS = [
-        { title: 'Stansiya nomi', key: 'name', sorting: 'name' },
-        { title: 'Stansiya manzili', key: 'address', sorting: 'address' },
+        { title: 'Stansiya nomi', key: 'name' },
+        { title: 'Stansiya manzili', key: 'address' },
         { title: 'Tuman nomi', key: 'district', render(item: VetStation) {
             return item.district?.name
         } },
@@ -37,13 +37,15 @@ export default function VetStations() {
     const [loading, setLoading] = useState(true)
     const [totalItems, setTotalItems] = useState(0)
     const [items, setItems] = useState<VetStation[]>([])
+    const [regions, setRegions] = useState<Region[]>([])
     const [itemId, setItemId] = useState<number|null>(null)
     const [districts, setDistricts] = useState<District[]>([])
+    const [regionId, setRegionId] = useState<number|null>(null)
 
     const formSchema = z.object({
-        name: z.string(),
-        address: z.string(),
-        districtId: z.number().nullable()
+        name: z.string().min(1, "Vet stansiya nomi kiritilishi shart"),
+        address: z.string().min(1, "Vet stansiya manzili kiritilishi shart"),
+        districtId: z.number().min(1, "Stansiya joylashgan tuman kiritilishi shart")
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -52,21 +54,22 @@ export default function VetStations() {
           name: "",
           address: "",
           districtId: null
-        },
+        } as any,
     })
 
-    useEffect(() => {
-        handleGetDistricts()
-    }, [])
-
-    async function handleGetDistricts() {
-        try {
-            const { data }: any = await districtsControllerFindAll({page: 1, perPage: 1000})
-            setDistricts(data)
-        } catch (error) {
-            console.log(error)
+    async function handleGetDistrictsAndRegions() {
+            try {
+                const [R, D]: any = await Promise.all([
+                    regionsControllerFindAll({page: 1, perPage: 1000}),
+                    districtsControllerFindAll({page: 1, perPage: 1000}),
+                ])
+                setRegions(R.data)
+                setDistricts(D.data)
+            } catch (error) {
+                console.log(error)
+            }
         }
-    }
+    
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         if(itemId) {
@@ -109,6 +112,7 @@ export default function VetStations() {
     function handleEditItem(item: VetStation) {
         setDialog(true)
         setItemId(item.id)
+        handleSetRegionId(item.districtId)
 
         form.setValue('name', item.name)
         form.setValue('address', item.address)
@@ -119,7 +123,23 @@ export default function VetStations() {
         form.reset()
         setItemId(null)
         setDialog(false)
+        setRegionId(null)
     }
+
+    function handleSetRegionId(id: number) {
+        const d = districts.find(_ => _.id === id)
+        if(!d) return
+        setRegionId(d.regionId)
+    }
+
+    useEffect(() => {
+        handleGetDistrictsAndRegions()
+    }, [])
+
+    const filteredDistricts = useCallback(() => {
+        if(regionId) return districts.filter(d => d.regionId === regionId)
+        else return []
+    }, [regionId])
 
     return (
         <div>
@@ -135,9 +155,9 @@ export default function VetStations() {
             />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
-                <DialogContent style={{ maxHeight: '95vh', maxWidth: 500, overflow: 'auto'}} aria-describedby={undefined}>
+                <DialogContent className="bg-card overflow-auto max-h-screen md:max-h-[95vh] max-w-[500px]" aria-describedby={undefined}>
                     <DialogHeader>
-                        <DialogTitle>Vet Stansiya yaratish</DialogTitle>
+                        <DialogTitle>{itemId?"Vet Stansiyani o'zgartirish":"Vet Stansiya yaratish"}</DialogTitle>
                     </DialogHeader>
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -167,6 +187,22 @@ export default function VetStations() {
                                         </FormItem>
                                     )}
                                 />
+                                
+                            <div className="grid gap-2 pt-2">
+                                <FormLabel>Viloyat</FormLabel>
+                                <FormControl>
+                                    <Select value={regionId?String(regionId):""} onValueChange={e => setRegionId(+e)}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Viloyat" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {
+                                                regions.map(r => <SelectItem key={r.id} value={String(r.id)}>{r.name}</SelectItem>)
+                                            }
+                                        </SelectContent>
+                                    </Select>
+                                </FormControl>
+                            </div>
                                 <FormField
                                     name="districtId"
                                     control={form.control}
@@ -180,7 +216,7 @@ export default function VetStations() {
                                                     </SelectTrigger>
                                                     <SelectContent>
                                                         {
-                                                            districts.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                                            filteredDistricts().map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
                                                         }
                                                     </SelectContent>
                                                 </Select>

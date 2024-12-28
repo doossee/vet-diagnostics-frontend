@@ -14,7 +14,7 @@ export function useRegions() {
         { title: 'Tumanlar soni', key: 'districs', render(item: Region) {
             return item.districts?.length || 0
         } },
-        { title: 'Boshqarish', key: 'actions', render(item: Region) {
+        { title: 'Boshqarish', key: 'actions', hideTitleInMobile: true, render(item: Region) {
             return (<div className="flex gap-2 items-center">
                 <Button onClick={() => handleEditItem(item)} size='sm'>
                     O'zgartirish
@@ -33,7 +33,7 @@ export function useRegions() {
     const [itemId, setItemId] = useState<number|null>(null)
 
     const formSchema = z.object({
-        name: z.string().min(1),
+        name: z.string().min(1, "Viloyat nomi kiritishi shart"),
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -61,7 +61,6 @@ export function useRegions() {
         try {
             setLoading(true)
             const items = await regionsControllerFindAll(params)
-            // console.log(items)
             setTotal(items.meta.total)
             setRegions(items.data as any)
         } catch (error) {
@@ -92,6 +91,7 @@ export function useRegions() {
     return {
         form,
         total,
+        itemId,
         dialog,
         loading,
         regions,

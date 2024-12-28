@@ -1,9 +1,9 @@
 'use client'
 
 import { z } from "zod"
+import { useState } from 'react'
 import type { Color } from "~/lib/type"
 import { useForm } from "react-hook-form"
-import { useEffect, useState } from 'react'
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
 import { DataTable } from '~/components/data-table'
@@ -15,7 +15,7 @@ import { colorsControllerFindAll, colorsControllerCreate, colorsControllerRemove
 
 export default function AnimalColors() {
     const COLUMNS = [
-        { title: 'Rang nomi', key: 'name', sorting: 'name' },
+        { title: 'Rang nomi', key: 'name'},
         { title: 'Rang piktogrammasi', key: 'hex' },
         {
             title: 'Boshqarish', key: 'actions', render(item: Color) {
@@ -38,14 +38,14 @@ export default function AnimalColors() {
     const [itemId, setItemId] = useState<number | null>(null)
 
     const formSchema = z.object({
-        name: z.string(),
+        name: z.string().min(1, "Rang nomi kiritilishi shart"),
         hex: z.string().optional()
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            hex: "",
+            hex: "#000000",
             name: "",
         },
     })
@@ -110,13 +110,13 @@ export default function AnimalColors() {
                 items={items as any}
                 totalItems={totalItems}
                 callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Hayvon turi yaratish</Button>}
+                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Rang yaratish</Button>}
             />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
-                <DialogContent style={{ maxHeight: '95vh', maxWidth: 500, overflow: 'auto' }} aria-describedby={undefined}>
+                <DialogContent className="bg-card overflow-auto max-h-screen md:max-h-[95vh] max-w-[500px]" aria-describedby={undefined}>
                     <DialogHeader>
-                        <DialogTitle>Rang yaratish</DialogTitle>
+                        <DialogTitle>{itemId? "Rangni o'zgartirish" : 'Rang yaratish'}</DialogTitle>
                     </DialogHeader>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

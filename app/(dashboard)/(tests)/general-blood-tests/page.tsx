@@ -19,6 +19,14 @@ import { generalBloodTestControllerCreate, generalBloodTestControllerFindAll, ge
 
 type GENERAL_BLOOD = keyof typeof GENERAL_BLOOD_TESTS
 
+const defaultValues: any = {}
+const formSchemaValues: any = {}
+
+Object.keys(GENERAL_BLOOD_TESTS).map(key => {
+    defaultValues[key] = 0
+    formSchemaValues[key] = z.coerce.number().min(1, GENERAL_BLOOD_TESTS[key as GENERAL_BLOOD] + " 0 dan katta qiymant kiritilishi shart")
+})
+
 export default function GeneralBloodTests() {
     const COLUMNS = [
         { title: 'Sanasi', key: 'date', render(item: GeneralBloodTest) {
@@ -56,39 +64,21 @@ export default function GeneralBloodTests() {
     const [items, setItems] = useState<GeneralBloodTest[]>([])
 
     const formSchema = z.object({
-        coe: z.coerce.number(),
+        date: z.date(),
+        animalId: z.number(),
         conclusion: z.string(),
-        date: z.date().nullable(),
-        hemoglobin: z.coerce.number(),
-        glutathione: z.coerce.number(),
-        animalId: z.number().nullable(),
-        leukocyteCount: z.coerce.number(),
-        waterPercentage: z.coerce.number(),
-        erythrocyteCount: z.coerce.number(),
-        thrombocyteCount: z.coerce.number(),
-        dryResiduePercentage: z.coerce.number(),
+        ...formSchemaValues,
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            coe: 0,
             date: null,
-            hemoglobin: 0,
-            glutathione: 0,
             animalId: null,
             conclusion: "",
-            leukocyteCount: 0,
-            waterPercentage: 0,
-            erythrocyteCount: 0,
-            thrombocyteCount: 0,
-            dryResiduePercentage: 0,
+            ...defaultValues,
         },
     })
-
-    useEffect(() => {
-        handleGetAnimals()
-    }, [])
 
     async function handleGetAnimals() {
         try {
@@ -155,6 +145,10 @@ export default function GeneralBloodTests() {
         setDialog(false)
     }
 
+    useEffect(() => {
+        handleGetAnimals()
+    }, [])
+
     return (
         <div>
             <DataTable
@@ -163,12 +157,12 @@ export default function GeneralBloodTests() {
                 items={items as any}
                 totalItems={totalItems}
                 callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Tahlil yaratish</Button>} />
+                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Qon tahlili yaratish</Button>} />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
-                <DialogContent style={{ maxHeight: '95vh', maxWidth: 500, overflow: 'auto' }} aria-describedby={undefined}>
+                <DialogContent className="overflow-auto max-h-screen md:max-h-[95vh] max-w-[600px]" aria-describedby={undefined}>
                     <DialogHeader>
-                        <DialogTitle>Tahlil yaratish</DialogTitle>
+                        <DialogTitle>{itemId?"Tahlilni o'zgartirish":"Tahlil yaratish"}</DialogTitle>
                     </DialogHeader>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 sm:grid-cols-2 gap-2">

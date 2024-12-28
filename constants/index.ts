@@ -415,6 +415,17 @@ export const navLinksVariant: Record<
       ],
     },
     {
+      title: "Hayvonlar",
+      icon: PawPrint,
+      items: [
+        {
+          title: "Hayvonlar",
+          icon: PawPrint,
+          url: "/animals",
+        },
+      ],
+    },
+    {
       title: "Tekshiruvlar",
       icon: HeartPulse,
       items: [

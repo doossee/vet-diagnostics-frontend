@@ -13,16 +13,17 @@ import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
 import { animalsControllerFindAll, vaccineTypesControllerFindAll, vaccinesControllerCreate, vaccinesControllerFindAll, vaccinesControllerRemove, vaccinesControllerUpdate } from '~/lib/api'
+import { Card, CardContent } from "~/components/ui/card"
 
 export default function Vaccines() {
     const COLUMNS = [
-        { title: 'Vaksina turi', key: 'type', render(item: Vaccine) {
+        { title: 'Vaksina turi', key: 'type', sorting: 'byTypeId', render(item: Vaccine) {
             return item?.type?.name
         }  },
-        { title: 'Hayvon', key: 'animal', render(item: Vaccine) {
+        { title: 'Hayvon', key: 'animal', sorting: 'byAnimalId', render(item: Vaccine) {
             return item?.animal?.name
         } },
-        { title: 'Vaqti', key: 'date', sorting: 'date', render(item: Vaccine) {
+        { title: 'Vaqti', key: 'date', sorting: 'byDate', render(item: Vaccine) {
             return new Date(item.date).toLocaleDateString()
         } },
         {
@@ -46,11 +47,16 @@ export default function Vaccines() {
     const [animals, setAnimals] = useState<Animal[]>([])
     const [types, setTypes] = useState<VaccineType[]>([])
     const [itemId, setItemId] = useState<number | null>(null)
+    const [filters, setFilters] = useState({
+        date: null as Date | null,
+        typeId: null as number | null,
+        animalId: null as number | null,
+    })
 
     const formSchema = z.object({
-        date: z.date().nullable(),
-        typeId: z.number().nullable(),
-        animalId: z.number().nullable(),
+        date: z.date(),
+        typeId: z.number(),
+        animalId: z.number(),
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -59,12 +65,8 @@ export default function Vaccines() {
             date: null,
             typeId: null,
             animalId: null,
-        },
+        } as any,
     })
-
-    useEffect(() => {
-        handleGetVaccineTypesAndAnimals()
-    }, [])
 
     async function handleGetVaccineTypesAndAnimals() {
         try {
@@ -133,9 +135,42 @@ export default function Vaccines() {
         setDialog(false)
     }
 
+    useEffect(() => {
+        handleGetVaccineTypesAndAnimals()
+    }, [])
+
     return (
         <div>
+            <Card className="rounded-md shadow-none mb-4">
+                <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 p-2">
+                    <Select value={filters.typeId?String(filters.typeId):""} onValueChange={e => setFilters({...filters, typeId: +e})}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Tur bo'yicha saralash" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value={null as any}>Barchasi</SelectItem>
+                            {
+                                types.map(t => <SelectItem key={t.id} value={String(t.id)}>{t.name}</SelectItem>)
+                            }
+                        </SelectContent>
+                    </Select>
+                    <Select value={filters.animalId?String(filters.animalId):""} onValueChange={e => setFilters({...filters, animalId: +e})}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Hayvon bo'yicha saralash" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value={null as any}>Barchasi</SelectItem>
+                            {
+                                animals.map(a => <SelectItem key={a.id} value={String(a.id)}>{a.name}</SelectItem>)
+                            }
+                        </SelectContent>
+                    </Select>
+                    <DatePicker field={{value: filters.date, onChange(date: any) {setFilters({...filters, date })}}} />
+                </CardContent>
+            </Card>
+
             <DataTable
+                filters={filters}
                 loading={loading}
                 columns={COLUMNS}
                 items={items as any}
@@ -145,13 +180,13 @@ export default function Vaccines() {
             />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
-                <DialogContent style={{ maxHeight: '95vh', maxWidth: 500, overflow: 'auto' }} aria-describedby={undefined}>
+                <DialogContent className="overflow-auto max-h-screen md:max-h-[95vh] max-w-[500px]" aria-describedby={undefined}>
                     <DialogHeader>
-                        <DialogTitle>Vaksina yaratish</DialogTitle>
+                        <DialogTitle>{itemId?"Vaksinani o'zgartirish":"Vaksina yaratish"}</DialogTitle>
                     </DialogHeader>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                        <FormField
+                            <FormField
                                 name="date"
                                 control={form.control}
                                 render={({ field }) => (

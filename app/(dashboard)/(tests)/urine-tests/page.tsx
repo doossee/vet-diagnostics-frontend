@@ -234,7 +234,7 @@ export default function UrineTests() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        diseases.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.conclusion}</SelectItem>)
+                                                        diseases.map(d => <SelectItem key={d.id} value={String(d.id)}>{new Date(d.startTime).toLocaleDateString()}-{new Date(d.endTime).toLocaleDateString()}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>

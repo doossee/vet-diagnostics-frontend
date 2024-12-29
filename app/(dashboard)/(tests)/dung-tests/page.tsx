@@ -290,7 +290,7 @@ export default function DungTests() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        diseases.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.id}</SelectItem>)
+                                                        diseases.map(d => <SelectItem key={d.id} value={String(d.id)}>{new Date(d.startTime).toLocaleDateString()}-{new Date(d.endTime).toLocaleDateString()}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>

@@ -8,6 +8,7 @@ import { Button } from '~/components/ui/button'
 import { useAuthData } from "~/hooks/use-auth-data"
 import { DataTable } from '~/components/data-table'
 import { DialogTitle } from '@radix-ui/react-dialog'
+import { Separator } from "~/components/ui/separator"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { DatePicker } from '~/components/date-picker'
 import { useCallback, useEffect, useState } from 'react'
@@ -76,17 +77,23 @@ export default function Veterinarians() {
     const [veterinarians, setVeterinarians] = useState<Veterinarian[]>([])
 
     const formSchema = z.object({
-        phone: z.string().regex(/\+998\d{9}/, "Telefon to'g'ri formatda kiritilishi shart"),
+        phone: z.string().min(8, "Telefon to'g'ri formatda kiritilishi shart"),
         gender: z.string().min(1, "Jins tanlanishi shart"),
         address: z.string().optional(),
         birthDate: z.date(),
-        password: z.string().min(1, "Ism kiritilishi shart"),
-        lastName: z.string().min(1, "Ism kiritilishi shart"),
+        password: z.string().min(8, "Parol 8 ta belgidan kichik bo'lmasligi kerak"),
+        lastName: z.string().min(1, "Familiya kiritilishi shart"),
         firstName: z.string().min(1, "Ism kiritilishi shart"),
         districtId: z.number(),
         middleName: z.string().optional(),
-        veterinarianId: z.number().nullable()
+        veterinarianId: z.number().nullable(),
+        confirmPassword: z.string(),
     })
+    .refine((data) => data.password === data.confirmPassword, {
+        message: "Parollar bir xil bo'lishi kerak",
+        path: ["confirmPassword"],
+    })
+    .transform(({ confirmPassword, ...rest }) => rest);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -308,19 +315,6 @@ export default function Veterinarians() {
                                 )}
                             />
                             <FormField
-                                name="password"
-                                control={form.control}
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Parol</FormLabel>
-                                        <FormControl>
-                                            <Input placeholder="Parol" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
                                 name="gender"
                                 control={form.control}
                                 render={({ field }) => (
@@ -414,6 +408,32 @@ export default function Veterinarians() {
                                     </FormItem>
                                 )}
                             />}
+
+                            <Separator className="col-span-1 md:col-span-2" />
+                            <FormField
+                                name="password"
+                                control={form.control}
+                                render={({ field }) => (
+                                    <FormItem className="flex flex-col gap-1 pt-1.5">
+                                        <FormLabel>Parol</FormLabel>
+                                        <FormControl>
+                                            <Input type="password" placeholder="Parol yarating" {...field} />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                name={"confirmPassword" as any}
+                                control={form.control}
+                                render={({ field }) => (
+                                    <FormItem className="flex flex-col gap-1 pt-1.5">
+                                        <FormLabel>Parolni takrorlang</FormLabel>
+                                        <FormControl>
+                                            <Input type="password" placeholder="Parolni takrorlang" {...field} />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
                             <Button type="submit" className="col-span-1 md:col-span-2">Saqlash</Button>
                         </form>
                     </Form>

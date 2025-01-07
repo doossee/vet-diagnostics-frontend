@@ -5,13 +5,13 @@ import { useForm } from "react-hook-form"
 import { useEffect, useState } from 'react'
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
-import { GENERAL_BLOOD_TESTS } from '~/constants'
 import { DataTable } from '~/components/data-table'
 import { Textarea } from "~/components/ui/textarea"
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { DatePicker } from "~/components/date-picker"
 import type { Animal, GeneralBloodTest } from "~/lib/type"
+import { GENERAL_BLOOD_TESTS, ALERT_MESSAGES } from '~/constants'
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
@@ -62,6 +62,7 @@ export default function GeneralBloodTests() {
     const [animals, setAnimals] = useState<Animal[]>([])
     const [itemId, setItemId] = useState<number | null>(null)
     const [items, setItems] = useState<GeneralBloodTest[]>([])
+    const [createLoading, setCreateLoading] = useState(false)
 
     const formSchema = z.object({
         date: z.date(),
@@ -90,18 +91,26 @@ export default function GeneralBloodTests() {
     }
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        if (itemId) {
-            const data: any = await generalBloodTestControllerUpdate(itemId, values as any)
-            setItems(p => p.map(i => {
-                if(i.id === itemId) return data
-                return i
-            }))
-        } else {
-            const data: any = await generalBloodTestControllerCreate(values as any)
-            setItems(p => [...p, data])
+        try {
+            setCreateLoading(true)
+            
+            if (itemId) {
+                const data: any = await generalBloodTestControllerUpdate(itemId, values as any)
+                setItems(p => p.map(i => {
+                    if(i.id === itemId) return data
+                    return i
+                }))
+            } else {
+                const data: any = await generalBloodTestControllerCreate(values as any)
+                setItems(p => [...p, data])
+            }
+    
+            handleClose()
+        } catch (error) {
+            console.log(error)            
+        } finally {
+            setCreateLoading(false)
         }
-
-        handleClose()
     }
 
     async function handleGetItems(params: any) {
@@ -119,7 +128,7 @@ export default function GeneralBloodTests() {
 
     async function handleDelete(id: number) {
         try {
-            if(!confirm('Delete?')) return
+            if(!confirm(ALERT_MESSAGES.DELETE_CONFIRM)) return
             await generalBloodTestControllerRemove(id)
             setItems(p => p.filter(i => i.id !== id))
         } catch (error) {
@@ -131,8 +140,8 @@ export default function GeneralBloodTests() {
         setDialog(true)
         setItemId(item.id)
 
-        form.setValue('date', item.date)
         form.setValue('animalId', item.animalId)
+        form.setValue('date', new Date(item.date))
         form.setValue('conclusion', item.conclusion!)
         Object.keys(GENERAL_BLOOD_TESTS).map(key => {
             form.setValue(key as GENERAL_BLOOD, item[key as GENERAL_BLOOD]||0)
@@ -234,7 +243,7 @@ export default function GeneralBloodTests() {
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit" className="col-span-1 sm:col-span-2">Saqlash</Button>
+                            <Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
                         </form>
                     </Form>
                 </DialogContent>

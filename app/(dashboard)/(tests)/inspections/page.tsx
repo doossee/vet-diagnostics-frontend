@@ -2,13 +2,15 @@
 
 import { z } from "zod"
 import { useForm } from "react-hook-form"
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
 import { DataTable } from '~/components/data-table'
+import { Textarea } from "~/components/ui/textarea"
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { Inspection, Disease, Animal } from "~/lib/type"
+import { ALERT_MESSAGES, INSPECTION_TYPES } from "~/constants"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
@@ -20,11 +22,12 @@ export default function Inspections() {
         { title: 'Ruminatsiya', key: 'rumination' },
         { title: 'Harorati', key: 'temperature' },
         { title: 'Nafas olish tezligi', key: 'respiratoryRate' },
-        {
-            title: 'Kasallik', key: 'disease', render(item: Inspection) {
-                return item.disease?.id
-            }
-        },
+        { title: 'Kasallik', key: 'disease', render(item: Inspection) {
+            return item.disease?.id
+        } },
+        { title: 'Tekshiruv turi', key: 'type', render(item: Inspection) {
+            return INSPECTION_TYPES[item.type]
+        } },
         {
             title: 'Boshqarish', key: 'actions', render(item: Inspection) {
                 return (<div className="flex gap-2 items-center">
@@ -46,14 +49,16 @@ export default function Inspections() {
     const [animals, setAnimals] = useState<Animal[]>([])
     const [diseases, setDiseases] = useState<Disease[]>([])
     const [itemId, setItemId] = useState<number | null>(null)
+    const [createLoading, setCreateLoading] = useState(false)
 
     const formSchema = z.object({
         animalId: z.number(),
-        diseaseId: z.number(),
-        generalInspectionId: z.number(),
+        diseaseId: z.number().optional(),
+        conclusion: z.string().optional(),
+        type: z.enum(["DISEASE", "EVENING", "MORNING", "GENERAL"]), 
         pulse: z.coerce.number().min(1, "Puls 0 dan katta qiymat kiritilshi shart"),
-        rumination: z.coerce.number().min(1, "Ruminatsiya 0 dan katta qiymat kiritilshi shart"),
         temperature: z.coerce.number().min(1, "Harorat 0 dan katta qiymat kiritilshi shart"),
+        rumination: z.coerce.number().min(1, "Ruminatsiya 0 dan katta qiymat kiritilshi shart"),
         respiratoryRate: z.coerce.number().min(1, "Nafas olish tezligi 0 dan katta qiymat kiritilshi shart"),
     })
 
@@ -64,9 +69,9 @@ export default function Inspections() {
             rumination: 0,
             temperature: 0,
             animalId: null,
+            type: "MORNING",
             diseaseId: null,
             respiratoryRate: 0,
-            generalInspectionId: null,
         } as any,
     })
 
@@ -84,18 +89,26 @@ export default function Inspections() {
     }
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        if (itemId) {
-            const data: any = await inspectionsControllerUpdate(itemId, values as any)
-            setItems(p => p.map(i => {
-                if(i.id === itemId) return data
-                return i
-            }))
-        } else {
-            const data: any = await inspectionsControllerCreate(values as any)
-            setItems(p => [...p, data])
-        }
+        try {
+            setCreateLoading(true)
 
-        handleClose()
+            if (itemId) {
+                const data: any = await inspectionsControllerUpdate(itemId, values as any)
+                setItems(p => p.map(i => {
+                    if(i.id === itemId) return data
+                    return i
+                }))
+            } else {
+                const data: any = await inspectionsControllerCreate(values as any)
+                setItems(p => [...p, data])
+            }
+    
+            handleClose()
+        } catch (error) {
+            console.log(error)            
+        } finally {
+            setCreateLoading(false)
+        }
     }
 
     async function handleGetItems(params: any) {
@@ -114,7 +127,7 @@ export default function Inspections() {
 
     async function handleDelete(id: number) {
         try {
-            if(!confirm('Delete?')) return
+            if(!confirm(ALERT_MESSAGES.DELETE_CONFIRM)) return
             await inspectionsControllerRemove(id)
             setItems(p => p.filter(i => i.id !== id))
         } catch (error) {
@@ -129,10 +142,10 @@ export default function Inspections() {
         form.setValue('pulse', item.pulse!)
         form.setValue('animalId', item.animalId!)
         form.setValue('diseaseId', item.diseaseId!)
+        form.setValue('conclusion', item.conclusion!)
         form.setValue('rumination', item.rumination!)
         form.setValue('temperature', item.temperature!)
         form.setValue('respiratoryRate', item.respiratoryRate!)
-        form.setValue('generalInspectionId', item.generalInspectionId!)
     }
 
     function handleClose() {
@@ -144,6 +157,8 @@ export default function Inspections() {
     useEffect(() => {
         handleGetAnimalsAndDiseases()
     }, [])
+
+    const showDiaises = form.watch('type') === "DISEASE";
 
     return (
         <div>
@@ -211,6 +226,28 @@ export default function Inspections() {
                                 )}
                             />
                             <FormField
+                                name="type"
+                                control={form.control}
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Tekshiruv turi</FormLabel>
+                                        <FormControl>
+                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Tekshiruv turi" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {
+                                                        Object.keys(INSPECTION_TYPES).map(k => <SelectItem key={k} value={k}>{INSPECTION_TYPES[k as keyof typeof INSPECTION_TYPES]}</SelectItem>)
+                                                    }
+                                                </SelectContent>
+                                            </Select>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            {showDiaises && <FormField
                                 name="diseaseId"
                                 control={form.control}
                                 render={({ field: { value, onChange, ...others } }) => (
@@ -231,7 +268,7 @@ export default function Inspections() {
                                         <FormMessage />
                                     </FormItem>
                                 )}
-                            />
+                            />}
                             <FormField
                                 name="animalId"
                                 control={form.control}
@@ -245,7 +282,7 @@ export default function Inspections() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        animals.map(a => <SelectItem key={a.id} value={String(a.id)}>{a.id}</SelectItem>)
+                                                        animals.map(a => <SelectItem key={a.id} value={String(a.id)}>{a.name}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>
@@ -254,31 +291,21 @@ export default function Inspections() {
                                     </FormItem>
                                 )}
                             />
-
-                            {/* <FormField
-                                name="generalInspectionId"
+                            <FormField
+                                name="conclusion"
                                 control={form.control}
-                                render={({ field: { value, onChange, ...others } }) => (
+                                render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Hayvon</FormLabel>
+                                        <FormLabel>Xulosa</FormLabel>
                                         <FormControl>
-                                            <Select value={value ? String(value) : ""} onValueChange={e => onChange(+e)} {...others}>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Hayvon" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    {
-                                                        animals.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
-                                                    }
-                                                </SelectContent>
-                                            </Select>
+                                            <Textarea rows={6} className="resize-none" placeholder="Xulosa" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
                                 )}
-                            /> */}
+                            />
 
-                            <Button type="submit" className="w-full">Saqlash</Button>
+<Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
                         </form>
                     </Form>
                 </DialogContent>

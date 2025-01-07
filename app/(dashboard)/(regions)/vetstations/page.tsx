@@ -2,6 +2,7 @@
 
 import { z } from "zod"
 import { useForm } from "react-hook-form"
+import { ALERT_MESSAGES } from "~/constants"
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
 import { DataTable } from '~/components/data-table'
@@ -41,6 +42,7 @@ export default function VetStations() {
     const [itemId, setItemId] = useState<number|null>(null)
     const [districts, setDistricts] = useState<District[]>([])
     const [regionId, setRegionId] = useState<number|null>(null)
+    const [createLoading, setCreateLoading] = useState(false)
 
     const formSchema = z.object({
         name: z.string().min(1, "Vet stansiya nomi kiritilishi shart"),
@@ -58,32 +60,40 @@ export default function VetStations() {
     })
 
     async function handleGetDistrictsAndRegions() {
-            try {
-                const [R, D]: any = await Promise.all([
-                    regionsControllerFindAll({page: 1, perPage: 1000}),
-                    districtsControllerFindAll({page: 1, perPage: 1000}),
-                ])
-                setRegions(R.data)
-                setDistricts(D.data)
-            } catch (error) {
-                console.log(error)
-            }
+        try {
+            const [R, D]: any = await Promise.all([
+                regionsControllerFindAll({page: 1, perPage: 1000}),
+                districtsControllerFindAll({page: 1, perPage: 1000}),
+            ])
+            setRegions(R.data)
+            setDistricts(D.data)
+        } catch (error) {
+            console.log(error)
         }
+    }
     
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        if(itemId) {
-            const data: any = await vetStationsControllerUpdate(itemId, values as any)
-            setItems(p => p.map(i => {
-                if(i.id === itemId) return data
-                return i
-            }))
-        } else {
-            const data: any = await vetStationsControllerCreate(values as any)
-            setItems(p => [...p, data])
-        }
+        try {
+            setCreateLoading(true)
 
-        handleClose()
+            if(itemId) {
+                const data: any = await vetStationsControllerUpdate(itemId, values as any)
+                setItems(p => p.map(i => {
+                    if(i.id === itemId) return data
+                    return i
+                }))
+            } else {
+                const data: any = await vetStationsControllerCreate(values as any)
+                setItems(p => [...p, data])
+            }
+    
+            handleClose()
+        } catch (error) {
+            console.log(error)            
+        } finally {
+            setCreateLoading(false)
+        }
     }
 
     async function handleGetItems(params: any) {
@@ -101,7 +111,7 @@ export default function VetStations() {
 
     async function handleDelete(id: number) {
         try {
-            if(!confirm('Delete?')) return
+            if(!confirm(ALERT_MESSAGES.DELETE_CONFIRM)) return
             await vetStationsControllerRemove(id)
             setItems(p => p.filter(i => i.id !== id))
         } catch (error) {
@@ -225,7 +235,7 @@ export default function VetStations() {
                                         </FormItem>
                                     )}
                                 />
-                                <Button type="submit" className="w-full">Saqlash</Button>
+                                <Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
                             </form>
                         </Form>
                 </DialogContent>

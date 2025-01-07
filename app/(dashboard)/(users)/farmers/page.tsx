@@ -3,6 +3,7 @@
 import { z } from "zod"
 import { GENDERS } from '~/constants'
 import { useForm } from "react-hook-form"
+import { ALERT_MESSAGES } from "~/constants"
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
 import { useAuthData } from "~/hooks/use-auth-data"
@@ -20,23 +21,19 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~
 import { veterinariansControllerFindAll, regionsControllerFindAll, farmersControllerCreate, districtsControllerFindAll, farmersControllerFindAll, farmersControllerRemove, farmersControllerUpdate, usersControllerUpdate } from '~/lib/api'
 
 export default function Veterinarians() {
-    const COLUMNS = [
-        {
-            title: 'Ism Familiyasi', key: 'name', sorting: 'firstName', render(item: Farmer) {
-                return `${item.user?.firstName} ${item.user?.lastName}`
-            }
-        },
+    const COLUMNS: any = [
+        { title: 'Ism Familiyasi', key: 'name', sorting: 'firstName', render(item: Farmer) {
+            return `${item.user?.firstName} ${item.user?.lastName}`
+        } },
         { title: 'Telefoni', key: 'phone', render(item: Farmer) {
             return item.user?.phone
         } },
         { title: 'Manzili', key: 'address', render(item: Farmer) {
             return item.user?.address
         } },
-        {
-            title: 'Jinsi', key: 'gender', render(item: Farmer) {
-                return GENDERS.find(g => g.value === item.user?.gender)?.name
-            }
-        },
+        { title: 'Jinsi', key: 'gender', render(item: Farmer) {
+            return GENDERS.find(g => g.value === item.user?.gender)?.name
+        } },
         { title: 'Tug\'gilgan kuni', key: 'birthdate', render(item: Farmer) {
             return new Date(item.user?.birthDate!).toLocaleDateString()
         } },
@@ -48,10 +45,10 @@ export default function Veterinarians() {
         {
             title: 'Boshqarish', key: 'actions', render(item: Farmer) {
                 return (<div className="flex gap-2 items-center">
-                    <Button onClick={() => handleEditItem(item.user)} size='sm'>
+                    <Button onClick={() => handleEditItem(item)} size='sm'>
                         O'zgartirish
                     </Button>
-                    <Button onClick={() => handleDelete(item.id)} size='sm'>
+                    <Button onClick={() => handleDelete(item.userPtrId)} size='sm'>
                         O'chirish
                     </Button>
                 </div>)
@@ -75,23 +72,38 @@ export default function Veterinarians() {
     const [districts, setDistricts] = useState<District[]>([])
     const [regionId, setRegionId] = useState<number|null>(null)
     const [veterinarians, setVeterinarians] = useState<Veterinarian[]>([])
+    const [createLoading, setCreateLoading] = useState(false)
 
     const formSchema = z.object({
         phone: z.string().min(8, "Telefon to'g'ri formatda kiritilishi shart"),
         gender: z.string().min(1, "Jins tanlanishi shart"),
         address: z.string().optional(),
         birthDate: z.date(),
-        password: z.string().min(8, "Parol 8 ta belgidan kichik bo'lmasligi kerak"),
+        password: z.string().optional(),
         lastName: z.string().min(1, "Familiya kiritilishi shart"),
         firstName: z.string().min(1, "Ism kiritilishi shart"),
         districtId: z.number(),
         middleName: z.string().optional(),
         veterinarianId: z.number().nullable(),
-        confirmPassword: z.string(),
+        confirmPassword: z.string().optional(),
     })
-    .refine((data) => data.password === data.confirmPassword, {
-        message: "Parollar bir xil bo'lishi kerak",
-        path: ["confirmPassword"],
+    .superRefine((data, ctx) => {
+        if (!itemId) {
+          if (!data.password?.trim()) {
+            ctx.addIssue({
+              path: ["password"],
+              message: "Parol 8 ta belgidan kichik bo'lmasligi kerak",
+              code: "custom",
+            });
+          }
+          if (data.password !== data.confirmPassword) {
+            ctx.addIssue({
+              path: ["confirmPassword"],
+              message: "Parollar bir xil bo'lishi kerak",
+              code: "custom",
+            });
+          }
+        }
     })
     .transform(({ confirmPassword, ...rest }) => rest);
 
@@ -107,6 +119,7 @@ export default function Veterinarians() {
             middleName: "",
             birthDate: null,
             districtId: null,
+            confirmPassword: "",
         } as any,
     })
 
@@ -126,19 +139,32 @@ export default function Veterinarians() {
     }
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        if(userData?.userRole === 'VETERINARIAN') form.setValue('veterinarianId', userData?.userId!)
-        if (itemId) {
-            const data: any = await usersControllerUpdate(itemId, values as any)
-            setItems(p => p.map(i => {
-                if(i.userId === itemId) return {...i, user: data}
-                return i
-            }))
-        } else {
-            const data: any = await farmersControllerCreate({...values} as any)
-            setItems(p => [...p, data])
-        }
+        try {
+            setCreateLoading(true)
 
-        handleClose()
+            if (itemId) {
+                const { password, veterinarianId, ...others } = values
+                if(password?.trim()) (others as any).password = password
+                
+                const data: any = await usersControllerUpdate(itemId, others as any)
+                setItems(p => p.map(i => {
+                    if(i.userPtrId === itemId) return {...i, user: data}
+                    return i
+                }))
+            } else {
+                if (userData?.userRole === 'VETERINARIAN')
+                    form.setValue('veterinarianId', userData?.veterinarianId!)
+                
+                const data: any = await farmersControllerCreate({...values} as any)
+                setItems(p => [...p, data])
+            }
+    
+            handleClose()
+        } catch (error) {
+            console.log(error)            
+        } finally {
+            setCreateLoading(false)
+        }
     }
 
     async function handleGetItems(params: any) {
@@ -156,26 +182,34 @@ export default function Veterinarians() {
 
     async function handleDelete(id: number) {
         try {
-            if(!confirm('Delete?')) return
+            if(!confirm(ALERT_MESSAGES.DELETE_CONFIRM)) return
             await farmersControllerRemove(id)
-            setItems(p => p.filter(i => i.id !== id))
+            setItems(p => p.filter(i => i.userPtrId !== id))
         } catch (error) {
             console.log(error)
         }
     }
 
-    function handleEditItem(item: User) {
+    function handleEditItem(item: Farmer) {
         setDialog(true)
-        setItemId(item.id)
+        setItemId(item.userPtrId)
+        handleSetRegionId(item.user.districtId)
 
-        form.setValue('phone', item.phone)
-        form.setValue('lastName', item.lastName)
-        form.setValue('firstName', item.firstName)
-        form.setValue('address', item.address || '')
-        form.setValue('birthDate', item.birthDate!)
-        form.setValue('gender', item.gender || 'MALE')
-        form.setValue('districtId', item.districtId)
-        form.setValue('middleName', item.middleName || '')
+        form.setValue('phone', item.user.phone)
+        form.setValue('lastName', item.user.lastName)
+        form.setValue('firstName', item.user.firstName)
+        form.setValue('address', item.user?.address || '')
+        form.setValue('districtId', item.user?.districtId)
+        form.setValue('gender', item.user?.gender || 'MALE')
+        form.setValue('veterinarianId', item.veterinarianId)
+        form.setValue('middleName', item.user?.middleName || '')
+        form.setValue('birthDate', new Date(item.user?.birthDate!))
+    }
+
+    function handleSetRegionId(id: number) {
+        const d = districts.find(_ => _.id === id)
+        if(!d) return
+        setRegionId(d.regionId)
     }
 
     function handleClose() {
@@ -417,7 +451,7 @@ export default function Veterinarians() {
                                     <FormItem className="flex flex-col gap-1 pt-1.5">
                                         <FormLabel>Parol</FormLabel>
                                         <FormControl>
-                                            <Input type="password" placeholder="Parol yarating" {...field} />
+                                            <Input required={itemId===null} type="password" placeholder="Parol yarating" {...field} />
                                         </FormControl>
                                     </FormItem>
                                 )}
@@ -429,12 +463,12 @@ export default function Veterinarians() {
                                     <FormItem className="flex flex-col gap-1 pt-1.5">
                                         <FormLabel>Parolni takrorlang</FormLabel>
                                         <FormControl>
-                                            <Input type="password" placeholder="Parolni takrorlang" {...field} />
+                                            <Input required={itemId===null} type="password" placeholder="Parolni takrorlang" {...field} />
                                         </FormControl>
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit" className="col-span-1 md:col-span-2">Saqlash</Button>
+                            <Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
                         </form>
                     </Form>
                 </DialogContent>

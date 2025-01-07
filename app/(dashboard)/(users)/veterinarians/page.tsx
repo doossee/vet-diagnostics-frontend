@@ -3,6 +3,7 @@
 import { z } from "zod"
 import { GENDERS } from '~/constants'
 import { useForm } from "react-hook-form"
+import { ALERT_MESSAGES } from "~/constants"
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
 import { DataTable } from '~/components/data-table'
@@ -19,7 +20,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~
 import { districtsControllerFindAll, regionsControllerFindAll, veterinariansControllerFindAll, veterinariansControllerCreate, veterinariansControllerRemove, usersControllerUpdate } from '~/lib/api'
 
 export default function Veterinarians() {
-    const COLUMNS = [
+    const COLUMNS: any = [
         { title: 'Ism Familiyasi', key: 'name', render(item: Veterinarian) {
             return `${item.user?.firstName} ${item.user?.lastName}`
         }  },
@@ -46,7 +47,7 @@ export default function Veterinarians() {
                     <Button onClick={() => handleEditItem(item.user)} size='sm'>
                         O'zgartirish
                     </Button>
-                    <Button onClick={() => handleDelete(item.id)} size='sm'>
+                    <Button onClick={() => handleDelete(item.userPtrId)} size='sm'>
                         O'chirish
                     </Button>
                 </div>)
@@ -68,22 +69,37 @@ export default function Veterinarians() {
     const [itemId, setItemId] = useState<number|null>(null)
     const [districts, setDistricts] = useState<District[]>([])
     const [regionId, setRegionId] = useState<number|null>(null)
+    const [createLoading, setCreateLoading] = useState(false)
     
     const formSchema = z.object({
         phone: z.string().min(8, "Telefon to'g'ri formatda kiritilishi shart"),
         gender: z.string().min(1, "Jins tanlanishi shart"),
         address: z.string().optional(),
         birthDate: z.date(),
-        password: z.string().min(8, "Parol 8 ta belgidan kichik bo'lmasligi kerak"),
+        password: z.string().optional(),
         lastName: z.string().min(1, "Familiya kiritilishi shart"),
         firstName: z.string().min(1, "Ism kiritilishi shart"),
         districtId: z.number(),
         middleName: z.string().optional(),
-        confirmPassword: z.string()
+        confirmPassword: z.string().optional()
     })
-    .refine((data) => data.password === data.confirmPassword, {
-        message: "Parollar bir xil bo'lishi kerak",
-        path: ["confirmPassword"],
+    .superRefine((data, ctx) => {
+        if (!itemId) {
+          if (!data.password?.trim()) {
+            ctx.addIssue({
+              path: ["password"],
+              message: "Parol 8 ta belgidan kichik bo'lmasligi kerak",
+              code: "custom",
+            });
+          }
+          if (data.password !== data.confirmPassword) {
+            ctx.addIssue({
+              path: ["confirmPassword"],
+              message: "Parollar bir xil bo'lishi kerak",
+              code: "custom",
+            });
+          }
+        }
     })
     .transform(({ confirmPassword, ...rest }) => rest);
 
@@ -117,18 +133,29 @@ export default function Veterinarians() {
     }
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        if (itemId) {
-            const data: any = await usersControllerUpdate(itemId, values as any)
-            setItems(p => p.map(i => {
-                if(i.id === itemId) return data
-                return i
-            }))
-        } else {
-            const data: any = await veterinariansControllerCreate({...values, role: 'VETERINARIAN'} as any)
-            setItems(p => [...p, data])
-        }
+        try {
+            setCreateLoading(true)
 
-        handleClose()
+            if (itemId) {
+                const { password, ...others } = values
+                if(password?.trim()) (others as any).password = password
+    
+                const data: any = await usersControllerUpdate(itemId, others as any)
+                setItems(p => p.map(i => {
+                    if(i.userPtrId === itemId) return {...i, user: data}
+                    return i
+                }))
+            } else {
+                const data: any = await veterinariansControllerCreate({...values, role: 'VETERINARIAN'} as any)
+                setItems(p => [...p, data])
+            }
+    
+            handleClose()
+        } catch (error) {
+            console.log(error)            
+        } finally {
+            setCreateLoading(false)
+        }
     }
 
     async function handleGetItems(params: any) {
@@ -146,9 +173,9 @@ export default function Veterinarians() {
 
     async function handleDelete(id: number) {
         try {
-            if(!confirm('Delete?')) return
+            if(!confirm(ALERT_MESSAGES.DELETE_CONFIRM)) return
             await veterinariansControllerRemove(id)
-            setItems(p => p.filter(i => i.id !== id))
+            setItems(p => p.filter(i => i.userPtrId !== id))
         } catch (error) {
             console.log(error)
         }
@@ -393,7 +420,7 @@ export default function Veterinarians() {
                                     <FormItem className="flex flex-col gap-1 pt-1.5">
                                         <FormLabel>Parol</FormLabel>
                                         <FormControl>
-                                            <Input type="password" placeholder="Parol yarating" {...field} />
+                                            <Input required={itemId===null} type="password" placeholder="Parol yarating" {...field} />
                                         </FormControl>
                                     </FormItem>
                                 )}
@@ -405,12 +432,12 @@ export default function Veterinarians() {
                                     <FormItem className="flex flex-col gap-1 pt-1.5">
                                         <FormLabel>Parolni takrorlang</FormLabel>
                                         <FormControl>
-                                            <Input type="password" placeholder="Parolni takrorlang" {...field} />
+                                            <Input required={itemId===null} type="password" placeholder="Parolni takrorlang" {...field} />
                                         </FormControl>
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit" className="col-span-1 md:col-span-2">Saqlash</Button>
+                            <Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
                         </form>
                     </Form>
                 </DialogContent>

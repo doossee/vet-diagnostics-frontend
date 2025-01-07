@@ -4,6 +4,7 @@ import { z } from "zod"
 import { useState } from 'react'
 import { Region } from "~/lib/type"
 import { useForm } from "react-hook-form"
+import { ALERT_MESSAGES } from "~/constants"
 import { Button } from '~/components/ui/button'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { regionsControllerFindAll, regionsControllerCreate, regionsControllerRemove, regionsControllerUpdate } from '~/lib/api'
@@ -31,6 +32,7 @@ export function useRegions() {
     const [loading, setLoading] = useState(true)
     const [regions, setRegions] = useState<Region[]>([])
     const [itemId, setItemId] = useState<number|null>(null)
+    const [createLoading, setCreateLoading] = useState(false)
 
     const formSchema = z.object({
         name: z.string().min(1, "Viloyat nomi kiritishi shart"),
@@ -44,17 +46,25 @@ export function useRegions() {
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        if(itemId) {
-            const data: any = await regionsControllerUpdate(itemId, values)
-            setRegions(p => p.map(i => {
-                if(i.id === itemId) return data
-                return i
-            }))
-        } else {
-            const data: any = await regionsControllerCreate(values)
-            setRegions(p => [...p, data])
+        try {
+            setCreateLoading(true)
+
+            if(itemId) {
+                const data: any = await regionsControllerUpdate(itemId, values)
+                setRegions(p => p.map(i => {
+                    if(i.id === itemId) return data
+                    return i
+                }))
+            } else {
+                const data: any = await regionsControllerCreate(values)
+                setRegions(p => [...p, data])
+            }
+            handleClose()
+        } catch (error) {
+            console.log(error)            
+        } finally {
+            setCreateLoading(false)
         }
-        handleClose()
     }
 
     async function handleGetRegions(params: any) {
@@ -71,7 +81,7 @@ export function useRegions() {
     }
 
     async function handleDelete(id: number) {
-        if(!confirm('Delete?')) return
+        if(!confirm(ALERT_MESSAGES.DELETE_CONFIRM)) return
         await regionsControllerRemove(id)
         setRegions(p => p.filter(i => i.id !== id))
     }
@@ -96,6 +106,8 @@ export function useRegions() {
         loading,
         regions,
         COLUMNS,
+        createLoading,
+
         onSubmit,
         setDialog,
         handleClose,

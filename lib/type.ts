@@ -1,7 +1,11 @@
 export type UserData = {
   userId: number
   userRole: UserRole
+  
+  farmerId: number
+  veterinarianId: number
 }
+
 
 export type UserRole = "ADMIN" | "VETERINARIAN" | "FARMER";
 
@@ -73,11 +77,15 @@ export interface GeneralInspection {
   bodyStructure: BodyStructure;
   obesity: ObesityType;
   customerType: CustomerType;
+  leatherCoverId: number;
+  leatherCover: LeatherCover;
+  eyelidId: number;
+  eyelid: Eyelid;
   colorId: number;
   color: Color;
   createdAt: Date;
   updatedAt: Date;
-  inspections: Inspection[];
+  inspection?: Inspection | null;
 }
 
 export interface Inspection {
@@ -92,6 +100,8 @@ export interface Inspection {
   pulse?: number | null;
   respiratoryRate?: number | null;
   rumination?: number | null;
+  type: InspectionType;
+  conclusion?: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -104,7 +114,9 @@ export interface Disease {
   type: DiseaseType;
   startTime: Date;
   endTime: Date;
-  conclusion: string;
+  conclusion?: string | null;
+  createdAt: Date;
+  updatedAt: Date;
   inspections: Inspection[];
   urineTests: UrineTest[];
   dungTests: DungTest[];
@@ -230,13 +242,25 @@ export interface Color {
 export interface UrineColor {
   id: number;
   name: string;
-  urineTests: UrineTest[];
+  urdineTests: UrineTest[];
 }
 
 export interface DungColor {
   id: number;
   name: string;
   dungTests: DungTest[];
+}
+
+export interface LeatherCover {
+  id: number;
+  name: string;
+  generalInspections: GeneralInspection[];
+}
+
+export interface Eyelid {
+  id: number;
+  name: string;
+  generalInspections: GeneralInspection[];
 }
 
 export interface VaccineType {
@@ -271,18 +295,15 @@ export interface User {
 }
 
 export interface Veterinarian {
-  id: number;
-  userId: number;
+  userPtrId: number;
   user: User;
   farmers: Farmer[];
 }
 
 export interface Farmer {
-  id: number;
-  userId: number;
+  userPtrId: number;
   user: User;
   veterinarianId: number;
   veterinarian: Veterinarian;
   animals: Animal[];
 }
-

@@ -43,7 +43,7 @@ export function AppSidebar() {
                                                 <SidebarMenuSubItem key={i}>
                                                     <SidebarMenuSubButton asChild>
                                                         <Link href={subItem.url} className={cn("text-nowrap p-2 overflow-hidden flex gap-3 items-center rounded-sm cursor-pointer transition-colors",
-                                                            pathname === subItem.url ? "bg-primary hover:!bg-primary/80 text-white dark:text-background" : "text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-500/40 dark:text-gray-300"
+                                                            pathname === subItem.url ? "bg-primary hover:!bg-primary/80 text-white hover:text-white dark:text-background hover:dark:text-background" : "text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-500/40 dark:text-gray-300"
                                                         )}>
                                                             <div>
                                                                 {subItem.icon && <subItem.icon className="size-[1.1rem]" />}

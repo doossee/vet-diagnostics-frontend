@@ -2,8 +2,8 @@
 
 import { z } from "zod"
 import { useState } from 'react'
+import type { Color } from "~/lib/type"
 import { useForm } from "react-hook-form"
-import type { AnimalType } from "~/lib/type"
 import { ALERT_MESSAGES } from "~/constants"
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
@@ -12,13 +12,13 @@ import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
-import { animalTypesControllerFindAll, animalTypesControllerCreate, animalTypesControllerRemove, animalTypesControllerUpdate } from '~/lib/api'
+import { eyelidsControllerFindAll, eyelidsControllerCreate, eyelidsControllerRemove, eyelidsControllerUpdate } from '~/lib/api'
 
-export default function AnimalTypes() {
+export default function LeatherCovers() {
     const COLUMNS = [
-        { title: 'Tur nomi', key: 'name' },
+        { title: "Ko'z qopqog'i nomi", key: 'name' },
         {
-            title: 'Boshqarish', key: 'actions', render(item: AnimalType) {
+            title: 'Boshqarish', key: 'actions', render(item: Color) {
                 return (<div className="flex gap-2 items-center">
                     <Button onClick={() => handleEditItem(item)} size='sm'>
                         O'zgartirish
@@ -34,12 +34,12 @@ export default function AnimalTypes() {
     const [dialog, setDialog] = useState(false)
     const [loading, setLoading] = useState(true)
     const [totalItems, setTotalItems] = useState(0)
-    const [items, setItems] = useState<AnimalType[]>([])
+    const [items, setItems] = useState<Color[]>([])
     const [itemId, setItemId] = useState<number | null>(null)
     const [createLoading, setCreateLoading] = useState(false)
 
     const formSchema = z.object({
-        name: z.string().min(1, "Tur nomi kiritilishi shart")
+        name: z.string().min(1, "Ko'z qopqog'i nomi kiritilishi shart"),
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -54,13 +54,13 @@ export default function AnimalTypes() {
             setCreateLoading(true)
 
             if (itemId) {
-                const data: any = await animalTypesControllerUpdate(itemId, values as any)
+                const data: any = await eyelidsControllerUpdate(itemId, values as any)
                 setItems(p => p.map(i => {
                     if(i.id === itemId) return data
                     return i
                 }))
             } else {
-                const data: any = await animalTypesControllerCreate(values as any)
+                const data: any = await eyelidsControllerCreate(values as any)
                 setItems(p => [...p, data])
             }
     
@@ -75,7 +75,7 @@ export default function AnimalTypes() {
     async function handleGetItems(params: any) {
         try {
             setLoading(true)
-            const {data, meta} = await animalTypesControllerFindAll(params)
+            const {data, meta} = await eyelidsControllerFindAll(params)
             setItems(data as any)
             setTotalItems(meta.total)
         } catch (error) {
@@ -88,14 +88,14 @@ export default function AnimalTypes() {
     async function handleDelete(id: number) {
         try {
             if(!confirm(ALERT_MESSAGES.DELETE_CONFIRM)) return
-            await animalTypesControllerRemove(id)
+            await eyelidsControllerRemove(id)
             setItems(p => p.filter(i => i.id !== id))
         } catch (error) {
             console.log(error)
         }
     }
 
-    function handleEditItem(item: AnimalType) {
+    function handleEditItem(item: Color) {
         setDialog(true)
         setItemId(item.id)
 
@@ -116,13 +116,13 @@ export default function AnimalTypes() {
                 items={items as any}
                 totalItems={totalItems}
                 callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Hayvon turi yaratish</Button>}
+                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Ko'z qopqog'i yaratish</Button>}
             />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
-                <DialogContent className="bg-card overflow-auto max-h-screen md:max-h-[95vh] max-w-[500px]" aria-describedby={undefined}>
+                <DialogContent className="overflow-auto max-h-screen md:max-h-[95vh] max-w-[500px]" aria-describedby={undefined}>
                     <DialogHeader>
-                        <DialogTitle>{itemId? "Turni o'zgartirish" : 'Tur yaratish'}</DialogTitle>
+                        <DialogTitle>{itemId?"Ko'z qopqog'ini o'zgartirish":"Ko'z qopqog'i yaratish"}</DialogTitle>
                     </DialogHeader>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -131,9 +131,9 @@ export default function AnimalTypes() {
                                 control={form.control}
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Tur nomi</FormLabel>
+                                        <FormLabel>Ko'z qopqog'i nomi</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Tur nomi" {...field} />
+                                            <Input placeholder="Ko'z qopqog'i nomi" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>

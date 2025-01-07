@@ -3,6 +3,7 @@
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { useEffect, useState } from 'react'
+import { ALERT_MESSAGES } from "~/constants"
 import { Button } from '~/components/ui/button'
 import { DataTable } from '~/components/data-table'
 import { DialogTitle } from '@radix-ui/react-dialog'
@@ -47,6 +48,7 @@ export default function Vaccines() {
     const [animals, setAnimals] = useState<Animal[]>([])
     const [types, setTypes] = useState<VaccineType[]>([])
     const [itemId, setItemId] = useState<number | null>(null)
+    const [createLoading, setCreateLoading] = useState(false)
     const [filters, setFilters] = useState({
         date: null as Date | null,
         typeId: null as number | null,
@@ -82,18 +84,26 @@ export default function Vaccines() {
     }
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        if (itemId) {
-            const data: any = await vaccinesControllerUpdate(itemId, values as any)
-            setItems(p => p.map(i => {
-                if(i.id === itemId) return data
-                return i
-            }))
-        } else {
-            const data: any = await vaccinesControllerCreate(values as any)
-            setItems(p => [...p, data])
+        try {
+            setCreateLoading(true)
+            
+            if (itemId) {
+                const data: any = await vaccinesControllerUpdate(itemId, values as any)
+                setItems(p => p.map(i => {
+                    if(i.id === itemId) return data
+                    return i
+                }))
+            } else {
+                const data: any = await vaccinesControllerCreate(values as any)
+                setItems(p => [...p, data])
+            }
+    
+            handleClose()
+        } catch (error) {
+            console.log(error)            
+        } finally {
+            setCreateLoading(false)
         }
-
-        handleClose()
     }
 
     async function handleGetItems(params: any) {
@@ -112,7 +122,7 @@ export default function Vaccines() {
 
     async function handleDelete(id: number) {
         try {
-            if(!confirm('Delete?')) return
+            if(!confirm(ALERT_MESSAGES.DELETE_CONFIRM)) return
             await vaccinesControllerRemove(id)
             setItems(p => p.filter(i => i.id !== id))
         } catch (error) {
@@ -124,9 +134,9 @@ export default function Vaccines() {
         setDialog(true)
         setItemId(item.id)
 
-        form.setValue('date', item.date)
         form.setValue('typeId', item.typeId)
         form.setValue('animalId', item.animalId)
+        form.setValue('date', new Date(item.date))
     }
 
     function handleClose() {
@@ -170,6 +180,7 @@ export default function Vaccines() {
             </Card>
 
             <DataTable
+                hideSearch
                 filters={filters}
                 loading={loading}
                 columns={COLUMNS}
@@ -243,7 +254,7 @@ export default function Vaccines() {
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit" className="w-full">Saqlash</Button>
+                            <Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
                         </form>
                     </Form>
                 </DialogContent>

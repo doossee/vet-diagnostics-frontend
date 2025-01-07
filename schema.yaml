@@ -1900,6 +1900,230 @@ paths:
                 $ref: '#/components/schemas/DungColorEntity'
       tags:
         - dung-colors
+  /leather-covers:
+    post:
+      operationId: LeatherCoversController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateLeatherCoverDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeatherCoverEntity'
+      tags:
+        - leather-covers
+    get:
+      operationId: LeatherCoversController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedLeatherCoversEntity'
+      tags:
+        - leather-covers
+  /leather-covers/{id}:
+    get:
+      operationId: LeatherCoversController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeatherCoverEntity'
+      tags:
+        - leather-covers
+    patch:
+      operationId: LeatherCoversController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateLeatherCoverDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeatherCoverEntity'
+      tags:
+        - leather-covers
+    delete:
+      operationId: LeatherCoversController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeatherCoverEntity'
+      tags:
+        - leather-covers
+  /eyelids:
+    post:
+      operationId: EyelidsController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEyelidDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EyelidEntity'
+      tags:
+        - eyelids
+    get:
+      operationId: EyelidsController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEyelidsEntity'
+      tags:
+        - eyelids
+  /eyelids/{id}:
+    get:
+      operationId: EyelidsController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EyelidEntity'
+      tags:
+        - eyelids
+    patch:
+      operationId: EyelidsController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateEyelidDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EyelidEntity'
+      tags:
+        - eyelids
+    delete:
+      operationId: EyelidsController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EyelidEntity'
+      tags:
+        - eyelids
   /vaccine-types:
     post:
       operationId: VaccineTypesController_create
@@ -2789,11 +3013,19 @@ components:
         userRole:
           type: string
           readOnly: true
+        veterinarianId:
+          type: number
+          readOnly: true
+        farmerId:
+          type: number
+          readOnly: true
       required:
         - accessToken
         - refreshToken
         - userId
         - userRole
+        - veterinarianId
+        - farmerId
     RefreshTokenDto:
       type: object
       properties:
@@ -3031,21 +3263,16 @@ components:
     VeterinarianEntity:
       type: object
       properties:
-        id:
+        userPtrId:
           type: number
-          description: Unique identifier of the veterinarian
+          description: Unique identifier of the veterinarian that points to user
           example: 1
-        userId:
-          type: number
-          description: User ID associated with the veterinarian
-          example: 42
         user:
           description: User data associated with the veterinarian
           allOf:
             - $ref: '#/components/schemas/UserEntity'
       required:
-        - id
-        - userId
+        - userPtrId
         - user
     PaginatedVeterinariansEntity:
       type: object
@@ -3119,14 +3346,10 @@ components:
     FarmerEntity:
       type: object
       properties:
-        id:
+        userPtrId:
           type: number
-          description: Unique identifier of the farmer
+          description: Unique identifier of the farmer that points to user
           example: 1
-        userId:
-          type: number
-          description: User ID associated with the farmer
-          example: 42
         user:
           description: User data associated with the farmer
           allOf:
@@ -3140,8 +3363,7 @@ components:
           allOf:
             - $ref: '#/components/schemas/VeterinarianEntity'
       required:
-        - id
-        - userId
+        - userPtrId
         - user
         - veterinarianId
         - veterinarian
@@ -3843,6 +4065,90 @@ components:
           type: string
           description: The name of the dung color
           example: Brown
+    CreateLeatherCoverDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the leather cover
+          example: Example
+      required:
+        - name
+    LeatherCoverEntity:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identifier of the stool color
+          example: 1
+        name:
+          type: string
+          description: Name of the leather cover
+          example: Example
+      required:
+        - id
+        - name
+    PaginatedLeatherCoversEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/LeatherCoverEntity'
+        meta:
+          $ref: '#/components/schemas/MetaDateEntity'
+      required:
+        - data
+        - meta
+    UpdateLeatherCoverDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the leather cover
+          example: Example
+    CreateEyelidDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the eyelid
+          example: Example
+      required:
+        - name
+    EyelidEntity:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identifier of the stool color
+          example: 1
+        name:
+          type: string
+          description: Name of the eyelid
+          example: Example
+      required:
+        - id
+        - name
+    PaginatedEyelidsEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/EyelidEntity'
+        meta:
+          $ref: '#/components/schemas/MetaDateEntity'
+      required:
+        - data
+        - meta
+    UpdateEyelidDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the eyelid
+          example: Example
     CreateVaccineTypeDto:
       type: object
       properties:
@@ -3968,17 +4274,52 @@ components:
             - MOBILE
             - CALM
           example: CALM
+        leatherCoverId:
+          type: number
+          description: The ID representing the leather cover of the animal.
+          example: 3
+        eyelidId:
+          type: number
+          description: The ID representing the eyelid of the animal.
+          example: 3
         colorId:
           type: number
           description: The ID representing the color of the animal.
           example: 3
+        temperature:
+          type: number
+          description: The body temperature of the animal (in degrees Celsius).
+          example: 38.5
+        pulse:
+          type: number
+          description: The pulse rate of the animal (beats per minute).
+          example: 72
+        respiratoryRate:
+          type: number
+          description: The respiratory rate of the animal (breaths per minute).
+          example: 20
+        rumination:
+          type: number
+          description: The rumination rate of the animal (chews per minute).
+          example: 60
+        conclusion:
+          type: string
+          description: A summary or conclusion based on the test results.
+          example: No abnormalities detected.
       required:
         - animalId
         - bodyType
         - bodyStructure
         - obesity
         - customerType
+        - leatherCoverId
+        - eyelidId
         - colorId
+        - temperature
+        - pulse
+        - respiratoryRate
+        - rumination
+        - conclusion
     GeneralInspectionEntity:
       type: object
       properties:
@@ -4020,10 +4361,18 @@ components:
           enum:
             - MOBILE
             - CALM
+        leatherCoverId:
+          type: number
+          description: Leather cover ID of the animal
+          example: 5
+        eyelidId:
+          type: number
+          description: Eyelid ID of the animal
+          example: 8
         colorId:
           type: number
           description: Color ID of the animal
-          example: 5
+          example: 3
         createdAt:
           type: string
           description: Creation timestamp
@@ -4041,6 +4390,8 @@ components:
         - bodyStructure
         - obesity
         - customerType
+        - leatherCoverId
+        - eyelidId
         - colorId
         - createdAt
         - updatedAt
@@ -4097,10 +4448,38 @@ components:
             - MOBILE
             - CALM
           example: CALM
+        leatherCoverId:
+          type: number
+          description: The ID representing the leather cover of the animal.
+          example: 3
+        eyelidId:
+          type: number
+          description: The ID representing the eyelid of the animal.
+          example: 3
         colorId:
           type: number
           description: The ID representing the color of the animal.
           example: 3
+        temperature:
+          type: number
+          description: The body temperature of the animal (in degrees Celsius).
+          example: 38.5
+        pulse:
+          type: number
+          description: The pulse rate of the animal (beats per minute).
+          example: 72
+        respiratoryRate:
+          type: number
+          description: The respiratory rate of the animal (breaths per minute).
+          example: 20
+        rumination:
+          type: number
+          description: The rumination rate of the animal (chews per minute).
+          example: 60
+        conclusion:
+          type: string
+          description: A summary or conclusion based on the test results.
+          example: No abnormalities detected.
     CreateInspectionDto:
       type: object
       properties:
@@ -4134,6 +4513,19 @@ components:
           type: number
           description: The rumination rate of the animal (chews per minute).
           example: 60
+        type:
+          type: string
+          description: The type of the inspection.
+          enum:
+            - MORNING
+            - EVENING
+            - DISEASE
+            - GENERAL
+          example: GENERAL
+        conclusion:
+          type: string
+          description: A summary or conclusion based on the test results.
+          example: No abnormalities detected.
       required:
         - animalId
         - diseaseId
@@ -4142,6 +4534,8 @@ components:
         - pulse
         - respiratoryRate
         - rumination
+        - type
+        - conclusion
     InspectionEntity:
       type: object
       properties:
@@ -4177,6 +4571,18 @@ components:
           type: number
           description: Rumination count of the animal
           example: 5
+        type:
+          type: string
+          description: Body type of the animal
+          enum:
+            - MORNING
+            - EVENING
+            - DISEASE
+            - GENERAL
+        conclusion:
+          type: string
+          description: Conclusion of the blood test results (optional)
+          example: Normal parameters
         createdAt:
           type: string
           description: Creation timestamp
@@ -4196,6 +4602,7 @@ components:
         - pulse
         - respiratoryRate
         - rumination
+        - type
         - createdAt
         - updatedAt
     PaginatedInspectionEntity:
@@ -4243,6 +4650,19 @@ components:
           type: number
           description: The rumination rate of the animal (chews per minute).
           example: 60
+        type:
+          type: string
+          description: The type of the inspection.
+          enum:
+            - MORNING
+            - EVENING
+            - DISEASE
+            - GENERAL
+          example: GENERAL
+        conclusion:
+          type: string
+          description: A summary or conclusion based on the test results.
+          example: No abnormalities detected.
     CreateDiseaseDto:
       type: object
       properties:
@@ -4303,6 +4723,16 @@ components:
           type: string
           description: Conclusion or remarks about the disease
           example: Recovered fully
+        createdAt:
+          format: date-time
+          type: string
+          description: The date and time when the disease was created.
+          example: '2024-12-14T09:15:30Z'
+        updatedAt:
+          format: date-time
+          type: string
+          description: The date and time when the disease was last updated.
+          example: '2024-12-14T10:00:00Z'
       required:
         - id
         - animalId
@@ -4310,6 +4740,8 @@ components:
         - startTime
         - endTime
         - conclusion
+        - createdAt
+        - updatedAt
     PaginatedDiseaseEntity:
       type: object
       properties:

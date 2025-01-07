@@ -39,6 +39,38 @@ perPage?: number;
 byId?: VaccineTypesControllerFindAllById;
 };
 
+export type EyelidsControllerFindAllById = typeof EyelidsControllerFindAllById[keyof typeof EyelidsControllerFindAllById];
+
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EyelidsControllerFindAllById = {
+  asc: 'asc',
+  desc: 'desc',
+} as const;
+
+export type EyelidsControllerFindAllParams = {
+search?: string;
+page?: number;
+perPage?: number;
+byId?: EyelidsControllerFindAllById;
+};
+
+export type LeatherCoversControllerFindAllById = typeof LeatherCoversControllerFindAllById[keyof typeof LeatherCoversControllerFindAllById];
+
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const LeatherCoversControllerFindAllById = {
+  asc: 'asc',
+  desc: 'desc',
+} as const;
+
+export type LeatherCoversControllerFindAllParams = {
+search?: string;
+page?: number;
+perPage?: number;
+byId?: LeatherCoversControllerFindAllById;
+};
+
 export type DungColorsControllerFindAllById = typeof DungColorsControllerFindAllById[keyof typeof DungColorsControllerFindAllById];
 
 
@@ -1045,11 +1077,6 @@ export interface UpdateUrineTestDto {
   smell?: UpdateUrineTestDtoSmell;
 }
 
-export interface PaginatedUrineTestEntity {
-  data: UrineTestEntity[];
-  meta: MetaDateEntity;
-}
-
 /**
  * The smell type of the urine.
  */
@@ -1095,6 +1122,11 @@ export interface UrineTestEntity {
   smell: UrineTestEntitySmell;
   /** The date and time when the test was last updated. */
   updatedAt: string;
+}
+
+export interface PaginatedUrineTestEntity {
+  data: UrineTestEntity[];
+  meta: MetaDateEntity;
 }
 
 /**
@@ -1388,6 +1420,8 @@ export interface DiseaseEntity {
   animalId: number;
   /** Conclusion or remarks about the disease */
   conclusion: string;
+  /** The date and time when the disease was created. */
+  createdAt: string;
   /** End time of the disease */
   endTime: string;
   /** Unique identifier of the disease */
@@ -1396,6 +1430,8 @@ export interface DiseaseEntity {
   startTime: string;
   /** Disease type ID */
   typeId: number;
+  /** The date and time when the disease was last updated. */
+  updatedAt: string;
 }
 
 export interface PaginatedDiseaseEntity {
@@ -1416,9 +1452,25 @@ export interface CreateDiseaseDto {
   typeId: number;
 }
 
+/**
+ * The type of the inspection.
+ */
+export type UpdateInspectionDtoType = typeof UpdateInspectionDtoType[keyof typeof UpdateInspectionDtoType];
+
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateInspectionDtoType = {
+  MORNING: 'MORNING',
+  EVENING: 'EVENING',
+  DISEASE: 'DISEASE',
+  GENERAL: 'GENERAL',
+} as const;
+
 export interface UpdateInspectionDto {
   /** The ID of the animal being inspected. This field is optional. */
   animalId?: number;
+  /** A summary or conclusion based on the test results. */
+  conclusion?: string;
   /** The ID of the disease associated with the inspection. This field is optional. */
   diseaseId?: number;
   /** The ID of the general inspection record. This field is optional. */
@@ -1431,11 +1483,29 @@ export interface UpdateInspectionDto {
   rumination?: number;
   /** The body temperature of the animal (in degrees Celsius). */
   temperature?: number;
+  /** The type of the inspection. */
+  type?: UpdateInspectionDtoType;
 }
+
+/**
+ * Body type of the animal
+ */
+export type InspectionEntityType = typeof InspectionEntityType[keyof typeof InspectionEntityType];
+
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const InspectionEntityType = {
+  MORNING: 'MORNING',
+  EVENING: 'EVENING',
+  DISEASE: 'DISEASE',
+  GENERAL: 'GENERAL',
+} as const;
 
 export interface InspectionEntity {
   /** Animal ID associated with the inspection */
   animalId: number;
+  /** Conclusion of the blood test results (optional) */
+  conclusion?: string;
   /** Creation timestamp */
   createdAt: string;
   /** Disease ID associated with the inspection */
@@ -1452,6 +1522,8 @@ export interface InspectionEntity {
   rumination: number;
   /** Temperature of the animal during inspection */
   temperature: number;
+  /** Body type of the animal */
+  type: InspectionEntityType;
   /** Last update timestamp */
   updatedAt: string;
 }
@@ -1461,9 +1533,25 @@ export interface PaginatedInspectionEntity {
   meta: MetaDateEntity;
 }
 
+/**
+ * The type of the inspection.
+ */
+export type CreateInspectionDtoType = typeof CreateInspectionDtoType[keyof typeof CreateInspectionDtoType];
+
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateInspectionDtoType = {
+  MORNING: 'MORNING',
+  EVENING: 'EVENING',
+  DISEASE: 'DISEASE',
+  GENERAL: 'GENERAL',
+} as const;
+
 export interface CreateInspectionDto {
   /** The ID of the animal being inspected. This field is optional. */
   animalId: number;
+  /** A summary or conclusion based on the test results. */
+  conclusion: string;
   /** The ID of the disease associated with the inspection. This field is optional. */
   diseaseId: number;
   /** The ID of the general inspection record. This field is optional. */
@@ -1476,6 +1564,8 @@ export interface CreateInspectionDto {
   rumination: number;
   /** The body temperature of the animal (in degrees Celsius). */
   temperature: number;
+  /** The type of the inspection. */
+  type: CreateInspectionDtoType;
 }
 
 /**
@@ -1541,10 +1631,24 @@ export interface UpdateGeneralInspectionDto {
   bodyType?: UpdateGeneralInspectionDtoBodyType;
   /** The ID representing the color of the animal. */
   colorId?: number;
+  /** A summary or conclusion based on the test results. */
+  conclusion?: string;
   /** The customer type associated with the animal. */
   customerType?: UpdateGeneralInspectionDtoCustomerType;
+  /** The ID representing the eyelid of the animal. */
+  eyelidId?: number;
+  /** The ID representing the leather cover of the animal. */
+  leatherCoverId?: number;
   /** The obesity level/type of the animal. */
   obesity?: UpdateGeneralInspectionDtoObesity;
+  /** The pulse rate of the animal (beats per minute). */
+  pulse?: number;
+  /** The respiratory rate of the animal (breaths per minute). */
+  respiratoryRate?: number;
+  /** The rumination rate of the animal (chews per minute). */
+  rumination?: number;
+  /** The body temperature of the animal (in degrees Celsius). */
+  temperature?: number;
 }
 
 /**
@@ -1614,8 +1718,12 @@ export interface GeneralInspectionEntity {
   createdAt: string;
   /** Customer type */
   customerType: GeneralInspectionEntityCustomerType;
+  /** Eyelid ID of the animal */
+  eyelidId: number;
   /** Unique identifier of the general inspection */
   id: number;
+  /** Leather cover ID of the animal */
+  leatherCoverId: number;
   /** Obesity type of the animal */
   obesity: GeneralInspectionEntityObesity;
   /** Last update timestamp */
@@ -1690,10 +1798,24 @@ export interface CreateGeneralInspectionDto {
   bodyType: CreateGeneralInspectionDtoBodyType;
   /** The ID representing the color of the animal. */
   colorId: number;
+  /** A summary or conclusion based on the test results. */
+  conclusion: string;
   /** The customer type associated with the animal. */
   customerType: CreateGeneralInspectionDtoCustomerType;
+  /** The ID representing the eyelid of the animal. */
+  eyelidId: number;
+  /** The ID representing the leather cover of the animal. */
+  leatherCoverId: number;
   /** The obesity level/type of the animal. */
   obesity: CreateGeneralInspectionDtoObesity;
+  /** The pulse rate of the animal (beats per minute). */
+  pulse: number;
+  /** The respiratory rate of the animal (breaths per minute). */
+  respiratoryRate: number;
+  /** The rumination rate of the animal (chews per minute). */
+  rumination: number;
+  /** The body temperature of the animal (in degrees Celsius). */
+  temperature: number;
 }
 
 export interface UpdateDiseaseTypeDto {
@@ -1737,6 +1859,50 @@ export interface PaginatedVaccineTypesEntity {
 
 export interface CreateVaccineTypeDto {
   /** The name of the vaccine type */
+  name: string;
+}
+
+export interface UpdateEyelidDto {
+  /** The name of the eyelid */
+  name?: string;
+}
+
+export interface EyelidEntity {
+  /** Unique identifier of the stool color */
+  id: number;
+  /** Name of the eyelid */
+  name: string;
+}
+
+export interface PaginatedEyelidsEntity {
+  data: EyelidEntity[];
+  meta: MetaDateEntity;
+}
+
+export interface CreateEyelidDto {
+  /** The name of the eyelid */
+  name: string;
+}
+
+export interface UpdateLeatherCoverDto {
+  /** The name of the leather cover */
+  name?: string;
+}
+
+export interface LeatherCoverEntity {
+  /** Unique identifier of the stool color */
+  id: number;
+  /** Name of the leather cover */
+  name: string;
+}
+
+export interface PaginatedLeatherCoversEntity {
+  data: LeatherCoverEntity[];
+  meta: MetaDateEntity;
+}
+
+export interface CreateLeatherCoverDto {
+  /** The name of the leather cover */
   name: string;
 }
 
@@ -2173,12 +2339,10 @@ export interface UpdateFarmerDto {
 }
 
 export interface FarmerEntity {
-  /** Unique identifier of the farmer */
-  id: number;
   /** User data associated with the farmer */
   user: UserEntity;
-  /** User ID associated with the farmer */
-  userId: number;
+  /** Unique identifier of the farmer that points to user */
+  userPtrId: number;
   /** Veterinarian data associated with the farmer */
   veterinarian: VeterinarianEntity;
   /** Veterinarian ID associated with the farmer */
@@ -2383,12 +2547,10 @@ export interface UserEntity {
 }
 
 export interface VeterinarianEntity {
-  /** Unique identifier of the veterinarian */
-  id: number;
   /** User data associated with the veterinarian */
   user: UserEntity;
-  /** User ID associated with the veterinarian */
-  userId: number;
+  /** Unique identifier of the veterinarian that points to user */
+  userPtrId: number;
 }
 
 /**
@@ -2464,9 +2626,11 @@ export interface RefreshTokenDto {
 
 export interface AuthEntity {
   readonly accessToken: string;
+  readonly farmerId: number;
   readonly refreshToken: string;
   readonly userId: number;
   readonly userRole: string;
+  readonly veterinarianId: number;
 }
 
 export interface AuthDto {
@@ -3123,6 +3287,108 @@ export const dungColorsControllerRemove = (
       options);
     }
   
+export const leatherCoversControllerCreate = (
+    createLeatherCoverDto: BodyType<CreateLeatherCoverDto>,
+ options?: SecondParameter<typeof createInstance>,) => {
+      return createInstance<LeatherCoverEntity>(
+      {url: `/leather-covers`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: createLeatherCoverDto
+    },
+      options);
+    }
+  
+export const leatherCoversControllerFindAll = (
+    params?: LeatherCoversControllerFindAllParams,
+ options?: SecondParameter<typeof createInstance>,) => {
+      return createInstance<PaginatedLeatherCoversEntity>(
+      {url: `/leather-covers`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+export const leatherCoversControllerFindOne = (
+    id: number,
+ options?: SecondParameter<typeof createInstance>,) => {
+      return createInstance<LeatherCoverEntity>(
+      {url: `/leather-covers/${id}`, method: 'GET'
+    },
+      options);
+    }
+  
+export const leatherCoversControllerUpdate = (
+    id: number,
+    updateLeatherCoverDto: BodyType<UpdateLeatherCoverDto>,
+ options?: SecondParameter<typeof createInstance>,) => {
+      return createInstance<LeatherCoverEntity>(
+      {url: `/leather-covers/${id}`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json', },
+      data: updateLeatherCoverDto
+    },
+      options);
+    }
+  
+export const leatherCoversControllerRemove = (
+    id: number,
+ options?: SecondParameter<typeof createInstance>,) => {
+      return createInstance<LeatherCoverEntity>(
+      {url: `/leather-covers/${id}`, method: 'DELETE'
+    },
+      options);
+    }
+  
+export const eyelidsControllerCreate = (
+    createEyelidDto: BodyType<CreateEyelidDto>,
+ options?: SecondParameter<typeof createInstance>,) => {
+      return createInstance<EyelidEntity>(
+      {url: `/eyelids`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: createEyelidDto
+    },
+      options);
+    }
+  
+export const eyelidsControllerFindAll = (
+    params?: EyelidsControllerFindAllParams,
+ options?: SecondParameter<typeof createInstance>,) => {
+      return createInstance<PaginatedEyelidsEntity>(
+      {url: `/eyelids`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+export const eyelidsControllerFindOne = (
+    id: number,
+ options?: SecondParameter<typeof createInstance>,) => {
+      return createInstance<EyelidEntity>(
+      {url: `/eyelids/${id}`, method: 'GET'
+    },
+      options);
+    }
+  
+export const eyelidsControllerUpdate = (
+    id: number,
+    updateEyelidDto: BodyType<UpdateEyelidDto>,
+ options?: SecondParameter<typeof createInstance>,) => {
+      return createInstance<EyelidEntity>(
+      {url: `/eyelids/${id}`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json', },
+      data: updateEyelidDto
+    },
+      options);
+    }
+  
+export const eyelidsControllerRemove = (
+    id: number,
+ options?: SecondParameter<typeof createInstance>,) => {
+      return createInstance<EyelidEntity>(
+      {url: `/eyelids/${id}`, method: 'DELETE'
+    },
+      options);
+    }
+  
 export const vaccineTypesControllerCreate = (
     createVaccineTypeDto: BodyType<CreateVaccineTypeDto>,
  options?: SecondParameter<typeof createInstance>,) => {
@@ -3638,6 +3904,16 @@ export type DungColorsControllerFindAllResult = NonNullable<Awaited<ReturnType<t
 export type DungColorsControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof dungColorsControllerFindOne>>>
 export type DungColorsControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof dungColorsControllerUpdate>>>
 export type DungColorsControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof dungColorsControllerRemove>>>
+export type LeatherCoversControllerCreateResult = NonNullable<Awaited<ReturnType<typeof leatherCoversControllerCreate>>>
+export type LeatherCoversControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof leatherCoversControllerFindAll>>>
+export type LeatherCoversControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof leatherCoversControllerFindOne>>>
+export type LeatherCoversControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof leatherCoversControllerUpdate>>>
+export type LeatherCoversControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof leatherCoversControllerRemove>>>
+export type EyelidsControllerCreateResult = NonNullable<Awaited<ReturnType<typeof eyelidsControllerCreate>>>
+export type EyelidsControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof eyelidsControllerFindAll>>>
+export type EyelidsControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof eyelidsControllerFindOne>>>
+export type EyelidsControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof eyelidsControllerUpdate>>>
+export type EyelidsControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof eyelidsControllerRemove>>>
 export type VaccineTypesControllerCreateResult = NonNullable<Awaited<ReturnType<typeof vaccineTypesControllerCreate>>>
 export type VaccineTypesControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof vaccineTypesControllerFindAll>>>
 export type VaccineTypesControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof vaccineTypesControllerFindOne>>>

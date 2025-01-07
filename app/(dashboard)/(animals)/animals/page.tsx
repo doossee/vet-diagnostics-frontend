@@ -4,6 +4,7 @@ import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { useEffect, useState } from 'react'
 import { GENDERS, BREED } from '~/constants'
+import { ALERT_MESSAGES } from "~/constants"
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
 import { DataTable } from '~/components/data-table'
@@ -35,7 +36,6 @@ export default function Animals() {
             return item.farmer?.user?.firstName + ' ' + item.farmer?.user?.lastName
         } },
         { title: 'Id Kodi', key: 'idCode' },
-        { title: 'Manzili', key: 'address' },
         { title: 'Jinsi', key: 'gender', sorting: 'byGender', render(item: Animal) {
             return GENDERS.find(g => g.value === item.gender)?.name
         } },
@@ -72,7 +72,7 @@ export default function Animals() {
     const [itemId, setItemId] = useState<number | null>(null)
     const [animalColors, setAnimalColors] = useState<Color[]>([])
     const [animalTypes, setAnimalTypes] = useState<AnimalType[]>([])
-    
+    const [createLoading, setCreateLoading] = useState(false)
 
     const formSchema = z.object({
         birthDate: z.date(),
@@ -120,20 +120,30 @@ export default function Animals() {
     }
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        if(userData?.userRole === 'FARMER') form.setValue('farmerId', userData?.userId!)
-        if (itemId) {
-            const data: any = await animalsControllerUpdate(itemId, values as any)
-            setItems(p => p.map(i => {
-                if(i.id === itemId) return data
-                return i
-            }))
-        } else {
-            form.setValue('farmerId', userData?.userId!)
-            const data: any = await animalsControllerCreate({...values} as any)
-            setItems(p => [...p, data])
-        }
+        try {
+            setCreateLoading(true)
 
-        handleClose()
+            if (itemId) {
+                const { farmerId, ...others } = values
+                const data: any = await animalsControllerUpdate(itemId, others as any)
+                setItems(p => p.map(i => {
+                    if(i.id === itemId) return data
+                    return i
+                }))
+            } else {
+                if(userData?.userRole === 'FARMER')
+                    form.setValue('farmerId', userData?.farmerId!)
+    
+                const data: any = await animalsControllerCreate({...values} as any)
+                setItems(p => [...p, data])
+            }
+    
+            handleClose()
+        } catch (error) {
+            console.log(error)            
+        } finally {
+            setCreateLoading(false)
+        }
     }
 
     async function handleGetItems(params: any) {
@@ -151,7 +161,7 @@ export default function Animals() {
 
     async function handleDelete(id: number) {
         try {
-            if(!confirm('Delete?')) return
+            if(!confirm(ALERT_MESSAGES.DELETE_CONFIRM)) return
             await animalsControllerRemove(id)
             setItems(p => p.filter(i => i.id !== id))
         } catch (error) {
@@ -170,6 +180,7 @@ export default function Animals() {
         form.setValue('weight', item.weight)
         form.setValue('typeId', item.typeId)
         form.setValue('colorId', item.colorId)
+        form.setValue('farmerId', item.farmerId!)
         form.setValue('birthDate', new Date(item.birthDate))
         form.setValue('arrivalDate', new Date(item.arrivalDate))
     }
@@ -428,7 +439,7 @@ export default function Animals() {
                                     </FormItem>
                                 )}
                             />}
-                            <Button type="submit" className="col-span-1 md:col-span-2">Saqlash</Button>
+                            <Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
                         </form>
                     </Form>
                 </DialogContent>

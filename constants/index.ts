@@ -1,4 +1,4 @@
-import { UserRole } from "~/lib/type";
+import { UserRole, InspectionType } from "~/lib/type";
 import {
   LayoutDashboard,
   FlaskRound,
@@ -15,10 +15,11 @@ import {
   PillBottle,
   MapPin,
   Map,
-  Cat,
+  ScanEye,
   Palette,
   CircleUserRound,
   FolderCog,
+  Disc,
 } from "lucide-react";
 
 export const FARMER_DATA_CARDS = [
@@ -137,6 +138,13 @@ export const BODY_STRUCTURES = {
   WEAK: "Nozik",
 };
 
+export const INSPECTION_TYPES: Record<InspectionType, string> = {
+  DISEASE: "Kasallik",
+  EVENING: "Kechki",
+  GENERAL: "Umumiy",
+  MORNING: "Ertalabki",
+};
+
 export const ALERT_MESSAGES = {
   DATA_CREATED: "Ma'lumot muvaffaqiyatli yaratildi!",
   DATA_UPDATED: "Ma'lumot muvaffaqiyatli yangilandi!",
@@ -154,6 +162,7 @@ export const ALERT_MESSAGES = {
   SAVING: "Saqlanmoqda...",
   UPLOADING: "Yuklanmoqda...",
   NO_DATA: "Ma'lumot mavjud emas!",
+  DELETE_CONFIRM: "Ushbu ma'lumotni o'chirmoqchimisiz?",
 };
 
 export const navLinks: Record<
@@ -343,11 +352,11 @@ export const navLinksVariant: Record<
       title: "Boshqaruvlar",
       icon: FolderCog,
       items: [
-        {
-          title: "Bosh sahifa",
-          icon: LayoutDashboard,
-          url: "/admin",
-        },
+        // {
+        //   title: "Bosh sahifa",
+        //   icon: LayoutDashboard,
+        //   url: "/admin",
+        // },
 
         {
           title: "Hayvon turlari",
@@ -395,6 +404,17 @@ export const navLinksVariant: Record<
           title: "Vet Stansiyalar",
           icon: MapPin,
           url: "/vetstations",
+        },
+
+        {
+          title: "Ko'z qopqoqlari",
+          icon: ScanEye,
+          url: "/eye-lid",
+        },
+        {
+          title: "Teri qoplamalari",
+          icon: Disc,
+          url: "/leather-cover",
         },
       ],
     },
@@ -478,11 +498,11 @@ export const navLinksVariant: Record<
       title: "Boshqaruv",
       icon: FolderCog,
       items: [
-        {
-          title: "Bosh sahifa",
-          icon: LayoutDashboard,
-          url: "/farmer",
-        },
+        // {
+        //   title: "Bosh sahifa",
+        //   icon: LayoutDashboard,
+        //   url: "/farmer",
+        // },
         {
           title: "Hayvonlar",
           icon: PawPrint,
@@ -543,11 +563,11 @@ export const navLinksVariant: Record<
       title: "Boshqaruv",
       icon: FolderCog,
       items: [
-        {
-          title: "Bosh sahifa",
-          icon: LayoutDashboard,
-          url: "/veterinarian",
-        },
+        // {
+        //   title: "Bosh sahifa",
+        //   icon: LayoutDashboard,
+        //   url: "/veterinarian",
+        // },
         {
           title: "Fermerlar",
           icon: Users,

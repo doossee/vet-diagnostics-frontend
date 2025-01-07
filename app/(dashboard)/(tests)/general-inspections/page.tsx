@@ -3,16 +3,19 @@
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { useEffect, useState } from 'react'
+import { ALERT_MESSAGES } from "~/constants"
+import { Input } from "~/components/ui/input"
+import { Divider } from "~/components/divider"
 import { Button } from '~/components/ui/button'
 import { DataTable } from '~/components/data-table'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
-import type { Color, Animal, GeneralInspection } from "~/lib/type"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { CUSTOMER_TYPES, OBESITY_TYPES, BODY_TYPES, BODY_STRUCTURES } from '~/constants'
+import type { Color, Animal, GeneralInspection, Disease, Eyelid, LeatherCover } from "~/lib/type"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
-import { animalsControllerFindAll, colorsControllerFindAll, generalInspectionControllerCreate, generalInspectionControllerFindAll, generalInspectionControllerRemove, generalInspectionControllerUpdate } from '~/lib/api'
+import { eyelidsControllerFindAll, leatherCoversControllerFindAll, diseasesControllerFindAll, animalsControllerFindAll, colorsControllerFindAll, generalInspectionControllerCreate, generalInspectionControllerFindAll, generalInspectionControllerRemove, generalInspectionControllerUpdate } from '~/lib/api'
 
 export default function GeneralInspections() {
     const COLUMNS = [
@@ -65,16 +68,25 @@ export default function GeneralInspections() {
     const [totalItems, setTotalItems] = useState(0)
     const [colors, setColors] = useState<Color[]>([])
     const [animals, setAnimals] = useState<Animal[]>([])
+    const [eyelids, setEyelids] = useState<Eyelid[]>([])
     const [itemId, setItemId] = useState<number | null>(null)
     const [items, setItems] = useState<GeneralInspection[]>([])
+    const [leatherCovers, setLeatherCovers] = useState<LeatherCover[]>([])
+    const [createLoading, setCreateLoading] = useState(false)
 
     const formSchema = z.object({
         colorId: z.number(),
         animalId: z.number(),
+        eyelidId: z.number(),
+        leatherCoverId: z.number(),
         customerType: z.enum(["MOBILE", "CALM"]),
         bodyType: z.enum(["WEAK", "MEDIUM", "STRONG"]),
         obesity: z.enum(["HIGH","MEDIUM","LOW","LEAN","CACHEXIA"]),
         bodyStructure: z.enum(["COARSE", "SLIM", "DENSE", "WEAK"]),
+        pulse: z.coerce.number().min(1, "Puls 0 dan katta qiymat kiritilshi shart"),
+        rumination: z.coerce.number().min(1, "Ruminatsiya 0 dan katta qiymat kiritilshi shart"),
+        temperature: z.coerce.number().min(1, "Harorat 0 dan katta qiymat kiritilshi shart"),
+        respiratoryRate: z.coerce.number().min(1, "Nafas olish tezligi 0 dan katta qiymat kiritilshi shart"),
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -82,39 +94,58 @@ export default function GeneralInspections() {
         defaultValues: {
             colorId: null,
             animalId: null,
+            eyelidId: null,
             bodyType: "MEDIUM",
             obesity: "CACHEXIA",
+            leatherCoverId: null,
             customerType: "CALM",
             bodyStructure: "COARSE",
+            
+            pulse: 0,
+            rumination: 0,
+            temperature: 0,
+            respiratoryRate: 0,
         } as any,
     })
 
-    async function handleGetAnimalsDiseasesColors() {
+    async function handleGetAnimalsColors() {
         try {
-            const [A, C]: any = await Promise.all([
+            const [A, C, E, L]: any = await Promise.all([
                 animalsControllerFindAll({page: 1, perPage: 1000}),
-                colorsControllerFindAll({page: 1, perPage: 1000})
+                colorsControllerFindAll({page: 1, perPage: 1000}),
+                eyelidsControllerFindAll({page: 1, perPage: 1000}),
+                leatherCoversControllerFindAll({page: 1, perPage: 1000}),
             ])
             setColors(C.data)
             setAnimals(A.data)
+            setEyelids(E.data)
+            setLeatherCovers(L.data)
         } catch (error) {
             console.log(error)
         }
     }
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        if (itemId) {
-            const data: any = await generalInspectionControllerUpdate(itemId, values as any)
-            setItems(p => p.map(i => {
-                if(i.id === itemId) return data
-                return i
-            }))
-        } else {
-            const data: any = await generalInspectionControllerCreate(values as any)
-            setItems(p => [...p, data])
-        }
+        try {
+            setCreateLoading(true)
 
-        handleClose()
+            if (itemId) {
+                // const data: any = await generalInspectionControllerUpdate(itemId, body as any)
+                // setItems(p => p.map(i => {
+                //     if(i.id === itemId) return data
+                //     return i
+                // }))
+            } else {
+                const data: any = await generalInspectionControllerCreate(values as any)
+                setItems(p => [...p, data])
+            }
+    
+            handleClose()
+        } catch (error) {
+            console.log(error)            
+        } finally {
+            setCreateLoading(false)
+        }
     }
 
     async function handleGetItems(params: any) {
@@ -132,7 +163,7 @@ export default function GeneralInspections() {
 
     async function handleDelete(id: number) {
         try {
-            if(!confirm('Delete?')) return
+            if(!confirm(ALERT_MESSAGES.DELETE_CONFIRM)) return
             await generalInspectionControllerRemove(id)
             setItems(p => p.filter(i => i.id !== id))
         } catch (error) {
@@ -147,9 +178,11 @@ export default function GeneralInspections() {
         form.setValue('colorId', item.colorId!)
         form.setValue('obesity', item.obesity!)
         form.setValue('animalId', item.animalId!)
+        form.setValue('eyelidId', item.eyelidId!)
         form.setValue('bodyType', item.bodyType!)
         form.setValue('customerType', item.customerType!)
         form.setValue('bodyStructure', item.bodyStructure!)
+        form.setValue('leatherCoverId', item.leatherCoverId!)
     }
 
     function handleClose() {
@@ -159,7 +192,7 @@ export default function GeneralInspections() {
     }
 
     useEffect(() => {
-        handleGetAnimalsDiseasesColors()
+        handleGetAnimalsColors()
     }, [])
 
     return (
@@ -173,13 +206,105 @@ export default function GeneralInspections() {
                 topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Umummiy tekshiruv yaratish</Button>} />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
-                <DialogContent className="overflow-auto max-h-screen md:max-h-[95vh] max-w-[500px]" aria-describedby={undefined}>
+                <DialogContent className="overflow-auto max-h-screen md:max-h-[95vh] max-w-[600px]" aria-describedby={undefined}>
                     <DialogHeader>
                         <DialogTitle>{itemId?"Umummiy tekshiruvni o'zgartirish":"Umummiy tekshiruv yaratish"}</DialogTitle>
                     </DialogHeader>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             
+                            <FormField
+                                name="colorId"
+                                control={form.control}
+                                render={({ field: { value, onChange, ...others } }) => (
+                                    <FormItem>
+                                        <FormLabel>Rangi</FormLabel>
+                                        <FormControl>
+                                            <Select value={value ? String(value) : ""} onValueChange={e => onChange(+e)} {...others}>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Rangi" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {
+                                                        colors.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                                    }
+                                                </SelectContent>
+                                            </Select>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                name="animalId"
+                                control={form.control}
+                                render={({ field: { value, onChange, ...others } }) => (
+                                    <FormItem>
+                                        <FormLabel>Hayvon</FormLabel>
+                                        <FormControl>
+                                            <Select value={value ? String(value) : ""} onValueChange={e => onChange(+e)} {...others}>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Hayvon" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {
+                                                        animals.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                                    }
+                                                </SelectContent>
+                                            </Select>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+                            <FormField
+                                name="leatherCoverId"
+                                control={form.control}
+                                render={({ field: { value, onChange, ...others } }) => (
+                                    <FormItem>
+                                        <FormLabel>Teri qoplamasi</FormLabel>
+                                        <FormControl>
+                                            <Select value={value ? String(value) : ""} onValueChange={e => onChange(+e)} {...others}>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Teri qoplamasi" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {
+                                                        leatherCovers.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                                    }
+                                                </SelectContent>
+                                            </Select>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                name="eyelidId"
+                                control={form.control}
+                                render={({ field: { value, onChange, ...others } }) => (
+                                    <FormItem>
+                                        <FormLabel>Ko'z qopqog'i</FormLabel>
+                                        <FormControl>
+                                            <Select value={value ? String(value) : ""} onValueChange={e => onChange(+e)} {...others}>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Ko'z qopqog'i" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {
+                                                        eyelids.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                                    }
+                                                </SelectContent>
+                                            </Select>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            
+
+                            <Divider label="Gabitus" className="col-span-1 md:col-span-2" />
                             <FormField
                                 name="obesity"
                                 control={form.control}
@@ -268,51 +393,59 @@ export default function GeneralInspections() {
                                     </FormItem>
                                 )}
                             />
+
+                            <Divider label="Tekshiruv" className="col-span-1 md:col-span-2" />
+
                             <FormField
-                                name="colorId"
+                                name="pulse"
                                 control={form.control}
-                                render={({ field: { value, onChange, ...others } }) => (
-                                    <FormItem>
-                                        <FormLabel>Rangi</FormLabel>
+                                render={({ field }) => (
+                                    <FormItem className="flex flex-col gap-1 pt-1.5">
+                                        <FormLabel>Puls</FormLabel>
                                         <FormControl>
-                                            <Select value={value ? String(value) : ""} onValueChange={e => onChange(+e)} {...others}>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Rangi" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    {
-                                                        colors.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
-                                                    }
-                                                </SelectContent>
-                                            </Select>
+                                            <Input type="number" placeholder="Puls" {...field} />
                                         </FormControl>
-                                        <FormMessage />
                                     </FormItem>
                                 )}
                             />
                             <FormField
-                                name="animalId"
+                                name="rumination"
                                 control={form.control}
-                                render={({ field: { value, onChange, ...others } }) => (
-                                    <FormItem>
-                                        <FormLabel>Hayvon</FormLabel>
+                                render={({ field }) => (
+                                    <FormItem className="flex flex-col gap-1 pt-1.5">
+                                        <FormLabel>Ruminatsiya</FormLabel>
                                         <FormControl>
-                                            <Select value={value ? String(value) : ""} onValueChange={e => onChange(+e)} {...others}>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Hayvon" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    {
-                                                        animals.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
-                                                    }
-                                                </SelectContent>
-                                            </Select>
+                                            <Input type="number" placeholder="Ruminatsiya" {...field} />
                                         </FormControl>
-                                        <FormMessage />
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit" className="w-full">Saqlash</Button>
+                            <FormField
+                                name="temperature"
+                                control={form.control}
+                                render={({ field }) => (
+                                    <FormItem className="flex flex-col gap-1 pt-1.5">
+                                        <FormLabel>Harorati</FormLabel>
+                                        <FormControl>
+                                            <Input type="number" placeholder="Harorati" {...field} />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                name="respiratoryRate"
+                                control={form.control}
+                                render={({ field }) => (
+                                    <FormItem className="flex flex-col gap-1 pt-1.5">
+                                        <FormLabel>Nafas olish tezligi</FormLabel>
+                                        <FormControl>
+                                            <Input type="number" placeholder="Nafas olish tezligi" {...field} />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+
+                            <Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
                         </form>
                     </Form>
                 </DialogContent>

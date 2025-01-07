@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 
 export default function Regions() {
-    const { form, itemId, regions, dialog, loading, COLUMNS, total,  setDialog, handleClose, handleGetRegions, onSubmit } = useRegions()
+    const { createLoading, form, itemId, regions, dialog, loading, COLUMNS, total,  setDialog, handleClose, handleGetRegions, onSubmit } = useRegions()
 
     return (
         <div>
@@ -41,7 +41,7 @@ export default function Regions() {
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit" className="w-full">Saqlash</Button>
+                            <Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
                         </form>
                     </Form>
                 </DialogContent>

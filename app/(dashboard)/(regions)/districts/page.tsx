@@ -1,9 +1,9 @@
 'use client'
 
-
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { useEffect, useState } from 'react'
+import { ALERT_MESSAGES } from "~/constants"
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
 import type { District, Region } from "~/lib/type"
@@ -39,9 +39,7 @@ export default function Districts() {
     const [items, setItems] = useState<District[]>([])
     const [regions, setRegions] = useState<Region[]>([])
     const [itemId, setItemId] = useState<number|null>(null)
-    // const [filters, setFilters] = useState({
-    //     regionId: null as number | null,
-    // })
+    const [createLoading, setCreateLoading] = useState(false)
 
     const formSchema = z.object({
         name: z.string().min(1, "Tuman nomi kiritilishi shart"),
@@ -66,18 +64,26 @@ export default function Districts() {
     }
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        if(itemId) {
-            const data: any = await districtsControllerUpdate(itemId, values as any)
-            setItems(p => p.map(i => {
-                if(i.id === itemId) return data
-                return i
-            }))
-        } else {
-            const data: any = await districtsControllerCreate(values as any)
-            setItems(p => [...p, data])
+        try {
+            setCreateLoading(true)
+        
+            if(itemId) {
+                const data: any = await districtsControllerUpdate(itemId, values as any)
+                setItems(p => p.map(i => {
+                    if(i.id === itemId) return data
+                    return i
+                }))
+            } else {
+                const data: any = await districtsControllerCreate(values as any)
+                setItems(p => [...p, data])
+            }
+    
+            handleClose()
+        } catch (error) {
+            console.log(error)            
+        } finally {
+            setCreateLoading(false)
         }
-
-        handleClose()
     }
 
     async function handleGetItems(params: any) {
@@ -89,7 +95,7 @@ export default function Districts() {
     }
 
     async function handleDelete(id: number) {
-        if(!confirm('Delete?')) return
+        if(!confirm(ALERT_MESSAGES.DELETE_CONFIRM)) return
         await districtsControllerRemove(id)
         setItems(p => p.filter(i => i.id !== id))
     }
@@ -110,24 +116,7 @@ export default function Districts() {
 
     return (
         <div>
-            {/* <Card className="rounded-md shadow-none mb-4">
-                <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 p-2">
-                    <Select value={filters.regionId?String(filters.regionId):""} onValueChange={e => setFilters({...filters, regionId: +e})}>
-                        <SelectTrigger>
-                            <SelectValue placeholder="Viloyat bo'yicha saralash" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value={null as any}>Barchasi</SelectItem>
-                            {
-                                regions.map(r => <SelectItem key={r.id} value={String(r.id)}>{r.name}</SelectItem>)
-                            }
-                        </SelectContent>
-                    </Select>
-                </CardContent>
-            </Card> */}
-
             <DataTable
-                // filters={filters}
                 loading={loading}
                 columns={COLUMNS}
                 totalItems={total}
@@ -180,7 +169,7 @@ export default function Districts() {
                                         </FormItem>
                                     )}
                                 />
-                                <Button type="submit" className="w-full">Saqlash</Button>
+                                <Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
                             </form>
                         </Form>
                 </DialogContent>

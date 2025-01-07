@@ -18,8 +18,8 @@ export function LoginForm() {
   const { setAuthData } = useAuthData()
 
   const formSchema = z.object({
-    phone: z.string().min(1),
-    password: z.string().min(3),
+    phone: z.string().min(1, 'Telefon raqam kiritilishi shart'),
+    password: z.string().min(6, "Parol 8 ta belgidan kichik bo'lmasligi kerak"),
   })
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -35,7 +35,14 @@ export function LoginForm() {
       setAuthData(accessToken, 'ACCESS_TOKEN')
       setAuthData(refreshToken, 'REFRESH_TOKEN')
       setAuthData(JSON.stringify(user), 'USER_DATA')
-      router.push('/'+user.userRole.toLocaleLowerCase())
+      
+      if(user.userRole === "ADMIN"){
+        router.push('/animal-types')
+      } else if(user.userRole === "VETERINARIAN") {
+        router.push('/farmers')
+      } else if(user.userRole === "FARMER") {
+        router.push('/animals')
+      }
     } catch (error) {
       toast("Telefon yoki Parol noto'g'ri", TOAST_OPTIONS)
     }

@@ -25,11 +25,12 @@ interface DataTableProps<T> {
   loading?: boolean
   totalItems: number
   hideBottom?: boolean
+  hideSearch?: boolean
   topSlot?: React.ReactNode
   columns: DataTableColumn<T>[],
 }
 
-export function DataTable<T extends { id: any }>({ columns, items, totalItems, loading, topSlot, callback, hideBottom, filters }: DataTableProps<T>) {
+export function DataTable<T extends { id: any }>({ columns, items, totalItems, loading, topSlot, callback, hideBottom, filters, hideSearch }: DataTableProps<T>) {
   const isMobile = useIsMobile()
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState("")
@@ -65,7 +66,7 @@ export function DataTable<T extends { id: any }>({ columns, items, totalItems, l
   return (
     <Card className="shadow-none rounded-md">
       <CardHeader className='p-4 flex flex-col sm:flex-row justify-between items-center gap-2'>
-        <Input className='sm:max-w-[200px]' onChange={e => handleSearch(e.target.value.trim())} placeholder='Qidirish' />
+        {!hideSearch && <Input className='sm:max-w-[200px]' onChange={e => handleSearch(e.target.value.trim())} placeholder='Qidirish' />}
         {topSlot}
       </CardHeader>
       <CardContent className="p-4">

@@ -3,6 +3,7 @@
 import { z } from "zod"
 import { useState } from 'react'
 import { useForm } from "react-hook-form"
+import { ALERT_MESSAGES } from "~/constants"
 import { Input } from '~/components/ui/input'
 import type { VaccineType } from "~/lib/type"
 import { Button } from '~/components/ui/button'
@@ -35,6 +36,7 @@ export default function VaccineTypes() {
     const [totalItems, setTotalItems] = useState(0)
     const [items, setItems] = useState<VaccineType[]>([])
     const [itemId, setItemId] = useState<number | null>(null)
+    const [createLoading, setCreateLoading] = useState(false)
 
     const formSchema = z.object({
         name: z.string().min(1, "Tur nomi kiritilishi shart"),
@@ -48,18 +50,26 @@ export default function VaccineTypes() {
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        if (itemId) {
-            const data: any = await vaccineTypesControllerUpdate(itemId, values as any)
-            setItems(p => p.map(i => {
-                if(i.id === itemId) return data
-                return i
-            }))
-        } else {
-            const data: any = await vaccineTypesControllerCreate(values as any)
-            setItems(p => [...p, data])
-        }
+        try {
+            setCreateLoading(true)
 
-        handleClose()
+            if (itemId) {
+                const data: any = await vaccineTypesControllerUpdate(itemId, values as any)
+                setItems(p => p.map(i => {
+                    if(i.id === itemId) return data
+                    return i
+                }))
+            } else {
+                const data: any = await vaccineTypesControllerCreate(values as any)
+                setItems(p => [...p, data])
+            }
+    
+            handleClose()
+        } catch (error) {
+            console.log(error)            
+        } finally {
+            setCreateLoading(false)
+        }
     }
 
     async function handleGetItems(params: any) {
@@ -77,7 +87,7 @@ export default function VaccineTypes() {
 
     async function handleDelete(id: number) {
         try {
-            if(!confirm('Delete?')) return
+            if(!confirm(ALERT_MESSAGES.DELETE_CONFIRM)) return
             await vaccineTypesControllerRemove(id)
             setItems(p => p.filter(i => i.id !== id))
         } catch (error) {
@@ -129,7 +139,7 @@ export default function VaccineTypes() {
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit" className="w-full">Saqlash</Button>
+                            <Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
                         </form>
                     </Form>
                 </DialogContent>

@@ -3,7 +3,7 @@
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { useEffect, useState } from 'react'
-import { Input } from '~/components/ui/input'
+import { ALERT_MESSAGES } from "~/constants"
 import { Button } from '~/components/ui/button'
 import { DataTable } from '~/components/data-table'
 import { Textarea } from "~/components/ui/textarea"
@@ -50,13 +50,14 @@ export default function Diseases() {
     const [animals, setAnimals] = useState<Animal[]>([])
     const [itemId, setItemId] = useState<number | null>(null)
     const [diseaseTypes, setDiseassTypes] = useState<DiseaseType[]>([])
+    const [createLoading, setCreateLoading] = useState(false)
 
     const formSchema = z.object({
-        conclusion: z.string(),
         endTime: z.date(),
         typeId: z.number(),
         startTime: z.date(),
         animalId: z.number(),
+        conclusion: z.string(),
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -69,6 +70,8 @@ export default function Diseases() {
             startTime: null,
         } as any,
     })
+
+    // TODO: fix bug with dates
 
     async function handleGetAnimalsAndDiseases() {
         try {
@@ -84,20 +87,26 @@ export default function Diseases() {
     }
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
-        
-        if (itemId) {
-            const data: any = await diseasesControllerUpdate(itemId, values as any)
-            setItems(p => p.map(i => {
-                if(i.id === itemId) return data
-                return i
-            }))
-        } else {
-            const data: any = await diseasesControllerCreate(values as any)
-            setItems(p => [...p, data])
-        }
+        try {
+            setCreateLoading(true)
 
-        handleClose()
+            if (itemId) {
+                const data: any = await diseasesControllerUpdate(itemId, values as any)
+                setItems(p => p.map(i => {
+                    if(i.id === itemId) return data
+                    return i
+                }))
+            } else {
+                const data: any = await diseasesControllerCreate(values as any)
+                setItems(p => [...p, data])
+            }
+    
+            handleClose()
+        } catch (error) {
+            console.log(error)            
+        } finally {
+            setCreateLoading(false)
+        }
     }
 
     async function handleGetItems(params: any) {
@@ -115,7 +124,7 @@ export default function Diseases() {
 
     async function handleDelete(id: number) {
         try {
-            if(!confirm('Delete?')) return
+            if(!confirm(ALERT_MESSAGES.DELETE_CONFIRM)) return
             await diseasesControllerRemove(id)
             setItems(p => p.filter(i => i.id !== id))
         } catch (error) {
@@ -128,10 +137,11 @@ export default function Diseases() {
         setItemId(item.id)
 
         form.setValue('typeId', item.typeId)
-        form.setValue('endTime', item.endTime)
         form.setValue('animalId', item.animalId)
-        form.setValue('startTime', item.startTime)
-        form.setValue('conclusion', item.conclusion)
+        form.setValue('conclusion', item.conclusion||'')
+        form.setValue('endTime', new Date(item.endTime!))
+        form.setValue('startTime', new Date(item.startTime!))
+        form.trigger()
     }
 
     function handleClose() {
@@ -239,13 +249,13 @@ export default function Diseases() {
                                     <FormItem>
                                         <FormLabel>Xulosa</FormLabel>
                                         <FormControl>
-                                            <Textarea rows={6} className="resize-none" placeholder="Xulosa manzi" {...field} />
+                                            <Textarea rows={6} className="resize-none" placeholder="Xulosa" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit" className="w-full">Saqlash</Button>
+                            <Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
                         </form>
                     </Form>
                 </DialogContent>

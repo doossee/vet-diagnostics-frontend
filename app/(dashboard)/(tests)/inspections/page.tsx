@@ -2,19 +2,19 @@
 
 import { z } from "zod"
 import { useForm } from "react-hook-form"
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
 import { DataTable } from '~/components/data-table'
 import { Textarea } from "~/components/ui/textarea"
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
-import type { Inspection, Disease, Animal } from "~/lib/type"
+import type { Inspection, Animal } from "~/lib/type"
 import { ALERT_MESSAGES, INSPECTION_TYPES } from "~/constants"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
-import { animalsControllerFindAll, diseasesControllerFindAll, inspectionsControllerFindAll, inspectionsControllerCreate, inspectionsControllerRemove, inspectionsControllerUpdate } from '~/lib/api'
+import { animalsControllerFindAll, inspectionsControllerFindAll, inspectionsControllerCreate, inspectionsControllerRemove, inspectionsControllerUpdate } from '~/lib/api'
 
 export default function Inspections() {
     const COLUMNS = [
@@ -22,11 +22,8 @@ export default function Inspections() {
         { title: 'Ruminatsiya', key: 'rumination' },
         { title: 'Harorati', key: 'temperature' },
         { title: 'Nafas olish tezligi', key: 'respiratoryRate' },
-        { title: 'Kasallik', key: 'disease', render(item: Inspection) {
-            return item.disease?.id
-        } },
-        { title: 'Tekshiruv turi', key: 'type', render(item: Inspection) {
-            return INSPECTION_TYPES[item.type]
+        { title: 'Tekshiruv turi', key: 'type', render(item: any) {
+            return INSPECTION_TYPES[item.type as keyof typeof INSPECTION_TYPES]
         } },
         {
             title: 'Boshqarish', key: 'actions', render(item: Inspection) {
@@ -47,15 +44,13 @@ export default function Inspections() {
     const [totalItems, setTotalItems] = useState(0)
     const [items, setItems] = useState<Inspection[]>([])
     const [animals, setAnimals] = useState<Animal[]>([])
-    const [diseases, setDiseases] = useState<Disease[]>([])
     const [itemId, setItemId] = useState<number | null>(null)
     const [createLoading, setCreateLoading] = useState(false)
 
     const formSchema = z.object({
         animalId: z.number(),
-        diseaseId: z.number().optional(),
         conclusion: z.string().optional(),
-        type: z.enum(["DISEASE", "EVENING", "MORNING", "GENERAL"]), 
+        type: z.enum(["EVENING", "MORNING", "DISEASE", "GENERAL"]),
         pulse: z.coerce.number().min(1, "Puls 0 dan katta qiymat kiritilshi shart"),
         temperature: z.coerce.number().min(1, "Harorat 0 dan katta qiymat kiritilshi shart"),
         rumination: z.coerce.number().min(1, "Ruminatsiya 0 dan katta qiymat kiritilshi shart"),
@@ -70,19 +65,16 @@ export default function Inspections() {
             temperature: 0,
             animalId: null,
             type: "MORNING",
-            diseaseId: null,
             respiratoryRate: 0,
         } as any,
     })
 
-    async function handleGetAnimalsAndDiseases() {
+    async function handleGetAnimals() {
         try {
             const [A, D]: any = await Promise.all([
                 animalsControllerFindAll({page: 1, perPage: 1000}),
-                diseasesControllerFindAll({page: 1, perPage: 1000} as any),
             ])
             setAnimals(A.data)
-            setDiseases(D.data)
         } catch (error) {
             console.log(error)
         }
@@ -140,11 +132,11 @@ export default function Inspections() {
         setItemId(item.id)
 
         form.setValue('pulse', item.pulse!)
+        form.setValue('type', item.type as any)
         form.setValue('animalId', item.animalId!)
-        form.setValue('diseaseId', item.diseaseId!)
-        form.setValue('conclusion', item.conclusion!)
         form.setValue('rumination', item.rumination!)
         form.setValue('temperature', item.temperature!)
+        form.setValue('conclusion', item.conclusion||'')
         form.setValue('respiratoryRate', item.respiratoryRate!)
     }
 
@@ -155,10 +147,8 @@ export default function Inspections() {
     }
     
     useEffect(() => {
-        handleGetAnimalsAndDiseases()
+        handleGetAnimals()
     }, [])
-
-    const showDiaises = form.watch('type') === "DISEASE";
 
     return (
         <div>
@@ -238,7 +228,7 @@ export default function Inspections() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        Object.keys(INSPECTION_TYPES).map(k => <SelectItem key={k} value={k}>{INSPECTION_TYPES[k as keyof typeof INSPECTION_TYPES]}</SelectItem>)
+                                                        Object.keys(INSPECTION_TYPES).map(k => <SelectItem disabled={k === "GENERAL" || k === "DISEASE"} key={k} value={k}>{INSPECTION_TYPES[k as keyof typeof INSPECTION_TYPES]}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>
@@ -247,28 +237,6 @@ export default function Inspections() {
                                     </FormItem>
                                 )}
                             />
-                            {showDiaises && <FormField
-                                name="diseaseId"
-                                control={form.control}
-                                render={({ field: { value, onChange, ...others } }) => (
-                                    <FormItem>
-                                        <FormLabel>Kasallik</FormLabel>
-                                        <FormControl>
-                                            <Select value={value ? String(value) : ""} onValueChange={e => onChange(+e)} {...others}>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Kasallik" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    {
-                                                        diseases.map(d => <SelectItem key={d.id} value={String(d.id)}>{new Date(d.startTime).toLocaleDateString()}-{new Date(d.endTime).toLocaleDateString()}</SelectItem>)
-                                                    }
-                                                </SelectContent>
-                                            </Select>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />}
                             <FormField
                                 name="animalId"
                                 control={form.control}
@@ -305,7 +273,7 @@ export default function Inspections() {
                                 )}
                             />
 
-<Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
+                            <Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
                         </form>
                     </Form>
                 </DialogContent>

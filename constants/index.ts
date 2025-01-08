@@ -138,11 +138,11 @@ export const BODY_STRUCTURES = {
   WEAK: "Nozik",
 };
 
-export const INSPECTION_TYPES: Record<InspectionType, string> = {
-  DISEASE: "Kasallik",
-  EVENING: "Kechki",
-  GENERAL: "Umumiy",
+export const INSPECTION_TYPES = {
   MORNING: "Ertalabki",
+  EVENING: "Kechki",
+  DISEASE: "Kasallik",
+  GENERAL: "Umumiy",
 };
 
 export const ALERT_MESSAGES = {

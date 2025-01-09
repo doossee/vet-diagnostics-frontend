@@ -8,7 +8,6 @@ import { ALERT_MESSAGES } from "~/constants"
 import { Button } from '~/components/ui/button'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { regionsControllerFindAll, regionsControllerCreate, regionsControllerRemove, regionsControllerUpdate } from '~/lib/api'
-import { useQueryClientHook } from "~/app/query-client"
 
 export function useRegions() {
     const COLUMNS = [

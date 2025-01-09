@@ -19,7 +19,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
 import { districtsControllerFindAll, regionsControllerFindAll, veterinariansControllerFindAll, veterinariansControllerCreate, veterinariansControllerRemove, usersControllerUpdate } from '~/lib/api'
 import { useQuery } from "@tanstack/react-query"
-import { useQueryClientHook } from "~/app/query-client"
 
 export default function Veterinarians() {
     const COLUMNS: any = [

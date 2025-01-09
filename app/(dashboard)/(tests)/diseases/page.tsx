@@ -17,7 +17,6 @@ import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { animalsControllerFindAll, diseaseTypesControllerFindAll, inspectionsControllerCreate, diseasesControllerCreate, diseasesControllerRemove, diseasesControllerUpdate, diseasesControllerFindAll } from '~/lib/api'
-import { useQueryClientHook } from "~/app/query-client"
 
 export default function Diseases() {
     const formSchema = z.object({

@@ -13,7 +13,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { eyelidsControllerFindAll, eyelidsControllerCreate, eyelidsControllerRemove, eyelidsControllerUpdate } from '~/lib/api'
-import { useQueryClientHook } from "~/app/query-client"
 
 export default function LeatherCovers() {
     const COLUMNS = [

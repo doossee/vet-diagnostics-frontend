@@ -1,21 +1,22 @@
 'use client'
 
 import { z } from "zod"
+import { useState } from 'react'
 import { useForm } from "react-hook-form"
-import { useEffect, useState } from 'react'
 import { ALERT_MESSAGES } from "~/constants"
 import { Input } from "~/components/ui/input"
 import { Divider } from "~/components/divider"
 import { Button } from '~/components/ui/button'
 import { DataTable } from '~/components/data-table'
+import type { GeneralInspection } from "~/lib/type"
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { CUSTOMER_TYPES, OBESITY_TYPES, BODY_TYPES, BODY_STRUCTURES } from '~/constants'
-import type { Color, Animal, GeneralInspection, Disease, Eyelid, LeatherCover } from "~/lib/type"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
 import { eyelidsControllerFindAll, leatherCoversControllerFindAll, diseasesControllerFindAll, animalsControllerFindAll, colorsControllerFindAll, generalInspectionControllerCreate, generalInspectionControllerFindAll, generalInspectionControllerRemove, generalInspectionControllerUpdate } from '~/lib/api'
+import { useQuery } from "@tanstack/react-query"
 
 export default function GeneralInspections() {
     const COLUMNS = [
@@ -66,13 +67,8 @@ export default function GeneralInspections() {
     const [dialog, setDialog] = useState(false)
     const [loading, setLoading] = useState(true)
     const [totalItems, setTotalItems] = useState(0)
-    const [colors, setColors] = useState<Color[]>([])
-    const [animals, setAnimals] = useState<Animal[]>([])
-    const [eyelids, setEyelids] = useState<Eyelid[]>([])
     const [itemId, setItemId] = useState<number | null>(null)
     const [items, setItems] = useState<GeneralInspection[]>([])
-    const [leatherCovers, setLeatherCovers] = useState<LeatherCover[]>([])
-    const [createLoading, setCreateLoading] = useState(false)
 
     const formSchema = z.object({
         colorId: z.number(),
@@ -108,27 +104,28 @@ export default function GeneralInspections() {
         } as any,
     })
 
-    async function handleGetAnimalsColors() {
-        try {
-            const [A, C, E, L]: any = await Promise.all([
-                animalsControllerFindAll({page: 1, perPage: 1000}),
-                colorsControllerFindAll({page: 1, perPage: 1000}),
-                eyelidsControllerFindAll({page: 1, perPage: 1000}),
-                leatherCoversControllerFindAll({page: 1, perPage: 1000}),
-            ])
-            setColors(C.data)
-            setAnimals(A.data)
-            setEyelids(E.data)
-            setLeatherCovers(L.data)
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    const { data: animals }: any = useQuery({
+        queryKey: ['animals'],
+        queryFn: () => animalsControllerFindAll({page: 1, perPage: 100}),
+    })
+
+    const { data: colors } = useQuery({
+        queryKey: ['colors'],
+        queryFn: () => colorsControllerFindAll({page: 1, perPage: 100}),
+    })
+
+    const { data: eyeLids } = useQuery({
+        queryKey: ['eye-lids'],
+        queryFn: () => eyelidsControllerFindAll({page: 1, perPage: 100}),
+    })
+
+    const { data: leatherCovers } = useQuery({
+        queryKey: ['leather-covers'],
+        queryFn: () => leatherCoversControllerFindAll({page: 1, perPage: 100}),
+    })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            setCreateLoading(true)
-
             if (itemId) {
                 // const data: any = await generalInspectionControllerUpdate(itemId, body as any)
                 // setItems(p => p.map(i => {
@@ -143,8 +140,6 @@ export default function GeneralInspections() {
             handleClose()
         } catch (error) {
             console.log(error)            
-        } finally {
-            setCreateLoading(false)
         }
     }
 
@@ -191,10 +186,6 @@ export default function GeneralInspections() {
         setDialog(false)
     }
 
-    useEffect(() => {
-        handleGetAnimalsColors()
-    }, [])
-
     return (
         <div>
             <DataTable
@@ -203,7 +194,7 @@ export default function GeneralInspections() {
                 items={items as any}
                 totalItems={totalItems}
                 callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Umummiy tekshiruv yaratish</Button>} />
+                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="!mt-0 w-full sm:w-fit">Umummiy tekshiruv yaratish</Button>} />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
                 <DialogContent className="overflow-auto max-h-screen md:max-h-[95vh] max-w-[600px]" aria-describedby={undefined}>
@@ -226,7 +217,7 @@ export default function GeneralInspections() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        colors.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                                        colors?.data?.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>
@@ -248,7 +239,7 @@ export default function GeneralInspections() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        animals.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                                        animals?.data?.map((d: any) => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>
@@ -271,7 +262,7 @@ export default function GeneralInspections() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        leatherCovers.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                                        leatherCovers?.data?.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>
@@ -293,7 +284,7 @@ export default function GeneralInspections() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        eyelids.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                                        eyeLids?.data?.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>
@@ -445,7 +436,7 @@ export default function GeneralInspections() {
                                 )}
                             />
 
-                            <Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
+                            <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">{form.formState.isSubmitting?"Yuklanyapti...":"Saqlash"}</Button>
                         </form>
                     </Form>
                 </DialogContent>

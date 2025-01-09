@@ -8,13 +8,14 @@ import { navLinksVariant } from '~/constants'
 import { usePathname } from "next/navigation"
 import { useAuthData } from "~/hooks/use-auth-data"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@radix-ui/react-collapsible"
-import { Sidebar, SidebarContent, SidebarGroup, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem } from "~/components/ui/sidebar"
+import { Sidebar, SidebarContent, SidebarGroup, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, useSidebar } from "~/components/ui/sidebar"
 
 export function AppSidebar() {
     const pathname = usePathname()
-    const { userData } = useAuthData()    
+    const { userData } = useAuthData()
     const [links, setLinks] = useState<any[]>([])
-
+    const { toggleSidebar, isMobile } = useSidebar()
+    
     useEffect(() => {
         setLinks(navLinksVariant[userData?.userRole!]||[])
     }, [])
@@ -44,7 +45,7 @@ export function AppSidebar() {
                                                     <SidebarMenuSubButton asChild>
                                                         <Link href={subItem.url} className={cn("text-nowrap p-2 overflow-hidden flex gap-3 items-center rounded-sm cursor-pointer transition-colors",
                                                             pathname === subItem.url ? "bg-primary hover:!bg-primary/80 text-white hover:text-white dark:text-background hover:dark:text-background" : "text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-500/40 dark:text-gray-300"
-                                                        )}>
+                                                        )} onClick={() => isMobile && toggleSidebar()}>
                                                             <div>
                                                                 {subItem.icon && <subItem.icon className="size-[1.1rem]" />}
                                                             </div>

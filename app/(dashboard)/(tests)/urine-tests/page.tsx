@@ -1,16 +1,17 @@
 'use client'
 
 import { z } from "zod"
+import { useState } from 'react'
 import { useForm } from "react-hook-form"
-import { useEffect, useState } from 'react'
+import type { UrineTest } from "~/lib/type"
 import { ALERT_MESSAGES } from "~/constants"
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
+import { useQuery } from "@tanstack/react-query"
 import { DataTable } from '~/components/data-table'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SMELLL_TYPES, CLARITY_TYPES } from '~/constants'
-import type { UrineTest, Disease, Animal, UrineColor } from "~/lib/type"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
@@ -31,8 +32,8 @@ export default function UrineTests() {
         { title: 'Hayvon', key: 'animal', render(item: UrineTest) {
             return item.animal?.name
         } },
-        { title: 'Kasallik turi', key: 'type', render(item: UrineTest) {
-            return item.disease?.id
+        { title: 'Kasallik', key: 'type', render(item: UrineTest) {
+            return `${new Date(item.disease?.startTime!).toLocaleDateString()}-${new Date(item.disease?.endTime!).toLocaleDateString()}`
         } },
         { title: 'Boshqarish', key: 'actions', render(item: UrineTest) {
             return (<div className="flex gap-2 items-center">
@@ -50,12 +51,8 @@ export default function UrineTests() {
     const [loading, setLoading] = useState(true)
     const [totalItems, setTotalItems] = useState(0)
     const [items, setItems] = useState<UrineTest[]>([])
-    const [animals, setAnimals] = useState<Animal[]>([])
-    const [colors, setColors] = useState<UrineColor[]>([])
-    const [diseases, setDiseases] = useState<Disease[]>([])
     const [itemId, setItemId] = useState<number | null>(null)
-    const [createLoading, setCreateLoading] = useState(false)
-
+    
     const formSchema = z.object({
         colorId: z.number(),
         animalId: z.number(),
@@ -77,25 +74,23 @@ export default function UrineTests() {
         } as any,
     })
 
-    async function handleGetAnimalsDiseasesColors() {
-        try {
-            const [A, D, C]: any = await Promise.all([
-                animalsControllerFindAll({page: 1, perPage: 1000}),
-                diseasesControllerFindAll({page: 1, perPage: 1000} as any),
-                urineColorsControllerFindAll({page: 1, perPage: 1000})
-            ])
-            setColors(C.data)
-            setAnimals(A.data)
-            setDiseases(D.data)
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    const { data: animals }: any = useQuery({
+        queryKey: ['animals'],
+        queryFn: () => animalsControllerFindAll({page: 1, perPage: 100}),
+    })
+
+    const { data: diseases } = useQuery({
+        queryKey: ['diseases'],
+        queryFn: () => diseasesControllerFindAll ({page: 1, perPage: 100} as any),
+    })
+
+    const { data: colors } = useQuery({
+        queryKey: ['urine-colors'],
+        queryFn: () => urineColorsControllerFindAll({page: 1, perPage: 100}),
+    })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            setCreateLoading(true)
-
             if (itemId) {
                 const data: any = await urineTestsControllerUpdate(itemId, values as any)
                 setItems(p => p.map(i => {
@@ -110,8 +105,6 @@ export default function UrineTests() {
             handleClose()
         } catch (error) {
             console.log(error)            
-        } finally {
-            setCreateLoading(false)
         }
     }
 
@@ -155,10 +148,6 @@ export default function UrineTests() {
         setItemId(null)
         setDialog(false)
     }
-    
-    useEffect(() => {
-        handleGetAnimalsDiseasesColors()
-    }, [])
 
     return (
         <div>
@@ -168,7 +157,7 @@ export default function UrineTests() {
                 items={items as any}
                 totalItems={totalItems}
                 callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Siydik tahlili yaratish</Button>} />
+                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="!mt-0 w-full sm:w-fit">Siydik tahlili yaratish</Button>} />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
                 <DialogContent className="overflow-auto max-h-screen md:max-h-[95vh] max-w-[500px]" aria-describedby={undefined}>
@@ -246,7 +235,7 @@ export default function UrineTests() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        diseases.map(d => <SelectItem key={d.id} value={String(d.id)}>{new Date(d.startTime).toLocaleDateString()}-{new Date(d.endTime).toLocaleDateString()}</SelectItem>)
+                                                        diseases?.data.map(d => <SelectItem key={d.id} value={String(d.id)}>{new Date(d.startTime).toLocaleDateString()}-{new Date(d.endTime).toLocaleDateString()}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>
@@ -268,7 +257,7 @@ export default function UrineTests() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        animals.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                                        animals?.data?.map((d: any) => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>
@@ -290,7 +279,7 @@ export default function UrineTests() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        colors.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                                        colors?.data?.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>
@@ -299,7 +288,7 @@ export default function UrineTests() {
                                     </FormItem>
                                 )}
                             />
-                            <Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
+                            <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">{form.formState.isSubmitting?"Yuklanyapti...":"Saqlash"}</Button>
                         </form>
                     </Form>
                 </DialogContent>

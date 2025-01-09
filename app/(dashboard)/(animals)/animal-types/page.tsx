@@ -36,7 +36,6 @@ export default function AnimalTypes() {
     const [totalItems, setTotalItems] = useState(0)
     const [items, setItems] = useState<AnimalType[]>([])
     const [itemId, setItemId] = useState<number | null>(null)
-    const [createLoading, setCreateLoading] = useState(false)
 
     const formSchema = z.object({
         name: z.string().min(1, "Tur nomi kiritilishi shart")
@@ -51,8 +50,6 @@ export default function AnimalTypes() {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            setCreateLoading(true)
-
             if (itemId) {
                 const data: any = await animalTypesControllerUpdate(itemId, values as any)
                 setItems(p => p.map(i => {
@@ -67,8 +64,6 @@ export default function AnimalTypes() {
             handleClose()
         } catch (error) {
             console.log(error)            
-        } finally {
-            setCreateLoading(false)
         }
     }
 
@@ -116,7 +111,7 @@ export default function AnimalTypes() {
                 items={items as any}
                 totalItems={totalItems}
                 callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Hayvon turi yaratish</Button>}
+                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="!mt-0 w-full sm:w-fit">Hayvon turi yaratish</Button>}
             />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
@@ -139,7 +134,7 @@ export default function AnimalTypes() {
                                     </FormItem>
                                 )}
                             />
-                            <Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
+                            <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">{form.formState.isSubmitting?"Yuklanyapti...":"Saqlash"}</Button>
                         </form>
                     </Form>
                 </DialogContent>

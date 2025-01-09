@@ -1,8 +1,9 @@
 'use client'
 
 import { z } from "zod"
+import { useState } from 'react'
 import { useForm } from "react-hook-form"
-import { useEffect, useState } from 'react'
+import type { DungTest } from "~/lib/type"
 import { ALERT_MESSAGES } from "~/constants"
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
@@ -10,42 +11,36 @@ import { DataTable } from '~/components/data-table'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SMELLL_TYPES, DUNG_FORMS, CLARITY_TYPES } from '~/constants'
-import type { Disease, Animal, DungTest, DungColor } from "~/lib/type"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { animalsControllerFindAll, diseasesControllerFindAll, dungColorsControllerFindAll, dungTestsControllerCreate, dungTestsControllerFindAll, dungTestsControllerRemove, dungTestsControllerUpdate } from '~/lib/api'
+import { useQuery } from "@tanstack/react-query"
 
 export default function DungTests() {
     const COLUMNS = [
         { title: 'Konsentratsiyasi', key: 'consistency' },
         { title: 'Gijja', key: 'worms' },
-        {
-            title: 'Hidi', key: 'smell', render(item: DungTest) {
-                return SMELLL_TYPES[item.smell]
-            }
-        },
+        { title: 'Hidi', key: 'smell', render(item: DungTest) {
+            return SMELLL_TYPES[item.smell]
+        } },
         { title: 'Tiniqligi', key: 'clarity', render(item: DungTest) {
-                    return CLARITY_TYPES[item.clarity]
-                } },
-                { title: 'Rangi', key: 'color', render(item: DungTest) {
-                    return item.color?.name
-                } },
-        {
-            title: 'Shakli', key: 'form', render(item: DungTest) {
-                return DUNG_FORMS[item.form]
-            }
-        },
+            return CLARITY_TYPES[item.clarity]
+        } },
+        { title: 'Rangi', key: 'color', render(item: DungTest) {
+            return item.color?.name
+        } },
+        { title: 'Shakli', key: 'form', render(item: DungTest) {
+            return DUNG_FORMS[item.form]
+        } },
         {
             title: 'Hayvon', key: 'animal', render(item: DungTest) {
                 return item.animal?.name
             }
         },
-        {
-            title: 'Kasallik', key: 'disease', render(item: DungTest) {
-                return item.disease?.id
-            }
-        },
+        { title: 'Kasallik', key: 'type', render(item: DungTest) {
+            return `${new Date(item.disease?.startTime!).toLocaleDateString()}-${new Date(item.disease?.endTime!).toLocaleDateString()}`
+        } },
         {
             title: 'Boshqarish', key: 'actions', render(item: DungTest) {
                 return (<div className="flex gap-2 items-center">
@@ -64,12 +59,8 @@ export default function DungTests() {
     const [loading, setLoading] = useState(true)
     const [totalItems, setTotalItems] = useState(0)
     const [items, setItems] = useState<DungTest[]>([])
-    const [animals, setAnimals] = useState<Animal[]>([])
-    const [colors, setColors] = useState<DungColor[]>([])
-    const [diseases, setDiseases] = useState<Disease[]>([])
     const [itemId, setItemId] = useState<number | null>(null)
-    const [createLoading, setCreateLoading] = useState(false)
-
+    
     const formSchema = z.object({
         colorId: z.number(),
         animalId: z.number(),
@@ -95,25 +86,23 @@ export default function DungTests() {
         } as any,
     })
 
-    async function handleGetAnimalsDiseasesColors() {
-        try {
-            const [A, D, C]: any = await Promise.all([
-                animalsControllerFindAll({page: 1, perPage: 1000}),
-                diseasesControllerFindAll({page: 1, perPage: 1000} as any),
-                dungColorsControllerFindAll({page: 1, perPage: 1000})
-            ])
-            setColors(C.data)
-            setAnimals(A.data)
-            setDiseases(D.data)
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    const { data: animals }: any = useQuery({
+        queryKey: ['animals'],
+        queryFn: () => animalsControllerFindAll({page: 1, perPage: 100}),
+    })
+
+    const { data: diseases } = useQuery({
+        queryKey: ['diseases'],
+        queryFn: () => diseasesControllerFindAll({page: 1, perPage: 100} as any),
+    })
+
+    const { data: colors } = useQuery({
+        queryKey: ['dung-colors'],
+        queryFn: () => dungColorsControllerFindAll({page: 1, perPage: 100}),
+    })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            setCreateLoading(true)
-
             if (itemId) {
                 const data: any = await dungTestsControllerUpdate(itemId, values as any)
                 setItems(p => p.map(i => {
@@ -128,8 +117,6 @@ export default function DungTests() {
             handleClose()
         } catch (error) {
             console.log(error)            
-        } finally {
-            setCreateLoading(false)
         }
     }
 
@@ -176,10 +163,6 @@ export default function DungTests() {
         setDialog(false)
     }
 
-    useEffect(() => {
-        handleGetAnimalsDiseasesColors()
-    }, [])
-
     return (
         <div>
             <DataTable
@@ -188,7 +171,7 @@ export default function DungTests() {
                 items={items as any}
                 totalItems={totalItems}
                 callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Tezak tahlili yaratish</Button>} />
+                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="!mt-0 w-full sm:w-fit">Tezak tahlili yaratish</Button>} />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
                 <DialogContent className="overflow-auto max-h-screen md:max-h-[95vh] max-w-[500px]" aria-describedby={undefined}>
@@ -300,7 +283,7 @@ export default function DungTests() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        diseases.map(d => <SelectItem key={d.id} value={String(d.id)}>{new Date(d.startTime).toLocaleDateString()}-{new Date(d.endTime).toLocaleDateString()}</SelectItem>)
+                                                        diseases?.data?.map(d => <SelectItem key={d.id} value={String(d.id)}>{new Date(d.startTime).toLocaleDateString()}-{new Date(d.endTime).toLocaleDateString()}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>
@@ -322,7 +305,7 @@ export default function DungTests() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        animals.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                                        animals?.data?.map((d: any) => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>
@@ -344,7 +327,7 @@ export default function DungTests() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        colors.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                                        colors?.data?.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>
@@ -353,7 +336,7 @@ export default function DungTests() {
                                     </FormItem>
                                 )}
                             />
-                            <Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
+                            <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">{form.formState.isSubmitting?"Yuklanyapti...":"Saqlash"}</Button>
                         </form>
                     </Form>
                 </DialogContent>

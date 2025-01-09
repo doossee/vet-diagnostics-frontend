@@ -3,13 +3,14 @@
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { ALERT_MESSAGES } from "~/constants"
+import type { VetStation } from "~/lib/type"
+import { useCallback, useState } from 'react'
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
+import { useQuery } from "@tanstack/react-query"
 import { DataTable } from '~/components/data-table'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useCallback, useEffect, useState } from 'react'
-import type { District, VetStation, Region } from "~/lib/type"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
@@ -20,7 +21,7 @@ export default function VetStations() {
         { title: 'Stansiya nomi', key: 'name' },
         { title: 'Stansiya manzili', key: 'address' },
         { title: 'Tuman nomi', key: 'district', render(item: VetStation) {
-            return item.district?.name
+            return item?.district?.name
         } },
         { title: 'Boshqarish', key: 'actions', render(item: VetStation) {
             return (<div className="flex gap-2 items-center">
@@ -38,11 +39,8 @@ export default function VetStations() {
     const [loading, setLoading] = useState(true)
     const [totalItems, setTotalItems] = useState(0)
     const [items, setItems] = useState<VetStation[]>([])
-    const [regions, setRegions] = useState<Region[]>([])
     const [itemId, setItemId] = useState<number|null>(null)
-    const [districts, setDistricts] = useState<District[]>([])
     const [regionId, setRegionId] = useState<number|null>(null)
-    const [createLoading, setCreateLoading] = useState(false)
 
     const formSchema = z.object({
         name: z.string().min(1, "Vet stansiya nomi kiritilishi shart"),
@@ -59,24 +57,18 @@ export default function VetStations() {
         } as any,
     })
 
-    async function handleGetDistrictsAndRegions() {
-        try {
-            const [R, D]: any = await Promise.all([
-                regionsControllerFindAll({page: 1, perPage: 1000}),
-                districtsControllerFindAll({page: 1, perPage: 1000}),
-            ])
-            setRegions(R.data)
-            setDistricts(D.data)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-    
+    const { data: regions } = useQuery({
+        queryKey: ['regions'],
+        queryFn: () => regionsControllerFindAll({page: 1, perPage: 1000})
+    })
+
+    const { data: districts } = useQuery({
+        queryKey: ['districts'],
+        queryFn: () => districtsControllerFindAll({page: 1, perPage: 1000})
+    })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            setCreateLoading(true)
-
             if(itemId) {
                 const data: any = await vetStationsControllerUpdate(itemId, values as any)
                 setItems(p => p.map(i => {
@@ -91,8 +83,6 @@ export default function VetStations() {
             handleClose()
         } catch (error) {
             console.log(error)            
-        } finally {
-            setCreateLoading(false)
         }
     }
 
@@ -137,17 +127,13 @@ export default function VetStations() {
     }
 
     function handleSetRegionId(id: number) {
-        const d = districts.find(_ => _.id === id)
+        const d = districts?.data?.find(_ => _.id === id)
         if(!d) return
         setRegionId(d.regionId)
     }
 
-    useEffect(() => {
-        handleGetDistrictsAndRegions()
-    }, [])
-
     const filteredDistricts = useCallback(() => {
-        if(regionId) return districts.filter(d => d.regionId === regionId)
+        if(regionId) return districts?.data?.filter(d => d.regionId === regionId)
         else return []
     }, [regionId])
 
@@ -160,7 +146,7 @@ export default function VetStations() {
                 totalItems={totalItems}
                 callback={handleGetItems}
                 topSlot={
-                    <Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Vet stansiya yaratish</Button>
+                    <Button onClick={() => setDialog(true)} size={'default'} className="!mt-0 w-full sm:w-fit">Vet stansiya yaratish</Button>
                 } 
             />
 
@@ -198,21 +184,21 @@ export default function VetStations() {
                                     )}
                                 />
                                 
-                            <div className="grid gap-2 pt-2">
-                                <FormLabel>Viloyat</FormLabel>
-                                <FormControl>
-                                    <Select value={regionId?String(regionId):""} onValueChange={e => setRegionId(+e)}>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Viloyat" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {
-                                                regions.map(r => <SelectItem key={r.id} value={String(r.id)}>{r.name}</SelectItem>)
-                                            }
-                                        </SelectContent>
-                                    </Select>
-                                </FormControl>
-                            </div>
+                                <div className="grid gap-2 pt-2">
+                                    <FormLabel>Viloyat</FormLabel>
+                                    <FormControl>
+                                        <Select value={regionId?String(regionId):""} onValueChange={e => setRegionId(+e)}>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Viloyat" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {
+                                                    regions?.data?.map(r => <SelectItem key={r.id} value={String(r.id)}>{r.name}</SelectItem>)
+                                                }
+                                            </SelectContent>
+                                        </Select>
+                                    </FormControl>
+                                </div>
                                 <FormField
                                     name="districtId"
                                     control={form.control}
@@ -226,7 +212,7 @@ export default function VetStations() {
                                                     </SelectTrigger>
                                                     <SelectContent>
                                                         {
-                                                            filteredDistricts().map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                                            filteredDistricts()?.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
                                                         }
                                                     </SelectContent>
                                                 </Select>
@@ -235,7 +221,7 @@ export default function VetStations() {
                                         </FormItem>
                                     )}
                                 />
-                                <Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
+                                <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">{form.formState.isSubmitting?"Yuklanyapti...":"Saqlash"}</Button>
                             </form>
                         </Form>
                 </DialogContent>

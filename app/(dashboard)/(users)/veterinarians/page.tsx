@@ -4,6 +4,7 @@ import { z } from "zod"
 import { GENDERS } from '~/constants'
 import { useForm } from "react-hook-form"
 import { ALERT_MESSAGES } from "~/constants"
+import { useCallback, useState } from 'react'
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
 import { DataTable } from '~/components/data-table'
@@ -12,12 +13,13 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { DatePicker } from '~/components/date-picker'
 import { Separator } from "~/components/ui/separator"
 import { Card, CardContent } from "~/components/ui/card"
-import { useCallback, useEffect, useState } from 'react'
-import type { District, Gender, User, Veterinarian } from "~/lib/type"
+import type { Gender, User, Veterinarian } from "~/lib/type"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
 import { districtsControllerFindAll, regionsControllerFindAll, veterinariansControllerFindAll, veterinariansControllerCreate, veterinariansControllerRemove, usersControllerUpdate } from '~/lib/api'
+import { useQuery } from "@tanstack/react-query"
+import { useQueryClientHook } from "~/app/query-client"
 
 export default function Veterinarians() {
     const COLUMNS: any = [
@@ -65,11 +67,8 @@ export default function Veterinarians() {
     const [loading, setLoading] = useState(true)
     const [totalItems, setTotalItems] = useState(0)
     const [items, setItems] = useState<Veterinarian[]>([])
-    const [regions, setRegions] = useState<District[]>([])
     const [itemId, setItemId] = useState<number|null>(null)
-    const [districts, setDistricts] = useState<District[]>([])
     const [regionId, setRegionId] = useState<number|null>(null)
-    const [createLoading, setCreateLoading] = useState(false)
     
     const formSchema = z.object({
         phone: z.string().min(8, "Telefon to'g'ri formatda kiritilishi shart"),
@@ -119,23 +118,18 @@ export default function Veterinarians() {
         } as any,
     })
 
-    async function handleGetDistrictsAndRegions() {
-        try {
-            const [R, D]: any = await Promise.all([
-                regionsControllerFindAll({page: 1, perPage: 1000}),
-                districtsControllerFindAll({page: 1, perPage: 1000}),
-            ])
-            setRegions(R.data)
-            setDistricts(D.data)
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    const { data: regions } = useQuery({
+        queryKey: ['regions'],
+        queryFn: () => regionsControllerFindAll({page: 1, perPage: 100}),
+    })
+
+    const { data: districts } = useQuery({
+        queryKey: ['districts'],
+        queryFn: () => districtsControllerFindAll({page: 1, perPage: 100}),
+    })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            setCreateLoading(true)
-
             if (itemId) {
                 const { password, ...others } = values
                 if(password?.trim()) (others as any).password = password
@@ -153,8 +147,6 @@ export default function Veterinarians() {
             handleClose()
         } catch (error) {
             console.log(error)            
-        } finally {
-            setCreateLoading(false)
         }
     }
 
@@ -197,7 +189,7 @@ export default function Veterinarians() {
     }
 
     function handleSetRegionId(id: number) {
-        const d = districts.find(_ => _.id === id)
+        const d = districts?.data?.find(_ => _.id === id)
         if(!d) return
         setRegionId(d.regionId)
     }
@@ -208,13 +200,9 @@ export default function Veterinarians() {
         setDialog(false)
         setRegionId(null)
     }
-    
-    useEffect(() => {
-        handleGetDistrictsAndRegions()
-    }, [])
 
     const filteredDistricts = useCallback(() => {
-        if(regionId) return districts.filter(d => d.regionId === regionId)
+        if(regionId) return districts?.data?.filter(d => d.regionId === regionId)
         else return []
     }, [regionId])
 
@@ -240,7 +228,7 @@ export default function Veterinarians() {
                         <SelectContent>
                             <SelectItem value={null as any}>Barchasi</SelectItem>
                             {
-                                regions.map(r => <SelectItem key={r.id} value={String(r.id)}>{r.name}</SelectItem>)
+                                regions?.data?.map(r => <SelectItem key={r.id} value={String(r.id)}>{r.name}</SelectItem>)
                             }
                         </SelectContent>
                     </Select>
@@ -251,7 +239,7 @@ export default function Veterinarians() {
                         <SelectContent>
                             <SelectItem value={null as any}>Barchasi</SelectItem>
                             {
-                                districts.filter(d => d.regionId === filters.regionId).map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                districts?.data?.filter(d => d.regionId === filters.regionId).map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
                             }
                         </SelectContent>
                     </Select>
@@ -265,7 +253,7 @@ export default function Veterinarians() {
                 items={items as any}
                 totalItems={totalItems}
                 callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Veterinar Qo'shish</Button>}
+                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="!mt-0 w-full sm:w-fit">Veterinar Qo'shish</Button>}
             />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
@@ -383,7 +371,7 @@ export default function Veterinarians() {
                                         </SelectTrigger>
                                         <SelectContent>
                                             {
-                                                regions.map(r => <SelectItem key={r.id} value={String(r.id)}>{r.name}</SelectItem>)
+                                                regions?.data?.map(r => <SelectItem key={r.id} value={String(r.id)}>{r.name}</SelectItem>)
                                             }
                                         </SelectContent>
                                     </Select>
@@ -402,7 +390,7 @@ export default function Veterinarians() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        filteredDistricts().map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                                        filteredDistricts()?.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>
@@ -437,7 +425,7 @@ export default function Veterinarians() {
                                     </FormItem>
                                 )}
                             />
-                            <Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
+                            <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">{form.formState.isSubmitting?"Yuklanyapti...":"Saqlash"}</Button>
                         </form>
                     </Form>
                 </DialogContent>

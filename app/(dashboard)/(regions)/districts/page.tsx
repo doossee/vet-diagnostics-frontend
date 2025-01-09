@@ -1,12 +1,12 @@
 'use client'
 
 import { z } from "zod"
+import { useState } from 'react'
 import { useForm } from "react-hook-form"
-import { useEffect, useState } from 'react'
+import type { District } from "~/lib/type"
 import { ALERT_MESSAGES } from "~/constants"
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
-import type { District, Region } from "~/lib/type"
 import { DataTable } from '~/components/data-table'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -14,6 +14,7 @@ import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
 import { districtsControllerFindAll, districtsControllerCreate, districtsControllerUpdate, districtsControllerRemove, regionsControllerFindAll } from '~/lib/api'
+import { useQuery } from "@tanstack/react-query"
 
 export default function Districts() {
     const COLUMNS = [
@@ -32,14 +33,12 @@ export default function Districts() {
             </div>)
         } },
     ]
-
+    
     const [total, setTotal] = useState(0)
     const [dialog, setDialog] = useState(false)
     const [loading, setLoading] = useState(true)
     const [items, setItems] = useState<District[]>([])
-    const [regions, setRegions] = useState<Region[]>([])
     const [itemId, setItemId] = useState<number|null>(null)
-    const [createLoading, setCreateLoading] = useState(false)
 
     const formSchema = z.object({
         name: z.string().min(1, "Tuman nomi kiritilishi shart"),
@@ -54,19 +53,8 @@ export default function Districts() {
         } as any,
     })
 
-    useEffect(() => {
-        handleGetRegions()
-    }, [])
-
-    async function handleGetRegions() {
-        const {data}: any = await regionsControllerFindAll({page: 1, perPage: 100})
-        setRegions(data)
-    }
-
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            setCreateLoading(true)
-        
             if(itemId) {
                 const data: any = await districtsControllerUpdate(itemId, values as any)
                 setItems(p => p.map(i => {
@@ -81,8 +69,6 @@ export default function Districts() {
             handleClose()
         } catch (error) {
             console.log(error)            
-        } finally {
-            setCreateLoading(false)
         }
     }
 
@@ -114,6 +100,11 @@ export default function Districts() {
         setDialog(false)
     }
 
+    const { data: regions } = useQuery({
+        queryKey: ['regions'],
+        queryFn: () => regionsControllerFindAll({ page: 1, perPage: 1000 })
+    })
+
     return (
         <div>
             <DataTable
@@ -123,7 +114,7 @@ export default function Districts() {
                 items={items as any}
                 callback={handleGetItems}
                 topSlot={
-                    <Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Tuman yaratish</Button>
+                    <Button onClick={() => setDialog(true)} size={'default'} className="!mt-0 w-full sm:w-fit">Tuman yaratish</Button>
                 } 
             />
 
@@ -160,7 +151,7 @@ export default function Districts() {
                                                     </SelectTrigger>
                                                     <SelectContent>
                                                         {
-                                                            regions.map(r => <SelectItem key={r.id} value={String(r.id)}>{r.name}</SelectItem>)
+                                                            regions?.data?.map(r => <SelectItem key={r.id} value={String(r.id)}>{r.name}</SelectItem>)
                                                         }
                                                     </SelectContent>
                                                 </Select>
@@ -169,7 +160,7 @@ export default function Districts() {
                                         </FormItem>
                                     )}
                                 />
-                                <Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
+                                <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">{form.formState.isSubmitting?"Yuklanyapti...":"Saqlash"}</Button>
                             </form>
                         </Form>
                 </DialogContent>

@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 
 export default function Regions() {
-    const { createLoading, form, itemId, regions, dialog, loading, COLUMNS, total,  setDialog, handleClose, handleGetRegions, onSubmit } = useRegions()
+    const { form, itemId, regions, dialog, loading, COLUMNS, total,  setDialog, handleClose, handleGetRegions, onSubmit } = useRegions()
 
     return (
         <div>
@@ -19,7 +19,7 @@ export default function Regions() {
                 totalItems={total}
                 items={regions as any}
                 callback={handleGetRegions}
-                topSlot={<Button onClick={() => setDialog(true)} className="w-full sm:w-fit">Viloyat yaratish</Button>} />
+                topSlot={<Button onClick={() => setDialog(true)} className="!mt-0 w-full sm:w-fit">Viloyat yaratish</Button>} />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
                 <DialogContent className="bg-card overflow-auto max-h-screen md:max-h-[95vh]" aria-describedby={undefined}>
@@ -41,7 +41,7 @@ export default function Regions() {
                                     </FormItem>
                                 )}
                             />
-                            <Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
+                            <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">{form.formState.isSubmitting?"Yuklanyapti...":"Saqlash"}</Button>
                         </form>
                     </Form>
                 </DialogContent>

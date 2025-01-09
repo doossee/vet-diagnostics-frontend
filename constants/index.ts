@@ -352,12 +352,6 @@ export const navLinksVariant: Record<
       title: "Boshqaruvlar",
       icon: FolderCog,
       items: [
-        // {
-        //   title: "Bosh sahifa",
-        //   icon: LayoutDashboard,
-        //   url: "/admin",
-        // },
-
         {
           title: "Hayvon turlari",
           icon: PawPrint,
@@ -495,14 +489,9 @@ export const navLinksVariant: Record<
   FARMER: [
     {
       isActive: true,
-      title: "Boshqaruv",
-      icon: FolderCog,
+      title: "Hayvonlar",
+      icon: PawPrint,
       items: [
-        // {
-        //   title: "Bosh sahifa",
-        //   icon: LayoutDashboard,
-        //   url: "/farmer",
-        // },
         {
           title: "Hayvonlar",
           icon: PawPrint,
@@ -560,14 +549,9 @@ export const navLinksVariant: Record<
   VETERINARIAN: [
     {
       isActive: true,
-      title: "Boshqaruv",
-      icon: FolderCog,
+      title: "Foydalanuvchilar",
+      icon: Users,
       items: [
-        // {
-        //   title: "Bosh sahifa",
-        //   icon: LayoutDashboard,
-        //   url: "/veterinarian",
-        // },
         {
           title: "Fermerlar",
           icon: Users,

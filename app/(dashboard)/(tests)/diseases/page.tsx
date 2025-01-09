@@ -1,21 +1,23 @@
 'use client'
 
 import { z } from "zod"
+import { useState } from 'react'
 import { useForm } from "react-hook-form"
-import { useEffect, useState } from 'react'
+import type { Disease } from "~/lib/type"
 import { ALERT_MESSAGES } from "~/constants"
+import { Input } from "~/components/ui/input"
 import { Button } from '~/components/ui/button'
+import { useQuery } from "@tanstack/react-query"
 import { DataTable } from '~/components/data-table'
 import { Textarea } from "~/components/ui/textarea"
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { DateTimePicker } from "~/components/date-time-picker"
-import type { DiseaseType, Disease, Animal } from "~/lib/type"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { animalsControllerFindAll, diseaseTypesControllerFindAll, inspectionsControllerCreate, diseasesControllerCreate, diseasesControllerRemove, diseasesControllerUpdate, diseasesControllerFindAll } from '~/lib/api'
-import { Input } from "~/components/ui/input"
+import { useQueryClientHook } from "~/app/query-client"
 
 export default function Diseases() {
     const formSchema = z.object({
@@ -93,60 +95,23 @@ export default function Diseases() {
     const [dialog, setDialog] = useState(false)
     const [loading, setLoading] = useState(true)
     const [totalItems, setTotalItems] = useState(0)
-    const [items, setItems] = useState<Disease[]>([{
-        "id": 4,
-        "animalId": 1,
-        "typeId": 1,
-        "startTime": ("2024-12-31T19:00:00.000Z"),
-        "endTime": "2024-12-31T19:00:00.000Z",
-        "conclusion": "987897987",
-        "createdAt": "2025-01-08T14:06:20.215Z",
-        "updatedAt": "2025-01-08T14:06:20.215Z",
-        "animal": {
-            "id": 1,
-            "idCode": "ID_123",
-            "arrivalDate": "2025-01-02T19:00:00.000Z",
-            "farmerId": 3,
-            "typeId": 2,
-            "name": "Mol",
-            "gender": "MALE",
-            "breed": "MILK",
-            "birthDate": "2024-12-31T19:00:00.000Z",
-            "weight": 1000,
-            "colorId": 1,
-            "createdAt": "2025-01-07T13:50:56.375Z",
-            "updatedAt": "2025-01-07T14:35:46.422Z"
-        },
-        "type": {
-            "id": 1,
-            "name": "TR"
-        }
-    } as any])
-    const [animals, setAnimals] = useState<Animal[]>([])
+    const [items, setItems] = useState<Disease[]>([])
     const [itemId, setItemId] = useState<number | null>(null)
-    const [diseaseTypes, setDiseassTypes] = useState<DiseaseType[]>([])
-    const [createLoading, setCreateLoading] = useState(false)
-    const [createInspectionLoading, setCreateInspectionLoading] = useState(false)
 
     // TODO: fix bug with dates
 
-    async function handleGetAnimalsAndDiseases() {
-        try {
-            const [A, D]: any = await Promise.all([
-                animalsControllerFindAll({page: 1, perPage: 1000}),
-                diseaseTypesControllerFindAll({page: 1, perPage: 1000} as any)
-            ])
-            setAnimals(A.data)
-            setDiseassTypes(D.data)
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    const { data: animals }: any = useQuery({
+        queryKey: ['animals'],
+        queryFn: () => animalsControllerFindAll({page: 1, perPage: 100}),
+    })
+
+    const { data: diseaseTypes } = useQuery({
+        queryKey: ['disease-types'],
+        queryFn: () => diseaseTypesControllerFindAll({page: 1, perPage: 100}),
+    })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            setCreateLoading(true)
-
             if (itemId) {
                 const data: any = await diseasesControllerUpdate(itemId, values as any)
                 setItems(p => p.map(i => {
@@ -161,18 +126,16 @@ export default function Diseases() {
             handleClose()
         } catch (error) {
             console.log(error)            
-        } finally {
-            setCreateLoading(false)
         }
     }
 
     async function handleGetItems(params: any) {
         try {
             setLoading(true)
-            // const {data, meta} = await diseasesControllerFindAll({params})
+            const {data, meta} = await diseasesControllerFindAll({params})
             
-            // setItems(data as any)
-            // setTotalItems(meta.total)
+            setItems(data as any)
+            setTotalItems(meta.total)
         } catch (error) {
             console.log(error)
         } finally {
@@ -192,15 +155,11 @@ export default function Diseases() {
 
     async function handleCreateInspections(values: z.infer<typeof inspectionFormSchema>) {
         try {
-            setCreateInspectionLoading(true)
-
             await inspectionsControllerCreate(values as any)
     
             handleCloseInspection()
         } catch (error) {
             console.log(error)            
-        } finally {
-            setCreateInspectionLoading(false)
         }
     }
 
@@ -226,10 +185,6 @@ export default function Diseases() {
         inspectionForm.reset()
     }
 
-    useEffect(() => {
-        handleGetAnimalsAndDiseases()
-    }, [])
-
     return (
         <div>
             <DataTable
@@ -238,7 +193,7 @@ export default function Diseases() {
                 items={items as any}
                 totalItems={totalItems}
                 callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Kasallik yaratish</Button>} />
+                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="!mt-0 w-full sm:w-fit">Kasallik yaratish</Button>} />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
                 <DialogContent className="overflow-auto max-h-screen md:max-h-[95vh] max-w-[500px]" aria-describedby={undefined}>
@@ -287,7 +242,7 @@ export default function Diseases() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        diseaseTypes.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                                        diseaseTypes?.data?.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>
@@ -309,7 +264,7 @@ export default function Diseases() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        animals.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                                        animals?.data?.map((d: any) => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>
@@ -331,7 +286,7 @@ export default function Diseases() {
                                     </FormItem>
                                 )}
                             />
-                            <Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
+                            <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">{form.formState.isSubmitting?"Yuklanyapti...":"Saqlash"}</Button>
                         </form>
                     </Form>
                 </DialogContent>
@@ -405,7 +360,7 @@ export default function Diseases() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        animals.map(a => <SelectItem key={a.id} value={String(a.id)}>{a.name}</SelectItem>)
+                                                        animals?.data?.map((a: any) => <SelectItem key={a.id} value={String(a.id)}>{a.name}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>
@@ -428,7 +383,7 @@ export default function Diseases() {
                                 )}
                             />
 
-                            <Button disabled={createInspectionLoading} type="submit" className="w-full">{createInspectionLoading?"Yuklanyapti...":"Saqlash"}</Button>
+                            <Button disabled={inspectionForm.formState.isSubmitting} type="submit" className="w-full">{inspectionForm.formState.isSubmitting?"Yuklanyapti...":"Saqlash"}</Button>
                         </form>
                     </Form>
                 </DialogContent>

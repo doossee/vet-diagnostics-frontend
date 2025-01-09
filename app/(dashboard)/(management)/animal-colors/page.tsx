@@ -37,7 +37,6 @@ export default function AnimalColors() {
     const [totalItems, setTotalItems] = useState(0)
     const [items, setItems] = useState<Color[]>([])
     const [itemId, setItemId] = useState<number | null>(null)
-    const [createLoading, setCreateLoading] = useState(false)
 
     const formSchema = z.object({
         name: z.string().min(1, "Rang nomi kiritilishi shart"),
@@ -54,8 +53,6 @@ export default function AnimalColors() {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            setCreateLoading(true)
-
             if (itemId) {
                 const data: any = await colorsControllerUpdate(itemId, values as any)
                 setItems(p => p.map(i => {
@@ -70,8 +67,6 @@ export default function AnimalColors() {
             handleClose()
         } catch (error) {
             console.log(error)            
-        } finally {
-            setCreateLoading(false)
         }
     }
 
@@ -120,7 +115,7 @@ export default function AnimalColors() {
                 items={items as any}
                 totalItems={totalItems}
                 callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Rang yaratish</Button>}
+                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="!mt-0 w-full sm:w-fit">Rang yaratish</Button>}
             />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
@@ -156,7 +151,7 @@ export default function AnimalColors() {
                                     </FormItem>
                                 )}
                             />
-                            <Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
+                            <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">{form.formState.isSubmitting?"Yuklanyapti...":"Saqlash"}</Button>
                         </form>
                     </Form>
                 </DialogContent>

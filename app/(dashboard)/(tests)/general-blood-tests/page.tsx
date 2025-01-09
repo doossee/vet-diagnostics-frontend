@@ -1,21 +1,22 @@
 'use client'
 
 import { z } from "zod"
+import { useState } from 'react'
 import { useForm } from "react-hook-form"
-import { useEffect, useState } from 'react'
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
+import type { GeneralBloodTest } from "~/lib/type"
 import { DataTable } from '~/components/data-table'
 import { Textarea } from "~/components/ui/textarea"
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { DatePicker } from "~/components/date-picker"
-import type { Animal, GeneralBloodTest } from "~/lib/type"
 import { GENERAL_BLOOD_TESTS, ALERT_MESSAGES } from '~/constants'
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
 import { generalBloodTestControllerCreate, generalBloodTestControllerFindAll, generalBloodTestControllerUpdate, generalBloodTestControllerRemove, animalsControllerFindAll } from '~/lib/api'
+import { useQuery } from "@tanstack/react-query"
 
 type GENERAL_BLOOD = keyof typeof GENERAL_BLOOD_TESTS
 
@@ -59,7 +60,6 @@ export default function GeneralBloodTests() {
     const [dialog, setDialog] = useState(false)
     const [loading, setLoading] = useState(true)
     const [totalItems, setTotalItems] = useState(0)
-    const [animals, setAnimals] = useState<Animal[]>([])
     const [itemId, setItemId] = useState<number | null>(null)
     const [items, setItems] = useState<GeneralBloodTest[]>([])
     const [createLoading, setCreateLoading] = useState(false)
@@ -81,14 +81,10 @@ export default function GeneralBloodTests() {
         },
     })
 
-    async function handleGetAnimals() {
-        try {
-            const { data }: any = await animalsControllerFindAll({page: 1, perPage: 1000})
-            setAnimals(data)
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    const { data: animals }: any = useQuery({
+        queryKey: ['animals'],
+        queryFn: () => animalsControllerFindAll({page: 1, perPage: 100}),
+    })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
@@ -154,10 +150,6 @@ export default function GeneralBloodTests() {
         setDialog(false)
     }
 
-    useEffect(() => {
-        handleGetAnimals()
-    }, [])
-
     return (
         <div>
             <DataTable
@@ -166,7 +158,7 @@ export default function GeneralBloodTests() {
                 items={items as any}
                 totalItems={totalItems}
                 callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Qon tahlili yaratish</Button>} />
+                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="!mt-0 w-full sm:w-fit">Qon tahlili yaratish</Button>} />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
                 <DialogContent className="overflow-auto max-h-screen md:max-h-[95vh] max-w-[600px]" aria-describedby={undefined}>
@@ -201,7 +193,7 @@ export default function GeneralBloodTests() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        animals.map(a => <SelectItem key={a.id} value={String(a.id)}>{a.name}</SelectItem>)
+                                                        animals?.data?.map((a: any) => <SelectItem key={a.id} value={String(a.id)}>{a.name}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>

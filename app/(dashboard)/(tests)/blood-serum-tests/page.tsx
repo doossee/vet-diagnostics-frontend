@@ -14,6 +14,7 @@ import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
 import { animalsControllerFindAll, bloodSerumTestsControllerCreate, bloodSerumTestsControllerFindAll, bloodSerumTestsControllerRemove, bloodSerumTestsControllerUpdate } from '~/lib/api'
+import { useQuery } from "@tanstack/react-query"
 
 type BLOOD_SERUM = keyof typeof BLOOD_SERUM_TESTS
 
@@ -53,10 +54,8 @@ export default function BloodSerumTests() {
     const [dialog, setDialog] = useState(false)
     const [loading, setLoading] = useState(true)
     const [totalItems, setTotalItems] = useState(0)
-    const [animals, setAnimals] = useState<Animal[]>([])
     const [items, setItems] = useState<BloodSerumTest[]>([])
     const [itemId, setItemId] = useState<number | null>(null)
-    const [createLoading, setCreateLoading] = useState(false)
     
     const formSchema = z.object({
         animalId: z.number().min(1, "Hayvon tanlanishi shart shart"),
@@ -71,19 +70,13 @@ export default function BloodSerumTests() {
         } as any,
     })
 
-    async function handleGetAnimals() {
-        try {
-            const { data }: any = await animalsControllerFindAll({page: 1, perPage: 1000})
-            setAnimals(data)
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    const { data: animals }: any = useQuery({
+        queryKey: ['animals'],
+        queryFn: () => animalsControllerFindAll({page: 1, perPage: 100}),
+    })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            setCreateLoading(true)
-
             if (itemId) {
                 const data: any = await bloodSerumTestsControllerUpdate(itemId, values as any)
                 setItems(p => p.map(i => {
@@ -98,8 +91,6 @@ export default function BloodSerumTests() {
             handleClose()
         } catch (error) {
             console.log(error)            
-        } finally {
-            setCreateLoading(false)
         }
     }
 
@@ -142,10 +133,6 @@ export default function BloodSerumTests() {
         setDialog(false)
     }
 
-    useEffect(() => {
-        handleGetAnimals()
-    }, [])
-
     return (
         <div>
             <DataTable
@@ -154,7 +141,7 @@ export default function BloodSerumTests() {
                 items={items as any}
                 totalItems={totalItems}
                 callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Tahlil yaratish</Button>}
+                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="!mt-0 w-full sm:w-fit">Tahlil yaratish</Button>}
             />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
@@ -178,7 +165,7 @@ export default function BloodSerumTests() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        animals.map(a => <SelectItem key={a.id} value={String(a.id)}>{a.name}</SelectItem>)
+                                                        animals?.data?.map((a: any) => <SelectItem key={a.id} value={String(a.id)}>{a.name}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>
@@ -207,7 +194,7 @@ export default function BloodSerumTests() {
                                     )
                                 })
                             }
-                            <Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
+                            <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">{form.formState.isSubmitting?"Yuklanyapti...":"Saqlash"}</Button>
                         </form>
                     </Form>
                 </DialogContent>

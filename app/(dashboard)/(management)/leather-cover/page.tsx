@@ -13,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { leatherCoversControllerCreate, leatherCoversControllerFindAll, leatherCoversControllerRemove, leatherCoversControllerUpdate } from '~/lib/api'
+import { useQueryClientHook } from "~/app/query-client"
 
 export default function LeatherCovers() {
     const COLUMNS = [
@@ -36,7 +37,6 @@ export default function LeatherCovers() {
     const [totalItems, setTotalItems] = useState(0)
     const [items, setItems] = useState<Color[]>([])
     const [itemId, setItemId] = useState<number | null>(null)
-    const [createLoading, setCreateLoading] = useState(false)
 
     const formSchema = z.object({
         name: z.string().min(1, "Qoplama nomi kiritilishi shart"),
@@ -51,8 +51,6 @@ export default function LeatherCovers() {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            setCreateLoading(true)
-
             if (itemId) {
                 const data: any = await leatherCoversControllerUpdate(itemId, values as any)
                 setItems(p => p.map(i => {
@@ -67,8 +65,6 @@ export default function LeatherCovers() {
             handleClose()
         } catch (error) {
             console.log(error)            
-        } finally {
-            setCreateLoading(false)
         }
     }
 
@@ -116,7 +112,7 @@ export default function LeatherCovers() {
                 items={items as any}
                 totalItems={totalItems}
                 callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Teri qoplamasi yaratish</Button>}
+                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="!mt-0 w-full sm:w-fit">Teri qoplamasi yaratish</Button>}
             />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
@@ -139,7 +135,7 @@ export default function LeatherCovers() {
                                     </FormItem>
                                 )}
                             />
-                            <Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
+                            <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">{form.formState.isSubmitting?"Yuklanyapti...":"Saqlash"}</Button>
                         </form>
                     </Form>
                 </DialogContent>

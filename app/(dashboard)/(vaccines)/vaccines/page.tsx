@@ -15,6 +15,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
 import { animalsControllerFindAll, vaccineTypesControllerFindAll, vaccinesControllerCreate, vaccinesControllerFindAll, vaccinesControllerRemove, vaccinesControllerUpdate } from '~/lib/api'
 import { Card, CardContent } from "~/components/ui/card"
+import { useQuery } from "@tanstack/react-query"
 
 export default function Vaccines() {
     const COLUMNS = [
@@ -45,10 +46,7 @@ export default function Vaccines() {
     const [loading, setLoading] = useState(true)
     const [totalItems, setTotalItems] = useState(0)
     const [items, setItems] = useState<Vaccine[]>([])
-    const [animals, setAnimals] = useState<Animal[]>([])
-    const [types, setTypes] = useState<VaccineType[]>([])
     const [itemId, setItemId] = useState<number | null>(null)
-    const [createLoading, setCreateLoading] = useState(false)
     const [filters, setFilters] = useState({
         date: null as Date | null,
         typeId: null as number | null,
@@ -70,23 +68,18 @@ export default function Vaccines() {
         } as any,
     })
 
-    async function handleGetVaccineTypesAndAnimals() {
-        try {
-            const [A, T]: any = await Promise.all([
-                animalsControllerFindAll({page: 1, perPage: 100}),
-                vaccineTypesControllerFindAll({page: 1, perPage: 100})
-            ])
-            setTypes(T.data)
-            setAnimals(A.data)
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    const { data: animals }: any = useQuery({
+        queryKey: ['animals'],
+        queryFn: () => animalsControllerFindAll({page: 1, perPage: 100}),
+    })
+
+    const { data: types } = useQuery({
+        queryKey: ['vaccine-types'],
+        queryFn: () => vaccineTypesControllerFindAll({page: 1, perPage: 100})
+    })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            setCreateLoading(true)
-            
             if (itemId) {
                 const data: any = await vaccinesControllerUpdate(itemId, values as any)
                 setItems(p => p.map(i => {
@@ -101,8 +94,6 @@ export default function Vaccines() {
             handleClose()
         } catch (error) {
             console.log(error)            
-        } finally {
-            setCreateLoading(false)
         }
     }
 
@@ -145,10 +136,6 @@ export default function Vaccines() {
         setDialog(false)
     }
 
-    useEffect(() => {
-        handleGetVaccineTypesAndAnimals()
-    }, [])
-
     return (
         <div>
             <Card className="rounded-md shadow-none mb-4">
@@ -160,7 +147,7 @@ export default function Vaccines() {
                         <SelectContent>
                             <SelectItem value={null as any}>Barchasi</SelectItem>
                             {
-                                types.map(t => <SelectItem key={t.id} value={String(t.id)}>{t.name}</SelectItem>)
+                                types?.data?.map(t => <SelectItem key={t.id} value={String(t.id)}>{t.name}</SelectItem>)
                             }
                         </SelectContent>
                     </Select>
@@ -171,7 +158,7 @@ export default function Vaccines() {
                         <SelectContent>
                             <SelectItem value={null as any}>Barchasi</SelectItem>
                             {
-                                animals.map(a => <SelectItem key={a.id} value={String(a.id)}>{a.name}</SelectItem>)
+                                animals?.data?.map((a: any) => <SelectItem key={a.id} value={String(a.id)}>{a.name}</SelectItem>)
                             }
                         </SelectContent>
                     </Select>
@@ -187,7 +174,7 @@ export default function Vaccines() {
                 items={items as any}
                 totalItems={totalItems}
                 callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Vaksina yaratish</Button>}
+                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="!mt-0 w-full sm:w-fit">Vaksina yaratish</Button>}
             />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
@@ -223,7 +210,7 @@ export default function Vaccines() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        animals.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                                        animals?.data?.map((d: any) => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>
@@ -245,7 +232,7 @@ export default function Vaccines() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        types.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                                        types?.data?.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>
@@ -254,7 +241,7 @@ export default function Vaccines() {
                                     </FormItem>
                                 )}
                             />
-                            <Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
+                            <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">{form.formState.isSubmitting?"Yuklanyapti...":"Saqlash"}</Button>
                         </form>
                     </Form>
                 </DialogContent>

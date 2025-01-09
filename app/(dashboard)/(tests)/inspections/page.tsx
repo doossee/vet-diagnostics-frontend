@@ -3,13 +3,14 @@
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { useEffect, useState } from 'react'
+import type { Inspection } from "~/lib/type"
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
+import { useQuery } from "@tanstack/react-query"
 import { DataTable } from '~/components/data-table'
 import { Textarea } from "~/components/ui/textarea"
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
-import type { Inspection, Animal } from "~/lib/type"
 import { ALERT_MESSAGES, INSPECTION_TYPES } from "~/constants"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
@@ -43,9 +44,7 @@ export default function Inspections() {
     const [loading, setLoading] = useState(true)
     const [totalItems, setTotalItems] = useState(0)
     const [items, setItems] = useState<Inspection[]>([])
-    const [animals, setAnimals] = useState<Animal[]>([])
     const [itemId, setItemId] = useState<number | null>(null)
-    const [createLoading, setCreateLoading] = useState(false)
 
     const formSchema = z.object({
         animalId: z.number(),
@@ -69,21 +68,13 @@ export default function Inspections() {
         } as any,
     })
 
-    async function handleGetAnimals() {
-        try {
-            const [A, D]: any = await Promise.all([
-                animalsControllerFindAll({page: 1, perPage: 1000}),
-            ])
-            setAnimals(A.data)
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    const { data: animals }: any = useQuery({
+        queryKey: ['animals'],
+        queryFn: () => animalsControllerFindAll({page: 1, perPage: 100}),
+    })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            setCreateLoading(true)
-
             if (itemId) {
                 const data: any = await inspectionsControllerUpdate(itemId, values as any)
                 setItems(p => p.map(i => {
@@ -98,8 +89,6 @@ export default function Inspections() {
             handleClose()
         } catch (error) {
             console.log(error)            
-        } finally {
-            setCreateLoading(false)
         }
     }
 
@@ -145,10 +134,6 @@ export default function Inspections() {
         setItemId(null)
         setDialog(false)
     }
-    
-    useEffect(() => {
-        handleGetAnimals()
-    }, [])
 
     return (
         <div>
@@ -158,7 +143,7 @@ export default function Inspections() {
                 items={items as any}
                 totalItems={totalItems}
                 callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Tekshiruv yaratish</Button>} />
+                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="!mt-0 w-full sm:w-fit">Tekshiruv yaratish</Button>} />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
                 <DialogContent className="overflow-auto max-h-screen md:max-h-[95vh] max-w-[500px]" aria-describedby={undefined}>
@@ -250,7 +235,7 @@ export default function Inspections() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        animals.map(a => <SelectItem key={a.id} value={String(a.id)}>{a.name}</SelectItem>)
+                                                        animals?.data?.map((a: any) => <SelectItem key={a.id} value={String(a.id)}>{a.name}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>
@@ -273,7 +258,7 @@ export default function Inspections() {
                                 )}
                             />
 
-                            <Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
+                            <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">{form.formState.isSubmitting?"Yuklanyapti...":"Saqlash"}</Button>
                         </form>
                     </Form>
                 </DialogContent>

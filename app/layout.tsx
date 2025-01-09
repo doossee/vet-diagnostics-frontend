@@ -1,6 +1,7 @@
 import "./globals.css"
 import type { Metadata } from "next"
 import localFont from "next/font/local"
+import { ClientProfider } from './query-client'
 import { Toaster } from "~/components/ui/sonner"
 import { ThemeProvider } from "~/components/theme-provider"
 
@@ -32,8 +33,10 @@ export default function RootLayout({
           attribute="class"
           defaultTheme="system"
           enableSystem
-          disableTransitionOnChange>
-          {children}
+          disableTransitionOnChange>    
+            <ClientProfider>
+              {children}
+            </ClientProfider>
           <Toaster />
         </ThemeProvider>
       </body>

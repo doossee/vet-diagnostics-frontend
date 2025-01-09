@@ -7,14 +7,15 @@ import { GENDERS, BREED } from '~/constants'
 import { ALERT_MESSAGES } from "~/constants"
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
+import { useQuery } from "@tanstack/react-query"
 import { DataTable } from '~/components/data-table'
 import { useAuthData } from '~/hooks/use-auth-data'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { DatePicker } from '~/components/date-picker'
 import { Card, CardContent } from "~/components/ui/card"
+import type { Animal, Gender, Breed, Farmer } from "~/lib/type"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
-import type { Color, Animal, AnimalType, Gender, Breed, Farmer } from "~/lib/type"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
 import { farmersControllerFindAll, colorsControllerFindAll, animalTypesControllerFindAll, animalsControllerFindAll, animalsControllerCreate, animalsControllerRemove, animalsControllerUpdate } from '~/lib/api'
@@ -32,9 +33,9 @@ export default function Animals() {
             return item.color?.name
         } },
         { title: 'Vazni', key: 'weight' },
-        { title: 'Fermer', key: 'farmer', render(item: Animal) {
-            return item.farmer?.user?.firstName + ' ' + item.farmer?.user?.lastName
-        } },
+        // { title: 'Fermer', key: 'farmer', render(item: Animal) {
+        //     return item.farmer?.user?.firstName + ' ' + item.farmer?.user?.lastName
+        // } },
         { title: 'Id Kodi', key: 'idCode' },
         { title: 'Jinsi', key: 'gender', sorting: 'byGender', render(item: Animal) {
             return GENDERS.find(g => g.value === item.gender)?.name
@@ -57,22 +58,19 @@ export default function Animals() {
         } },
     ]
 
-    const { userData } = useAuthData()
     const [filters, setFilters] = useState({
         typeId: null as number | null,
         colorId: null as number | null,
         gender: null as Gender | null,
         breed: null as Breed | null,
     })
+    const { userData } = useAuthData()
     const [dialog, setDialog] = useState(false)
     const [loading, setLoading] = useState(true)
     const [totalItems, setTotalItems] = useState(0)
     const [items, setItems] = useState<Animal[]>([])
-    const [farmers, setFarmer] = useState<Farmer[]>([])
+    const [farmers, setFarmers] = useState<Farmer[]>([])
     const [itemId, setItemId] = useState<number | null>(null)
-    const [animalColors, setAnimalColors] = useState<Color[]>([])
-    const [animalTypes, setAnimalTypes] = useState<AnimalType[]>([])
-    const [createLoading, setCreateLoading] = useState(false)
 
     const formSchema = z.object({
         birthDate: z.date(),
@@ -103,26 +101,27 @@ export default function Animals() {
         } as any,
     })
 
-    async function handleGetColorsTypesAndFermers(role: string) {
+    async function handleGetFarmers() {
         try {
-            const promises = [
-                colorsControllerFindAll({page: 1, perPage: 100}),
-                animalTypesControllerFindAll({page: 1, perPage: 100})
-            ]
-            if(role === 'ADMIN') promises.push(farmersControllerFindAll({page: 1, perPage: 1000}) as any)
-            const [C, T, F]: any = await Promise.all(promises)
-            setAnimalColors(C.data)
-            setAnimalTypes(T.data)
-            if(role === 'ADMIN') setFarmer(F.data)
+            const { data } = await farmersControllerFindAll({page:1, perPage: 1000})
+            setFarmers(data as any)
         } catch (error) {
             console.log(error)
         }
     }
 
+    const { data: colors } = useQuery({
+        queryKey: ['animal-colors'],
+        queryFn: () => colorsControllerFindAll({page: 1, perPage: 100})
+    })
+    
+    const { data: types } = useQuery({
+        queryKey: ['animal-types'],
+        queryFn: () => animalTypesControllerFindAll({page: 1, perPage: 100})
+    })
+
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            setCreateLoading(true)
-
             if (itemId) {
                 const { farmerId, ...others } = values
                 const data: any = await animalsControllerUpdate(itemId, others as any)
@@ -132,7 +131,7 @@ export default function Animals() {
                 }))
             } else {
                 if(userData?.userRole === 'FARMER')
-                    form.setValue('farmerId', userData?.farmerId!)
+                    values.farmerId = userData?.userId!
     
                 const data: any = await animalsControllerCreate({...values} as any)
                 setItems(p => [...p, data])
@@ -141,8 +140,6 @@ export default function Animals() {
             handleClose()
         } catch (error) {
             console.log(error)            
-        } finally {
-            setCreateLoading(false)
         }
     }
 
@@ -192,7 +189,9 @@ export default function Animals() {
     }
 
     useEffect(() => {
-        handleGetColorsTypesAndFermers(userData?.userRole!)
+        if(userData?.userRole !== "FARMER") {
+            handleGetFarmers()
+        }
     }, [])
 
     return (
@@ -206,7 +205,7 @@ export default function Animals() {
                         <SelectContent>
                             <SelectItem value={null as any}>Barchasi</SelectItem>
                             {
-                                animalTypes.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                types?.data?.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
                             }
                         </SelectContent>
                     </Select>
@@ -239,7 +238,7 @@ export default function Animals() {
                         <SelectContent>
                             <SelectItem value={null as any}>Barchasi</SelectItem>
                             {
-                                animalColors.map(b => <SelectItem key={b.id} value={String(b.id)}>{b.name}</SelectItem>)
+                                colors?.data?.map(b => <SelectItem key={b.id} value={String(b.id)}>{b.name}</SelectItem>)
                             }
                         </SelectContent>
                     </Select>
@@ -253,7 +252,7 @@ export default function Animals() {
                 items={items as any}
                 totalItems={totalItems}
                 callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Hayvon qo'shish</Button>}
+                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="!mt-0 w-full sm:w-fit">Hayvon qo'shish</Button>}
             />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
@@ -302,7 +301,7 @@ export default function Animals() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        animalTypes.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                                        types?.data?.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>
@@ -324,7 +323,7 @@ export default function Animals() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        animalColors.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                                        colors?.data?.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>
@@ -417,7 +416,7 @@ export default function Animals() {
                                 )}
                             />
                             
-                            {userData?.userRole === 'ADMIN' && <FormField
+                            {userData?.userRole === 'ADMIN' ? <FormField
                                 name="farmerId"
                                 control={form.control}
                                 render={({ field: { value, onChange, ...others } }) => (
@@ -438,8 +437,8 @@ export default function Animals() {
                                         <FormMessage />
                                     </FormItem>
                                 )}
-                            />}
-                            <Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
+                            />: <span></span>}
+                            <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">{form.formState.isSubmitting?"Yuklanyapti...":"Saqlash"}</Button>
                         </form>
                     </Form>
                 </DialogContent>

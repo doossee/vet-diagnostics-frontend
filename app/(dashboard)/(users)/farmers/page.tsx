@@ -14,11 +14,12 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { DatePicker } from '~/components/date-picker'
 import { useCallback, useEffect, useState } from 'react'
 import { Card, CardContent } from "~/components/ui/card"
+import type { Farmer, Veterinarian, Gender } from "~/lib/type"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
-import type { District, User, Farmer, Veterinarian, Gender } from "~/lib/type"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
 import { veterinariansControllerFindAll, regionsControllerFindAll, farmersControllerCreate, districtsControllerFindAll, farmersControllerFindAll, farmersControllerRemove, farmersControllerUpdate, usersControllerUpdate } from '~/lib/api'
+import { useQuery } from "@tanstack/react-query"
 
 export default function Veterinarians() {
     const COLUMNS: any = [
@@ -67,12 +68,9 @@ export default function Veterinarians() {
     const [loading, setLoading] = useState(true)
     const [totalItems, setTotalItems] = useState(0)
     const [items, setItems] = useState<Farmer[]>([])
-    const [regions, setRegions] = useState<District[]>([])
     const [itemId, setItemId] = useState<number | null>(null)
-    const [districts, setDistricts] = useState<District[]>([])
     const [regionId, setRegionId] = useState<number|null>(null)
     const [veterinarians, setVeterinarians] = useState<Veterinarian[]>([])
-    const [createLoading, setCreateLoading] = useState(false)
 
     const formSchema = z.object({
         phone: z.string().min(8, "Telefon to'g'ri formatda kiritilishi shart"),
@@ -123,16 +121,20 @@ export default function Veterinarians() {
         } as any,
     })
 
-    async function handleGetDistrictsAndRegions(role: string) {
+    const { data: regions } = useQuery({
+        queryKey: ['regions'],
+        queryFn: () => regionsControllerFindAll({page: 1, perPage: 100}),
+    })
+
+    const { data: districts } = useQuery({
+        queryKey: ['districts'],
+        queryFn: () => districtsControllerFindAll({page: 1, perPage: 100}),
+    })
+
+    async function handleGetVeterinarians() {
         try {
-            const promises = [
-                regionsControllerFindAll({page: 1, perPage: 1000}),
-                districtsControllerFindAll({page: 1, perPage: 1000}),]
-            if(role === 'ADMIN') promises.push(veterinariansControllerFindAll({page: 1, perPage: 1000}) as any)
-            const [R, D, V]: any = await Promise.all(promises)
-            setRegions(R.data)
-            setDistricts(D.data)
-            if(role === 'ADMIN') setVeterinarians(V.data)
+            const { data } = await veterinariansControllerFindAll({page: 1, perPage: 1000})
+            setVeterinarians(data as any)
         } catch (error) {
             console.log(error)
         }
@@ -140,8 +142,6 @@ export default function Veterinarians() {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            setCreateLoading(true)
-
             if (itemId) {
                 const { password, veterinarianId, ...others } = values
                 if(password?.trim()) (others as any).password = password
@@ -153,8 +153,8 @@ export default function Veterinarians() {
                 }))
             } else {
                 if (userData?.userRole === 'VETERINARIAN')
-                    form.setValue('veterinarianId', userData?.veterinarianId!)
-                
+                    values.veterinarianId = userData?.userId!
+        
                 const data: any = await farmersControllerCreate({...values} as any)
                 setItems(p => [...p, data])
             }
@@ -162,8 +162,6 @@ export default function Veterinarians() {
             handleClose()
         } catch (error) {
             console.log(error)            
-        } finally {
-            setCreateLoading(false)
         }
     }
 
@@ -207,7 +205,7 @@ export default function Veterinarians() {
     }
 
     function handleSetRegionId(id: number) {
-        const d = districts.find(_ => _.id === id)
+        const d = districts?.data?.find(_ => _.id === id)
         if(!d) return
         setRegionId(d.regionId)
     }
@@ -219,12 +217,14 @@ export default function Veterinarians() {
     }
 
     const filteredDistricts = useCallback(() => {
-        if(regionId) return districts.filter(d => d.regionId === regionId)
+        if(regionId) return districts?.data?.filter(d => d.regionId === regionId)
         else return []
     }, [regionId])
 
     useEffect(() => {
-        handleGetDistrictsAndRegions(userData?.userRole!)
+        if(userData?.userRole === "ADMIN") {
+            handleGetVeterinarians()
+        }
     }, [])
 
     return (
@@ -249,7 +249,7 @@ export default function Veterinarians() {
                         <SelectContent>
                             <SelectItem value={null as any}>Barchasi</SelectItem>
                             {
-                                regions.map(r => <SelectItem key={r.id} value={String(r.id)}>{r.name}</SelectItem>)
+                                regions?.data?.map(r => <SelectItem key={r.id} value={String(r.id)}>{r.name}</SelectItem>)
                             }
                         </SelectContent>
                     </Select>
@@ -260,7 +260,7 @@ export default function Veterinarians() {
                         <SelectContent>
                             <SelectItem value={null as any}>Barchasi</SelectItem>
                             {
-                                districts.filter(d => d.regionId === filters.regionId).map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                districts?.data?.filter(d => d.regionId === filters.regionId).map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
                             }
                         </SelectContent>
                     </Select>
@@ -274,7 +274,7 @@ export default function Veterinarians() {
                 items={items as any}
                 totalItems={totalItems}
                 callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="w-full sm:w-fit">Fermer Qo'shish</Button>}
+                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="!mt-0 w-full sm:w-fit">Fermer Qo'shish</Button>}
             />
 
             <Dialog open={dialog} onOpenChange={handleClose}>
@@ -392,7 +392,7 @@ export default function Veterinarians() {
                                         </SelectTrigger>
                                         <SelectContent>
                                             {
-                                                regions.map(r => <SelectItem key={r.id} value={String(r.id)}>{r.name}</SelectItem>)
+                                                regions?.data?.map(r => <SelectItem key={r.id} value={String(r.id)}>{r.name}</SelectItem>)
                                             }
                                         </SelectContent>
                                     </Select>
@@ -411,7 +411,7 @@ export default function Veterinarians() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        filteredDistricts().map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                                        filteredDistricts()?.map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>
@@ -468,7 +468,7 @@ export default function Veterinarians() {
                                     </FormItem>
                                 )}
                             />
-                            <Button disabled={createLoading} type="submit" className="w-full">{createLoading?"Yuklanyapti...":"Saqlash"}</Button>
+                            <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">{form.formState.isSubmitting?"Yuklanyapti...":"Saqlash"}</Button>
                         </form>
                     </Form>
                 </DialogContent>

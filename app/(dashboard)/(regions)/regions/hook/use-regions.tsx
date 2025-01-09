@@ -8,6 +8,7 @@ import { ALERT_MESSAGES } from "~/constants"
 import { Button } from '~/components/ui/button'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { regionsControllerFindAll, regionsControllerCreate, regionsControllerRemove, regionsControllerUpdate } from '~/lib/api'
+import { useQueryClientHook } from "~/app/query-client"
 
 export function useRegions() {
     const COLUMNS = [
@@ -32,7 +33,6 @@ export function useRegions() {
     const [loading, setLoading] = useState(true)
     const [regions, setRegions] = useState<Region[]>([])
     const [itemId, setItemId] = useState<number|null>(null)
-    const [createLoading, setCreateLoading] = useState(false)
 
     const formSchema = z.object({
         name: z.string().min(1, "Viloyat nomi kiritishi shart"),
@@ -47,8 +47,6 @@ export function useRegions() {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            setCreateLoading(true)
-
             if(itemId) {
                 const data: any = await regionsControllerUpdate(itemId, values)
                 setRegions(p => p.map(i => {
@@ -59,11 +57,10 @@ export function useRegions() {
                 const data: any = await regionsControllerCreate(values)
                 setRegions(p => [...p, data])
             }
+
             handleClose()
         } catch (error) {
             console.log(error)            
-        } finally {
-            setCreateLoading(false)
         }
     }
 
@@ -106,7 +103,6 @@ export function useRegions() {
         loading,
         regions,
         COLUMNS,
-        createLoading,
 
         onSubmit,
         setDialog,

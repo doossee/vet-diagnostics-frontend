@@ -37,10 +37,6 @@ export function DataTable<T extends { id: any }>({ columns, items, totalItems, l
   const [perPage, setPerPage] = useState(20)
   const [sorting, setSorting] = useState<{ [k: string]: 'asc' | 'desc' }>({})
 
-  useEffect(() => {
-    handleFetch()
-  }, [page, perPage, search, sorting, filters])
-
   const handleFetch = () => {
     const params = { page, perPage, ...sorting }
     filters && Object.keys(filters).map(key => {
@@ -49,10 +45,6 @@ export function DataTable<T extends { id: any }>({ columns, items, totalItems, l
     search && Object.assign(params, { search })
     callback(params)
   }
-
-  const handleSearch = useCallback(
-    debounce((text: string) => setSearch(text), 500),
-    [])
 
   const handleSetSorting = (sort: string) => {
     if (sorting[sort]) {
@@ -63,13 +55,22 @@ export function DataTable<T extends { id: any }>({ columns, items, totalItems, l
     }
   }
 
+  const handleSearch = useCallback(
+    debounce((text: string) => setSearch(text), 500),
+  [])
+
+  useEffect(() => {
+    handleFetch()
+  }, [page, perPage, search, sorting, filters])
+
+
   return (
-    <Card className="shadow-none rounded-md">
-      <CardHeader className='p-4 flex flex-col sm:flex-row justify-between items-center gap-2'>
+    <Card className="shadow-none rounded-xl">
+      <CardHeader className='p-2 flex flex-col sm:flex-row justify-between items-start gap-2'>
         {!hideSearch && <Input className='sm:max-w-[200px]' onChange={e => handleSearch(e.target.value.trim())} placeholder='Qidirish' />}
         {topSlot}
       </CardHeader>
-      <CardContent className="p-4">
+      <CardContent className="p-2">
         <div className="overflow-y-auto">
           {isMobile ?
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -136,7 +137,7 @@ export function DataTable<T extends { id: any }>({ columns, items, totalItems, l
                     <TableRow key={i}>
                       {
                         columns.map((col, i) =>
-                          <TableCell key={i}>
+                          <TableCell key={i} className={col.sorting?"!pl-4":""}>
                             {col.render ? col.render(item) : (item as any)[col.key]}
                           </TableCell>)
                       }
@@ -147,7 +148,7 @@ export function DataTable<T extends { id: any }>({ columns, items, totalItems, l
           }
         </div>
       </CardContent>
-      {!hideBottom && <CardFooter className='p-4 flex justify-between items-center gap-2 w-full'>
+      {!hideBottom && <CardFooter className='p-2 flex justify-between items-center gap-2 w-full'>
         <Select value={String(perPage)} onValueChange={v => setPerPage(+v)}>
           <SelectTrigger className="w-[100px]">
             <SelectValue placeholder="20" />

@@ -2,6 +2,7 @@
 
 import { z } from "zod"
 import { toast } from "sonner"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { TOAST_OPTIONS } from '~/constants'
 import { useRouter } from 'next/navigation'
@@ -16,6 +17,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 export function LoginForm() {
   const router = useRouter()
   const { setAuthData } = useAuthData()
+  const [loading, setLoading] = useState(false)
 
   const formSchema = z.object({
     phone: z.string().min(1, 'Telefon raqam kiritilishi shart'),
@@ -31,6 +33,7 @@ export function LoginForm() {
   })
   const handleLogin = async (values: z.infer<typeof formSchema>) => {
     try {
+      setLoading(true)
       const {accessToken, refreshToken, ...user} = await authControllerLogin(values)
       setAuthData(accessToken, 'ACCESS_TOKEN')
       setAuthData(refreshToken, 'REFRESH_TOKEN')
@@ -45,6 +48,8 @@ export function LoginForm() {
       }
     } catch (error) {
       toast("Telefon yoki Parol noto'g'ri", TOAST_OPTIONS)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -84,7 +89,7 @@ export function LoginForm() {
               )}
             />
             
-            <Button type="submit" className="w-full">Kirish</Button>
+            <Button disabled={loading} type="submit" className="w-full">{loading?"Yuborilmoqda...":"Kirish"}</Button>
           </form>
         </Form>
       </CardContent>

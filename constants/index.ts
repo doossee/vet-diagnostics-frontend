@@ -1,4 +1,4 @@
-import { UserRole, InspectionType } from "~/lib/type";
+import { UserRole } from "~/lib/type";
 import {
   LayoutDashboard,
   FlaskRound,
@@ -20,6 +20,7 @@ import {
   CircleUserRound,
   FolderCog,
   Disc,
+  UserCog,
 } from "lucide-react";
 
 export const FARMER_DATA_CARDS = [
@@ -426,6 +427,11 @@ export const navLinksVariant: Record<
           icon: Users,
           url: "/farmers",
         },
+        {
+          title: "Profil",
+          icon: UserCog,
+          url: "/profile",
+        },
       ],
     },
     {
@@ -489,13 +495,18 @@ export const navLinksVariant: Record<
   FARMER: [
     {
       isActive: true,
-      title: "Hayvonlar",
-      icon: PawPrint,
+      title: "Boshqaruv",
+      icon: FolderCog,
       items: [
         {
           title: "Hayvonlar",
           icon: PawPrint,
           url: "/animals",
+        },
+        {
+          title: "Profil",
+          icon: UserCog,
+          url: "/profile",
         },
       ],
     },
@@ -549,13 +560,18 @@ export const navLinksVariant: Record<
   VETERINARIAN: [
     {
       isActive: true,
-      title: "Foydalanuvchilar",
-      icon: Users,
+      title: "Boshqaruv",
+      icon: FolderCog,
       items: [
         {
           title: "Fermerlar",
           icon: Users,
           url: "/farmers",
+        },
+        {
+          title: "Profil",
+          icon: UserCog,
+          url: "/profile",
         },
       ],
     },

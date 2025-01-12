@@ -21,7 +21,10 @@ export default async function Page({children}: {children: ReactNode}) {
               <SidebarTrigger />
               <ModeToggle />
             </div>
-            <LogoutButton />
+            <div className="flex items-center gap-2">
+              <div id="top-bar-teleport" className="flex items-center gap-2"></div>
+              <LogoutButton />
+            </div>
           </div>
 
           {children}

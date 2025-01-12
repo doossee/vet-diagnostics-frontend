@@ -13,7 +13,7 @@ import { Separator } from "~/components/ui/separator"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { DatePicker } from '~/components/date-picker'
 import { useCallback, useEffect, useState } from 'react'
-import { Card, CardContent } from "~/components/ui/card"
+import { FiltersWrapper } from '~/components/filters-wrapper'
 import type { Farmer, Veterinarian, Gender } from "~/lib/type"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
@@ -229,10 +229,10 @@ export default function Veterinarians() {
 
     return (
         <div>
-            <Card className="rounded-md shadow-none mb-4">
-                <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 p-2">
+            <FiltersWrapper>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mb-2">
                     <Select value={filters.gender?filters.gender:""} onValueChange={e => setFilters({...filters, gender: e as any})}>
-                        <SelectTrigger>
+                        <SelectTrigger className="bg-card">
                             <SelectValue placeholder="Jinsi bo'yicha saralash" />
                         </SelectTrigger>
                         <SelectContent>
@@ -243,7 +243,7 @@ export default function Veterinarians() {
                         </SelectContent>
                     </Select>
                     <Select value={filters.regionId ? String(filters.regionId) : ""} onValueChange={e => setFilters({...filters, regionId: +e})}>
-                        <SelectTrigger>
+                        <SelectTrigger className="bg-card">
                             <SelectValue placeholder="Viloyat bo'yicha saralash" />
                         </SelectTrigger>
                         <SelectContent>
@@ -254,7 +254,7 @@ export default function Veterinarians() {
                         </SelectContent>
                     </Select>
                     <Select value={filters.districtId ? String(filters.districtId) : ""} onValueChange={e => setFilters({...filters, districtId: +e})}>
-                        <SelectTrigger>
+                        <SelectTrigger className="bg-card">
                             <SelectValue placeholder="Tuman bo'yicha saralash" />
                         </SelectTrigger>
                         <SelectContent>
@@ -264,8 +264,8 @@ export default function Veterinarians() {
                             }
                         </SelectContent>
                     </Select>
-                </CardContent>
-            </Card>
+                </div>
+            </FiltersWrapper>
 
             <DataTable
                 filters={filters}

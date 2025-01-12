@@ -13,7 +13,7 @@ import { useAuthData } from '~/hooks/use-auth-data'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { DatePicker } from '~/components/date-picker'
-import { Card, CardContent } from "~/components/ui/card"
+import { FiltersWrapper } from '~/components/filters-wrapper'
 import type { Animal, Gender, Breed, Farmer } from "~/lib/type"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
@@ -196,10 +196,10 @@ export default function Animals() {
 
     return (
         <div>
-            <Card className="rounded-md shadow-none mb-4">
-                <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 p-2">
+            <FiltersWrapper>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 mb-2">
                     <Select value={filters.typeId?String(filters.typeId):""} onValueChange={e => setFilters({...filters, typeId: +e})}>
-                        <SelectTrigger>
+                        <SelectTrigger className="bg-card">
                             <SelectValue placeholder="Tur bo'yicha saralash" />
                         </SelectTrigger>
                         <SelectContent>
@@ -210,7 +210,7 @@ export default function Animals() {
                         </SelectContent>
                     </Select>
                     <Select value={filters.gender?filters.gender:""} onValueChange={e => setFilters({...filters, gender: e as any})}>
-                        <SelectTrigger>
+                        <SelectTrigger className="bg-card">
                             <SelectValue placeholder="Jinsi bo'yicha saralash" />
                         </SelectTrigger>
                         <SelectContent>
@@ -221,7 +221,7 @@ export default function Animals() {
                         </SelectContent>
                     </Select>
                     <Select value={filters.breed?filters.breed:""} onValueChange={e => setFilters({...filters, breed: e as any})}>
-                        <SelectTrigger>
+                        <SelectTrigger className="bg-card">
                             <SelectValue placeholder="Zoti bo'yicha saralash" />
                         </SelectTrigger>
                         <SelectContent>
@@ -232,7 +232,7 @@ export default function Animals() {
                         </SelectContent>
                     </Select>
                     <Select value={filters.colorId?String(filters.colorId):""} onValueChange={e => setFilters({...filters, colorId: +e})}>
-                        <SelectTrigger>
+                        <SelectTrigger className="bg-card">
                             <SelectValue placeholder="Rangi bo'yicha saralash" />
                         </SelectTrigger>
                         <SelectContent>
@@ -242,8 +242,8 @@ export default function Animals() {
                             }
                         </SelectContent>
                     </Select>
-                </CardContent>
-            </Card>
+                </div>
+            </FiltersWrapper>
 
             <DataTable
                 loading={loading}

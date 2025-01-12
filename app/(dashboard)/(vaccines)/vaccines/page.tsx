@@ -1,21 +1,21 @@
 'use client'
 
 import { z } from "zod"
+import { useState } from 'react'
+import type { Vaccine } from "~/lib/type"
 import { useForm } from "react-hook-form"
-import { useEffect, useState } from 'react'
 import { ALERT_MESSAGES } from "~/constants"
 import { Button } from '~/components/ui/button'
+import { useQuery } from "@tanstack/react-query"
 import { DataTable } from '~/components/data-table'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { DatePicker } from "~/components/date-picker"
-import type { Vaccine, Animal, VaccineType } from "~/lib/type"
+import { FiltersWrapper } from '~/components/filters-wrapper'
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
 import { animalsControllerFindAll, vaccineTypesControllerFindAll, vaccinesControllerCreate, vaccinesControllerFindAll, vaccinesControllerRemove, vaccinesControllerUpdate } from '~/lib/api'
-import { Card, CardContent } from "~/components/ui/card"
-import { useQuery } from "@tanstack/react-query"
 
 export default function Vaccines() {
     const COLUMNS = [
@@ -138,10 +138,10 @@ export default function Vaccines() {
 
     return (
         <div>
-            <Card className="rounded-md shadow-none mb-4">
-                <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 p-2">
+            <FiltersWrapper>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mb-2">
                     <Select value={filters.typeId?String(filters.typeId):""} onValueChange={e => setFilters({...filters, typeId: +e})}>
-                        <SelectTrigger>
+                        <SelectTrigger className="bg-card">
                             <SelectValue placeholder="Tur bo'yicha saralash" />
                         </SelectTrigger>
                         <SelectContent>
@@ -152,7 +152,7 @@ export default function Vaccines() {
                         </SelectContent>
                     </Select>
                     <Select value={filters.animalId?String(filters.animalId):""} onValueChange={e => setFilters({...filters, animalId: +e})}>
-                        <SelectTrigger>
+                        <SelectTrigger className="bg-card">
                             <SelectValue placeholder="Hayvon bo'yicha saralash" />
                         </SelectTrigger>
                         <SelectContent>
@@ -162,9 +162,9 @@ export default function Vaccines() {
                             }
                         </SelectContent>
                     </Select>
-                    <DatePicker field={{value: filters.date, onChange(date: any) {setFilters({...filters, date })}}} />
-                </CardContent>
-            </Card>
+                    <DatePicker buttonClass="bg-card border border-input dark:text-white hover:bg-card" field={{value: filters.date, onChange(date: any) {setFilters({...filters, date })}}} />
+                </div>
+            </FiltersWrapper>
 
             <DataTable
                 hideSearch

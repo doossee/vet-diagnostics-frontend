@@ -1,14 +1,17 @@
 'use client'
 
 import debounce from "lodash/debounce"
+import { createPortal } from "react-dom"
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
 import { useIsMobile } from '~/hooks/use-mobile'
-import { ArrowLeft, ArrowRight, MoveUp, MoveDown } from 'lucide-react'
+import { useIsClient } from "~/hooks/use-client"
 import { ReactNode, useCallback, useEffect, useState } from "react"
+import { Card, CardContent, CardHeader, CardFooter } from "./ui/card"
+import { Popover, PopoverTrigger, PopoverContent } from '~/components/ui/popover'
+import { ArrowLeft, ArrowRight, MoveUp, MoveDown, ListFilter } from 'lucide-react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/ui/table'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select"
-import { Card, CardContent, CardHeader, CardFooter } from "./ui/card"
 
 interface DataTableColumn<T> {
   key: string | keyof T
@@ -32,6 +35,8 @@ interface DataTableProps<T> {
 
 export function DataTable<T extends { id: any }>({ columns, items, totalItems, loading, topSlot, callback, hideBottom, filters, hideSearch }: DataTableProps<T>) {
   const isMobile = useIsMobile()
+  const isClient = useIsClient()
+
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState("")
   const [perPage, setPerPage] = useState(20)
@@ -63,13 +68,42 @@ export function DataTable<T extends { id: any }>({ columns, items, totalItems, l
     handleFetch()
   }, [page, perPage, search, sorting, filters])
 
+  const hasSorting = useCallback(() => {
+    return columns.some(c => c.sorting)
+  }, [columns])
 
   return (
-    <Card className="shadow-none rounded-xl">
+    <Card className="shadow-none rounded-lg">
       <CardHeader className='p-2 flex flex-col sm:flex-row justify-between items-start gap-2'>
         {!hideSearch && <Input className='sm:max-w-[200px]' onChange={e => handleSearch(e.target.value.trim())} placeholder='Qidirish' />}
         {topSlot}
       </CardHeader>
+      {
+        isMobile && isClient && hasSorting() && createPortal((
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline" size="icon">
+                <ListFilter />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-fit p-2 shadow-sm">
+              <div className="grid gap-2">
+              {
+                columns.filter(c => c.sorting).map((col, i) => (
+                  <Button key={i} onClick={() => handleSetSorting(col.sorting!)} variant="outline" size="sm" className="w-full px-2 !py-0 text-sm !text-start">
+                    {col.title}
+                    {
+                      sorting[col.sorting!] === 'asc' ? <MoveUp /> :
+                      sorting[col.sorting!] === 'desc' ? <MoveDown /> : ""
+                    }
+                  </Button>
+                ))
+              }
+              </div>
+            </PopoverContent>
+          </Popover>
+        ), document.getElementById('top-bar-teleport')!)
+      }
       <CardContent className="p-2">
         <div className="overflow-y-auto">
           {isMobile ?

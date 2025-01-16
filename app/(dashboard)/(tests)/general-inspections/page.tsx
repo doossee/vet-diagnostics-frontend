@@ -71,10 +71,10 @@ export default function GeneralInspections() {
     const [items, setItems] = useState<GeneralInspection[]>([])
 
     const formSchema = z.object({
-        colorId: z.number(),
-        animalId: z.number(),
-        eyelidId: z.number(),
-        leatherCoverId: z.number(),
+        colorId: z.number({ required_error: 'Rang belgilanishi shart', invalid_type_error: 'Rang belgilanishi shart' }),
+        animalId: z.number({ required_error: 'Hayvon belgilanishi shart', invalid_type_error: 'Hayvon belgilanishi shart' }),
+        eyelidId: z.number({ required_error: "Ko'z qopqog'i belgilanishi shart", invalid_type_error: "Ko'z qopqog'i belgilanishi shart" }),
+        leatherCoverId: z.number({ required_error: "Teri qoplamasi belgilanishi shart", invalid_type_error: "Teri qoplamasi belgilanishi shart" }),
         customerType: z.enum(["MOBILE", "CALM"]),
         bodyType: z.enum(["WEAK", "MEDIUM", "STRONG"]),
         obesity: z.enum(["HIGH","MEDIUM","LOW","LEAN","CACHEXIA"]),
@@ -127,11 +127,11 @@ export default function GeneralInspections() {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
             if (itemId) {
-                // const data: any = await generalInspectionControllerUpdate(itemId, body as any)
-                // setItems(p => p.map(i => {
-                //     if(i.id === itemId) return data
-                //     return i
-                // }))
+                const data: any = await generalInspectionControllerUpdate(itemId, values as any)
+                setItems(p => p.map(i => {
+                    if(i.id === itemId) return data
+                    return i
+                }))
             } else {
                 const data: any = await generalInspectionControllerCreate(values as any)
                 setItems(p => [...p, data])

@@ -47,7 +47,7 @@ export default function Inspections() {
     const [itemId, setItemId] = useState<number | null>(null)
 
     const formSchema = z.object({
-        animalId: z.number(),
+        animalId: z.number({ required_error: "Hayvon belgilanishi shart", invalid_type_error: "Hayvon belgilanishi shart" }),
         conclusion: z.string().optional(),
         type: z.enum(["EVENING", "MORNING", "DISEASE", "GENERAL"]),
         pulse: z.coerce.number().min(1, "Puls 0 dan katta qiymat kiritilshi shart"),

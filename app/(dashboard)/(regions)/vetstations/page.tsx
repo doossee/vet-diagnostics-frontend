@@ -45,7 +45,7 @@ export default function VetStations() {
     const formSchema = z.object({
         name: z.string().min(1, "Vet stansiya nomi kiritilishi shart"),
         address: z.string().min(1, "Vet stansiya manzili kiritilishi shart"),
-        districtId: z.number().min(1, "Stansiya joylashgan tuman kiritilishi shart")
+        districtId: z.number({ required_error: 'Tuman belgilanishi shart', invalid_type_error: 'Tuman belgilanishi shart' })
     })
 
     const form = useForm<z.infer<typeof formSchema>>({

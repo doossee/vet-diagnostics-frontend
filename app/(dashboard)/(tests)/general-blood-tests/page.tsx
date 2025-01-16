@@ -65,8 +65,8 @@ export default function GeneralBloodTests() {
     const [createLoading, setCreateLoading] = useState(false)
 
     const formSchema = z.object({
-        date: z.date(),
-        animalId: z.number(),
+        date: z.date({ required_error: 'Vaqt kiritilishi shart', invalid_type_error: 'Vaqt kiritilishi shart' }),
+        animalId: z.number({ required_error: 'Hayvon belgilanishi shart', invalid_type_error: 'Hayvon belgilanishi shart' }),
         conclusion: z.string(),
         ...formSchemaValues,
     })

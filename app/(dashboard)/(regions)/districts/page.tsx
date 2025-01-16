@@ -42,7 +42,7 @@ export default function Districts() {
 
     const formSchema = z.object({
         name: z.string().min(1, "Tuman nomi kiritilishi shart"),
-        regionId: z.number().min(1, "Viloyat kiritilishi shart"),
+        regionId: z.number({ required_error: 'Viloyat belgilanishi shart', invalid_type_error: 'Viloyat belgilanishi shart' }),
     })
 
     const form = useForm<z.infer<typeof formSchema>>({

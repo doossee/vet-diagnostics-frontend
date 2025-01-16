@@ -54,12 +54,12 @@ export default function UrineTests() {
     const [itemId, setItemId] = useState<number | null>(null)
     
     const formSchema = z.object({
-        colorId: z.number(),
-        animalId: z.number(),
-        diseaseId: z.number(),
         clarity: z.enum(["CLEAR", "NOT_CLEAR"]),
         smell: z.enum(["PUNGENT", "WEAK", "HAS", "NO"]),
         consistency: z.coerce.number().min(1, "Konsentratsiya 0 dan katta qiymat kiritilishi shart"),
+        colorId: z.number({ required_error: "Rang belgilanishi shart", invalid_type_error: "Rang belgilanishi shart" }),
+        animalId: z.number({ required_error: "Hayvon belgilanishi shart", invalid_type_error: "Hayvon belgilanishi shart" }),
+        diseaseId: z.number({ required_error: "Kasallik belgilanishi shart", invalid_type_error: "Kasallik belgilanishi shart" }),
     })
 
     const form = useForm<z.infer<typeof formSchema>>({

@@ -58,7 +58,7 @@ export default function BloodSerumTests() {
     const [itemId, setItemId] = useState<number | null>(null)
     
     const formSchema = z.object({
-        animalId: z.number().min(1, "Hayvon tanlanishi shart shart"),
+        animalId: z.number({ required_error: 'Hayvon belgilanishi shart', invalid_type_error: 'Hayvon belgilanishi shart' }),
         ...formSchemaValues
     })
 

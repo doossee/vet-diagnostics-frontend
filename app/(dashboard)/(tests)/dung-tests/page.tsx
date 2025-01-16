@@ -62,9 +62,9 @@ export default function DungTests() {
     const [itemId, setItemId] = useState<number | null>(null)
     
     const formSchema = z.object({
-        colorId: z.number(),
-        animalId: z.number(),
-        diseaseId: z.number(),
+        colorId: z.number({ required_error: 'Rang belgilanishi shart', invalid_type_error: 'Rang belgilanishi shart' }),
+        animalId: z.number({ required_error: 'Hayvon belgilanishi shart', invalid_type_error: 'Hayvon belgilanishi shart' }),
+        diseaseId: z.number({ required_error: 'Kasallik belgilanishi shart', invalid_type_error: 'Kasallik belgilanishi shart' }),
         clarity: z.enum(["CLEAR", "NOT_CLEAR"]),
         smell: z.enum(["PUNGENT", "WEAK", "HAS", "NO"]),
         form: z.enum(["NORMAL", "SOLID", "LIQUID", "MEDIUM"]),

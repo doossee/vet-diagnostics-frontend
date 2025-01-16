@@ -7,6 +7,7 @@ import { ALERT_MESSAGES } from "~/constants"
 import { useCallback, useState } from 'react'
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
+import { useQuery } from "@tanstack/react-query"
 import { DataTable } from '~/components/data-table'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -18,7 +19,6 @@ import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
 import { districtsControllerFindAll, regionsControllerFindAll, veterinariansControllerFindAll, veterinariansControllerCreate, veterinariansControllerRemove, usersControllerUpdate } from '~/lib/api'
-import { useQuery } from "@tanstack/react-query"
 
 export default function Veterinarians() {
     const COLUMNS: any = [
@@ -73,11 +73,11 @@ export default function Veterinarians() {
         phone: z.string().min(8, "Telefon to'g'ri formatda kiritilishi shart"),
         gender: z.string().min(1, "Jins tanlanishi shart"),
         address: z.string().optional(),
-        birthDate: z.date(),
+        birthDate: z.date({ required_error: "Tug'ilgan kun kiritilishi shart", invalid_type_error: "Tug'ilgan kun kiritilishi shart" }),
         password: z.string().optional(),
         lastName: z.string().min(1, "Familiya kiritilishi shart"),
         firstName: z.string().min(1, "Ism kiritilishi shart"),
-        districtId: z.number(),
+        districtId: z.number({ required_error: "Tuman belgilanishi shart", invalid_type_error: "Tuman belgilanishi shart" }),
         middleName: z.string().optional(),
         confirmPassword: z.string().optional()
     })

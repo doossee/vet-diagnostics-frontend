@@ -18,7 +18,7 @@ export function DatePicker({field, buttonClass}: DatePickerProps) {
     return (<Popover>
         <PopoverTrigger asChild>
             {/* <FormControl> */}
-                <Button variant={buttonClass?"secondary":"outline"} className={cn("pl-3 text-left font-normal", !field.value && "text-muted-foreground", buttonClass)}>
+                <Button variant={buttonClass?"secondary":"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground", buttonClass)}>
                     {field.value ? (format(field.value, "PPP")) : (
                     <span>Sanani belgilang</span>)}
                     <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />

@@ -73,9 +73,9 @@ export default function Animals() {
     const [itemId, setItemId] = useState<number | null>(null)
 
     const formSchema = z.object({
-        birthDate: z.date(),
-        colorId: z.number(),
-        arrivalDate: z.date(),
+        birthDate: z.date({ required_error: "Tug'ilgan vaqti kiritilishi shart", invalid_type_error: "Tug'ilgan vaqti kiritilishi shart" }),
+        colorId: z.number({ required_error: 'Rang belgilanishi shart', invalid_type_error: 'Rang belgilanishi shart' }),
+        arrivalDate: z.date({ required_error: 'Keltirilgan vaqti kiritilishi shart', invalid_type_error: 'Keltirilgan vaqti kiritilishi shart' }),
         farmerId: z.number().nullable(),
         breed: z.enum(["MEAT", "MILK"]),
         gender: z.enum(["MALE", "FEMALE"]),

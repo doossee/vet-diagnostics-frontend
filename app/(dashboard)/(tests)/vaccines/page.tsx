@@ -54,9 +54,9 @@ export default function Vaccines() {
     })
 
     const formSchema = z.object({
-        date: z.date(),
-        typeId: z.number(),
-        animalId: z.number(),
+        date: z.date({ required_error: "Vaqt belgilanishi shart", invalid_type_error: "Vaqt belgilanishi shart" }),
+        typeId: z.number({ required_error: "Vaksina turi belgilanishi shart", invalid_type_error: "Vaksina turi belgilanishi shart" }),
+        animalId: z.number({ required_error: "Hayvon belgilanishi shart", invalid_type_error: "Hayvon belgilanishi shart" }),
     })
 
     const form = useForm<z.infer<typeof formSchema>>({

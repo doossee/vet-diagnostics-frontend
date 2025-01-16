@@ -12,7 +12,7 @@ import { DataTable } from '~/components/data-table'
 import { Textarea } from "~/components/ui/textarea"
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
-import { DateTimePicker } from "~/components/date-time-picker"
+import { DatePicker } from "~/components/date-picker"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
@@ -20,10 +20,10 @@ import { animalsControllerFindAll, diseaseTypesControllerFindAll, inspectionsCon
 
 export default function Diseases() {
     const formSchema = z.object({
-        endTime: z.date(),
-        typeId: z.number(),
-        startTime: z.date(),
-        animalId: z.number(),
+        endTime: z.date({ required_error: 'Tugash vaqti kiritilishi shart', invalid_type_error: 'Tugash vaqti kiritilishi shart' }),
+        typeId: z.number({ required_error: 'Kasallik turi belgilanishi shart', invalid_type_error: 'Kasallik turi belgilanishi shart' }),
+        startTime: z.date({ required_error: 'Boshlanish vaqt kiritilishi shart', invalid_type_error: 'Boshlanish vaqt kiritilishi shart' }),
+        animalId: z.number({ required_error: 'Hayvon belgilanishi shart', invalid_type_error: 'Hayvon belgilanishi shart' }),
         conclusion: z.string(),
     })
 
@@ -39,7 +39,7 @@ export default function Diseases() {
     })
 
     const inspectionFormSchema = z.object({
-        animalId: z.number(),
+        animalId: z.number({ required_error: 'Hayvon belgilanishi shart', invalid_type_error: 'Hayvon belgilanishi shart' }),
         diseaseId: z.number().nullable(),
         conclusion: z.string().optional(),
         type: z.string().default("DISEASE"),
@@ -208,7 +208,7 @@ export default function Diseases() {
                                     <FormItem>
                                         <FormLabel>Boshlanish vaqti</FormLabel>
                                         <FormControl>
-                                            <DateTimePicker field={field} />
+                                            <DatePicker field={field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -221,7 +221,7 @@ export default function Diseases() {
                                     <FormItem>
                                         <FormLabel>Tugash vaqti</FormLabel>
                                         <FormControl>
-                                            <DateTimePicker field={field} />
+                                            <DatePicker field={field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>

@@ -1,6 +1,7 @@
 import { ReactNode } from "react"
 import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
+import { redirect } from '~/i18n/routing'
+import { getLocale } from 'next-intl/server'
 import { ModeToggle } from "~/components/theme-toggler"
 import { ToggleLocale } from '~/components/toggle-locale'
 import { LogoutButton } from "~/components/logout-button"
@@ -9,7 +10,8 @@ import { SidebarProvider, SidebarTrigger } from "~/components/ui/sidebar"
 
 export default async function Page({children}: {children: ReactNode}) {
   const cookie = await cookies()
-  if(!cookie.get('ACCESS_TOKEN')?.value) return redirect('/login')
+  const locale = await getLocale()
+  if(!cookie.get('ACCESS_TOKEN')?.value) return redirect({ href: '/login', locale })
 
   return (
     <div className="flex h-screen relative">

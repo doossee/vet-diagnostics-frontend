@@ -5,7 +5,7 @@ import { toast } from "sonner"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { TOAST_OPTIONS } from '~/constants'
-import { useRouter } from 'next/navigation'
+import { useRouter } from '~/i18n/routing'
 import { useTranslations } from "next-intl"
 import { Input } from "~/components/ui/input"
 import { authControllerLogin } from '~/lib/api'
@@ -49,6 +49,7 @@ export function LoginForm() {
         router.push('/animals')
       }
     } catch (error) {
+      console.log(error);
       toast(t("login.authError"), TOAST_OPTIONS)
     } finally {
       setLoading(false)

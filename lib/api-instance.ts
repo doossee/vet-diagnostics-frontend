@@ -1,7 +1,9 @@
+import { useLocale } from 'next-intl'
 import { ALERT_MESSAGES } from '~/constants'
 import { createToast } from '~/hooks/use-toast'
 import { useAuthData } from '~/hooks/use-auth-data'
 import Axios, { AxiosError, AxiosResponse, AxiosRequestConfig } from 'axios'
+import { useLanguage } from '~/hooks/use-language'
 
 const baseURL = '/api'
 const { accessToken, refreshToken, setAuthData } = useAuthData()
@@ -24,12 +26,14 @@ export const apiInstance = Axios.create({
 
 apiInstance.interceptors.response.use(
     (response: AxiosResponse) => {
+        const { getLocale } = useLanguage()
+
         if(response.statusText === "Created" && ['POST', 'post'].includes(response.config.method!) && response.config.url !== '/auth/login')
-            createToast(ALERT_MESSAGES.DATA_CREATED, "SUCCESS")
+            createToast(ALERT_MESSAGES.DATA_CREATED[getLocale], "SUCCESS")
         if(response.statusText === "OK" && ['DELETE', 'delete'].includes(response.config.method!))
-            createToast(ALERT_MESSAGES.DATA_DELETED, "SUCCESS")
+            createToast(ALERT_MESSAGES.DATA_DELETED[getLocale], "SUCCESS")
         if(response.statusText === "OK" && ['PUT', 'PATCH', 'put', 'patch'].includes(response.config.method!))
-            createToast(ALERT_MESSAGES.DATA_UPDATED, "SUCCESS")
+            createToast(ALERT_MESSAGES.DATA_UPDATED[getLocale], "SUCCESS")
         return response
     },
     async (error: AxiosError) => {

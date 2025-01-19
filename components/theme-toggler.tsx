@@ -3,10 +3,12 @@
 import * as React from "react"
 import { useTheme } from "next-themes"
 import { Moon, Sun } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { Button } from "~/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "~/components/ui/dropdown-menu"
 
 export function ModeToggle() {
+  const t = useTranslations()
   const { setTheme } = useTheme()
 
   return (
@@ -21,13 +23,13 @@ export function ModeToggle() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setTheme("light")}>
-          Yorug'
+          {t("theme.light")}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Qorong'u
+          {t("theme.dark")}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("system")}>
-          Tizim
+          {t("theme.system")}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -1,6 +1,9 @@
-[-] Need sortings for in mobile variant table
+[+] Need add required message for enums
+[+] Need sortings for in mobile variant table
 [+] Table justify
-[-] axios to fetch
 
 Back end
-[-] populate districts to vet station?
+[+] populate districts to vet station?
+
+_________________________________________
+[-] axios to fetch

@@ -1,0 +1,146 @@
+'use client'
+
+import { z } from "zod"
+import { useState } from 'react'
+import { useForm } from "react-hook-form"
+import type { AnimalType } from "~/lib/type"
+import { ALERT_MESSAGES } from "~/constants"
+import { Input } from '~/components/ui/input'
+import { Button } from '~/components/ui/button'
+import { DataTable } from '~/components/data-table'
+import { DialogTitle } from '@radix-ui/react-dialog'
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useLocale, useTranslations } from "next-intl"
+import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
+import { animalTypesControllerFindAll, animalTypesControllerCreate, animalTypesControllerRemove, animalTypesControllerUpdate } from '~/lib/api'
+
+export default function AnimalTypes() {
+    const t = useTranslations()
+    const locale = useLocale() as 'uz' | 'ru'
+
+    const COLUMNS = [
+        { title: t('animalTypes.name'), key: 'name' },
+        { title: t('table.actions'), key: 'actions', render(item: AnimalType) {
+            return (<div className="flex gap-2 items-center">
+                <Button onClick={() => handleEditItem(item)} size='sm'>
+                    {t('table.edit')}
+                </Button>
+                <Button onClick={() => handleDelete(item.id)} size='sm'>
+                    {t('table.delete')}
+                </Button>
+            </div>)
+        } },
+    ]
+
+    const [dialog, setDialog] = useState(false)
+    const [loading, setLoading] = useState(true)
+    const [totalItems, setTotalItems] = useState(0)
+    const [items, setItems] = useState<AnimalType[]>([])
+    const [itemId, setItemId] = useState<number | null>(null)
+
+    const formSchema = z.object({
+        name: z.string().min(1, t("required.typeNameRequired"))
+    })
+
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            name: "",
+        },
+    })
+
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        try {
+            if (itemId) {
+                const data: any = await animalTypesControllerUpdate(itemId, values as any)
+                setItems(p => p.map(i => {
+                    if(i.id === itemId) return data
+                    return i
+                }))
+            } else {
+                const data: any = await animalTypesControllerCreate(values as any)
+                setItems(p => [...p, data])
+            }
+    
+            handleClose()
+        } catch (error) {
+            console.log(error)            
+        }
+    }
+
+    async function handleGetItems(params: any) {
+        try {
+            setLoading(true)
+            const {data, meta} = await animalTypesControllerFindAll(params)
+            setItems(data as any)
+            setTotalItems(meta.total)
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    async function handleDelete(id: number) {
+        try {
+            if(!confirm(ALERT_MESSAGES.DELETE_CONFIRM[locale])) return
+            await animalTypesControllerRemove(id)
+            setItems(p => p.filter(i => i.id !== id))
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    function handleEditItem(item: AnimalType) {
+        setDialog(true)
+        setItemId(item.id)
+
+        form.setValue('name', item.name)
+    }
+
+    function handleClose() {
+        form.reset()
+        setItemId(null)
+        setDialog(false)
+    }
+
+    return (
+        <div>
+            <DataTable
+                loading={loading}
+                columns={COLUMNS}
+                items={items as any}
+                totalItems={totalItems}
+                callback={handleGetItems}
+                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="!mt-0 w-full sm:w-fit">{t('animalTypes.createButton')}</Button>}
+            />
+
+            <Dialog open={dialog} onOpenChange={handleClose}>
+                <DialogContent className="bg-card overflow-auto max-h-screen md:max-h-[95vh] max-w-[500px]" aria-describedby={undefined}>
+                    <DialogHeader>
+                        <DialogTitle>{t(itemId?'animalTypes.editAnimalType':'animalTypes.createAnimalType')}</DialogTitle>
+                    </DialogHeader>
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                            <FormField
+                                name="name"
+                                control={form.control}
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>{t('animalTypes.name')}</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder={t('animalTypes.name')} {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">{form.formState.isSubmitting?t('form.submiting'):t('form.submit')}</Button>
+                        </form>
+                    </Form>
+                </DialogContent>
+            </Dialog>
+        </div>
+    )
+}

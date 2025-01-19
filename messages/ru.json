@@ -1,0 +1,260 @@
+{
+  "nav": {
+    "management": "Управления",
+    "animals": "Животные",
+    "animalTypes": "Типы животных",
+    "vaccineTypes": "Типы вакцин",
+    "diseaseTypes": "Типы болезней",
+    "animalColors": "Цвета животных",
+    "urineColors": "Цвета мочи",
+    "dungColors": "Цвета навоза",
+    "regions": "Регионы",
+    "districts": "Районы",
+    "vetstations": "Ветстанции",
+    "eyeLid": "Веки",
+    "leatherCover": "Кожный покров",
+
+    "users": "Пользователи",
+    "veterinarians": "Ветеринары",
+    "farmers": "Фермеры",
+    "profile": "Профиль",
+
+    "inspections": "Осмотры",
+    "diseases": "Болезни",
+    "urineTests": "Анализы мочи",
+    "dungTests": "Анализы навоза",
+    "vaccines": "Вакцины",
+    "generalInspections": "Общие осмотры",
+    "generalBloodTests": "Общий анализ крови",
+    "bloodSerumTests": "Анализы сыворотки крови"
+  },
+  "theme": {
+    "light": "Светлая",
+    "dark": "Темная",
+    "system": "Системная"
+  },
+  "login": {
+    "title": "Вход в систему",
+    "phone": "Номер телефона",
+    "phoneRequired": "Необходимо ввести номер телефона",
+    "password": "Пароль",
+    "passwordRequired": "Пароль должен быть не менее 8 символов",
+    "authError": "Неверный номер телефона или пароль",
+    "submit": "Войти"
+  },
+  "form": {
+    "submit": "Сохранить",
+    "animal": "Животное",
+    "submiting": "Отправляется",
+    "farmer": "Фермер",
+    "veterinarian": "Ветеринар",
+    "type": "Тип",
+    "date": "Дата",
+    "birthDate": "Дата рождения",
+    "startDate": "Время начала",
+    "endDate": "Время окончания",
+    "color": "Цвет",
+    "disease": "Болезнь",
+    "diseaseType": "Тип болезни",
+    "gender": "Пол",
+    "name": "Имя Фамилия",
+    "phone": "Номер телефона",
+    "address": "Адрес",
+    "regionName": "Название региона",
+    "districtName": "Название района",
+    "confirmPassword": "Повторите пароль",
+    "password": "Пароль",
+    "selectDate": "Выберите дату"
+  },
+  "animalTypes": {
+    "name": "Название типа",
+    "createButton": "Создать тип животного",
+    "createAnimalType": "Создать тип",
+    "editAnimalType": "Редактировать тип"
+  },
+  "animals": {
+    "name": "Название животного",
+    "weight": "Вес",
+    "idCode": "ID код",
+    "breed": "Порода",
+    "arrivalDate": "Дата прибытия",
+    "createButton": "Добавить животное",
+    "createAnimal": "Добавить животное",
+    "editAnimal": "Редактировать животное"
+  },
+  "table": {
+    "search": "Поиск",
+    "actions": "Действия",
+    "edit": "Редактировать",
+    "delete": "Удалить",
+    "loading": "Загрузка",
+    "none": "Нет данных"
+  },
+  "filters": {
+    "all": "Все",
+    "byType": "Фильтр по типу",
+    "byGender": "Фильтр по полу",
+    "byBreed": "Фильтр по породе",
+    "byColor": "Фильтр по цвету",
+    "byRegion": "Фильтр по региону",
+    "byDistrict": "Фильтр по району",
+    "byAnimal": "Фильтр по животному"
+  },
+  "users": {
+    "firstName": "Имя",
+    "lastName": "Фамилия",
+    "middleName": "Отчество",
+
+    "createFarmer": "Добавить фермера",
+    "editFarmer": "Редактировать фермера",
+
+    "createVeterinarian": "Добавить ветеринара",
+    "editVeterinarian": "Редактировать ветеринара",
+
+    "changeUserData": "Изменить данные"
+  },
+  "regions": {
+    "createDistrict": "Создать район",
+    "editDistrict": "Редактировать район",
+
+    "vetStationName": "Название станции",
+    "vetStationAddress": "Адрес станции",
+    "createVetStation": "Создать ветстанцию",
+    "editVetStation": "Редактировать ветстанцию",
+
+    "countOfDistricts": "Количество районов",
+    "createRegion": "Создать регион",
+    "editRegion": "Редактировать регион"
+  },
+  "management": {
+    "colorName": "Название цвета",
+    "colorPick": "Иконка цвета",
+    "createColor": "Создать цвет",
+    "editColor": "Редактировать цвет",
+
+    "typeName": "Название типа",
+
+    "createType": "Создать тип",
+    "editType": "Редактировать тип",
+
+    "vaccineType": "Тип вакцины",
+    "diseaseTypeCreate": "Создать тип болезни",
+    "vaccineTypeCreate": "Создать тип вакцины",
+
+    "dungColorCreate": "Создать цвет навоза",
+
+    "urineColorCreate": "Создать цвет мочи",
+
+    "eyeLid": "Веко",
+    "eyeLidName": "Название века",
+
+    "createEyeLid": "Создать веко",
+    "editEyeLid": "Редактировать веко",
+
+    "leatherCover": "Кожный покров",
+    "leatherCoverName": "Название покрова",
+
+    "createLeatherCover": "Создать кожный покров",
+    "editLeatherCover": "Редактировать кожный покров"
+  },
+  "inspections": {
+    "obesity": "Ожирение",
+    "bodyType": "Телосложение животного",
+    "bodyStructure": "Строение тела",
+    "customerType": "Клиентский тип животного",
+
+    "createBloodSerumTest": "Создать анализ сыворотки крови",
+    "editBloodSerumTest": "Редактировать анализ сыворотки крови",
+
+    "createDisease": "Создать болезнь",
+    "editDisease": "Редактировать болезнь",
+
+    "createInspection": "Создать осмотр",
+    "editInspection": "Редактировать осмотр",
+
+    "pulse": "Пульс",
+    "rumination": "Жвачка",
+    "temperature": "Температура",
+    "respiratoryRate": "Частота дыхания",
+
+    "conclusion": "Заключение",
+    "consistency": "Консистенция",
+    "worms": "Глисты",
+    "smell": "Запах",
+    "clarity": "Прозрачность",
+    "form": "Форма",
+
+    "createDungTest": "Создать анализ навоза",
+    "editDungTest": "Редактировать анализ навоза",
+
+    "createBloodTest": "Создать анализ крови",
+    "editBloodTest": "Редактировать анализ крови",
+
+    "createGeneralInspections": "Создать общий осмотр",
+    "editGeneralInspections": "Редактировать общий осмотр",
+
+    "inspection": "Осмотр",
+    "habitus": "Габитус",
+    "inspectionType": "Тип осмотра",
+
+    "createUrineTest": "Создать анализ мочи",
+    "editUrineTest": "Редактировать анализ мочи",
+
+    "createVaccine": "Создать вакцину",
+    "editVaccine": "Редактировать вакцину"
+  },
+  "required": {
+    "colorNameRequired": "Название цвета обязательно для заполнения",
+    "typeNameRequired": "Название типа обязательно для заполнения",
+    "eyeLidNameRequired": "Название века обязательно для заполнения",
+    "leatherCoverNameRequired": "Название покрытия обязательно для заполнения",
+    "vetStationNameRequired": "Название ветеринарной станции обязательно для заполнения",
+    "vetStationAddressRequired": "Адрес ветеринарной станции обязателен для заполнения",
+
+    "phoneRequired": "Номер телефона должен быть введен в правильном формате",
+    "lastNameRequired": "Фамилия обязательна для заполнения",
+    "firstNameRequired": "Имя обязательно для заполнения",
+    "regionRequired": "Область обязательна для выбора",
+    "regionNameRequired": "Название области обязательно для заполнения",
+
+    "districtRequired": "Район обязателен для выбора",
+    "districtNameRequired": "Название района обязательно для заполнения",
+    "passwordRequired": "Пароль не должен быть короче 8 символов",
+    "confirmPasswordRequired": "Пароли должны совпадать",
+
+    "arrivalDateRequired": "Дата прибытия обязательна для заполнения",
+    "animalNameRequired": "Название животного обязательно для заполнения",
+    "animalTypeRequired": "Тип животного обязателен для заполнения",
+    "weightRequired": "Вес животного обязателен для заполнения",
+    "idCodeRequired": "ID код животного обязателен для заполнения",
+
+    "diseaseRequired": "Заболевание обязательно для выбора",
+    "diseaseTypeRequired": "Тип заболевания обязателен для выбора",
+    "startTimeRequired": "Время начала обязательно для заполнения",
+    "endTimeRequired": "Время окончания обязательно для заполнения",
+    "pulseGreetThan0": "Пульс должен быть больше 0",
+    "temperatureThan0": "Температура должна быть больше 0",
+    "ruminationGreetThan0": "Руминация должна быть больше 0",
+    "respiratoryRateGreetThan0": "Частота дыхания должна быть больше 0",
+    "wormsGreetThan0": "Количество глистов должно быть больше 0",
+    "consistencyGreetThan0": "Консистенция должна быть больше 0",
+    "moreThan0": "Значение должно быть больше 0",
+    "dateRequired": "Дата обязательна для заполнения",
+    "animalRequired": "Животное обязательно для выбора",
+    "eyeLidRequired": "Веко обязательно для выбора",
+    "leatherCoverRequired": "Покрытие обязательно для выбора",
+    "birthDateRequired": "Дата рождения обязательна для заполнения",
+    "colorRequired": "Цвет обязателен для выбора",
+    "vaccineTypeRequired": "Тип вакцины обязателен для выбора",
+    "breedRequired": "Порода обязательна для выбора",
+    "genderRequired": "Пол обязателен для выбора",
+    "formRequired": "Форма обязательна для выбора",
+    "smellRequired": "Запах обязателен для выбора",
+    "clarityRequired": "Прозрачность обязательна для выбора",
+    "customerTypeRequired": "Тип клиента обязателен для выбора",
+    "bodyTypeRequired": "Тип телосложения животного обязателен для выбора",
+    "obesityRequired": "Уровень ожирения животного обязателен для выбора",
+    "bodyStructureTypeRequired": "Тип телосложения животного обязателен для выбора",
+    "inspectionTypeRequired": "Тип осмотра обязателен для выбора"
+  }
+}

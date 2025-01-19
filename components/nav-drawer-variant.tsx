@@ -1,16 +1,17 @@
 'use client'
 
-import Link from "next/link"
 import { cn } from "~/lib/utils"
 import { useEffect, useState } from "react"
 import { ChevronRight } from "lucide-react"
 import { navLinksVariant } from '~/constants'
-import { usePathname } from "next/navigation"
+import { usePathname, Link } from "~/i18n/routing"
 import { useAuthData } from "~/hooks/use-auth-data"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@radix-ui/react-collapsible"
 import { Sidebar, SidebarContent, SidebarGroup, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, useSidebar } from "~/components/ui/sidebar"
+import { useTranslations } from "next-intl"
 
 export function AppSidebar() {
+    const t = useTranslations()
     const pathname = usePathname()
     const { userData } = useAuthData()
     const [links, setLinks] = useState<any[]>([])
@@ -34,7 +35,7 @@ export function AppSidebar() {
                                     <CollapsibleTrigger asChild>
                                         <SidebarMenuButton tooltip={item.title}>
                                             {item.icon && <item.icon className="!size-[1.1rem] mr-2" />}
-                                            <span>{item.title}</span>
+                                            <span>{t(item.title)}</span>
                                             <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                                         </SidebarMenuButton>
                                     </CollapsibleTrigger>
@@ -49,7 +50,7 @@ export function AppSidebar() {
                                                             <div>
                                                                 {subItem.icon && <subItem.icon className="size-[1.1rem]" />}
                                                             </div>
-                                                            <span className="text-sm">{subItem.title}</span>
+                                                            <span className="text-sm">{t(subItem.title)}</span>
                                                         </Link>
                                                     </SidebarMenuSubButton>
                                                 </SidebarMenuSubItem>

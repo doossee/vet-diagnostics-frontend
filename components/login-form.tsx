@@ -6,6 +6,7 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { TOAST_OPTIONS } from '~/constants'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from "next-intl"
 import { Input } from "~/components/ui/input"
 import { authControllerLogin } from '~/lib/api'
 import { Button } from "~/components/ui/button"
@@ -16,12 +17,13 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 
 export function LoginForm() {
   const router = useRouter()
+  const t = useTranslations()
   const { setAuthData } = useAuthData()
   const [loading, setLoading] = useState(false)
 
   const formSchema = z.object({
-    phone: z.string().min(1, 'Telefon raqam kiritilishi shart'),
-    password: z.string().min(6, "Parol 8 ta belgidan kichik bo'lmasligi kerak"),
+    phone: z.string().min(1, t('login.phoneRequired')),
+    password: z.string().min(6, t('login.passwordRequired')),
   })
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -47,7 +49,7 @@ export function LoginForm() {
         router.push('/animals')
       }
     } catch (error) {
-      toast("Telefon yoki Parol noto'g'ri", TOAST_OPTIONS)
+      toast(t("login.authError"), TOAST_OPTIONS)
     } finally {
       setLoading(false)
     }
@@ -56,7 +58,7 @@ export function LoginForm() {
   return (
     <Card className="mx-auto max-w-[400px] w-full shadow-none rounded-md">
       <CardHeader>
-        <CardTitle className="text-2xl">Tizimga kirish</CardTitle>
+        <CardTitle className="text-2xl">{t("login.title")}</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -66,7 +68,7 @@ export function LoginForm() {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Telefon raqam</FormLabel>
+                  <FormLabel>{t("login.phone")}</FormLabel>
                   <FormControl>
                     <Input placeholder="+998 XX XXX XX XX" {...field} />
                   </FormControl>
@@ -80,16 +82,16 @@ export function LoginForm() {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Parol</FormLabel>
+                  <FormLabel>{t("login.password")}</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="Parol" {...field} />
+                    <Input type="password" placeholder={t("login.password")} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             
-            <Button disabled={loading} type="submit" className="w-full">{loading?"Yuborilmoqda...":"Kirish"}</Button>
+            <Button disabled={loading} type="submit" className="w-full">{t(loading?"form.submiting":"login.submit")}</Button>
           </form>
         </Form>
       </CardContent>

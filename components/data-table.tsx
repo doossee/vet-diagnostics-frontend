@@ -2,6 +2,7 @@
 
 import debounce from "lodash/debounce"
 import { createPortal } from "react-dom"
+import { useTranslations } from 'next-intl'
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
 import { useIsMobile } from '~/hooks/use-mobile'
@@ -34,6 +35,7 @@ interface DataTableProps<T> {
 }
 
 export function DataTable<T extends { id: any }>({ columns, items, totalItems, loading, topSlot, callback, hideBottom, filters, hideSearch }: DataTableProps<T>) {
+  const t = useTranslations()
   const isMobile = useIsMobile()
   const isClient = useIsClient()
 
@@ -75,7 +77,7 @@ export function DataTable<T extends { id: any }>({ columns, items, totalItems, l
   return (
     <Card className="shadow-none rounded-lg">
       <CardHeader className='p-2 flex flex-col sm:flex-row justify-between items-start gap-2'>
-        {!hideSearch && <Input className='sm:max-w-[200px]' onChange={e => handleSearch(e.target.value.trim())} placeholder='Qidirish' />}
+        {!hideSearch && <Input className='sm:max-w-[200px]' onChange={e => handleSearch(e.target.value.trim())} placeholder={t('table.search')} />}
         {topSlot}
       </CardHeader>
       {
@@ -109,10 +111,10 @@ export function DataTable<T extends { id: any }>({ columns, items, totalItems, l
           {isMobile ?
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {
-                loading && <div className="text-center text-gray-300 col-span-1 sm:col-span-2">Yuklanmoqda...</div>
+                loading && <div className="text-center text-gray-300 col-span-1 sm:col-span-2">{t('table.loading')}...</div>
               }
               {
-                (items.length == 0 && !loading) && <div className="text-center text-gray-300 col-span-1 sm:col-span-2">Malumotlar yo'q</div>
+                (items.length == 0 && !loading) && <div className="text-center text-gray-300 col-span-1 sm:col-span-2">{t('table.none')}</div>
               }
               {
                 items.map((item, i) =>
@@ -158,12 +160,12 @@ export function DataTable<T extends { id: any }>({ columns, items, totalItems, l
               <TableBody>
                 {
                   loading && <TableRow>
-                    <TableCell colSpan={columns.length} className="text-center text-gray-300">Yuklanmoqda...</TableCell>
+                    <TableCell colSpan={columns.length} className="text-center text-gray-300">{t('table.loading')}...</TableCell>
                   </TableRow>
                 }
                 {
                   (items.length == 0 && !loading) && <TableRow>
-                    <TableCell colSpan={columns.length} className="text-center text-gray-300">Malumotlar yo'q</TableCell>
+                    <TableCell colSpan={columns.length} className="text-center text-gray-300">{t('table.none')}</TableCell>
                   </TableRow>
                 }
                 {

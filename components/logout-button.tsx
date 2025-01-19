@@ -2,7 +2,7 @@
 
 import { Button } from "./ui/button"
 import { LogOut } from 'lucide-react'
-import { useRouter } from "next/navigation"
+import { useRouter } from "~/i18n/routing"
 import { useAuthData } from "~/hooks/use-auth-data"
 
 

@@ -7,6 +7,7 @@ import { CalendarIcon } from "lucide-react"
 import { Button } from "~/components/ui/button"
 import { CalendarComponent } from "~/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover"
+import { useTranslations } from "next-intl"
 
 interface DatePickerProps {
     field: any
@@ -15,12 +16,14 @@ interface DatePickerProps {
 }
 
 export function DatePicker({field, buttonClass}: DatePickerProps) {
+    const t = useTranslations()
+
     return (<Popover>
         <PopoverTrigger asChild>
             {/* <FormControl> */}
                 <Button variant={buttonClass?"secondary":"outline"} className={cn("pl-3 text-left font-normal w-full", !field.value && "text-muted-foreground", buttonClass)}>
                     {field.value ? (format(field.value, "PPP")) : (
-                    <span>Sanani belgilang</span>)}
+                    <span>{t("form.selectDate")}</span>)}
                     <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                 </Button>
             {/* </FormControl> */}

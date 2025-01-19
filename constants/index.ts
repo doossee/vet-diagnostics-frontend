@@ -23,319 +23,120 @@ import {
   UserCog,
 } from "lucide-react";
 
-export const FARMER_DATA_CARDS = [
-  {
-    title: "Data title 1",
-    value: "4,000,000",
-    icon: PawPrint,
-    description: "Data description 1",
-  },
-  {
-    title: "Data title 2",
-    value: "1,200,000",
-    icon: PawPrint,
-    description: "Data description 2",
-  },
-  {
-    title: "Data title 3",
-    value: "3,400,000",
-    icon: PawPrint,
-    description: "Data description 3",
-  },
-  {
-    title: "Data title 4",
-    value: "1,00,200",
-    icon: PawPrint,
-    description: "Data description 4",
-  },
-];
-
 export const GENDERS = [
-  { name: "Erkak", value: "MALE" },
-  { name: "Ayol", value: "FEMALE" },
+  { uz: "Erkak", ru: "Мужской", value: "MALE" },
+  { uz: "Ayol", ru: "Женский", value: "FEMALE" },
 ];
 
 export const BREED = [
-  { name: "Sut", value: "MILK" },
-  { name: "Go'sht", value: "MEAT" },
+  { uz: "Sut", ru: "Молоко", value: "MILK" },
+  { uz: "Go'sht", ru: "Мясо", value: "MEAT" },
 ];
 
 export const BLOOD_SERUM_TESTS = {
-  totalProtein: "Umumiy oqsil",
-  totalCalcium: "Umumiy kalsiy",
-  organicPhosphorus: "Organik fosfor",
-  albumen: "Albumin",
-  alphaGlobulin: "Alfa globulin",
-  betaGlobulin: "Alfa globulin",
-  gammaGlobulin: "Gamma globulin",
-  creatine: "Kreatin",
-  alkalineReserve: "Ishqoriy zahira",
-  glucose: "Glyukoza",
-  totalBilirubin: "Umumiy Bilirubin",
-  cholesterol: "Xolestrin",
-  totalLipids: "Umumiy lipidlar",
-  vitaminA: "A vitamin",
-  vitaminB: "B vitamin",
-  lacticAcid: "Sut kislotasi",
-  pyruvicAcid: "Pirouzum kislotasi",
-  urea: "Karbamid",
-  citricAcid: "Limon kislotasi",
-  ureaAcid: "Karbamid kislotasi",
+  totalProtein: { ru: "Общий белок", uz: "Umumiy oqsil" },
+  totalCalcium: { ru: "Общий кальций", uz: "Umumiy kalsiy" },
+  organicPhosphorus: { ru: "Органический фосфор", uz: "Organik fosfor" },
+  albumen: { ru: "Альбумин", uz: "Albumin" },
+  alphaGlobulin: { ru: "Альфа-глобулин", uz: "Alfa globulin" },
+  betaGlobulin: { ru: "Бета-глобулин", uz: "Beta globulin" },
+  gammaGlobulin: { ru: "Гамма-глобулин", uz: "Gamma globulin" },
+  creatine: { ru: "Креатин", uz: "Kreatin" },
+  alkalineReserve: { ru: "Щелочной резерв", uz: "Ishqoriy zahira" },
+  glucose: { ru: "Глюкоза", uz: "Glyukoza" },
+  totalBilirubin: { ru: "Общий билирубин", uz: "Umumiy Bilirubin" },
+  cholesterol: { ru: "Холестерин", uz: "Xolestrin" },
+  totalLipids: { ru: "Общие липиды", uz: "Umumiy lipidlar" },
+  vitaminA: { ru: "Витамин A", uz: "A vitamin" },
+  vitaminB: { ru: "Витамин B", uz: "B vitamin" },
+  lacticAcid: { ru: "Молочная кислота", uz: "Sut kislotasi" },
+  pyruvicAcid: { ru: "Пировиноградная кислота", uz: "Pirouzum kislotasi" },
+  urea: { ru: "Мочевина", uz: "Karbamid" },
+  citricAcid: { ru: "Лимонная кислота", uz: "Limon kislotasi" },
+  ureaAcid: { ru: "Мочевая кислота", uz: "Karbamid kislotasi" },
 };
 
 export const GENERAL_BLOOD_TESTS = {
-  coe: "COE",
-  leukocyteCount: "Leykotsitlar soni",
-  erythrocyteCount: "Eritrotsitlar soni",
-  thrombocyteCount: "Trombotsitlar soni",
-  hemoglobin: "Gemoglobin",
-  glutathione: "Glutation",
-  waterPercentage: "Suv foizi",
-  dryResiduePercentage: "Quruq qoldiq ulushi",
+  coe: { ru: "СОЭ", uz: "COE" },
+  leukocyteCount: { ru: "Количество лейкоцитов", uz: "Leykotsitlar soni" },
+  erythrocyteCount: { ru: "Количество эритроцитов", uz: "Eritrotsitlar soni" },
+  thrombocyteCount: { ru: "Количество тромбоцитов", uz: "Trombotsitlar soni" },
+  hemoglobin: { ru: "Гемоглобин", uz: "Gemoglobin" },
+  glutathione: { ru: "Глутатион", uz: "Glutation" },
+  waterPercentage: { ru: "Процент воды", uz: "Suv foizi" },
+  dryResiduePercentage: { ru: "Процент сухого остатка", uz: "Quruq qoldiq ulushi" },
 };
 
 export const CLARITY_TYPES = {
-  CLEAR: "Tiniq",
-  NOT_CLEAR: "Rasvo",
+  CLEAR: { ru: "Прозрачный", uz: "Tiniq" },
+  NOT_CLEAR: { ru: "Мутный", uz: "Rasvo" },
 };
 
-export const SMELLL_TYPES = {
-  PUNGENT: "Hidi o'tkir",
-  WEAK: "Hidi kuchsiz",
-  HAS: "Hidi bor",
-  NO: "Hidsiz",
+export const SMELL_TYPES = {
+  PUNGENT: { ru: "Резкий запах", uz: "Hidi o'tkir" },
+  WEAK: { ru: "Слабый запах", uz: "Hidi kuchsiz" },
+  HAS: { ru: "Есть запах", uz: "Hidi bor" },
+  NO: { ru: "Без запаха", uz: "Hidsiz" },
 };
 
 export const DUNG_FORMS = {
-  NORMAL: "Norma",
-  SOLID: "Qattiq",
-  LIQUID: "Suyuq",
-  MEDIUM: "O'rtacha",
+  NORMAL: { ru: "Норма", uz: "Norma" },
+  SOLID: { ru: "Твёрдый", uz: "Qattiq" },
+  LIQUID: { ru: "Жидкий", uz: "Suyuq" },
+  MEDIUM: { ru: "Средний", uz: "O'rtacha" },
 };
 
 export const CUSTOMER_TYPES = {
-  MOBILE: "Harakatchan",
-  CALM: "Tinch",
+  MOBILE: { ru: "Подвижный", uz: "Harakatchan" },
+  CALM: { ru: "Спокойный", uz: "Tinch" },
 };
 
 export const OBESITY_TYPES = {
-  HIGH: "Yuqori",
-  MEDIUM: "O'rtacha",
-  LEAN: "O'rtachadan past",
-  LOW: "Ozg'in",
-  CACHEXIA: "Koxeksiya",
+  HIGH: { ru: "Высокая", uz: "Yuqori" },
+  MEDIUM: { ru: "Средняя", uz: "O'rtacha" },
+  LEAN: { ru: "Ниже среднего", uz: "O'rtachadan past" },
+  LOW: { ru: "Худой", uz: "Ozg'in" },
+  CACHEXIA: { ru: "Кахексия", uz: "Koxeksiya" },
 };
 
 export const BODY_TYPES = {
-  WEAK: "Kuchsiz",
-  MEDIUM: "O'rtacha",
-  STRONG: "Kuchli",
+  WEAK: { ru: "Слабый", uz: "Kuchsiz" },
+  MEDIUM: { ru: "Средний", uz: "O'rtacha" },
+  STRONG: { ru: "Сильный", uz: "Kuchli" },
 };
 
 export const BODY_STRUCTURES = {
-  COARSE: "Qo'pol",
-  SLIM: "Bo'sh",
-  DENSE: "Zich",
-  WEAK: "Nozik",
+  COARSE: { ru: "Грубый", uz: "Qo'pol" },
+  SLIM: { ru: "Худой", uz: "Bo'sh" },
+  DENSE: { ru: "Плотный", uz: "Zich" },
+  WEAK: { ru: "Тонкий", uz: "Nozik" },
 };
 
 export const INSPECTION_TYPES = {
-  MORNING: "Ertalabki",
-  EVENING: "Kechki",
-  DISEASE: "Kasallik",
-  GENERAL: "Umumiy",
+  MORNING: { ru: "Утренний", uz: "Ertalabki" },
+  EVENING: { ru: "Вечерний", uz: "Kechki" },
+  DISEASE: { ru: "Заболевание", uz: "Kasallik" },
+  GENERAL: { ru: "Общий", uz: "Umumiy" },
 };
 
 export const ALERT_MESSAGES = {
-  DATA_CREATED: "Ma'lumot muvaffaqiyatli yaratildi!",
-  DATA_UPDATED: "Ma'lumot muvaffaqiyatli yangilandi!",
-  DATA_DELETED: "Ma'lumot muvaffaqiyatli o'chirildi!",
-  DATA_NOT_FOUND: "Ma'lumot topilmadi!",
-  INVALID_INPUT: "Kiritilgan ma'lumot noto'g'ri!",
-  ACCESS_DENIED: "Kirish taqiqlangan!",
-  LOGIN_SUCCESS: "Muvaffaqiyatli kirildi!",
-  LOGIN_FAILED: "Login yoki parol noto'g'ri!",
-  PERMISSION_REQUIRED: "Ruxsat talab qilinadi!",
-  SERVER_ERROR: "Serverda xatolik yuz berdi!",
-  OPERATION_FAILED: "Amal bajarilmadi!",
-  OPERATION_SUCCESS: "Amal muvaffaqiyatli bajarildi!",
-  LOADING: "Yuklanmoqda...",
-  SAVING: "Saqlanmoqda...",
-  UPLOADING: "Yuklanmoqda...",
-  NO_DATA: "Ma'lumot mavjud emas!",
-  DELETE_CONFIRM: "Ushbu ma'lumotni o'chirmoqchimisiz?",
-};
-
-export const navLinks: Record<
-  UserRole,
-  { title: string; icon: any; url: string }[]
-> = {
-  ADMIN: [
-    {
-      title: "Bosh sahifa",
-      icon: LayoutDashboard,
-      url: "/admin",
-    },
-    {
-      title: "Veterinarlar",
-      icon: Users,
-      url: "/veterinarians",
-    },
-    {
-      title: "Hayvon turlari",
-      icon: PawPrint,
-      url: "/animal-types",
-    },
-    {
-      title: "Ranglar",
-      icon: Palette,
-      url: "/animal-colors",
-    },
-    {
-      title: "Viloyatlar",
-      icon: Map,
-      url: "/regions",
-    },
-    {
-      title: "Tumanlar",
-      icon: MapPinned,
-      url: "/districts",
-    },
-    {
-      title: "Vet Stansiyalar",
-      icon: MapPin,
-      url: "/vetstations",
-    },
-    {
-      title: "Vaksina turlari",
-      icon: Cross,
-      url: "/vaccine-types",
-    },
-    {
-      title: "Kasallik turlari",
-      icon: Activity,
-      url: "/disease-types",
-    },
-    {
-      title: "Siydik ranglari",
-      icon: Palette,
-      url: "/urine-colors",
-    },
-    {
-      title: "Tezak ranglari",
-      icon: Palette,
-      url: "/dung-colors",
-    },
-  ],
-  FARMER: [
-    {
-      title: "Bosh sahifa",
-      icon: LayoutDashboard,
-      url: "/farmer",
-    },
-    {
-      title: "Hayvonlar",
-      icon: PawPrint,
-      url: "/animals",
-    },
-    {
-      title: "Siydik tekshiruvi",
-      icon: FlaskConical,
-      url: "/urine-tests",
-    },
-    {
-      title: "Tezak tekshiruvi",
-      icon: Shovel,
-      url: "/dung-tests",
-    },
-    {
-      title: "Kasallik",
-      icon: ScanHeart,
-      url: "/diseases",
-    },
-    {
-      title: "Vaksinalar",
-      icon: PillBottle,
-      url: "/vaccines",
-    },
-    {
-      title: "Umumiy tekshiruv",
-      icon: HeartPulse,
-      url: "/general-inspections",
-    },
-    {
-      title: "Tekshiruv",
-      icon: Activity,
-      url: "/inspections",
-    },
-    {
-      title: "Umumiy qon tahlili",
-      icon: Syringe,
-      url: "/general-blood-tests",
-    },
-    {
-      title: "Qon serum tahlili",
-      icon: FlaskRound,
-      url: "/blood-serum-tests",
-    },
-  ],
-  VETERINARIAN: [
-    {
-      title: "Bosh sahifa",
-      icon: LayoutDashboard,
-      url: "/veterinarian",
-    },
-    {
-      title: "Fermerlar",
-      icon: CircleUserRound,
-      url: "/farmers",
-    },
-    {
-      title: "Umumiy tekshiruv",
-      icon: HeartPulse,
-      url: "/general-inspections",
-    },
-    {
-      title: "Tekshiruv",
-      icon: Activity,
-      url: "/inspections",
-    },
-    {
-      title: "Umumiy qon tahlili",
-      icon: Syringe,
-      url: "/general-blood-tests",
-    },
-    {
-      title: "Hayvonlar",
-      icon: PawPrint,
-      url: "/animals",
-    },
-    {
-      title: "Qon serum tahlili",
-      icon: FlaskRound,
-      url: "/blood-serum-tests",
-    },
-    {
-      title: "Siydik tekshiruvi",
-      icon: FlaskConical,
-      url: "/urine-tests",
-    },
-    {
-      title: "Tezak tekshiruvi",
-      icon: Shovel,
-      url: "/dung-tests",
-    },
-    {
-      title: "Kasallik",
-      icon: ScanHeart,
-      url: "/diseases",
-    },
-    {
-      title: "Вакцина",
-      icon: PillBottle,
-      url: "/vaccines",
-    },
-  ],
+  DATA_CREATED: { ru: "Данные успешно созданы!", uz: "Ma'lumot muvaffaqiyatli yaratildi!" },
+  DATA_UPDATED: { ru: "Данные успешно обновлены!", uz: "Ma'lumot muvaffaqiyatli yangilandi!" },
+  DATA_DELETED: { ru: "Данные успешно удалены!", uz: "Ma'lumot muvaffaqiyatli o'chirildi!" },
+  DATA_NOT_FOUND: { ru: "Данные не найдены!", uz: "Ma'lumot topilmadi!" },
+  INVALID_INPUT: { ru: "Введенные данные некорректны!", uz: "Kiritilgan ma'lumot noto'g'ri!" },
+  ACCESS_DENIED: { ru: "Доступ запрещен!", uz: "Kirish taqiqlangan!" },
+  LOGIN_SUCCESS: { ru: "Успешный вход!", uz: "Muvaffaqiyatli kirildi!" },
+  LOGIN_FAILED: { ru: "Логин или пароль неверны!", uz: "Login yoki parol noto'g'ri!" },
+  PERMISSION_REQUIRED: { ru: "Требуется разрешение!", uz: "Ruxsat talab qilinadi!" },
+  SERVER_ERROR: { ru: "Произошла ошибка на сервере!", uz: "Serverda xatolik yuz berdi!" },
+  OPERATION_FAILED: { ru: "Операция не выполнена!", uz: "Amal bajarilmadi!" },
+  OPERATION_SUCCESS: { ru: "Операция выполнена успешно!", uz: "Amal muvaffaqiyatli bajarildi!" },
+  LOADING: { ru: "Загрузка...", uz: "Yuklanmoqda..." },
+  SAVING: { ru: "Сохранение...", uz: "Saqlanmoqda..." },
+  UPLOADING: { ru: "Загрузка...", uz: "Yuklanmoqda..." },
+  NO_DATA: { ru: "Данные отсутствуют!", uz: "Ma'lumot mavjud emas!" },
+  DELETE_CONFIRM: { ru: "Вы уверены, что хотите удалить эти данные?", uz: "Ushbu ma'lumotni o'chirmoqchimisiz?" }
 };
 
 export const navLinksVariant: Record<
@@ -350,142 +151,142 @@ export const navLinksVariant: Record<
   ADMIN: [
     {
       isActive: true,
-      title: "Boshqaruvlar",
+      title: "nav.management",
       icon: FolderCog,
       items: [
         {
-          title: "Hayvon turlari",
+          title: "nav.animalTypes",
           icon: PawPrint,
           url: "/animal-types",
         },
         {
-          title: "Vaksina turlari",
+          title: "nav.vaccineTypes",
           icon: Cross,
           url: "/vaccine-types",
         },
         {
-          title: "Kasallik turlari",
+          title: "nav.diseaseTypes",
           icon: Activity,
           url: "/disease-types",
         },
 
         {
-          title: "Havvon ranglari",
+          title: "nav.animalColors",
           icon: Palette,
           url: "/animal-colors",
         },
         {
-          title: "Siydik ranglari",
+          title: "nav.urineColors",
           icon: Palette,
           url: "/urine-colors",
         },
         {
-          title: "Tezak ranglari",
+          title: "nav.dungColors",
           icon: Palette,
           url: "/dung-colors",
         },
 
         {
-          title: "Viloyatlar",
+          title: "nav.regions",
           icon: Map,
           url: "/regions",
         },
         {
-          title: "Tumanlar",
+          title: "nav.districts",
           icon: MapPinned,
           url: "/districts",
         },
         {
-          title: "Vet Stansiyalar",
+          title: "nav.vetstations",
           icon: MapPin,
           url: "/vetstations",
         },
 
         {
-          title: "Ko'z qopqoqlari",
+          title: "nav.eyeLid",
           icon: ScanEye,
           url: "/eye-lid",
         },
         {
-          title: "Teri qoplamalari",
+          title: "nav.leatherCover",
           icon: Disc,
           url: "/leather-cover",
         },
       ],
     },
     {
-      title: "Foydalanuvchilar",
+      title: "nav.users",
       icon: Users,
       items: [
         {
-          title: "Veterinarlar",
+          title: "nav.veterinarians",
           icon: Users,
           url: "/veterinarians",
         },
         {
-          title: "Fermerlar",
+          title: "nav.farmers",
           icon: Users,
           url: "/farmers",
         },
         {
-          title: "Profil",
+          title: "nav.profile",
           icon: UserCog,
           url: "/profile",
         },
       ],
     },
     {
-      title: "Hayvonlar",
+      title: "nav.animals",
       icon: PawPrint,
       items: [
         {
-          title: "Hayvonlar",
+          title: "nav.animals",
           icon: PawPrint,
           url: "/animals",
         },
       ],
     },
     {
-      title: "Tekshiruvlar",
+      title: "nav.inspections",
       icon: HeartPulse,
       items: [
         {
-          title: "Kasalliklar",
+          title: "nav.diseases",
           icon: ScanHeart,
           url: "/diseases",
         },
         {
-          title: "Siydik tekshiruvlari",
+          title: "nav.urineTests",
           icon: FlaskConical,
           url: "/urine-tests",
         },
         {
-          title: "Tezak tekshiruvlari",
+          title: "nav.dungTests",
           icon: Shovel,
           url: "/dung-tests",
         },
         {
-          title: "Vaksinalar",
+          title: "nav.vaccines",
           icon: PillBottle,
           url: "/vaccines",
         },
         {
-          title: "Umumiy tekshiruvlar",
+          title: "nav.generalInspections",
           icon: HeartPulse,
           url: "/general-inspections",
         },
         {
-          title: "Tekshiruvlar",
+          title: "nav.inspections",
           icon: Activity,
           url: "/inspections",
         },
         {
-          title: "Umumiy qon tahlillari",
+          title: "nav.generalBloodTests",
           icon: Syringe,
           url: "/general-blood-tests",
         },
         {
-          title: "Qon serum tahlillari",
+          title: "nav.bloodSerumTests",
           icon: FlaskRound,
           url: "/blood-serum-tests",
         },
@@ -495,62 +296,62 @@ export const navLinksVariant: Record<
   FARMER: [
     {
       isActive: true,
-      title: "Boshqaruv",
+      title: "nav.management",
       icon: FolderCog,
       items: [
         {
-          title: "Hayvonlar",
+          title: "nav.animals",
           icon: PawPrint,
           url: "/animals",
         },
         {
-          title: "Profil",
+          title: "nav.prifle",
           icon: UserCog,
           url: "/profile",
         },
       ],
     },
     {
-      title: "Tekshiruvlar",
+      title: "nav.inspections",
       icon: HeartPulse,
       items: [
         {
-          title: "Kasalliklar",
+          title: "nav.diseases",
           icon: ScanHeart,
           url: "/diseases",
         },
         {
-          title: "Siydik tekshiruvlari",
+          title: "nav.urineTests",
           icon: FlaskConical,
           url: "/urine-tests",
         },
         {
-          title: "Tezak tekshiruvlari",
+          title: "nav.dungTests",
           icon: Shovel,
           url: "/dung-tests",
         },
         {
-          title: "Vaksinalar",
+          title: "nav.vaccines",
           icon: PillBottle,
           url: "/vaccines",
         },
         {
-          title: "Umumiy tekshiruvlar",
+          title: "nav.generalInspections",
           icon: HeartPulse,
           url: "/general-inspections",
         },
         {
-          title: "Tekshiruvlar",
+          title: "nav.inspections",
           icon: Activity,
           url: "/inspections",
         },
         {
-          title: "Umumiy qon tahlillari",
+          title: "nav.generalBloodTests",
           icon: Syringe,
           url: "/general-blood-tests",
         },
         {
-          title: "Qon serum tahlillari",
+          title: "nav.bloodSerumTests",
           icon: FlaskRound,
           url: "/blood-serum-tests",
         },
@@ -560,62 +361,62 @@ export const navLinksVariant: Record<
   VETERINARIAN: [
     {
       isActive: true,
-      title: "Boshqaruv",
+      title: "nav.management",
       icon: FolderCog,
       items: [
         {
-          title: "Fermerlar",
+          title: "nav.farmers",
           icon: Users,
           url: "/farmers",
         },
         {
-          title: "Profil",
+          title: "nav.profile",
           icon: UserCog,
           url: "/profile",
         },
       ],
     },
     {
-      title: "Tekshiruvlar",
+      title: "nav.inspections",
       icon: HeartPulse,
       items: [
         {
-          title: "Kasalliklar",
+          title: "nav.diseases",
           icon: ScanHeart,
           url: "/diseases",
         },
         {
-          title: "Siydik tekshiruvlari",
+          title: "nav.urineTests",
           icon: FlaskConical,
           url: "/urine-tests",
         },
         {
-          title: "Tezak tekshiruvlari",
+          title: "nav.dungTests",
           icon: Shovel,
           url: "/dung-tests",
         },
         {
-          title: "Vaksinalar",
+          title: "nav.vaccines",
           icon: PillBottle,
           url: "/vaccines",
         },
         {
-          title: "Umumiy tekshiruvlar",
+          title: "nav.generalInspections",
           icon: HeartPulse,
           url: "/general-inspections",
         },
         {
-          title: "Tekshiruvlar",
+          title: "nav.inspections",
           icon: Activity,
           url: "/inspections",
         },
         {
-          title: "Umumiy qon tahlillari",
+          title: "nav.generalBloodTests",
           icon: Syringe,
           url: "/general-blood-tests",
         },
         {
-          title: "Qon serum tahlillari",
+          title: "nav.bloodSerumTests",
           icon: FlaskRound,
           url: "/blood-serum-tests",
         },

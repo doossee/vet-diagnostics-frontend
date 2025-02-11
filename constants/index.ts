@@ -1,6 +1,6 @@
 import { UserRole } from "~/lib/type";
 import {
-  LayoutDashboard,
+  CirclePlus,
   FlaskRound,
   FlaskConical,
   Shovel,
@@ -17,7 +17,7 @@ import {
   Map,
   ScanEye,
   Palette,
-  CircleUserRound,
+  Ham,
   FolderCog,
   Disc,
   UserCog,
@@ -25,7 +25,12 @@ import {
 
 export const GENDERS = [
   { uz: "Erkak", ru: "Мужской", value: "MALE" },
-  { uz: "Ayol", ru: "Женский", value: "FEMALE" },
+  { uz: "Urgochi", ru: "Женский", value: "FEMALE" },
+];
+
+export const ANIMAL_GENDERS = [
+  { uz: "Erkak", ru: "Самец", value: "MALE" },
+  { uz: "Urgochi", ru: "Самка", value: "FEMALE" },
 ];
 
 export const BREED = [
@@ -34,43 +39,64 @@ export const BREED = [
 ];
 
 export const BLOOD_SERUM_TESTS = {
-  totalProtein: { ru: "Общий белок", uz: "Umumiy oqsil" },
-  totalCalcium: { ru: "Общий кальций", uz: "Umumiy kalsiy" },
-  organicPhosphorus: { ru: "Органический фосфор", uz: "Organik fosfor" },
-  albumen: { ru: "Альбумин", uz: "Albumin" },
-  alphaGlobulin: { ru: "Альфа-глобулин", uz: "Alfa globulin" },
-  betaGlobulin: { ru: "Бета-глобулин", uz: "Beta globulin" },
-  gammaGlobulin: { ru: "Гамма-глобулин", uz: "Gamma globulin" },
-  creatine: { ru: "Креатин", uz: "Kreatin" },
-  alkalineReserve: { ru: "Щелочной резерв", uz: "Ishqoriy zahira" },
-  glucose: { ru: "Глюкоза", uz: "Glyukoza" },
-  totalBilirubin: { ru: "Общий билирубин", uz: "Umumiy Bilirubin" },
-  cholesterol: { ru: "Холестерин", uz: "Xolestrin" },
-  totalLipids: { ru: "Общие липиды", uz: "Umumiy lipidlar" },
-  vitaminA: { ru: "Витамин A", uz: "A vitamin" },
-  vitaminB: { ru: "Витамин B", uz: "B vitamin" },
-  lacticAcid: { ru: "Молочная кислота", uz: "Sut kislotasi" },
-  pyruvicAcid: { ru: "Пировиноградная кислота", uz: "Pirouzum kislotasi" },
-  urea: { ru: "Мочевина", uz: "Karbamid" },
-  citricAcid: { ru: "Лимонная кислота", uz: "Limon kislotasi" },
-  ureaAcid: { ru: "Мочевая кислота", uz: "Karbamid kislotasi" },
+  totalProtein: { ru: "Общий белок сыворотки", uz: "Umumiy oqsil", unit_ru: 'г/л', unit_uz: 'g/L' },
+  totalCalcium: { ru: "Общий кальций", uz: "Umumiy kalsiy", unit_ru: 'ммоль/л', unit_uz: 'mmol/L' },
+  organicPhosphorus: { ru: "Органический фосфор", uz: "Organik fosfor", unit_ru: 'ммоль/л', unit_uz: 'mmol/L' },
+  albumen: { ru: "Альбумин", uz: "Albumin", unit_ru: '%', unit_uz: '%' },
+  alphaGlobulin: { ru: "Альфа-глобулин", uz: "Alfa globulin", unit_ru: '%', unit_uz: '%' },
+  betaGlobulin: { ru: "Бета-глобулин", uz: "Beta globulin", unit_ru: '%', unit_uz: '%' },
+  gammaGlobulin: { ru: "Гамма-глобулин", uz: "Gamma globulin", unit_ru: '%', unit_uz: '%' },
+  creatine: { ru: "Креатин", uz: "Kreatin", unit_ru: 'мкмоль/л', unit_uz: 'µmol/L' },
+  alkalineReserve: { ru: "Щелочной резерв", uz: "Ishqoriy zahira",  unit_ru: 'Об%CO²', unit_uz: 'Ob%CO²' },
+  glucose: { ru: "Глюкоза", uz: "Glyukoza", unit_ru: 'ммоль/л', unit_uz: 'mmol/L' },
+  totalBilirubin: { ru: "Общий билирубин", uz: "Umumiy Bilirubin", unit_ru: 'мкмоль/л', unit_uz: 'µmol/L' },
+  cholesterol: { ru: "Холестерин", uz: "Xolestrin", unit_ru: 'ммоль/л', unit_uz: 'mmol/L' },
+  totalLipids: { ru: "Общие липиды", uz: "Umumiy lipidlar", unit_ru: 'г/л', unit_uz: 'g/L' },
+  vitaminA: { ru: "Витамин A", uz: "A vitamin", unit_ru: 'мкмоль/л', unit_uz: 'µmol/L' },
+  vitaminB: { ru: "Витамин B", uz: "B vitamin", unit_ru: 'мкмоль/л', unit_uz: 'µmol/L' },
+  lacticAcid: { ru: "Молочная кислота", uz: "Sut kislotasi", unit_ru: 'ммоль/л', unit_uz: 'mmol/L' },
+  pyruvicAcid: { ru: "Пировиноградная кислота", uz: "Pirouzum kislotasi", unit_ru: 'ммоль/л', unit_uz: 'mmol/L' },
+  urea: { ru: "Мочевина", uz: "Karbamid", unit_ru: 'ммоль/л', unit_uz: 'mmol/L' },
+  citricAcid: { ru: "Лимонная кислота", uz: "Limon kislotasi", unit_ru: 'ммоль/л', unit_uz: 'mmol/L' },
+  ureaAcid: { ru: "Мочевая кислота", uz: "Karbamid kislotasi", unit_ru: 'ммоль/л', unit_uz: 'mmol/L' },
 };
 
 export const GENERAL_BLOOD_TESTS = {
-  coe: { ru: "СОЭ", uz: "COE" },
-  leukocyteCount: { ru: "Количество лейкоцитов", uz: "Leykotsitlar soni" },
-  erythrocyteCount: { ru: "Количество эритроцитов", uz: "Eritrotsitlar soni" },
-  thrombocyteCount: { ru: "Количество тромбоцитов", uz: "Trombotsitlar soni" },
-  hemoglobin: { ru: "Гемоглобин", uz: "Gemoglobin" },
-  glutathione: { ru: "Глутатион", uz: "Glutation" },
-  waterPercentage: { ru: "Процент воды", uz: "Suv foizi" },
-  dryResiduePercentage: { ru: "Процент сухого остатка", uz: "Quruq qoldiq ulushi" },
+  coe: { ru: "СОЭ", uz: "COE", unit_ru: "Мм/ч", unit_uz: "mm/soat", },
+  leukocyteCount: { ru: "Количество лейкоцитов", uz: "Leykotsitlar soni", unit_ru: "тыс./мкл", unit_uz: "ming/mkL", },
+  erythrocyteCount: { ru: "Количество эритроцитов", uz: "Eritrotsitlar soni", unit_ru: "млн/мкл", unit_uz: "mln/mkL", },
+  thrombocyteCount: { ru: "Количество тромбоцитов", uz: "Trombotsitlar soni", unit_ru: "тыс./мкл", unit_uz: "ming/mkL", },
+  hemoglobin: { ru: "Гемоглобин", uz: "Gemoglobin", unit_ru: "г/л", unit_uz: "g/L", },
+  glutathione: { ru: "Глутатион", uz: "Glutation", unit_ru: "ммоль/л", unit_uz: "mmol/L", },
+  waterPercentage: { ru: "Процент воды", uz: "Suv foizi", unit_ru: "%", unit_uz: "%", },
+  dryResiduePercentage: { ru: "Процент сухого остатка", uz: "Quruq qoldiq foizi", unit_ru: "%", unit_uz: "%", },
 };
 
 export const CLARITY_TYPES = {
   CLEAR: { ru: "Прозрачный", uz: "Tiniq" },
   NOT_CLEAR: { ru: "Мутный", uz: "Rasvo" },
 };
+
+export const POSITIONS = {
+  NATURAL: {
+    ru: "Естественное", uz: "Tabiiy",
+  },
+  FORCED: {
+    ru: "Принудительное", uz: "Majbiriy",
+  },
+  FORCED_STANDING: {
+    ru: "Принудительное стоя", uz: "Majbiriy tik turgan",
+  },
+  FORCED_LYING: {
+    ru: "Принудительное лежа", uz: "Majbiriy yotgan",
+  },
+  FORCED_SITTING: {
+    ru: "Принудительное сидя", uz: "Majbiriy o’tirgan",
+  },
+  NON_THERAPEUTIC: {
+    ru: "Не терапевтическое", uz: "Tabiy bo’lmagan",
+  },
+}
 
 export const SMELL_TYPES = {
   PUNGENT: { ru: "Резкий запах", uz: "Hidi o'tkir" },
@@ -87,29 +113,29 @@ export const DUNG_FORMS = {
 };
 
 export const CUSTOMER_TYPES = {
-  MOBILE: { ru: "Подвижный", uz: "Harakatchan" },
+  MOBILE: { ru: "Активный", uz: "Harakatchan" },
   CALM: { ru: "Спокойный", uz: "Tinch" },
 };
 
 export const OBESITY_TYPES = {
-  HIGH: { ru: "Высокая", uz: "Yuqori" },
-  MEDIUM: { ru: "Средняя", uz: "O'rtacha" },
+  HIGH: { ru: "Высокий", uz: "Yuqori" },
+  MEDIUM: { ru: "Средний", uz: "O'rtacha" },
   LEAN: { ru: "Ниже среднего", uz: "O'rtachadan past" },
   LOW: { ru: "Худой", uz: "Ozg'in" },
   CACHEXIA: { ru: "Кахексия", uz: "Koxeksiya" },
 };
 
 export const BODY_TYPES = {
-  WEAK: { ru: "Слабый", uz: "Kuchsiz" },
-  MEDIUM: { ru: "Средний", uz: "O'rtacha" },
-  STRONG: { ru: "Сильный", uz: "Kuchli" },
+  WEAK: { ru: "Слабое", uz: "Kuchsiz" },
+  MEDIUM: { ru: "Сильное", uz: "O'rtacha" },
+  STRONG: { ru: "Сильное", uz: "Kuchli" },
 };
 
 export const BODY_STRUCTURES = {
-  COARSE: { ru: "Грубый", uz: "Qo'pol" },
-  SLIM: { ru: "Худой", uz: "Bo'sh" },
-  DENSE: { ru: "Плотный", uz: "Zich" },
-  WEAK: { ru: "Тонкий", uz: "Nozik" },
+  COARSE: { ru: "Грубое", uz: "Qo'pol" },
+  SLIM: { ru: "Пустое", uz: "Bo'sh" },
+  DENSE: { ru: "Плотное", uz: "Zich" },
+  WEAK: { ru: "Грубое", uz: "Nozik" },
 };
 
 export const INSPECTION_TYPES = {
@@ -158,6 +184,11 @@ export const navLinksVariant: Record<
           title: "nav.animalTypes",
           icon: PawPrint,
           url: "/animal-types",
+        },
+        {
+          title: "nav.breeds",
+          icon: Ham,
+          url: "/breeds",
         },
         {
           title: "nav.vaccineTypes",
@@ -305,7 +336,7 @@ export const navLinksVariant: Record<
           url: "/animals",
         },
         {
-          title: "nav.prifle",
+          title: "nav.profile",
           icon: UserCog,
           url: "/profile",
         },
@@ -377,51 +408,63 @@ export const navLinksVariant: Record<
       ],
     },
     {
-      title: "nav.inspections",
-      icon: HeartPulse,
+      title: "nav.animals",
+      icon: PawPrint,
       items: [
+        { title: "animals.createAnimal", url: "/animals-create", icon: CirclePlus },
         {
-          title: "nav.diseases",
-          icon: ScanHeart,
-          url: "/diseases",
-        },
-        {
-          title: "nav.urineTests",
-          icon: FlaskConical,
-          url: "/urine-tests",
-        },
-        {
-          title: "nav.dungTests",
-          icon: Shovel,
-          url: "/dung-tests",
-        },
-        {
-          title: "nav.vaccines",
-          icon: PillBottle,
-          url: "/vaccines",
-        },
-        {
-          title: "nav.generalInspections",
-          icon: HeartPulse,
-          url: "/general-inspections",
-        },
-        {
-          title: "nav.inspections",
-          icon: Activity,
-          url: "/inspections",
-        },
-        {
-          title: "nav.generalBloodTests",
-          icon: Syringe,
-          url: "/general-blood-tests",
-        },
-        {
-          title: "nav.bloodSerumTests",
-          icon: FlaskRound,
-          url: "/blood-serum-tests",
+          title: "nav.animals",
+          icon: PawPrint,
+          url: "/animals",
         },
       ],
     },
+    // {
+    //   title: "nav.inspections",
+    //   icon: HeartPulse,
+    //   items: [
+    //     {
+    //       title: "nav.diseases",
+    //       icon: ScanHeart,
+    //       url: "/diseases",
+    //     },
+    //     {
+    //       title: "nav.urineTests",
+    //       icon: FlaskConical,
+    //       url: "/urine-tests",
+    //     },
+    //     {
+    //       title: "nav.dungTests",
+    //       icon: Shovel,
+    //       url: "/dung-tests",
+    //     },
+    //     {
+    //       title: "nav.vaccines",
+    //       icon: PillBottle,
+    //       url: "/vaccines",
+    //     },
+    //     {
+    //       title: "nav.generalInspections",
+    //       icon: HeartPulse,
+    //       url: "/general-inspections",
+    //     },
+    //     {
+    //       title: "nav.inspections",
+    //       icon: Activity,
+    //       url: "/inspections",
+    //     },
+    //     {
+    //       title: "nav.generalBloodTests",
+    //       icon: Syringe,
+    //       url: "/general-blood-tests",
+    //     },
+    //     {
+    //       title: "nav.bloodSerumTests",
+    //       icon: FlaskRound,
+    //       url: "/blood-serum-tests",
+    //     },
+    //   ],
+    // },
   ],
 };
 

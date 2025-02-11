@@ -13,10 +13,12 @@ import { Popover, PopoverTrigger, PopoverContent } from '~/components/ui/popover
 import { ArrowLeft, ArrowRight, MoveUp, MoveDown, ListFilter } from 'lucide-react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/ui/table'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select"
+import { cn } from "~/lib/utils"
 
 interface DataTableColumn<T> {
   key: string | keyof T
-  title: string,
+  title: string
+  hide?: boolean
   sorting?: string
   hideTitleInMobile?: boolean
   render?: (item: T) => ReactNode
@@ -31,10 +33,11 @@ interface DataTableProps<T> {
   hideBottom?: boolean
   hideSearch?: boolean
   topSlot?: React.ReactNode
-  columns: DataTableColumn<T>[],
+  columns: DataTableColumn<T>[]
+  onRowClick?: any
 }
 
-export function DataTable<T extends { id: any }>({ columns, items, totalItems, loading, topSlot, callback, hideBottom, filters, hideSearch }: DataTableProps<T>) {
+export function DataTable<T extends { id: any }>({ onRowClick, columns, items, totalItems, loading, topSlot, callback, hideBottom, filters, hideSearch }: DataTableProps<T>) {
   const t = useTranslations()
   const isMobile = useIsMobile()
   const isClient = useIsClient()
@@ -118,11 +121,10 @@ export function DataTable<T extends { id: any }>({ columns, items, totalItems, l
               }
               {
                 items.map((item, i) =>
-                  <div key={i} className="rounded p-4 bg-background border space-y-1">
+                  <div key={i} className={cn("rounded p-4 bg-background border space-y-1", !!onRowClick ? "cursor-pointer hover:bg-card" : "")} onClick={() => onRowClick(item, i)}>
                     {
                       columns.map((col, i) =>
-                        <div key={i} className="w-full">
-                          
+                        <div key={i} className="w-full">  
                           <div className="flex items-center w-full gap-2">
                             {!col.hideTitleInMobile && <span>{col.title}:</span>}
                             {
@@ -170,10 +172,10 @@ export function DataTable<T extends { id: any }>({ columns, items, totalItems, l
                 }
                 {
                   items.map((item, i) =>
-                    <TableRow key={i}>
+                    <TableRow key={i} onClick={() => !!onRowClick && onRowClick(item, i)}>
                       {
                         columns.map((col, i) =>
-                          <TableCell key={i} className={col.sorting?"!pl-4":""}>
+                          <TableCell key={i} className={cn(col.sorting?"!pl-4":"", !!onRowClick?"cursor-pointer":"")}>
                             {col.render ? col.render(item) : (item as any)[col.key]}
                           </TableCell>)
                       }

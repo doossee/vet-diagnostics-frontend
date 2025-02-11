@@ -8,6 +8,7 @@ import { Button } from "~/components/ui/button"
 import { CalendarComponent } from "~/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover"
 import { useTranslations } from "next-intl"
+import { FormControl } from "./ui/form"
 
 interface DatePickerProps {
     field: any
@@ -28,7 +29,7 @@ export function DatePicker({field, buttonClass}: DatePickerProps) {
                 </Button>
             {/* </FormControl> */}
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
+        <PopoverContent className="w-auto p-0 z-[1000] pointer-events-auto" align="start">
             <CalendarComponent
                 mode="single"
                 initialFocus

@@ -2,53 +2,53 @@
 
 import { z } from "zod"
 import { useForm } from "react-hook-form"
+import { useRouter } from '~/i18n/routing'
 import { useEffect, useState } from 'react'
-import { useLocale, useTranslations } from "next-intl"
-import { GENDERS, BREED } from '~/constants'
 import { ALERT_MESSAGES } from "~/constants"
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
 import { useQuery } from "@tanstack/react-query"
+import { ANIMAL_GENDERS, BREED } from '~/constants'
 import { DataTable } from '~/components/data-table'
 import { useAuthData } from '~/hooks/use-auth-data'
-import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { DatePicker } from '~/components/date-picker'
+import { useLocale, useTranslations } from "next-intl"
 import { FiltersWrapper } from '~/components/filters-wrapper'
 import type { Animal, Gender, Breed, Farmer } from "~/lib/type"
-import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
-import { farmersControllerFindAll, colorsControllerFindAll, animalTypesControllerFindAll, animalsControllerFindAll, animalsControllerCreate, animalsControllerRemove, animalsControllerUpdate } from '~/lib/api'
+import { farmersControllerFindAll, breedsControllerFindAll, colorsControllerFindAll, animalTypesControllerFindAll, animalsControllerFindAll, animalsControllerCreate, animalsControllerRemove, animalsControllerUpdate } from '~/lib/api'
 
 export default function Animals() {
+    const router = useRouter()
     const t = useTranslations()
     const locale = useLocale() as 'uz' | 'ru'
 
     const COLUMNS = [
-        { title: t("animals.name"), key: 'name' },
-        { title: t("form.birthDate"), key: 'birthDate', sorting: 'byBirthDate', render(item: Animal) {
-            return new Date(item.birthDate!).toLocaleDateString()
+        { title: t("animals.name"), key: 'nameOrCode' },
+        { title: t("animals.age"), key: 'age', sorting: 'byBirthDate', render(item: Animal) {
+            return new Date().getFullYear() - new Date(item.birthDate!).getFullYear()
         } },
         { title: t("form.type"), key: 'type', sorting: 'byTypeId', render(item: Animal) {
             return item.type?.name
         } },
-        { title: t("form.color"), key: 'color', sorting: 'byColorId', render(item: Animal) {
+        { title: t("animals.color"), key: 'color', sorting: 'byColorId', render(item: Animal) {
             return item.color?.name
         } },
         { title: t("animals.weight"), key: 'weight' },
-        { title: t("animals.idCode"), key: 'idCode' },
         { title: t("form.gender"), key: 'gender', sorting: 'byGender', render(item: Animal) {
-            return GENDERS.find(g => g.value === item.gender)?.[locale]
+            return ANIMAL_GENDERS.find(g => g.value === item.gender)?.[locale]
         } },
         { title: t("animals.breed"), key: 'breed', sorting: 'byBreed', render(item: Animal) {
-            return BREED.find(b => b.value === item.breed)?.[locale]
+            return item.breed?.name
         } },
         { title: t("animals.arrivalDate"), key: 'arrivalDate', render(item: Animal) {
             return new Date(item.arrivalDate!).toLocaleDateString()
         } },
         { title: t('table.actions'), key: 'actions', render(item: Animal) {
-            return (<div className="flex gap-2 items-center">
+            return (<div className="flex gap-2 items-center" onClick={(event) => event.stopPropagation()}>
                 <Button onClick={() => handleEditItem(item)} size='sm'>
                     {t('table.edit')}
                 </Button>
@@ -63,7 +63,7 @@ export default function Animals() {
         typeId: null as number | null,
         colorId: null as number | null,
         gender: null as Gender | null,
-        breed: null as Breed | null,
+        breedId: null as Breed | null,
     })
     const { userData } = useAuthData()
     const [dialog, setDialog] = useState(false)
@@ -78,22 +78,20 @@ export default function Animals() {
         colorId: z.number({ required_error: t('required.colorRequired'), invalid_type_error: t('required.colorRequired') }),
         arrivalDate: z.date({ required_error: t("required.arrivalDateRequired"), invalid_type_error: t("required.arrivalDateRequired") }),
         farmerId: z.number().nullable(),
-        breed: z.enum(["MEAT", "MILK"], { required_error: t("required.breedRequired"), invalid_type_error: t("required.breedRequired") }),
+        breedId: z.number().min(1, t("required.breedRequired")),
         gender: z.enum(["MALE", "FEMALE"], { required_error: t("required.genderRequired"), invalid_type_error: t("required.genderRequired") }),
-        name: z.string().min(1, t("required.animalNameRequired")),
+        nameOrCode: z.string().min(1, t("required.animalNameRequired")),
         typeId: z.number().min(1, t("required.animalTypeRequired")),
         weight: z.number().min(1, t("required.weightRequired")),
-        idCode: z.string().min(1, t("required.idCodeRequired")),
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: "",
+            nameOrCode: "",
             weight: 0,
-            idCode: "",
             typeId: null,
-            breed: "MILK",
+            breedId: null,
             colorId: null,
             farmerId: null,
             gender: "MALE",
@@ -110,16 +108,6 @@ export default function Animals() {
             console.log(error)
         }
     }
-
-    const { data: colors } = useQuery({
-        queryKey: ['animal-colors'],
-        queryFn: () => colorsControllerFindAll({page: 1, perPage: 100})
-    })
-    
-    const { data: types } = useQuery({
-        queryKey: ['animal-types'],
-        queryFn: () => animalTypesControllerFindAll({page: 1, perPage: 100})
-    })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
@@ -171,14 +159,13 @@ export default function Animals() {
         setDialog(true)
         setItemId(item.id)
 
-        form.setValue('name', item.name)
-        form.setValue('breed', item.breed)
         form.setValue('gender', item.gender)
-        form.setValue('idCode', item.idCode)
         form.setValue('weight', item.weight)
         form.setValue('typeId', item.typeId)
+        form.setValue('breedId', item.breedId)
         form.setValue('colorId', item.colorId)
         form.setValue('farmerId', item.farmerId!)
+        form.setValue('nameOrCode', item.nameOrCode)
         form.setValue('birthDate', new Date(item.birthDate))
         form.setValue('arrivalDate', new Date(item.arrivalDate))
     }
@@ -194,6 +181,21 @@ export default function Animals() {
             handleGetFarmers()
         }
     }, [])
+
+    const { data: colors } = useQuery({
+        queryKey: ['animal-colors'],
+        queryFn: () => colorsControllerFindAll({page: 1, perPage: 100})
+    })
+    
+    const { data: types } = useQuery({
+        queryKey: ['animal-types'],
+        queryFn: () => animalTypesControllerFindAll({page: 1, perPage: 100})
+    })
+
+    const { data: breeds } = useQuery({
+        queryKey: ['breeds'],
+        queryFn: () => breedsControllerFindAll({ page: 1, perPage: 1000 })
+    })
 
     return (
         <div>
@@ -217,18 +219,18 @@ export default function Animals() {
                         <SelectContent>
                             <SelectItem value={null as any}>{t('filters.all')}</SelectItem>
                             {
-                                GENDERS.map(g => <SelectItem key={g.value} value={g.value}>{g[locale]}</SelectItem>)
+                                ANIMAL_GENDERS.map(g => <SelectItem key={g.value} value={g.value}>{g[locale]}</SelectItem>)
                             }
                         </SelectContent>
                     </Select>
-                    <Select value={filters.breed?filters.breed:""} onValueChange={e => setFilters({...filters, breed: e as any})}>
+                    <Select value={filters.breedId?String(filters.breedId):""} onValueChange={e => setFilters({...filters, breedId: +e as any})}>
                         <SelectTrigger className="bg-card">
                             <SelectValue placeholder={t('filters.byBreed')} />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value={null as any}>{t('filters.all')}</SelectItem>
                             {
-                                BREED.map(b => <SelectItem key={b.value} value={b.value}>{b[locale]}</SelectItem>)
+                                breeds?.data?.map(b => <SelectItem key={b.id} value={String(b.id)}>{b.name}</SelectItem>)
                             }
                         </SelectContent>
                     </Select>
@@ -253,6 +255,7 @@ export default function Animals() {
                 items={items as any}
                 totalItems={totalItems}
                 callback={handleGetItems}
+                onRowClick={(item: Animal) => router.push(`/animals/${item.id}`)}
                 topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="!mt-0 w-full sm:w-fit">{t('animals.createButton')}</Button>}
             />
 
@@ -264,26 +267,13 @@ export default function Animals() {
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <FormField
-                                name="name"
+                                name="nameOrCode"
                                 control={form.control}
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>{t('animals.name')}</FormLabel>
                                         <FormControl>
                                             <Input placeholder={t('animals.name')} {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                name="idCode"
-                                control={form.control}
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>{t('animals.idCode')}</FormLabel>
-                                        <FormControl>
-                                            <Input placeholder={t('animals.idCode')} {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -316,11 +306,11 @@ export default function Animals() {
                                 control={form.control}
                                 render={({ field: { value, onChange, ...others } }) => (
                                     <FormItem>
-                                        <FormLabel>{t('form.color')}</FormLabel>
+                                        <FormLabel>{t('animals.color')}</FormLabel>
                                         <FormControl>
                                             <Select value={value?String(value):""} onValueChange={e => onChange(+e)} {...others}>
                                                 <SelectTrigger>
-                                                    <SelectValue placeholder={t('form.color')} />
+                                                    <SelectValue placeholder={t('animals.color')} />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
@@ -359,7 +349,7 @@ export default function Animals() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        GENDERS.map(g => <SelectItem key={g.value} value={g.value}>{g[locale]}</SelectItem>)
+                                                        ANIMAL_GENDERS.map(g => <SelectItem key={g.value} value={g.value}>{g[locale]}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>
@@ -369,19 +359,19 @@ export default function Animals() {
                                 )}
                             />
                             <FormField
-                                name="breed"
+                                name="breedId"
                                 control={form.control}
-                                render={({ field }) => (
+                                render={({ field: { value, onChange, ...others } }) => (
                                     <FormItem>
                                         <FormLabel>{t('animals.breed')}</FormLabel>
                                         <FormControl>
-                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                            <Select  value={value ? String(value) : ""} onValueChange={e => onChange(+e)} {...others}>
                                                 <SelectTrigger>
                                                     <SelectValue placeholder={t('animals.breed')} />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        BREED.map(g => <SelectItem key={g.value} value={g.value}>{g[locale]}</SelectItem>)
+                                                        breeds?.data?.map(g => <SelectItem key={g.id} value={String(g.id)}>{g.name}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>
@@ -417,7 +407,7 @@ export default function Animals() {
                                 )}
                             />
                             
-                            {userData?.userRole === 'ADMIN' ? <FormField
+                            {userData?.userRole === 'ADMIN' && <FormField
                                 name="farmerId"
                                 control={form.control}
                                 render={({ field: { value, onChange, ...others } }) => (
@@ -438,7 +428,8 @@ export default function Animals() {
                                         <FormMessage />
                                     </FormItem>
                                 )}
-                            />: <span></span>}
+                            />}
+                            <span></span>
                             <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">{t(form.formState.isSubmitting?"form.submiting":"form.submit")}</Button>
                         </form>
                     </Form>

@@ -2,16 +2,17 @@
   "nav": {
     "management": "Управления",
     "animals": "Животные",
-    "animalTypes": "Типы животных",
+    "animalTypes": "Виды животных",
+    "breeds": "Породы животных",
     "vaccineTypes": "Типы вакцин",
-    "diseaseTypes": "Типы болезней",
+    "diseaseTypes": "Виды заболеваний",
     "animalColors": "Цвета животных",
     "urineColors": "Цвета мочи",
-    "dungColors": "Цвета навоза",
+    "dungColors": "Цвета кала",
     "regions": "Регионы",
     "districts": "Районы",
     "vetstations": "Ветстанции",
-    "eyeLid": "Веки",
+    "eyeLid": "Слизистые оболочки",
     "leatherCover": "Кожный покров",
 
     "users": "Пользователи",
@@ -19,13 +20,13 @@
     "farmers": "Фермеры",
     "profile": "Профиль",
 
-    "inspections": "Осмотры",
+    "inspections": "Проверки",
     "diseases": "Болезни",
-    "urineTests": "Анализы мочи",
-    "dungTests": "Анализы навоза",
+    "urineTests": "Исследование мочи",
+    "dungTests": "Исследование кала",
     "vaccines": "Вакцины",
-    "generalInspections": "Общие осмотры",
-    "generalBloodTests": "Общий анализ крови",
+    "generalInspections": "Общие проверки",
+    "generalBloodTests": "Морфологическое исследование крови",
     "bloodSerumTests": "Анализы сыворотки крови"
   },
   "theme": {
@@ -55,7 +56,7 @@
     "endDate": "Время окончания",
     "color": "Цвет",
     "disease": "Болезнь",
-    "diseaseType": "Тип болезни",
+    "diseaseType": "Вид заболеваний",
     "gender": "Пол",
     "name": "Имя Фамилия",
     "phone": "Номер телефона",
@@ -64,7 +65,8 @@
     "districtName": "Название района",
     "confirmPassword": "Повторите пароль",
     "password": "Пароль",
-    "selectDate": "Выберите дату"
+    "selectDate": "Выберите дату",
+    "next": "Далее"
   },
   "animalTypes": {
     "name": "Название типа",
@@ -77,10 +79,15 @@
     "weight": "Вес",
     "idCode": "ID код",
     "breed": "Порода",
+    "color": "Цвет животного",
+    "age": "Возраст животного",
     "arrivalDate": "Дата прибытия",
     "createButton": "Добавить животное",
     "createAnimal": "Добавить животное",
-    "editAnimal": "Редактировать животное"
+    "editAnimal": "Редактировать животное",
+    "animalInfo": "Данные животного",
+    "generalInspection": "Общие проверка",
+    "vaccine": "Вакцина"
   },
   "table": {
     "search": "Поиск",
@@ -132,24 +139,29 @@
     "createColor": "Создать цвет",
     "editColor": "Редактировать цвет",
 
+    "breedName": "Название породы",
+    "breedParent": "Под катерогия породы",
+    "createBreed": "Создать породу",
+    "editBreed": "Редактировать породу",
+
     "typeName": "Название типа",
 
     "createType": "Создать тип",
     "editType": "Редактировать тип",
 
     "vaccineType": "Тип вакцины",
-    "diseaseTypeCreate": "Создать тип болезни",
+    "diseaseTypeCreate": "Создать вид заболевани",
     "vaccineTypeCreate": "Создать тип вакцины",
 
     "dungColorCreate": "Создать цвет навоза",
 
     "urineColorCreate": "Создать цвет мочи",
 
-    "eyeLid": "Веко",
-    "eyeLidName": "Название века",
+    "eyeLid": "Слизистые оболочка",
+    "eyeLidName": "Название слизистые оболочке",
 
-    "createEyeLid": "Создать веко",
-    "editEyeLid": "Редактировать веко",
+    "createEyeLid": "Создать слизистые оболочку",
+    "editEyeLid": "Редактировать слизистые оболочку",
 
     "leatherCover": "Кожный покров",
     "leatherCoverName": "Название покрова",
@@ -158,10 +170,11 @@
     "editLeatherCover": "Редактировать кожный покров"
   },
   "inspections": {
-    "obesity": "Ожирение",
-    "bodyType": "Телосложение животного",
+    "obesity": "Избыточный вес",
+    "bodyType": "Состоние тела животного",
+    "bodyPosition": "Поза тела во внешней среде",
     "bodyStructure": "Строение тела",
-    "customerType": "Клиентский тип животного",
+    "customerType": "Характер животного",
 
     "createBloodSerumTest": "Создать анализ сыворотки крови",
     "editBloodSerumTest": "Редактировать анализ сыворотки крови",
@@ -169,13 +182,13 @@
     "createDisease": "Создать болезнь",
     "editDisease": "Редактировать болезнь",
 
-    "createInspection": "Создать осмотр",
-    "editInspection": "Редактировать осмотр",
+    "createInspection": "Создать проверку",
+    "editInspection": "Редактировать проверку",
 
-    "pulse": "Пульс",
+    "pulse": "Число пульсов",
     "rumination": "Жвачка",
-    "temperature": "Температура",
-    "respiratoryRate": "Частота дыхания",
+    "temperature": "Температура тела",
+    "respiratoryRate": "Число дыхания",
 
     "conclusion": "Заключение",
     "consistency": "Консистенция",
@@ -190,12 +203,12 @@
     "createBloodTest": "Создать анализ крови",
     "editBloodTest": "Редактировать анализ крови",
 
-    "createGeneralInspections": "Создать общий осмотр",
-    "editGeneralInspections": "Редактировать общий осмотр",
+    "createGeneralInspections": "Создать общий проверку",
+    "editGeneralInspections": "Редактировать общий проверку",
 
-    "inspection": "Осмотр",
-    "habitus": "Габитус",
-    "inspectionType": "Тип осмотра",
+    "inspection": "Проверка",
+    "habitus": "Габитус внешней вид",
+    "inspectionType": "Тип проверка",
 
     "createUrineTest": "Создать анализ мочи",
     "editUrineTest": "Редактировать анализ мочи",
@@ -204,9 +217,11 @@
     "editVaccine": "Редактировать вакцину"
   },
   "required": {
+    "breedNameRequired": "Название породы обязательно для заполнения",
+    "bodyPositionRequired": "Поза и положение тела во внешней среде обязателен для выбора",
     "colorNameRequired": "Название цвета обязательно для заполнения",
     "typeNameRequired": "Название типа обязательно для заполнения",
-    "eyeLidNameRequired": "Название века обязательно для заполнения",
+    "eyeLidNameRequired": "Название слизистые оболочке обязательно для заполнения",
     "leatherCoverNameRequired": "Название покрытия обязательно для заполнения",
     "vetStationNameRequired": "Название ветеринарной станции обязательно для заполнения",
     "vetStationAddressRequired": "Адрес ветеринарной станции обязателен для заполнения",
@@ -229,20 +244,20 @@
     "idCodeRequired": "ID код животного обязателен для заполнения",
 
     "diseaseRequired": "Заболевание обязательно для выбора",
-    "diseaseTypeRequired": "Тип заболевания обязателен для выбора",
+    "diseaseTypeRequired": "Вид заболевания обязателен для выбора",
     "startTimeRequired": "Время начала обязательно для заполнения",
     "endTimeRequired": "Время окончания обязательно для заполнения",
-    "pulseGreetThan0": "Пульс должен быть больше 0",
-    "temperatureThan0": "Температура должна быть больше 0",
+    "pulseGreetThan0": "Число пульсов должен быть больше 0",
+    "temperatureThan0": "Температура тела должна быть больше 0",
     "ruminationGreetThan0": "Руминация должна быть больше 0",
-    "respiratoryRateGreetThan0": "Частота дыхания должна быть больше 0",
+    "respiratoryRateGreetThan0": "Число дыхания должна быть больше 0",
     "wormsGreetThan0": "Количество глистов должно быть больше 0",
     "consistencyGreetThan0": "Консистенция должна быть больше 0",
     "moreThan0": "Значение должно быть больше 0",
     "dateRequired": "Дата обязательна для заполнения",
     "animalRequired": "Животное обязательно для выбора",
-    "eyeLidRequired": "Веко обязательно для выбора",
-    "leatherCoverRequired": "Покрытие обязательно для выбора",
+    "eyeLidRequired": "Слизистые оболочка обязательно для выбора",
+    "leatherCoverRequired": "Кожа обязательно для выбора",
     "birthDateRequired": "Дата рождения обязательна для заполнения",
     "colorRequired": "Цвет обязателен для выбора",
     "vaccineTypeRequired": "Тип вакцины обязателен для выбора",
@@ -251,9 +266,9 @@
     "formRequired": "Форма обязательна для выбора",
     "smellRequired": "Запах обязателен для выбора",
     "clarityRequired": "Прозрачность обязательна для выбора",
-    "customerTypeRequired": "Тип клиента обязателен для выбора",
-    "bodyTypeRequired": "Тип телосложения животного обязателен для выбора",
-    "obesityRequired": "Уровень ожирения животного обязателен для выбора",
+    "customerTypeRequired": "Характер животного обязателен для выбора",
+    "bodyTypeRequired": "Состоние тела животного обязателен для выбора",
+    "obesityRequired": "Избыточный вес животного обязателен для выбора",
     "bodyStructureTypeRequired": "Тип телосложения животного обязателен для выбора",
     "inspectionTypeRequired": "Тип осмотра обязателен для выбора"
   }

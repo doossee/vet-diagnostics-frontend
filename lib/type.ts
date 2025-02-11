@@ -11,15 +11,15 @@ export type UserRole = "ADMIN" | "VETERINARIAN" | "FARMER";
 
 export type Gender = "MALE" | "FEMALE";
 
-export type Breed = "MEAT" | "MILK";
-
 export type BodyType = "WEAK" | "MEDIUM" | "STRONG";
 
 export type ObesityType = "HIGH" | "MEDIUM" | "LOW" | "LEAN" | "CACHEXIA";
 
 export type BodyStructure = "COARSE" | "SLIM" | "DENSE" | "WEAK";
 
-export type CustomerType = "MOBILE" | "CALM";
+export type BodyPosition = "NATURAL" | "FORCED" | "FORCED_STANDING" | "FORCED_LYING" | "FORCED_SITTING" | "NON_THERAPEUTIC";
+
+export type CharacterType = "MOBILE" | "CALM";
 
 export type InspectionType = "MORNING" | "EVENING" | "DISEASE" | "GENERAL";
 
@@ -33,17 +33,17 @@ export type DungClarity = "CLEAR" | "NOT_CLEAR";
 
 export interface Animal {
   id: number;
-  idCode: string;
   arrivalDate: Date;
   farmerId: number;
   farmer: Farmer;
   typeId: number;
   type: AnimalType;
-  name: string;
+  nameOrCode: string;
   gender: Gender;
-  breed: Breed;
   birthDate: Date;
   weight: number;
+  breedId: number;
+  breed: Breed;
   colorId: number;
   color: Color;
   createdAt: Date;
@@ -75,8 +75,9 @@ export interface GeneralInspection {
   animal: Animal;
   bodyType: BodyType;
   bodyStructure: BodyStructure;
+  bodyPosition: BodyPosition;
   obesity: ObesityType;
-  customerType: CustomerType;
+  character: CharacterType;
   leatherCoverId: number;
   leatherCover: LeatherCover;
   eyelidId: number;
@@ -231,6 +232,15 @@ export interface AnimalType {
   animals: Animal[];
 }
 
+export interface Breed {
+  id: number;
+  name: string;
+  parentId?: number | null;
+  parent?: Breed | null;
+  children: Breed[];
+  animals: Animal[];
+}
+
 export interface Color {
   id: number;
   name: string;
@@ -242,7 +252,7 @@ export interface Color {
 export interface UrineColor {
   id: number;
   name: string;
-  urdineTests: UrineTest[];
+  urineTests: UrineTest[];
 }
 
 export interface DungColor {

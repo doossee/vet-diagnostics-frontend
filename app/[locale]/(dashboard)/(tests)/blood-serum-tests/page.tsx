@@ -7,25 +7,33 @@ import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
 import type { BloodSerumTest } from "~/lib/type"
 import { useQuery } from "@tanstack/react-query"
+import { useSearchParams } from "next/navigation"
 import { DataTable } from '~/components/data-table'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useLocale, useTranslations } from "next-intl"
+import { useRouter, usePathname } from "~/i18n/routing"
 import { BLOOD_SERUM_TESTS, ALERT_MESSAGES } from '~/constants'
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
-import { animalsControllerFindAll, bloodSerumTestsControllerCreate, bloodSerumTestsControllerFindAll, bloodSerumTestsControllerRemove, bloodSerumTestsControllerUpdate } from '~/lib/api'
+import { animalsControllerFindAll, bloodSerumTestsControllerCreate, animalsControllerFindOne, bloodSerumTestsControllerFindAll, bloodSerumTestsControllerRemove, bloodSerumTestsControllerUpdate } from '~/lib/api'
 
 type BLOOD_SERUM = keyof typeof BLOOD_SERUM_TESTS
 
 const defaultValues: any = {}
 const formSchemaValues: any = {}
 
-
 export default function BloodSerumTests() {
+    const router = useRouter()
     const t = useTranslations()
+    const pathname = usePathname()
     const locale = useLocale() as 'ru' | 'uz'
+
+    const query = useSearchParams()
+
+    const newAnimal = query.get('new')
+    const animalId = query.get('animalId') ? Number(query.get('animalId')) : null
 
     Object.keys(BLOOD_SERUM_TESTS).map(key => {
         defaultValues[key] = 0
@@ -36,9 +44,12 @@ export default function BloodSerumTests() {
         ...Object.keys(BLOOD_SERUM_TESTS).map(key => ({
             key,
             title: BLOOD_SERUM_TESTS[key as BLOOD_SERUM][locale],
+            render: (item: BloodSerumTest) => {
+                return item[key as BLOOD_SERUM] + " " + BLOOD_SERUM_TESTS[key as BLOOD_SERUM][`unit_${locale}`]
+            }
         })),
         { title: t('form.animal'), key: 'animal', render(item: BloodSerumTest) {
-            return item.animal?.name
+            return item.animal?.nameOrCode
         } },
         { title: t("table.actions"), key: 'actions', render(item: BloodSerumTest) {
             return (<div className="flex gap-2 items-center">
@@ -52,9 +63,9 @@ export default function BloodSerumTests() {
         } },
     ]
 
-    const [dialog, setDialog] = useState(false)
     const [loading, setLoading] = useState(true)
     const [totalItems, setTotalItems] = useState(0)
+    const [dialog, setDialog] = useState(!!newAnimal)
     const [items, setItems] = useState<BloodSerumTest[]>([])
     const [itemId, setItemId] = useState<number | null>(null)
     
@@ -66,14 +77,22 @@ export default function BloodSerumTests() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            animalId: null,
+            animalId,
             ...defaultValues,
         } as any,
     })
 
     const { data: animals }: any = useQuery({
         queryKey: ['animals'],
-        queryFn: () => animalsControllerFindAll({page: 1, perPage: 100}),
+        queryFn:  async () => {
+            if(animalId) {
+                const data = await animalsControllerFindOne(animalId)
+                return { data: [data] }
+            } else {
+                const data = await animalsControllerFindAll({page: 1, perPage: 100})
+                return data
+            }
+        } 
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -98,7 +117,7 @@ export default function BloodSerumTests() {
     async function handleGetItems(params: any) {
         try {
             setLoading(true)
-            const { data, meta } = await bloodSerumTestsControllerFindAll(params)
+            const { data, meta } = await bloodSerumTestsControllerFindAll(animalId ? {...params, animalId} : params)
             setItems(data as any)
             setTotalItems(meta.total)
         } catch (error) {
@@ -132,6 +151,7 @@ export default function BloodSerumTests() {
         form.reset()
         setItemId(null)
         setDialog(false)
+        newAnimal && router.push(pathname + ( animalId ? '?animalId='+animalId : ''))
     }
 
     return (
@@ -166,7 +186,7 @@ export default function BloodSerumTests() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        animals?.data?.map((a: any) => <SelectItem key={a.id} value={String(a.id)}>{a.name}</SelectItem>)
+                                                        animals?.data?.map((a: any) => <SelectItem key={a.id} value={String(a.id)}>{a.nameOrCode}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>
@@ -184,7 +204,7 @@ export default function BloodSerumTests() {
                                             name={key as BLOOD_SERUM}
                                             render={({ field }) => (
                                                 <FormItem>
-                                                    <FormLabel>{BLOOD_SERUM_TESTS[key as BLOOD_SERUM][locale]}</FormLabel>
+                                                    <FormLabel>{BLOOD_SERUM_TESTS[key as BLOOD_SERUM][locale]} ({BLOOD_SERUM_TESTS[key as BLOOD_SERUM][`unit_${locale}`]})</FormLabel>
                                                     <FormControl>
                                                         <Input type="number" placeholder={BLOOD_SERUM_TESTS[key as BLOOD_SERUM][locale]} {...field} />
                                                     </FormControl>

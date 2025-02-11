@@ -776,15 +776,12 @@ paths:
               - MALE
               - FEMALE
             type: string
-        - name: breed
+        - name: breedId
           required: false
           in: query
-          description: Filter by animal breed
+          description: Filter by animal breedId
           schema:
-            enum:
-              - MEAT
-              - MILK
-            type: string
+            type: number
         - name: birthDate
           required: false
           in: query
@@ -835,7 +832,7 @@ paths:
               - asc
               - desc
             type: string
-        - name: byBreed
+        - name: byBreedId
           required: false
           in: query
           description: Sort by breed (ASC or DESC)
@@ -2348,6 +2345,118 @@ paths:
                 $ref: '#/components/schemas/DiseaseTypeEntity'
       tags:
         - disease-types
+  /breeds:
+    post:
+      operationId: BreedsController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBreedDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BreedEntity'
+      tags:
+        - breeds
+    get:
+      operationId: BreedsController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBreedsEntity'
+      tags:
+        - breeds
+  /breeds/{id}:
+    get:
+      operationId: BreedsController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BreedEntity'
+      tags:
+        - breeds
+    patch:
+      operationId: BreedsController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateBreedDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BreedEntity'
+      tags:
+        - breeds
+    delete:
+      operationId: BreedsController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BreedEntity'
+      tags:
+        - breeds
   /general-inspections:
     post:
       operationId: GeneralInspectionController_create
@@ -2369,7 +2478,54 @@ paths:
         - general-inspections
     get:
       operationId: GeneralInspectionController_findAll
-      parameters: []
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: animalId
+          required: false
+          in: query
+          description: Filter by animal id
+          schema:
+            example: 1
+            type: number
+        - name: createdDate
+          required: false
+          in: query
+          description: Filter by user creation date in ISO format
+          schema:
+            format: date-time
+            example: '2024-01-01T00:00:00.000Z'
+            type: string
+        - name: byCreatedDate
+          required: false
+          in: query
+          description: Sort by creation date (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
       responses:
         '200':
           description: ''
@@ -2458,7 +2614,54 @@ paths:
         - inspections
     get:
       operationId: InspectionsController_findAll
-      parameters: []
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: animalId
+          required: false
+          in: query
+          description: Filter by animal id
+          schema:
+            example: 1
+            type: number
+        - name: createdDate
+          required: false
+          in: query
+          description: Filter by user creation date in ISO format
+          schema:
+            format: date-time
+            example: '2024-01-01T00:00:00.000Z'
+            type: string
+        - name: byCreatedDate
+          required: false
+          in: query
+          description: Sort by creation date (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
       responses:
         '200':
           description: ''
@@ -2547,7 +2750,54 @@ paths:
         - diseases
     get:
       operationId: DiseasesController_findAll
-      parameters: []
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: animalId
+          required: false
+          in: query
+          description: Filter by animal id
+          schema:
+            example: 1
+            type: number
+        - name: createdDate
+          required: false
+          in: query
+          description: Filter by user creation date in ISO format
+          schema:
+            format: date-time
+            example: '2024-01-01T00:00:00.000Z'
+            type: string
+        - name: byCreatedDate
+          required: false
+          in: query
+          description: Sort by creation date (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
       responses:
         '200':
           description: ''
@@ -2636,7 +2886,54 @@ paths:
         - general-blood-tests
     get:
       operationId: GeneralBloodTestController_findAll
-      parameters: []
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: animalId
+          required: false
+          in: query
+          description: Filter by animal id
+          schema:
+            example: 1
+            type: number
+        - name: createdDate
+          required: false
+          in: query
+          description: Filter by user creation date in ISO format
+          schema:
+            format: date-time
+            example: '2024-01-01T00:00:00.000Z'
+            type: string
+        - name: byCreatedDate
+          required: false
+          in: query
+          description: Sort by creation date (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
       responses:
         '200':
           description: ''
@@ -2725,7 +3022,54 @@ paths:
         - blood-serum-tests
     get:
       operationId: BloodSerumTestsController_findAll
-      parameters: []
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: animalId
+          required: false
+          in: query
+          description: Filter by animal id
+          schema:
+            example: 1
+            type: number
+        - name: createdDate
+          required: false
+          in: query
+          description: Filter by user creation date in ISO format
+          schema:
+            format: date-time
+            example: '2024-01-01T00:00:00.000Z'
+            type: string
+        - name: byCreatedDate
+          required: false
+          in: query
+          description: Sort by creation date (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
       responses:
         '200':
           description: ''
@@ -2814,7 +3158,54 @@ paths:
         - urine-tests
     get:
       operationId: UrineTestsController_findAll
-      parameters: []
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: animalId
+          required: false
+          in: query
+          description: Filter by animal id
+          schema:
+            example: 1
+            type: number
+        - name: createdDate
+          required: false
+          in: query
+          description: Filter by user creation date in ISO format
+          schema:
+            format: date-time
+            example: '2024-01-01T00:00:00.000Z'
+            type: string
+        - name: byCreatedDate
+          required: false
+          in: query
+          description: Sort by creation date (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
       responses:
         '200':
           description: ''
@@ -2903,7 +3294,54 @@ paths:
         - dung-tests
     get:
       operationId: DungTestsController_findAll
-      parameters: []
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: animalId
+          required: false
+          in: query
+          description: Filter by animal id
+          schema:
+            example: 1
+            type: number
+        - name: createdDate
+          required: false
+          in: query
+          description: Filter by user creation date in ISO format
+          schema:
+            format: date-time
+            example: '2024-01-01T00:00:00.000Z'
+            type: string
+        - name: byCreatedDate
+          required: false
+          in: query
+          description: Sort by creation date (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
       responses:
         '200':
           description: ''
@@ -3266,7 +3704,7 @@ components:
         userPtrId:
           type: number
           description: Unique identifier of the veterinarian that points to user
-          example: 1
+          example: -2
         user:
           description: User data associated with the veterinarian
           allOf:
@@ -3292,7 +3730,7 @@ components:
         phone:
           type: string
           description: The user's phone number in international format
-          example: '+998901234567'
+          example: '+998901234566'
         password:
           type: string
           description: The user's password (hashed)
@@ -3321,21 +3759,21 @@ components:
         birthDate:
           type: object
           description: The user's birthdate
-          example: '2000-01-01'
+          example: '1999-01-01'
           nullable: true
         districtId:
           type: number
           description: The identifier of the user's district
-          example: 101
+          example: 100
         address:
           type: string
           description: The user's residential address
-          example: 123 Main St, Springfield
+          example: 122 Main St, Springfield
           nullable: true
         veterinarianId:
           type: number
           description: The identifier of the user's district
-          example: 10
+          example: 9
       required:
         - phone
         - password
@@ -3385,7 +3823,7 @@ components:
         phone:
           type: string
           description: The user's phone number in international format
-          example: '+998901234567'
+          example: '+998901234566'
         password:
           type: string
           description: The user's password (hashed)
@@ -3414,30 +3852,24 @@ components:
         birthDate:
           type: object
           description: The user's birthdate
-          example: '2000-01-01'
+          example: '1999-01-01'
           nullable: true
         districtId:
           type: number
           description: The identifier of the user's district
-          example: 101
+          example: 100
         address:
           type: string
           description: The user's residential address
-          example: 123 Main St, Springfield
+          example: 122 Main St, Springfield
           nullable: true
         veterinarianId:
           type: number
           description: The identifier of the user's district
-          example: 10
+          example: 9
     CreateAnimalDto:
       type: object
       properties:
-        idCode:
-          type: string
-          description: Unique identification code for the animal
-          example: A123456789
-          maxLength: 10
-          minLength: 1
         arrivalDate:
           type: string
           description: Date when the animal arrived
@@ -3451,9 +3883,9 @@ components:
           type: number
           description: ID representing the type of the animal
           example: 5
-        name:
+        nameOrCode:
           type: string
-          description: Name of the animal
+          description: Name or code of the animal
           example: Bella
           maxLength: 50
           minLength: 1
@@ -3464,13 +3896,10 @@ components:
           enum:
             - MALE
             - FEMALE
-        breed:
-          type: string
+        breedId:
+          type: number
           description: Breed of the animal
-          example: MILK
-          enum:
-            - MEAT
-            - MILK
+          example: 1
         birthDate:
           type: string
           description: Birth date of the animal
@@ -3485,20 +3914,19 @@ components:
           description: ID of the color representing the animal
           example: 3
       required:
-        - idCode
         - arrivalDate
         - farmerId
         - typeId
-        - name
+        - nameOrCode
         - gender
-        - breed
+        - breedId
         - birthDate
         - weight
         - colorId
     AnimalEntity:
       type: object
       properties:
-        name:
+        nameOrCode:
           type: string
           description: Name of the animal
           example: Bella
@@ -3530,13 +3958,10 @@ components:
           enum:
             - MALE
             - FEMALE
-        breed:
-          type: string
+        breedId:
+          type: number
           description: Breed of the animal
-          example: MEAT
-          enum:
-            - MEAT
-            - MILK
+          example: 1
         birthDate:
           type: string
           description: Birth date of the animal
@@ -3565,14 +3990,14 @@ components:
           example: '2023-12-10T00:00:00Z'
           format: date-time
       required:
-        - name
+        - nameOrCode
         - id
         - idCode
         - arrivalDate
         - farmerId
         - typeId
         - gender
-        - breed
+        - breedId
         - birthDate
         - weight
         - address
@@ -3582,12 +4007,6 @@ components:
     UpdateAnimalDto:
       type: object
       properties:
-        idCode:
-          type: string
-          description: Unique identification code for the animal
-          example: A123456789
-          maxLength: 10
-          minLength: 1
         arrivalDate:
           type: string
           description: Date when the animal arrived
@@ -3601,9 +4020,9 @@ components:
           type: number
           description: ID representing the type of the animal
           example: 5
-        name:
+        nameOrCode:
           type: string
-          description: Name of the animal
+          description: Name or code of the animal
           example: Bella
           maxLength: 50
           minLength: 1
@@ -3614,13 +4033,10 @@ components:
           enum:
             - MALE
             - FEMALE
-        breed:
-          type: string
+        breedId:
+          type: number
           description: Breed of the animal
-          example: MILK
-          enum:
-            - MEAT
-            - MILK
+          example: 1
         birthDate:
           type: string
           description: Birth date of the animal
@@ -4233,6 +4649,60 @@ components:
           type: string
           description: The name of the disease type
           example: Flu
+    CreateBreedDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the breed
+          example: Angus
+        parentId:
+          type: number
+          description: The ID of the parent breed
+          example: 1
+      required:
+        - name
+    BreedEntity:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identifier of the color
+          example: 1
+        name:
+          type: string
+          description: Name of the color
+          example: Brown
+        parentId:
+          type: number
+          description: ID of the parent breed
+          example: 1
+      required:
+        - id
+        - name
+    PaginatedBreedsEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/BreedEntity'
+        meta:
+          $ref: '#/components/schemas/MetaDateEntity'
+      required:
+        - data
+        - meta
+    UpdateBreedDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the breed
+          example: Angus
+        parentId:
+          type: number
+          description: The ID of the parent breed
+          example: 1
     CreateGeneralInspectionDto:
       type: object
       properties:
@@ -4257,6 +4727,17 @@ components:
             - DENSE
             - WEAK
           example: COARSE
+        bodyPosition:
+          type: string
+          description: The body position of the animal.
+          enum:
+            - NATURAL
+            - FORCED
+            - FORCED_STANDING
+            - FORCED_LYING
+            - FORCED_SITTING
+            - NON_THERAPEUTIC
+          example: FORCED
         obesity:
           type: string
           description: The obesity level/type of the animal.
@@ -4267,7 +4748,7 @@ components:
             - LEAN
             - CACHEXIA
           example: CACHEXIA
-        customerType:
+        character:
           type: string
           description: The customer type associated with the animal.
           enum:
@@ -4310,8 +4791,9 @@ components:
         - animalId
         - bodyType
         - bodyStructure
+        - bodyPosition
         - obesity
-        - customerType
+        - character
         - leatherCoverId
         - eyelidId
         - colorId
@@ -4346,6 +4828,16 @@ components:
             - SLIM
             - DENSE
             - WEAK
+        bodyPosition:
+          type: string
+          description: Body position of the animal
+          enum:
+            - NATURAL
+            - FORCED
+            - FORCED_STANDING
+            - FORCED_LYING
+            - FORCED_SITTING
+            - NON_THERAPEUTIC
         obesity:
           type: string
           description: Obesity type of the animal
@@ -4355,7 +4847,7 @@ components:
             - LOW
             - LEAN
             - CACHEXIA
-        customerType:
+        character:
           type: string
           description: Customer type
           enum:
@@ -4388,8 +4880,9 @@ components:
         - animalId
         - bodyType
         - bodyStructure
+        - bodyPosition
         - obesity
-        - customerType
+        - character
         - leatherCoverId
         - eyelidId
         - colorId
@@ -4431,6 +4924,17 @@ components:
             - DENSE
             - WEAK
           example: COARSE
+        bodyPosition:
+          type: string
+          description: The body position of the animal.
+          enum:
+            - NATURAL
+            - FORCED
+            - FORCED_STANDING
+            - FORCED_LYING
+            - FORCED_SITTING
+            - NON_THERAPEUTIC
+          example: FORCED
         obesity:
           type: string
           description: The obesity level/type of the animal.
@@ -4441,7 +4945,7 @@ components:
             - LEAN
             - CACHEXIA
           example: CACHEXIA
-        customerType:
+        character:
           type: string
           description: The customer type associated with the animal.
           enum:

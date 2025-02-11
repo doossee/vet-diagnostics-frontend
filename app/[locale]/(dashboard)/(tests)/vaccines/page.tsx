@@ -27,7 +27,7 @@ export default function Vaccines() {
             return item?.type?.name
         }  },
         { title: t("form.animal"), key: 'animal', sorting: 'byAnimalId', render(item: Vaccine) {
-            return item?.animal?.name
+            return item?.animal?.nameOrCode
         } },
         { title: t("form.date"), key: 'date', sorting: 'byDate', render(item: Vaccine) {
             return new Date(item.date).toLocaleDateString()
@@ -212,7 +212,7 @@ export default function Vaccines() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        animals?.data?.map((d: any) => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                                        animals?.data?.map((d: any) => <SelectItem key={d.id} value={String(d.id)}>{d.nameOrCode}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>

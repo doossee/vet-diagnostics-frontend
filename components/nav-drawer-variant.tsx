@@ -1,14 +1,16 @@
 'use client'
 
 import { cn } from "~/lib/utils"
+import { Animal } from '~/lib/type'
 import { useEffect, useState } from "react"
-import { ChevronRight } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { navLinksVariant } from '~/constants'
 import { usePathname, Link } from "~/i18n/routing"
 import { useAuthData } from "~/hooks/use-auth-data"
+import { animalsControllerFindAll } from '~/lib/api'
+import { ChevronRight, PawPrint, CirclePlus } from "lucide-react"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@radix-ui/react-collapsible"
 import { Sidebar, SidebarContent, SidebarGroup, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, useSidebar } from "~/components/ui/sidebar"
-import { useTranslations } from "next-intl"
 
 export function AppSidebar() {
     const t = useTranslations()
@@ -16,10 +18,20 @@ export function AppSidebar() {
     const { userData } = useAuthData()
     const [links, setLinks] = useState<any[]>([])
     const { toggleSidebar, isMobile } = useSidebar()
+    const [animals, setAnimals] = useState<Animal[]>([])
     
     useEffect(() => {
         setLinks(navLinksVariant[userData?.userRole!]||[])
+
+        if(userData?.userRole === "VETERINARIAN") {
+            getAnimals()
+        }
     }, [])
+
+    const getAnimals = async () => {
+        const data: any = await animalsControllerFindAll({ page: 1, perPage: 1000 })
+        setAnimals(data.data)
+    }
 
     return(
         <Sidebar collapsible="icon" className="bg-card">
@@ -27,7 +39,54 @@ export function AppSidebar() {
                 <SidebarGroup>
                     <SidebarMenu>
                         {links.map((item) => (
-                            <Collapsible asChild
+                            // userData?.userRole === 'VETERINARIAN' && item.title === "nav.animals" ?
+                            // (
+                                // <Collapsible asChild
+                                //     key={item.title}
+                                //     defaultOpen={item?.isActive}
+                                //     className="group/collapsible">
+                                //     <SidebarMenuItem>
+                                //         <CollapsibleTrigger asChild>
+                                //             <SidebarMenuButton tooltip={item.title}>
+                                //                 {item.icon && <item.icon className="!size-[1.1rem] mr-2" />}
+                                //                 <span>{t(item.title)}</span>
+                                //                 <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                                //             </SidebarMenuButton>
+                                //         </CollapsibleTrigger>
+                                //         <CollapsibleContent>
+                                //             <SidebarMenuSub>
+                                //                 <SidebarMenuSubItem>
+                                //                     <SidebarMenuSubButton asChild>
+                                //                         <Link href={'/animals-create'} className={cn("text-nowrap p-2 overflow-hidden flex gap-3 items-center rounded-sm cursor-pointer transition-colors",
+                                //                             pathname === ('/animals-create') ? "bg-primary hover:!bg-primary/80 text-white hover:text-white dark:text-background hover:dark:text-background" : "text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-500/40 dark:text-gray-300"
+                                //                         )} onClick={() => isMobile && toggleSidebar()}>
+                                //                             <div>
+                                //                                 <CirclePlus className="size-[1.1rem]" />
+                                //                             </div>
+                                //                             <span className="text-sm">{t('animals.createAnimal')}</span>
+                                //                         </Link>
+                                //                     </SidebarMenuSubButton>
+                                //                 </SidebarMenuSubItem>
+                                //                 {animals?.map((animal, i: number) => (
+                                //                     <SidebarMenuSubItem key={i}>
+                                //                         <SidebarMenuSubButton asChild>
+                                //                             <Link href={'/animals/'+animal.id} className={cn("text-nowrap p-2 overflow-hidden flex gap-3 items-center rounded-sm cursor-pointer transition-colors",
+                                //                                 pathname === ('/animals/'+animal.id) ? "bg-primary hover:!bg-primary/80 text-white hover:text-white dark:text-background hover:dark:text-background" : "text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-500/40 dark:text-gray-300"
+                                //                             )} onClick={() => isMobile && toggleSidebar()}>
+                                //                                 <div>
+                                //                                     <PawPrint className="size-[1.1rem]" />
+                                //                                 </div>
+                                //                                 <span className="text-sm">{animal.nameOrCode}</span>
+                                //                             </Link>
+                                //                         </SidebarMenuSubButton>
+                                //                     </SidebarMenuSubItem>
+                                //                 ))}
+                                //             </SidebarMenuSub>
+                                //         </CollapsibleContent>
+                                //     </SidebarMenuItem>
+                                // </Collapsible>
+                            // ):
+                            (<Collapsible asChild
                                 key={item.title}
                                 defaultOpen={item?.isActive}
                                 className="group/collapsible">
@@ -58,7 +117,9 @@ export function AppSidebar() {
                                         </SidebarMenuSub>
                                     </CollapsibleContent>
                                 </SidebarMenuItem>
-                            </Collapsible>
+                            </Collapsible>)
+                            
+                            
                         ))}
                     </SidebarMenu>
                 </SidebarGroup>

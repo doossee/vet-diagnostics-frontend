@@ -14,7 +14,7 @@ import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useLocale, useTranslations } from "next-intl"
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
-import { CUSTOMER_TYPES, OBESITY_TYPES, BODY_TYPES, BODY_STRUCTURES } from '~/constants'
+import { CUSTOMER_TYPES, OBESITY_TYPES, BODY_TYPES, BODY_STRUCTURES, POSITIONS } from '~/constants'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
 import { eyelidsControllerFindAll, leatherCoversControllerFindAll, animalsControllerFindAll, colorsControllerFindAll, generalInspectionControllerCreate, generalInspectionControllerFindAll, generalInspectionControllerRemove, generalInspectionControllerUpdate } from '~/lib/api'
@@ -33,14 +33,17 @@ export default function GeneralInspections() {
         { title: t("inspections.bodyStructure"), key: 'bodyStructure', render(item: GeneralInspection) {
             return BODY_STRUCTURES[item.bodyStructure][locale]
         } },
+        { title: t("inspections.bodyPosition"), key: 'bodyPosition', render(item: GeneralInspection) {
+            return POSITIONS[item.bodyPosition][locale]
+        } },
         { title: t("inspections.customerType"), key: 'customerType', render(item: GeneralInspection) {
-            return CUSTOMER_TYPES[item.customerType][locale]
+            return CUSTOMER_TYPES[item.character][locale]
         } },
         { title: t("form.color"), key: 'color', render(item: GeneralInspection) {
             return item.color?.name
         } },
         { title: t("form.animal"), key: 'animal', render(item: GeneralInspection) {
-            return item.animal?.name
+            return item.animal.nameOrCode
         } },
         {  title: t("table.actions"), key: 'actions', render(item: GeneralInspection) {
             return (<div className="flex gap-2 items-center">
@@ -65,9 +68,10 @@ export default function GeneralInspections() {
         animalId: z.number({ required_error: t("required.animalRequired"), invalid_type_error: t("required.animalRequired") }),
         eyelidId: z.number({ required_error: t("required.eyeLidRequired"), invalid_type_error: t("required.eyeLidRequired") }),
         leatherCoverId: z.number({ required_error: t("required.leatherCoverRequired"), invalid_type_error: t("required.leatherCoverRequired") }),
-        customerType: z.enum(["MOBILE", "CALM"], { required_error: t("required.customerTypeRequired"), invalid_type_error: t("required.customerTypeRequired") }),
+        character: z.enum(["MOBILE", "CALM"], { required_error: t("required.customerTypeRequired"), invalid_type_error: t("required.customerTypeRequired") }),
         bodyType: z.enum(["WEAK", "MEDIUM", "STRONG"], { required_error: t("required.bodyTypeRequired"), invalid_type_error: t("required.bodyTypeRequired") }),
         obesity: z.enum(["HIGH","MEDIUM","LOW","LEAN","CACHEXIA"], { required_error: t("required.obesityRequired"), invalid_type_error: t("required.obesityRequired") }),
+        bodyPosition: z.enum(["NATURAL", "FORCED", "FORCED_STANDING", "FORCED_LYING", "FORCED_SITTING", "NON_THERAPEUTIC"], { required_error: t("required.bodyPositionRequired"), invalid_type_error: t("required.bodyPositionRequired") }),
         bodyStructure: z.enum(["COARSE", "SLIM", "DENSE", "WEAK"], { required_error: t("required.bodyStructureTypeRequired"), invalid_type_error: t("required.bodyStructureTypeRequired") }),
         pulse: z.coerce.number().min(1, t("required.pulseGreetThan0")),
         temperature: z.coerce.number().min(1, t("required.temperatureThan0")),
@@ -81,10 +85,11 @@ export default function GeneralInspections() {
             colorId: null,
             animalId: null,
             eyelidId: null,
+            character: "CALM",
             bodyType: "MEDIUM",
             obesity: "CACHEXIA",
             leatherCoverId: null,
-            customerType: "CALM",
+            bodyPosition: "NATURAL",
             bodyStructure: "COARSE",
             
             pulse: 0,
@@ -165,7 +170,7 @@ export default function GeneralInspections() {
         form.setValue('animalId', item.animalId!)
         form.setValue('eyelidId', item.eyelidId!)
         form.setValue('bodyType', item.bodyType!)
-        form.setValue('customerType', item.customerType!)
+        form.setValue('character', item.character!)
         form.setValue('bodyStructure', item.bodyStructure!)
         form.setValue('leatherCoverId', item.leatherCoverId!)
     }
@@ -285,7 +290,7 @@ export default function GeneralInspections() {
                             />
                             
 
-                            <Divider label={"inspections.habitus"} className="col-span-1 md:col-span-2" />
+                            <Divider label={t("inspections.habitus")} className="col-span-1 md:col-span-2" />
 
                             <FormField
                                 name="obesity"
@@ -332,6 +337,28 @@ export default function GeneralInspections() {
                                 )}
                             />
                             <FormField
+                                name="bodyPosition"
+                                control={form.control}
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>{t("inspections.bodyPosition")}</FormLabel>
+                                        <FormControl>
+                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder={t("inspections.bodyPosition")} />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {
+                                                        Object.keys(POSITIONS).map(k => <SelectItem key={k} value={k}>{POSITIONS[k as keyof typeof POSITIONS][locale]}</SelectItem>)
+                                                    }
+                                                </SelectContent>
+                                            </Select>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
                                 name="bodyStructure"
                                 control={form.control}
                                 render={({ field }) => (
@@ -354,7 +381,7 @@ export default function GeneralInspections() {
                                 )}
                             />
                             <FormField
-                                name="customerType"
+                                name="character"
                                 control={form.control}
                                 render={({ field }) => (
                                     <FormItem>
@@ -376,7 +403,7 @@ export default function GeneralInspections() {
                                 )}
                             />
 
-                            <Divider label={"inspections.inspection"} className="col-span-1 md:col-span-2" />
+                            <Divider label={t("inspections.inspection")} className="col-span-1 md:col-span-2" />
 
                             <FormField
                                 name="pulse"

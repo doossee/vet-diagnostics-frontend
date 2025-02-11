@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form"
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
 import { useQuery } from "@tanstack/react-query"
+import { useSearchParams } from "next/navigation"
 import type { GeneralBloodTest } from "~/lib/type"
 import { DataTable } from '~/components/data-table'
 import { Textarea } from "~/components/ui/textarea"
@@ -13,11 +14,12 @@ import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { DatePicker } from "~/components/date-picker"
 import { useLocale, useTranslations } from "next-intl"
+import { usePathname, useRouter } from "~/i18n/routing"
 import { GENERAL_BLOOD_TESTS, ALERT_MESSAGES } from '~/constants'
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
-import { generalBloodTestControllerCreate, generalBloodTestControllerFindAll, generalBloodTestControllerUpdate, generalBloodTestControllerRemove, animalsControllerFindAll } from '~/lib/api'
+import { animalsControllerFindOne, generalBloodTestControllerCreate, generalBloodTestControllerFindAll, generalBloodTestControllerUpdate, generalBloodTestControllerRemove, animalsControllerFindAll } from '~/lib/api'
 
 type GENERAL_BLOOD = keyof typeof GENERAL_BLOOD_TESTS
 
@@ -26,9 +28,15 @@ const formSchemaValues: any = {}
 
 
 export default function GeneralBloodTests() {
+    const router = useRouter()
     const t = useTranslations()
+    const pathname = usePathname()
+    const query = useSearchParams()
     const locale = useLocale() as 'ru' | 'uz'
 
+    const newAnimal = query.get('new')
+    const animalId = query.get('animalId') ? Number(query.get('animalId')) : null
+    
     Object.keys(GENERAL_BLOOD_TESTS).map(key => {
         defaultValues[key] = 0
         formSchemaValues[key] = z.coerce.number().min(1, GENERAL_BLOOD_TESTS[key as GENERAL_BLOOD][locale] + " " + t("required.moreThan0"))
@@ -41,10 +49,13 @@ export default function GeneralBloodTests() {
         ...Object.keys(GENERAL_BLOOD_TESTS).map(key => ({
             key,
             title: GENERAL_BLOOD_TESTS[key as GENERAL_BLOOD][locale],
+            render: (item: GeneralBloodTest) => {
+                return item[key as GENERAL_BLOOD] + " " + GENERAL_BLOOD_TESTS[key as GENERAL_BLOOD][`unit_${locale}`]
+            }
         })),
         { title: t("inspections.conclusion"), key: 'conclusion' },
         { title: t("form.animal"), key: 'animal', render(item: GeneralBloodTest) {
-            return item.animal?.name
+            return item.animal?.nameOrCode
         } },
         { title: t("table.actions"), key: 'actions', render(item: GeneralBloodTest) {
             return (<div className="flex gap-2 items-center">
@@ -58,9 +69,9 @@ export default function GeneralBloodTests() {
         } },
     ]
 
-    const [dialog, setDialog] = useState(false)
     const [loading, setLoading] = useState(true)
     const [totalItems, setTotalItems] = useState(0)
+    const [dialog, setDialog] = useState(!!newAnimal)
     const [itemId, setItemId] = useState<number | null>(null)
     const [items, setItems] = useState<GeneralBloodTest[]>([])
 
@@ -74,8 +85,8 @@ export default function GeneralBloodTests() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
+            animalId,
             date: null,
-            animalId: null,
             conclusion: "",
             ...defaultValues,
         },
@@ -83,7 +94,15 @@ export default function GeneralBloodTests() {
 
     const { data: animals }: any = useQuery({
         queryKey: ['animals'],
-        queryFn: () => animalsControllerFindAll({page: 1, perPage: 100}),
+        queryFn: async () => {
+            if(animalId) {
+                const data = await animalsControllerFindOne(animalId)
+                return { data: [data] }
+            } else {
+                const data = await animalsControllerFindAll({page: 1, perPage: 100})
+                return data
+            }
+        } 
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -108,7 +127,7 @@ export default function GeneralBloodTests() {
     async function handleGetItems(params: any) {
         try {
             setLoading(true)
-            const {data, meta} = await generalBloodTestControllerFindAll(params)
+            const {data, meta} = await generalBloodTestControllerFindAll(animalId ? {...params, animalId} : params)
             setItems(data as any)
             setTotalItems(meta.total)
         } catch (error) {
@@ -144,6 +163,7 @@ export default function GeneralBloodTests() {
         form.reset()
         setItemId(null)
         setDialog(false)
+        newAnimal && router.push(pathname + ( animalId ? '?animalId='+animalId : ''))
     }
 
     return (
@@ -189,7 +209,7 @@ export default function GeneralBloodTests() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        animals?.data?.map((a: any) => <SelectItem key={a.id} value={String(a.id)}>{a.name}</SelectItem>)
+                                                        animals?.data?.map((a: any) => <SelectItem key={a.id} value={String(a.id)}>{a.nameOrCode}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>
@@ -207,7 +227,7 @@ export default function GeneralBloodTests() {
                                             name={key as GENERAL_BLOOD}
                                             render={({ field }) => (
                                                 <FormItem>
-                                                    <FormLabel>{GENERAL_BLOOD_TESTS[key as GENERAL_BLOOD][locale]}</FormLabel>
+                                                    <FormLabel>{GENERAL_BLOOD_TESTS[key as GENERAL_BLOOD][locale]} ({GENERAL_BLOOD_TESTS[key as GENERAL_BLOOD][`unit_${locale}`]})</FormLabel>
                                                     <FormControl>
                                                         <Input type="number" placeholder={GENERAL_BLOOD_TESTS[key as GENERAL_BLOOD][locale]} {...field} />
                                                     </FormControl>

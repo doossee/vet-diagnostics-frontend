@@ -8,19 +8,27 @@ import { ALERT_MESSAGES } from "~/constants"
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
 import { useQuery } from "@tanstack/react-query"
+import { useSearchParams } from "next/navigation"
 import { DataTable } from '~/components/data-table'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useLocale, useTranslations } from "next-intl"
+import { usePathname, useRouter } from "~/i18n/routing"
 import { SMELL_TYPES, DUNG_FORMS, CLARITY_TYPES } from '~/constants'
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
-import { animalsControllerFindAll, diseasesControllerFindAll, dungColorsControllerFindAll, dungTestsControllerCreate, dungTestsControllerFindAll, dungTestsControllerRemove, dungTestsControllerUpdate } from '~/lib/api'
+import { animalsControllerFindAll, diseasesControllerFindAll, dungColorsControllerFindAll, dungTestsControllerCreate, dungTestsControllerFindAll, animalsControllerFindOne, dungTestsControllerRemove, dungTestsControllerUpdate } from '~/lib/api'
 
 export default function DungTests() {
+    const router = useRouter()
     const t = useTranslations()
-    const locale = useLocale() as 'uz' | 'ru'
+    const pathname = usePathname()
+    const query = useSearchParams()
+    const locale = useLocale() as 'ru' | 'uz'
+
+    const newAnimal = query.get('new')
+    const animalId = query.get('animalId') ? Number(query.get('animalId')) : null    
 
     const COLUMNS = [
         { title: t("inspections.consistency"), key: 'consistency' },
@@ -38,7 +46,7 @@ export default function DungTests() {
             return DUNG_FORMS[item.form]?.[locale]
         } },
         { title: t("form.animal"), key: 'animal', render(item: DungTest) {
-            return item.animal?.name
+            return item.animal?.nameOrCode
         } },
         { title: t("form.disease"), key: 'disease', render(item: DungTest) {
             return `${new Date(item.disease?.startTime!).toLocaleDateString()}-${new Date(item.disease?.endTime!).toLocaleDateString()}`
@@ -55,9 +63,9 @@ export default function DungTests() {
         } },
     ]
 
-    const [dialog, setDialog] = useState(false)
     const [loading, setLoading] = useState(true)
     const [totalItems, setTotalItems] = useState(0)
+    const [dialog, setDialog] = useState(!!newAnimal)
     const [items, setItems] = useState<DungTest[]>([])
     const [itemId, setItemId] = useState<number | null>(null)
     
@@ -75,11 +83,11 @@ export default function DungTests() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
+            animalId,
             worms: 0,
             smell: "NO",
             colorId: null,
             consistency: 0,
-            animalId: null,
             form: "LIQUID",
             diseaseId: null,
             clarity: "CLEAR",
@@ -88,7 +96,15 @@ export default function DungTests() {
 
     const { data: animals }: any = useQuery({
         queryKey: ['animals'],
-        queryFn: () => animalsControllerFindAll({page: 1, perPage: 100}),
+        queryFn: async () => {
+            if(animalId) {
+                const data = await animalsControllerFindOne(animalId)
+                return { data: [data] }
+            } else {
+                const data = await animalsControllerFindAll({page: 1, perPage: 100})
+                return data
+            }
+        }
     })
 
     const { data: diseases } = useQuery({
@@ -123,7 +139,7 @@ export default function DungTests() {
     async function handleGetItems(params: any) {
         try {
             setLoading(true)
-            const {data, meta} = await dungTestsControllerFindAll(params)
+            const {data, meta} = await dungTestsControllerFindAll(animalId ? {...params, animalId} : params)
             setItems(data as any)
             setTotalItems(meta.total)
         } catch (error) {
@@ -161,6 +177,7 @@ export default function DungTests() {
         form.reset()
         setItemId(null)
         setDialog(false)
+        newAnimal && router.push(pathname + ( animalId ? '?animalId='+animalId : ''))
     }
 
     return (
@@ -305,7 +322,7 @@ export default function DungTests() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
-                                                        animals?.data?.map((d: any) => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
+                                                        animals?.data?.map((d: any) => <SelectItem key={d.id} value={String(d.id)}>{d.nameOrCode}</SelectItem>)
                                                     }
                                                 </SelectContent>
                                             </Select>

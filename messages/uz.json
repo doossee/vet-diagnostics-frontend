@@ -3,15 +3,16 @@
         "management": "Boshqaruvlar",
         "animals": "Hayvonlar",
         "animalTypes": "Hayvon turlari",
+        "breeds": "Hayvon zotlari",
         "vaccineTypes": "Vaksina turlari",
         "diseaseTypes": "Kasallik turlari",
-        "animalColors": "Havvon ranglari",
+        "animalColors": "Hayvon tuslari",
         "urineColors": "Siydik ranglari",
         "dungColors": "Tezak ranglari",
         "regions": "Viloyatlar",
         "districts": "Tumanlar",
         "vetstations": "Vet Stansiyalar",
-        "eyeLid": "Ko'z qopqoqlari",
+        "eyeLid": "Shilliq pardalar",
         "leatherCover": "Teri qoplamalari",
 
         "users": "Foydalanuvchilar",
@@ -25,8 +26,8 @@
         "dungTests": "Tezak tekshiruvlari",
         "vaccines": "Vaksinalar",
         "generalInspections": "Umumiy tekshiruvlar",
-        "generalBloodTests": "Umumiy qon tahlillari",
-        "bloodSerumTests": "Qon serum tahlillari"
+        "generalBloodTests": "Qonni morfologik tekshiruvi",
+        "bloodSerumTests": "Qon serum tekshiruvi"
     },
     "theme": {
         "light": "Yorug'",
@@ -64,7 +65,8 @@
         "districtName": "Tuman nomi",
         "confirmPassword": "Parolni takrorlang",
         "password": "Parol",
-        "selectDate": "Sanani belgilang"
+        "selectDate": "Sanani belgilang",
+        "next": "Keyingisi"
     },
     "animalTypes": {
         "name": "Tur nomi",
@@ -75,12 +77,17 @@
     "animals": {
         "name": "Hayvon nomi",
         "weight": "Vazni",
+        "color": "Hayvon tusi",
         "idCode": "Id Kodi",
         "breed": "Zoti",
+        "age": "Hayvon yoshi",
         "arrivalDate": "Keltirilgan kuni",
         "createButton": "Hayvon qo'shish",
         "createAnimal": "Hayvon qo'shish",
-        "editAnimal": "Hayvonni o'zgartirish"
+        "editAnimal": "Hayvonni o'zgartirish",
+        "animalInfo": "Hayvon ma'lumotlari",
+        "generalInspection": "Umumiy Tekshiruv",
+        "vaccine": "Vaksina"
     },
     "table": {
         "search": "Qidirish",
@@ -133,6 +140,11 @@
         "createColor": "Rang yaratish",
         "editColor": "Rangni o'zgartirish",
 
+        "breedName": "Zot nomi",
+        "breedParent": "Zot kategoriyasi",
+        "createBreed": "Zot kiritish",
+        "editBreed": "Zotni o'zgartirish",
+
         "typeName": "Tur nomi",
 
         "createType": "Tur yaratish",
@@ -146,11 +158,11 @@
 
         "urineColorCreate": "Siydik rangi yaratish",
 
-        "eyeLid": "Ko'z qopqog'i",
-        "eyeLidName": "Ko'z qopqog'i nomi",
+        "eyeLid": "Shilliq parda",
+        "eyeLidName": "Shilliq parda nomi",
 
-        "createEyeLid": "Ko'z qopqog'i yaratish",
-        "editEyeLid": "Ko'z qopqog'ini o'zgartirish",
+        "createEyeLid": "Shilliq parda yaratish",
+        "editEyeLid": "Shilliq pardani o'zgartirish",
 
         "leatherCover": "Teri qoplamasi",
         "leatherCoverName": "Teri qoplamasi nomi",
@@ -161,6 +173,7 @@
     },
     "inspections": {
         "obesity": "Semizligi",
+        "bodyPosition": "Tananing tashqi muhitdagi holati poza",
         "bodyType": "Hayvon jussasi",
         "bodyStructure": "Tana tuzilishi",
         "customerType": "Hayvon mijozi",
@@ -174,10 +187,10 @@
         "createInspection": "Tekshiruv yaratish",
         "editInspection": "Tekshiruvni o'zgartirish",
 
-        "pulse": "Puls",
+        "pulse": "Puls soni",
         "rumination": "Ruminatsiya",
-        "temperature": "Harorati",
-        "respiratoryRate": "Nafas olish tezligi",
+        "temperature": "Tana harorati",
+        "respiratoryRate": "Nafas soni",
 
         "conclusion": "Xulosa",
         "consistency": "Konsentratsiyasi",
@@ -196,7 +209,7 @@
         "editGeneralInspections": "Umummiy tekshiruvni o'zgartirish",
 
         "inspection": "Tekshiruv",
-        "habitus": "Gabitus",
+        "habitus": "Gabitus-tashqi ko’rinishi",
         "inspectionType": "Tekshiruv turi",
 
         "createUrineTest": "Siydik tahlili yaratish",
@@ -206,9 +219,11 @@
         "editVaccine": "Vaksinani o'zgartirish"
     },
     "required": {
+        "breedNameRequired": "Zot nomi kiritilishi shart",
+        "bodyPositionRequired": "Tananing holat pozasi belgilanishi shart",
         "colorNameRequired": "Rang nomi kiritilishi shart",
         "typeNameRequired": "Tur nomi kiritilishi shart",
-        "eyeLidNameRequired": "Ko'z qopqog'i nomi kiritilishi shart",
+        "eyeLidNameRequired": "Shilliq parda nomi kiritilishi shart",
         "leatherCoverNameRequired": "Qoplama nomi kiritilishi shart",
         "vetStationNameRequired": "Vet stansiya nomi kiritilishi shart",
         "vetStationAddressRequired": "Vet stansiya manzili kiritilishi shart",
@@ -235,16 +250,16 @@
         "diseaseTypeRequired": "Kasallik turi belgilanishi shart",
         "startTimeRequired": "Boshlanish vaqt kiritilishi shart",
         "endTimeRequired": "Tugash vaqti kiritilishi shart",
-        "pulseGreetThan0": "Puls 0 dan katta qiymat kiritilshi shart",
-        "temperatureThan0": "Harorat 0 dan katta qiymat kiritilshi shart",
+        "pulseGreetThan0": "Puls soni 0 dan katta qiymat kiritilshi shart",
+        "temperatureThan0": "Tana harorati 0 dan katta qiymat kiritilshi shart",
         "ruminationGreetThan0": "Ruminatsiya 0 dan katta qiymat kiritilshi shart",
-        "respiratoryRateGreetThan0": "Nafas olish tezligi 0 dan katta qiymat kiritilshi shart",
+        "respiratoryRateGreetThan0": "Nafas soni 0 dan katta qiymat kiritilshi shart",
         "wormsGreetThan0": "Gijja 0 dan katta qiymat kiritilishi shart",
         "consistencyGreetThan0": "Konsentratsiya 0 dan katta qiymat kiritilishi shart",
         "moreThan0": "0 dan katta qiymant kiritilishi shart",
         "dateRequired": "Vaqt kiritilishi shart",
         "animalRequired": "Hayvon belgilanishi shart",
-        "eyeLidRequired": "Ko'z qopqog'i belgilanishi shart",
+        "eyeLidRequired": "Shilliq parda belgilanishi shart",
         "leatherCoverRequired": "Teri qoplamasi belgilanishi shart",
         "birthDateRequired": "Tug'ilgan vaqti kiritilishi shart",
         "colorRequired": "Rang belgilanishi shart",

@@ -75,7 +75,7 @@ export default function Diseases() {
         } },
         { title: t("inspections.conclusion"), key: 'conclusion' },
         { title: t("form.animal"), key: 'animal', render(item: Disease) {
-            return item.animal?.name
+            return item.animal?.nameOrCode
         } },
         { title: t("form.diseaseType"), key: 'type', render(item: Disease) {
             return item.type?.name
@@ -133,7 +133,7 @@ export default function Diseases() {
     async function handleGetItems(params: any) {
         try {
             setLoading(true)
-            const {data, meta} = await diseasesControllerFindAll({params})
+            const {data, meta} = await diseasesControllerFindAll({...params})
             
             setItems(data as any)
             setTotalItems(meta.total)

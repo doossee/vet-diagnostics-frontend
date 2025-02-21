@@ -1,6 +1,7 @@
 [+/-] add consumptions in general inspections
-[-] fix mobile scrools
-[-] fix responsive tabs in animal/id
+[+] fix mobile scrools
+[+] fix responsive tabs in animal/id
+[-] upgrade tailwindcss v3->v4
 
 [|-] add blood units text wrap
 [|-] Need change width sidebar ++

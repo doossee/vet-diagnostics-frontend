@@ -10,6 +10,7 @@ import { Button } from '~/components/ui/button'
 import { useQuery } from "@tanstack/react-query"
 import { DataTable } from '~/components/data-table'
 import type { GeneralInspection } from "~/lib/type"
+import { Textarea } from "~/components/ui/textarea"
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useLocale, useTranslations } from "next-intl"
@@ -77,6 +78,7 @@ export default function GeneralInspections() {
         temperature: z.coerce.number().min(1, t("required.temperatureThan0")),
         rumination: z.coerce.number().min(1, t("required.ruminationGreetThan0")),
         respiratoryRate: z.coerce.number().min(1, t("required.respiratoryRateGreetThan0")),
+        conclusion: z.string(),
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -95,6 +97,7 @@ export default function GeneralInspections() {
             pulse: 0,
             rumination: 0,
             temperature: 0,
+            conclusion: "",
             respiratoryRate: 0,
         } as any,
     })
@@ -449,6 +452,18 @@ export default function GeneralInspections() {
                                         <FormLabel>{t("inspections.respiratoryRate")}</FormLabel>
                                         <FormControl>
                                             <Input type="number" placeholder={t("inspections.respiratoryRate")} {...field} />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                name="conclusion"
+                                control={form.control}
+                                render={({ field }) => (
+                                    <FormItem className="flex flex-col gap-1 pt-1.5 md:col-span-2">
+                                        <FormLabel>{t("inspections.conclusion")}</FormLabel>
+                                        <FormControl>
+                                            <Textarea className="resize-none" rows={6} placeholder={t("inspections.conclusion")} {...field} />
                                         </FormControl>
                                     </FormItem>
                                 )}

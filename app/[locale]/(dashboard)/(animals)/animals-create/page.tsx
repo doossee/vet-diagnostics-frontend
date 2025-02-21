@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl"
 import { useQuery } from "@tanstack/react-query"
 import { useAuthData } from '~/hooks/use-auth-data'
 import { AnimalForm } from '~/components/forms/animal-form'
+import { PawPrint, HeartPulse, Syringe } from 'lucide-react'
 import { VaccineForm } from '~/components/forms/vaccine-form'
 import type { Farmer, Animal, GeneralInspection } from "~/lib/type"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs"
@@ -96,13 +97,23 @@ export default function Animals() {
     })
     
     return (
-        <div>
+        <div className='overflow-hidden'>
             <Tabs value={tab}>
                 <TabsList className="grid w-full grid-cols-3">
-                    <TabsTrigger onClick={() => setTab('animal')} value="animal">{t('animals.animalInfo')}</TabsTrigger>
-                    <TabsTrigger onClick={() => setTab('inspection')} value="inspection">{t('animals.generalInspection')}</TabsTrigger>
-                    <TabsTrigger onClick={() => setTab('vaccine')} value="vaccine">{t('animals.vaccine')}</TabsTrigger>
+                    <TabsTrigger onClick={() => setTab('animal')} value="animal">
+                        <PawPrint size={18} className='block md:hidden' />
+                        <span className='hidden md:block'>{t('animals.animalInfo')}</span>
+                    </TabsTrigger>
+                    <TabsTrigger onClick={() => setTab('inspection')} value="inspection">
+                        <HeartPulse size={18} className='block md:hidden' />
+                        <span className='hidden md:block'>{t('animals.generalInspection')}</span>
+                    </TabsTrigger>
+                    <TabsTrigger onClick={() => setTab('vaccine')} value="vaccine">
+                        <Syringe size={18} className='block md:hidden' />
+                        <span className='hidden md:block'>{t('animals.vaccine')}</span>
+                    </TabsTrigger>
                 </TabsList>
+
                 <TabsContent value="animal">
                     <Card className="shadow-none rounded-lg">
                         <CardHeader>

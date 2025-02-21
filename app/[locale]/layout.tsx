@@ -43,7 +43,7 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange>    
               <ClientProfider>
-                  {children}
+                {children}
               </ClientProfider>
             <Toaster />
           </ThemeProvider>

@@ -5,7 +5,9 @@ import { useAuthData } from '~/hooks/use-auth-data'
 import Axios, { AxiosError, AxiosResponse, AxiosRequestConfig } from 'axios'
 import { useLanguage } from '~/hooks/use-language'
 
-const baseURL = '/api'
+// const baseURL = '/api'
+const baseURL = process.env.NEXT_PUBLIC_BASE_URL
+console.log(baseURL)
 const { accessToken, refreshToken, setAuthData } = useAuthData()
 
 let isRefreshing = false

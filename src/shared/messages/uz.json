@@ -1,0 +1,279 @@
+{
+    "nav": {
+        "management": "Boshqaruvlar",
+        "animals": "Hayvonlar",
+        "animalTypes": "Hayvon turlari",
+        "breeds": "Hayvon zotlari",
+        "vaccineTypes": "Vaksina turlari",
+        "diseaseTypes": "Kasallik turlari",
+        "animalColors": "Hayvon tuslari",
+        "urineColors": "Siydik ranglari",
+        "dungColors": "Tezak ranglari",
+        "regions": "Viloyatlar",
+        "districts": "Tumanlar",
+        "vetstations": "Vet Stansiyalar",
+        "eyeLid": "Shilliq pardalar",
+        "leatherCover": "Teri qoplamalari",
+
+        "users": "Foydalanuvchilar",
+        "veterinarians": "Veterinarlar",
+        "farmers": "Fermerlar",
+        "profile": "Profil",
+
+        "inspections": "Tekshiruvlar",
+        "diseases": "Kasalliklar",
+        "urineTests": "Siydik tekshiruvlari",
+        "dungTests": "Tezak tekshiruvlari",
+        "vaccines": "Vaksinalar",
+        "generalInspections": "Umumiy tekshiruvlar",
+        "generalBloodTests": "Qonni morfologik tekshiruvi",
+        "bloodSerumTests": "Qon serum tekshiruvi"
+    },
+    "theme": {
+        "light": "Yorug'",
+        "dark": "Qorong'u",
+        "system": "Tizim"
+    },
+    "login": {
+        "title": "Tizimga kirish",
+        "phone": "Telefon raqam",
+        "phoneRequired": "Telefon raqam kiritilishi shart",
+        "password": "Parol",
+        "passwordRequired": "Parol 8 ta belgidan kichik bo'lmasligi kerak",
+        "authError": "Telefon yoki Parol noto'g'ri",
+        "submit": "Kirish"
+    },
+    "form": {
+        "submit": "Saqlash",
+        "animal": "Hayvon",
+        "submiting": "Yuborilmoqda",
+        "farmer": "Fermer",
+        "veterinarian": "Veterinar",
+        "type": "Turi",
+        "date": "Sanasi",
+        "birthDate": "Tug'ilgan kuni",
+        "startDate": "Boshlanish vaqti",
+        "endDate": "Tugash vaqti",
+        "color": "Rangi",
+        "disease": "Kasallik",
+        "diseaseType": "Kasallik turi",
+        "gender": "Jinsi",
+        "name": "Ism Familiyasi",
+        "phone": "Telefon raqami",
+        "address": "Manzili",
+        "regionName": "Viloyat nomi",
+        "districtName": "Tuman nomi",
+        "confirmPassword": "Parolni takrorlang",
+        "password": "Parol",
+        "selectDate": "Sanani belgilang",
+        "next": "Keyingisi"
+    },
+    "animalTypes": {
+        "name": "Tur nomi",
+        "createButton": "Hayvon turi yaratish",
+        "createAnimalType": "Tur yaratish",
+        "editAnimalType": "Turni o'zgartirish"
+    },
+    "animals": {
+        "name": "Hayvon nomi",
+        "animalType": "Hayvon turi",
+        "weight": "Vazni",
+        "color": "Hayvon tusi",
+        "idCode": "Id Kodi",
+        "breed": "Zoti",
+        "age": "Hayvon yoshi",
+        "arrivalDate": "Keltirilgan kuni",
+        "createButton": "Hayvon qo'shish",
+        "createAnimal": "Hayvon qo'shish",
+        "editAnimal": "Hayvonni o'zgartirish",
+        "animalInfo": "Hayvon ma'lumotlari",
+        "generalInspection": "Umumiy Tekshiruv",
+        "vaccine": "Vaksina"
+    },
+    "table": {
+        "search": "Qidirish",
+        "actions": "Boshqarish",
+        "edit": "O'zgartirish",
+        "delete": "O'chirish",
+        "loading": "Yuklanmoqda",
+        "none": "Malumotlar yo'q"
+    },
+    "filters": {
+        "all": "Barchasi",
+        "byType": "Tur bo'yicha saralash",
+        "byGender": "Jinsi bo'yicha saralash",
+        "byBreed": "Zoti bo'yicha saralash",
+        "byColor": "Rangi bo'yicha saralash",
+        "byRegion": "Viloyat bo'yicha saralash",
+        "byDistrict": "Tuman bo'yicha saralash",
+        "byAnimal": "Hayvon bo'yicha saralash"
+    },
+    "users": {
+        "firstName": "Ism",
+        "lastName": "Familiya",
+        "middleName": "Otasining ismi",
+
+
+        "createFarmer": "Fermer Qo'shish",
+        "editFarmer": "Fermerni O'zgartirish",
+
+        "createVeterinarian": "Veterinar Qo'shish",
+        "editVeterinarian": "Veterinarni O'zgartirish",
+
+        "changeUserData": "Malumotlarni o'zgartirish"
+    },
+    "regions": {
+        "createDistrict": "Tuman yaratish",
+        "editDistrict": "Tumanni o'zgartirish",
+
+        "vetStationName": "Stansiya nomi",
+        "vetStationAddress": "Stansiya manzili",
+        "createVetStation": "Vet stansiya yaratish",
+        "editVetStation": "Vet stansiyani o'zgartirish",
+
+        "countOfDistricts": "Tumanlar soni",
+        "createRegion": "Viloyat yaratish",
+        "editRegion": "Viloyatni o'zgartirish"
+    },
+    "management": {
+        "colorName": "Rang nomi",
+        "colorPick": "Rang piktogrammasi",
+        "createColor": "Rang yaratish",
+        "editColor": "Rangni o'zgartirish",
+
+        "breedName": "Zot nomi",
+        "breedParent": "Zot kategoriyasi",
+        "createBreed": "Zot kiritish",
+        "editBreed": "Zotni o'zgartirish",
+
+        "typeName": "Tur nomi",
+
+        "createType": "Tur yaratish",
+        "editType": "Turni o'zgartirish",
+
+        "vaccineType": "Vaksina turi",
+        "diseaseTypeCreate": "Kasallik turi yaratish",
+        "vaccineTypeCreate": "Vaksina turi yaratish",
+
+        "dungColorCreate": "Tezak rangi yaratish",
+
+        "urineColorCreate": "Siydik rangi yaratish",
+
+        "eyeLid": "Shilliq parda",
+        "eyeLidName": "Shilliq parda nomi",
+
+        "createEyeLid": "Shilliq parda yaratish",
+        "editEyeLid": "Shilliq pardani o'zgartirish",
+
+        "leatherCover": "Teri qoplamasi",
+        "leatherCoverName": "Teri qoplamasi nomi",
+
+        "createLeatherCover": "Teri qoplamasi yaratish",
+        "editLeatherCover": "Teri qoplamasini o'zgartirish"
+        
+    },
+    "inspections": {
+        "obesity": "Semizligi",
+        "bodyPosition": "Tananing tashqi muhitdagi holati poza",
+        "bodyType": "Hayvon jussasi",
+        "bodyStructure": "Tana tuzilishi",
+        "customerType": "Hayvon mijozi",
+
+        "createBloodSerumTest": "Qon serum tahlil yaratish",
+        "editBloodSerumTest": "Qon serum tahlilini o'zgartirish",
+
+        "createDisease": "Kasallik yaratish",
+        "editDisease": "Kasallikni o'zgartirish",
+
+        "createInspection": "Tekshiruv yaratish",
+        "editInspection": "Tekshiruvni o'zgartirish",
+
+        "pulse": "Puls soni",
+        "rumination": "Ruminatsiya",
+        "temperature": "Tana harorati",
+        "respiratoryRate": "Nafas soni",
+
+        "conclusion": "Xulosa",
+        "consistency": "Konsentratsiyasi",
+        "worms": "Gijja",
+        "smell": "Hidi",
+        "clarity": "Tiniqligi",
+        "form": "Shakli",
+
+        "createDungTest": "Tezak tahlili yaratish",
+        "editDungTest": "Tezak tahlini o'zgartirish",
+
+        "createBloodTest": "Qon tahlili yaratish",
+        "editBloodTest": "Qon tahlilni o'zgartirish",
+
+        "createGeneralInspections": "Umummiy tekshiruv yaratish",
+        "editGeneralInspections": "Umummiy tekshiruvni o'zgartirish",
+
+        "inspection": "Tekshiruv",
+        "habitus": "Gabitus-tashqi ko’rinishi",
+        "inspectionType": "Tekshiruv turi",
+
+        "createUrineTest": "Siydik tahlili yaratish",
+        "editUrineTest": "Siydik tahlilini o'zgartirish",
+
+        "createVaccine": "Vaksina yaratish",
+        "editVaccine": "Vaksinani o'zgartirish"
+    },
+    "required": {
+        "breedNameRequired": "Zot nomi kiritilishi shart",
+        "bodyPositionRequired": "Tananing holat pozasi belgilanishi shart",
+        "colorNameRequired": "Rang nomi kiritilishi shart",
+        "typeNameRequired": "Tur nomi kiritilishi shart",
+        "eyeLidNameRequired": "Shilliq parda nomi kiritilishi shart",
+        "leatherCoverNameRequired": "Qoplama nomi kiritilishi shart",
+        "vetStationNameRequired": "Vet stansiya nomi kiritilishi shart",
+        "vetStationAddressRequired": "Vet stansiya manzili kiritilishi shart",
+
+        "phoneRequired": "Telefon to'g'ri formatda kiritilishi shart",
+        "lastNameRequired": "Familiya kiritilishi shart",
+        "firstNameRequired": "Ism kiritilishi shart",
+        "regionRequired": "Viloyat belgilanishi shart",
+        "regionNameRequired": "Viloyat nomi kiritishi shart",
+
+        
+        "districtRequired": "Tuman belgilanishi shart",
+        "districtNameRequired": "Tuman nomi kiritilishi shart",
+        "passwordRequired": "Parol 8 ta belgidan kichik bo'lmasligi kerak",
+        "confirmPasswordRequired": "Parollar bir xil bo'lishi kerak",
+
+        "arrivalDateRequired": "Keltirilgan vaqti kiritilishi shart",
+        "animalNameRequired": "Hayvon nomi kiritilishi shart",
+        "animalTypeRequired": "Hayvon turi kiritilishi shart",
+        "weightRequired": "Hayvon vazni kiritilishi shart",
+        "idCodeRequired": "Hayvon id kodi kiritilishi shart",
+
+        "diseaseRequired": "Kasallik belgilanishi shart",
+        "diseaseTypeRequired": "Kasallik turi belgilanishi shart",
+        "startTimeRequired": "Boshlanish vaqt kiritilishi shart",
+        "endTimeRequired": "Tugash vaqti kiritilishi shart",
+        "pulseGreetThan0": "Puls soni 0 dan katta qiymat kiritilshi shart",
+        "temperatureThan0": "Tana harorati 0 dan katta qiymat kiritilshi shart",
+        "ruminationGreetThan0": "Ruminatsiya 0 dan katta qiymat kiritilshi shart",
+        "respiratoryRateGreetThan0": "Nafas soni 0 dan katta qiymat kiritilshi shart",
+        "wormsGreetThan0": "Gijja 0 dan katta qiymat kiritilishi shart",
+        "consistencyGreetThan0": "Konsentratsiya 0 dan katta qiymat kiritilishi shart",
+        "moreThan0": "0 dan katta qiymant kiritilishi shart",
+        "dateRequired": "Vaqt kiritilishi shart",
+        "animalRequired": "Hayvon belgilanishi shart",
+        "eyeLidRequired": "Shilliq parda belgilanishi shart",
+        "leatherCoverRequired": "Teri qoplamasi belgilanishi shart",
+        "birthDateRequired": "Tug'ilgan vaqti kiritilishi shart",
+        "colorRequired": "Rang belgilanishi shart",
+        "vaccineTypeRequired": "Vaksina turi belgilanishi shart",
+        "breedRequired": "Zoti tanlanishi shart",
+        "genderRequired": "Jins tanlanishi shart",
+        "formRequired": "Shakli belgilanishi shart",
+        "smellRequired": "Hidi belgilanishi shart",
+        "clarityRequired": "Tiniqligi belgilanishi shart",
+        "customerTypeRequired": "Hayvon mijozi tanlanishi shart",
+        "bodyTypeRequired": "Hayvon jussasi tanlanishi shart",
+        "obesityRequired": "Hayvon semizligi tanlanishi shart",
+        "bodyStructureTypeRequired": "Hayvon tana tuzilishi tanlanishi shart",
+        "inspectionTypeRequired": "Tekshiruv turi belgilanishi shart"
+    }
+}

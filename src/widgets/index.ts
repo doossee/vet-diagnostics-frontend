@@ -1,0 +1,1 @@
+export { AnimalDashboard } from './animal/dashboard'

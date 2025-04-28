@@ -1,0 +1,1 @@
+export { createVaccineTypeColums } from './columns'

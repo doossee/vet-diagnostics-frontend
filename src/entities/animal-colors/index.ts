@@ -1,0 +1,1 @@
+export { createAnimalColorColums } from './columns'

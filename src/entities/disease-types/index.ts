@@ -1,0 +1,1 @@
+export { createDiseaseTypeColums } from './columns'

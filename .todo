@@ -1,19 +1,12 @@
-[+/-] add consumptions in general inspections
-[+] fix mobile scrools
-[+] fix responsive tabs in animal/id
-[-] upgrade tailwindcss v3->v4
+[+] create animal-select component with type
+[+:-] fix editable item to form
+[+:] fix date element edit
+[+:] check diseases | with 2 form labels
+[+:] check userdata.id with queries
+[+::] animal id / create page develop
+[+:] users page veter / farmer select not working
+[+:] check profile
+[+:] users page edit not working
 
-[|-] add blood units text wrap
-[|-] Need change width sidebar ++
-
-[+] fix calendar change
-[+] replace animal and people gender const
-[+] Need add required message for enums
-[+] Need sortings for in mobile variant table
-[+] Table justify
-
-Back end
-[+] populate districts to vet station?
-
-__________________
-[-] axios to fetch
+[-] animal create page vaccine ignore with creating (hide animalId and add skip button)
+[-] users page password editable type error

@@ -1,0 +1,1 @@
+export { createGeneralInspectionColums } from './columns'

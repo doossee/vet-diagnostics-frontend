@@ -7,6 +7,6 @@
 [+:] users page veter / farmer select not working
 [+:] check profile
 [+:] users page edit not working
-
-[-] animal create page vaccine ignore with creating (hide animalId and add skip button)
-[-] users page password editable type error
+[+:] users page password editable type error
+[+:] animal create page vaccine ignore with creating (hide animalId and add skip button)
+[+] textarea rows=6

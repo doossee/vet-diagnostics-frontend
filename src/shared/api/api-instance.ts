@@ -6,7 +6,7 @@ import Axios, { AxiosError, AxiosResponse, AxiosRequestConfig } from 'axios'
 
 // const baseURL = '/api'
 const baseURL = process.env.NEXT_PUBLIC_BASE_URL
-console.log(baseURL)
+// console.log(baseURL)
 const { accessToken, refreshToken, setAuthData } = useAuthData()
 
 let isRefreshing = false

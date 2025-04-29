@@ -31,7 +31,12 @@ export function UserForm({ onSubmit, setRegionId, regions, regionId, showVeterin
 
     const form = useForm<UserSchema>({
         resolver: zodResolver(createUserSchema(t, itemId!)),
-        defaultValues: defaultValues ? {...defaultValues, birthDate: new Date(defaultValues.birthDate)} : userValues as any,
+        defaultValues: defaultValues ? {
+            ...defaultValues,
+            password: '',
+            confirmPassword: '',
+            birthDate: new Date(defaultValues.birthDate),
+        } : userValues as any,
     })
 
     const districtId = form.watch('districtId')

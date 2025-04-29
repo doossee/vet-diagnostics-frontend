@@ -8,14 +8,17 @@ import { AnimalSelect } from "@/shared/components/animal-select"
 import { VaccineSchema, createVaccineSchema, vaccineValues } from './vaccine.model'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/shared/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/components/ui/select'
+import { useEffect } from "react"
 
 interface VaccineFormProps {
     vaccineTypes: VaccineType[]
+    hideAnimals?: boolean
     defaultValues?: VaccineSchema
     onSubmit: (values: VaccineSchema) => void
+    onSkip?: () => void
 }
 
-export function VaccineForm({ onSubmit, defaultValues, vaccineTypes }: VaccineFormProps) {
+export function VaccineForm({ onSubmit, defaultValues, vaccineTypes, hideAnimals, onSkip }: VaccineFormProps) {
     const { t } = useI18n()
 
     const form = useForm<VaccineSchema>({
@@ -23,8 +26,12 @@ export function VaccineForm({ onSubmit, defaultValues, vaccineTypes }: VaccineFo
         defaultValues: defaultValues ? {...defaultValues, date: new Date(defaultValues.date)} : vaccineValues as any,
     })
 
+    useEffect(() => {
+        if(hideAnimals) form.setValue('animalId', 0)
+    }, [hideAnimals])
+
     return (<Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
             <FormField
                 name="date"
                 control={form.control}
@@ -39,7 +46,7 @@ export function VaccineForm({ onSubmit, defaultValues, vaccineTypes }: VaccineFo
                 )}
             />
             
-            <AnimalSelect form={form} />
+            {!hideAnimals && <AnimalSelect form={form} />}
 
             <FormField
                 name="typeId"
@@ -63,7 +70,10 @@ export function VaccineForm({ onSubmit, defaultValues, vaccineTypes }: VaccineFo
                     </FormItem>
                 )}
             />
-            <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">{t(form.formState.isSubmitting?"form.submiting":"form.submit")}</Button>
+            <div className="grid md:grid-cols-2 gap-4">
+                {!!onSkip && <Button onClick={onSkip} type="button" variant={"secondary"}>{t("form.skip")}</Button>}
+                <Button disabled={form.formState.isSubmitting} type="submit">{t(form.formState.isSubmitting?"form.submiting":"form.submit")}</Button>
+            </div>
         </form>
     </Form>)
 }

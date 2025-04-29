@@ -1,4 +1,4 @@
-import { UserRole } from "~/lib/type";
+import { UserRole } from "@/shared/types";
 import {
   CirclePlus,
   FlaskRound,

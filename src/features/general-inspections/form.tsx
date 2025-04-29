@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useI18n } from "@/shared/hooks/use-i18n"
 import { Input } from '@/shared/components/ui/input'
@@ -15,12 +16,13 @@ import { BODY_STRUCTURES, BODY_TYPES, CUSTOMER_TYPES, OBESITY_TYPES, POSITIONS }
 interface GeneralInspectionFormProps {
     eyeLids: Eyelid[]
     animalColors: Color[]
+    hideAnimals?: boolean
     leatherCovers: LeatherCover[]
     defaultValues?: GeneralInspectionSchema
     onSubmit: (values: GeneralInspectionSchema) => void
 }
 
-export function GeneralInspectionForm({ onSubmit, defaultValues, eyeLids, leatherCovers, animalColors }: GeneralInspectionFormProps) {
+export function GeneralInspectionForm({ onSubmit, defaultValues, eyeLids, leatherCovers, animalColors, hideAnimals }: GeneralInspectionFormProps) {
     const { t, locale } = useI18n()
 
     const form = useForm<GeneralInspectionSchema>({
@@ -28,10 +30,14 @@ export function GeneralInspectionForm({ onSubmit, defaultValues, eyeLids, leathe
         defaultValues: defaultValues || generalInspectionValues as any,
     })
 
+    useEffect(() => {
+        if(hideAnimals) form.setValue('animalId', 0)
+    }, [hideAnimals])
+
     return (<Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-4">
             
-            <AnimalSelect form={form} />
+            {!hideAnimals && <AnimalSelect form={form} />}
             <FormField
                 name="colorId"
                 control={form.control}

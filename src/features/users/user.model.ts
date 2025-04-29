@@ -30,17 +30,17 @@ z.object({
 .superRefine((data, ctx) => {
     if (!itemId) {
         if (!data.password?.trim()) {
-            ctx.addIssue({
-            path: ["password"],
-            message: t("required.passwordRequired"),
-            code: "custom",
+                ctx.addIssue({
+                path: ["password"],
+                message: t("required.passwordRequired"),
+                code: "custom",
             });
         }
         if (data.password !== data.confirmPassword) {
             ctx.addIssue({
-            path: ["confirmPassword"],
-            message: t("required.confirmPasswordRequired"),
-            code: "custom",
+                path: ["confirmPassword"],
+                message: t("required.confirmPasswordRequired"),
+                code: "custom",
             });
         }
     }

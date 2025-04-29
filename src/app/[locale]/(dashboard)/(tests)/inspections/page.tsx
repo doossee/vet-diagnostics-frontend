@@ -43,7 +43,6 @@ export default function Inspections() {
                     
                     <InspectionForm
                         type="MORNING"
-                        animals={animals}
                         onSubmit={onSubmit}
                         defaultValues={itemId?items.find(i => i.id === itemId):undefined as any} />
                 </DialogContent>

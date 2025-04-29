@@ -19,6 +19,7 @@ export default function Animals() {
 
     const { userData } = useAuthData()
     const [tab, setTab] = useState("animal")
+    const [openTabs, setOpenTabs] = useState(1)
     const [newAnimal, setNewAnimal] = useState<AnimalSchema|null>(null)
     const [newInspection, setNewInspection] = useState<GeneralInspectionSchema|null>(null)
     
@@ -30,12 +31,12 @@ export default function Animals() {
     const { leatherCovers } = useLeatherCovers()
     const { farmers } = useFarmers(userData?.userRole !== "FARMER")
     
-    async function onSubmit(values: VaccineSchema) {
+    async function onSubmit(values: VaccineSchema | null = null) {
         try {
             const { id } = await animalsControllerCreate(newAnimal as any)
             
             await generalInspectionControllerCreate({...newInspection, animalId: id} as any)
-            if(values.date && values.typeId) {
+            if(values) {
                 await vaccinesControllerCreate({...values, animalId: id} as any)
             }
 
@@ -48,26 +49,28 @@ export default function Animals() {
     function submitAnimal(values: AnimalSchema) {
         setNewAnimal(values)
         setTab("inspection")
+        setOpenTabs(2)
     }
 
     function submitInspection(values: GeneralInspectionSchema) {
         setNewInspection(values)
         setTab("vaccine")
+        setOpenTabs(3)
     }
 
     return (
         <div className='overflow-hidden'>
             <Tabs value={tab}>
-                <TabsList className="grid w-full grid-cols-3">
+                <TabsList color='primary' className="grid w-full grid-cols-3">
                     <TabsTrigger onClick={() => setTab('animal')} value="animal">
                         <PawPrint size={18} className='block md:hidden' />
                         <span className='hidden md:block'>{t('animals.animalInfo')}</span>
                     </TabsTrigger>
-                    <TabsTrigger onClick={() => setTab('inspection')} value="inspection">
+                    <TabsTrigger disabled={openTabs<2} onClick={() => setTab('inspection')} value="inspection">
                         <HeartPulse size={18} className='block md:hidden' />
                         <span className='hidden md:block'>{t('animals.generalInspection')}</span>
                     </TabsTrigger>
-                    <TabsTrigger onClick={() => setTab('vaccine')} value="vaccine">
+                    <TabsTrigger disabled={openTabs<3} onClick={() => setTab('vaccine')} value="vaccine">
                         <Syringe size={18} className='block md:hidden' />
                         <span className='hidden md:block'>{t('animals.vaccine')}</span>
                     </TabsTrigger>
@@ -99,6 +102,7 @@ export default function Animals() {
                         </CardHeader>
                         <CardContent className="space-y-2">
                             <GeneralInspectionForm
+                                hideAnimals
                                 eyeLids={eyeLids}
                                 animalColors={animalColors}
                                 onSubmit={submitInspection}
@@ -115,8 +119,10 @@ export default function Animals() {
                         </CardHeader>
                         <CardContent className="space-y-2">
                             <VaccineForm
-                                vaccineTypes={vaccineTypes}
+                                hideAnimals
                                 onSubmit={onSubmit}
+                                vaccineTypes={vaccineTypes}
+                                onSkip={() => onSubmit(null)}
                             />
                         </CardContent>
                     </Card>

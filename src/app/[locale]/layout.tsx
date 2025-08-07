@@ -6,6 +6,7 @@ import { NextIntlClientProvider } from 'next-intl'
 import { Toaster } from "@/shared/components/ui/sonner"
 import { ThemeProvider } from "@/shared/components/theme-provider"
 import { ClientProfider } from '@/shared/components/query-client'
+import { PageLoadingIndicator } from "@/shared/components/page-loading-indicator"
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -42,6 +43,7 @@ export default async function RootLayout({
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange>    
+              <PageLoadingIndicator />
               <ClientProfider>
                 {children}
               </ClientProfider>

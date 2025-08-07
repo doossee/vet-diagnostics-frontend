@@ -23,8 +23,8 @@ export const createGeneralBloodTestColums = (handleEditItem: (item: GeneralBlood
             <Button onClick={() => handleEditItem(item)} size='sm'>
                 {t("table.edit")}
             </Button>
-            <Button onClick={() => handleDelete(item.id)} size='sm'>
-                {t("table.edit")}
+            <Button onClick={() => handleDelete(item.id)} size='sm' variant={'destructive'}>
+                {t("table.delete")}
             </Button>
         </div>)
     } },

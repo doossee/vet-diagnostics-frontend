@@ -65,9 +65,7 @@ export function DataTable<T extends { id: any }>({ onRowClick, columns, items, t
     }
   }
 
-  const handleSearch = useCallback(
-    debounce((text: string) => setSearch(text), 500),
-  [])
+  const handleSearch = useCallback(debounce((text: string) => setSearch(text), 500), [])
 
   useEffect(() => {
     handleFetch()
@@ -78,11 +76,11 @@ export function DataTable<T extends { id: any }>({ onRowClick, columns, items, t
   }, [columns])
 
   return (
-    <Card className="shadow-none rounded-lg py-2 gap-2">
-      <CardHeader className='px-2 flex flex-col sm:flex-row justify-between items-start gap-2'>
-        {!hideSearch && <Input className='sm:max-w-[200px]' onChange={e => handleSearch(e.target.value.trim())} placeholder={t('table.search')} />}
+    <div className="grid gap-2">
+      <div className='flex flex-col sm:flex-row justify-between items-start gap-2'>
+        {!hideSearch && <Input className='sm:max-w-[200px] bg-card' onChange={e => handleSearch(e.target.value.trim())} placeholder={t('table.search')} />}
         {topSlot}
-      </CardHeader>
+      </div>
       {
         isMobile && isClient && hasSorting() && createPortal((
           <Popover>
@@ -109,86 +107,92 @@ export function DataTable<T extends { id: any }>({ onRowClick, columns, items, t
           </Popover>
         ), document.getElementById('top-bar-teleport')!)
       }
-      <CardContent className="p-2 py-0">
+      {
+        isMobile ? 
         <div className="overflow-y-auto">
-          {isMobile ?
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              {
-                loading && <div className="text-center text-gray-300 col-span-1 sm:col-span-2">{t('table.loading')}...</div>
-              }
-              {
-                (items.length == 0 && !loading) && <div className="text-center text-gray-300 col-span-1 sm:col-span-2">{t('table.none')}</div>
-              }
-              {
-                items.map((item, i) =>
-                  <div key={i} className={cn("rounded p-4 bg-background border grid gap-4", !!onRowClick ? "cursor-pointer hover:bg-card" : "")} onClick={() => !!onRowClick && onRowClick(item, i)}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {
+              loading && <div className="text-center text-gray-300 col-span-1 sm:col-span-2">{t('table.loading')}...</div>
+            }
+            {
+              (items.length == 0 && !loading) && <div className="text-center text-gray-300 col-span-1 sm:col-span-2">{t('table.none')}</div>
+            }
+            {
+              items.map((item, i) =>
+                <Card key={i} className={cn("shadow-none rounded p-0 bg-card border", !!onRowClick ? "cursor-pointer hover:bg-card" : "")} onClick={() => !!onRowClick && onRowClick(item, i)}>
+                  <CardContent className="p-2 py-1 divide-y">
                     {
                       columns.map((col, i) =>
-                        <div key={i} className="w-full">  
-                          <div className="flex sm:items-center w-full gap-2 items-start">
-                            {!col.hideTitleInMobile && <span>{col.title}:</span>}
+                        <div key={i} className="w-full p-2">  
+                          <div className="flex sm:items-center w-full gap-2 items-start justify-between">
+                            {!col.hideTitleInMobile && <b>{col.title}:</b>}
                             {
                               col.render ?
                               col.render(item) :
-                              <span>{(item as any)[col.key]}</span>
+                              <span className="text-right">{(item as any)[col.key]}</span>
                             }
                           </div>
                         </div>)
                     }
-                  </div>)
-              }
+                  </CardContent>
+                </Card>)
+            }
+          </div>
+        </div> : 
+        <Card className="shadow-none rounded-lg gap-2 py-2">
+          <CardContent className="px-2">
+            <div className="overflow-y-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    {columns.map((col) =>
+                      <TableHead key={col.key as string} className="text-nowrap">
+                        {
+                          col.sorting ?
+                            <Button onClick={() => handleSetSorting(col.sorting!)} variant="ghost" size="sm" className="px-2 py-0! text-sm">
+                              {col.title}
+                              {
+                                sorting[col.sorting] === 'asc' ? <MoveUp /> :
+                                  sorting[col.sorting] === 'desc' ? <MoveDown /> : ""
+                              }
+                            </Button>
+                            : col.title
+                        }
+                      </TableHead>
+                    )}
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {
+                    loading && <TableRow>
+                      <TableCell colSpan={columns.length} className="text-center text-gray-300">{t('table.loading')}...</TableCell>
+                    </TableRow>
+                  }
+                  {
+                    (items.length == 0 && !loading) && <TableRow>
+                      <TableCell colSpan={columns.length} className="text-center text-gray-300">{t('table.none')}</TableCell>
+                    </TableRow>
+                  }
+                  {
+                    items.map((item, i) =>
+                      <TableRow key={i} onClick={() => !!onRowClick && onRowClick(item, i)}>
+                        {
+                          columns.map((col, i) =>
+                            <TableCell key={i} className={cn(col.sorting?"pl-4!":"", !!onRowClick?"cursor-pointer":"")}>
+                              {col.render ? col.render(item) : (item as any)[col.key]}
+                            </TableCell>)
+                        }
+                      </TableRow>)
+                  }
+                </TableBody>
+              </Table>
             </div>
-            :
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  {columns.map((col) =>
-                    <TableHead key={col.key as string} className="text-nowrap">
-                      {
-                        col.sorting ?
-                          <Button onClick={() => handleSetSorting(col.sorting!)} variant="ghost" size="sm" className="px-2 py-0! text-sm">
-                            {col.title}
-                            {
-                              sorting[col.sorting] === 'asc' ? <MoveUp /> :
-                                sorting[col.sorting] === 'desc' ? <MoveDown /> : ""
-                            }
-                          </Button>
-                          : col.title
-                      }
-                    </TableHead>
-                  )}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {
-                  loading && <TableRow>
-                    <TableCell colSpan={columns.length} className="text-center text-gray-300">{t('table.loading')}...</TableCell>
-                  </TableRow>
-                }
-                {
-                  (items.length == 0 && !loading) && <TableRow>
-                    <TableCell colSpan={columns.length} className="text-center text-gray-300">{t('table.none')}</TableCell>
-                  </TableRow>
-                }
-                {
-                  items.map((item, i) =>
-                    <TableRow key={i} onClick={() => !!onRowClick && onRowClick(item, i)}>
-                      {
-                        columns.map((col, i) =>
-                          <TableCell key={i} className={cn(col.sorting?"pl-4!":"", !!onRowClick?"cursor-pointer":"")}>
-                            {col.render ? col.render(item) : (item as any)[col.key]}
-                          </TableCell>)
-                      }
-                    </TableRow>)
-                }
-              </TableBody>
-            </Table>
-          }
-        </div>
-      </CardContent>
-      {!hideBottom && <CardFooter className='px-2 flex justify-between items-center gap-2 w-full py-0'>
+          </CardContent>
+        </Card>
+      }
+      {!hideBottom && <div className='flex justify-between items-center gap-2 w-full'>
         <Select value={String(perPage)} onValueChange={v => setPerPage(+v)}>
-          <SelectTrigger className="w-[100px]">
+          <SelectTrigger className="w-[100px] bg-card">
             <SelectValue placeholder="20" />
           </SelectTrigger>
           <SelectContent>
@@ -208,7 +212,7 @@ export function DataTable<T extends { id: any }>({ onRowClick, columns, items, t
             <ArrowRight />
           </Button>
         </div>
-      </CardFooter>}
-    </Card>
+      </div>}
+    </div>
   );
 }

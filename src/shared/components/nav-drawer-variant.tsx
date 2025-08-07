@@ -1,16 +1,14 @@
 'use client'
 
-import { Animal } from '@/shared/types'
 import { cn } from "@/shared/lib/utils"
 import { useEffect, useState } from "react"
 import { useTranslations } from "next-intl"
-import { ChevronRight } from "lucide-react"
 import { navLinksVariant } from '@/shared/constants'
-// import { animalsControllerFindAll } from '@/shared/api'
 import { usePathname, Link } from "@/shared/i18n/routing"
 import { useAuthData } from "@/shared/hooks/use-auth-data"
+import { ChevronRight, SquareActivity } from "lucide-react"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@radix-ui/react-collapsible"
-import { Sidebar, SidebarContent, SidebarGroup, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, useSidebar } from "@/shared/components/ui/sidebar"
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarRail, useSidebar } from "@/shared/components/ui/sidebar"
 
 export function AppSidebar() {
     const t = useTranslations()
@@ -18,24 +16,31 @@ export function AppSidebar() {
     const { userData } = useAuthData()
     const [links, setLinks] = useState<any[]>([])
     const { toggleSidebar, isMobile } = useSidebar()
-    // const [animals, setAnimals] = useState<Animal[]>([])
     
     useEffect(() => {
         setLinks(navLinksVariant[userData?.userRole!]||[])
-
-        // if(userData?.userRole === "VETERINARIAN") {
-        //     getAnimals()
-        // }
     }, [])
-
-    // const getAnimals = async () => {
-    //     const data: any = await animalsControllerFindAll({ page: 1, perPage: 1000 })
-    //     setAnimals(data.data)
-    // }
 
     return(
         <Sidebar collapsible="icon" className="bg-card">
-            <SidebarContent className="bg-card h-screen">
+            <SidebarHeader className="bg-card">
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton size="lg" asChild>
+                            <div>
+                                <div className="bg-primary text-primary-foreground flex aspect-square size-8 items-center justify-center rounded">
+                                    <SquareActivity className="size-5" />
+                                </div>
+                                <div className="flex flex-col gap-0.5 leading-none text-nowrap">
+                                    <span className="font-medium">VET-CRM</span>
+                                    <span className="">Платформа ветеринарии</span>
+                                </div>
+                            </div>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                </SidebarMenu>
+            </SidebarHeader>
+            <SidebarContent className="bg-card h-screen border-t">
                 <SidebarGroup>
                     <SidebarMenu>
                         {links.map((item) => (
@@ -124,6 +129,10 @@ export function AppSidebar() {
                     </SidebarMenu>
                 </SidebarGroup>
             </SidebarContent>
+            {/* <SidebarFooter>
+                123
+            </SidebarFooter>
+            <SidebarRail /> */}
         </Sidebar >
     )
 }

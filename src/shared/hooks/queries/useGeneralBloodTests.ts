@@ -14,10 +14,10 @@ export function useGeneralBloodTests({ last, animalId }: { last?: boolean, anima
         queryKey.push('animalId='+animalId)
     }
 
-    const { data }: any = useQuery({
+    const { data, isLoading }: any = useQuery({
         queryKey,
         queryFn: () => generalBloodTestControllerFindAll(params),
     })
 
-    return { generalBloodTests: (data?.data ?? []) as GeneralBloodTest[] }
+    return { generalBloodTests: (data?.data ?? []) as GeneralBloodTest[], isLoading }
 }

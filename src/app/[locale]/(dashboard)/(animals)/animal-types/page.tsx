@@ -10,6 +10,7 @@ import { createAnimalTypeColums } from '@/entities/animal-types'
 import { AnimalTypeSchema, AnimalTypeForm } from '@/features/animal-types'
 import { Dialog, DialogTitle, DialogContent, DialogHeader } from "@/shared/components/ui/dialog"
 import { animalTypesControllerFindAll, animalTypesControllerCreate, animalTypesControllerRemove, animalTypesControllerUpdate } from '@/shared/api'
+import { Plus } from 'lucide-react'
 
 export default function AnimalTypes() {
     const { t } = useI18n()
@@ -31,7 +32,10 @@ export default function AnimalTypes() {
                 items={items as any}
                 totalItems={totalItems}
                 callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="mt-0! w-full sm:w-fit">{t('animalTypes.createButton')}</Button>}
+                topSlot={<Button onClick={() => setDialog(true)} size={'sm'} className="mt-0! w-full sm:w-fit">
+                    <Plus />
+                    {t('animalTypes.createButton')}
+                </Button>}
             />
 
             <Dialog open={dialog} onOpenChange={handleClose}>

@@ -3,12 +3,13 @@
 import { useI18n } from '@/shared/hooks/use-i18n'
 import { useRouter } from '@/shared/i18n/routing'
 import { Button } from '@/shared/components/ui/button'
-import { FlaskConical, Shovel, Syringe, FlaskRound } from 'lucide-react'
+import { FlaskConical, Shovel, Syringe, FlaskRound, Plus } from 'lucide-react'
 import { BLOOD_SERUM_TESTS, GENERAL_BLOOD_TESTS } from '@/shared/constants'
 import { Table, TableBody, TableCell, TableRow } from '@/shared/components/ui/table'
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card"
 import { ANIMAL_GENDERS, OBESITY_TYPES, BODY_TYPES, CUSTOMER_TYPES, POSITIONS, BODY_STRUCTURES } from '@/shared/constants'
 import { useAnimals, useDiseases, useGeneralInspection, useVaccines, useGeneralBloodTests, useBloodSerumTests } from "@/shared/hooks/queries"
+import { EmptyState } from '@/shared/components/empty-state';
 
 export function AnimalDashboard({ id }: { id: number }) {
     const router = useRouter()
@@ -18,7 +19,7 @@ export function AnimalDashboard({ id }: { id: number }) {
     const { diseases } = useDiseases({ last: true, animalId: +id })
     const { vaccines } = useVaccines({ last: true, animalId: +id })
     const { bloodSerumTests } = useBloodSerumTests({ last: true, animalId: +id })
-    const { generalBloodTests } = useGeneralBloodTests({ last: true, animalId: +id })
+    const { generalBloodTests, isLoading: generalBloodTestsLoading } = useGeneralBloodTests({ last: true, animalId: +id })
     const { generalInspections } = useGeneralInspection({ last: true, animalId: +id })
 
     const animal = animals?.[0] ?? null
@@ -30,7 +31,7 @@ export function AnimalDashboard({ id }: { id: number }) {
 
     return (
         <div>
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
+            {/* <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
                 <Button onClick={() => router.push(`/blood-serum-tests?animalId=${id}&new=true`)}>
                     <FlaskRound size={40} />
                     <h1 className='text-sm font-bold'>{t('inspections.createBloodSerumTest')}</h1>
@@ -47,7 +48,7 @@ export function AnimalDashboard({ id }: { id: number }) {
                     <Shovel size={40} />
                     <h1 className='text-sm font-bold'>{t('inspections.createDungTest')}</h1>
                 </Button>
-            </div>
+            </div> */}
 
             <div className='mt-4 grid grid-cols-1 md:grid-cols-2 gap-4'>
 
@@ -97,10 +98,17 @@ export function AnimalDashboard({ id }: { id: number }) {
 
                 <Card className='shadow-none rounded'>
                     <CardHeader>
-                        <CardTitle>{t('animals.generalInspection')}</CardTitle>
+                        <div className='flex items-center justify-between'>
+                            <CardTitle>{t('animals.generalInspection')}</CardTitle>
+
+                            {generalInspection && <Button>
+                                <Plus />
+                                Добавить
+                            </Button>}
+                        </div>
                     </CardHeader>
                     <CardContent className='px-4'>
-                        <Table>
+                        {generalInspection && <Table>
                             <TableBody>
                                 <TableRow>
                                     <TableCell><b>{t("inspections.obesity")}</b></TableCell>
@@ -135,17 +143,30 @@ export function AnimalDashboard({ id }: { id: number }) {
                                     <TableCell>{generalInspection?.eyelid?.name ? generalInspection.eyelid.name : '-'}</TableCell>
                                 </TableRow>
                             </TableBody>
-                        </Table>
+                        </Table>}
+                        {!generalInspection && <EmptyState>
+                            <Button>
+                                <Plus />
+                                Добавить
+                            </Button>    
+                        </EmptyState>}
                     </CardContent>
                 </Card>
 
                 
                 <Card className='shadow-none rounded'>
                     <CardHeader>
-                        <CardTitle>{t('form.disease')}</CardTitle>
+                        <div className='flex items-center justify-between'>
+                            <CardTitle>{t('form.disease')}</CardTitle>
+
+                            {disease && <Button>
+                                <Plus />
+                                Добавить
+                            </Button>}
+                        </div>
                     </CardHeader>
                     <CardContent className='px-4'>
-                        <Table>
+                        {disease && <Table>
                             <TableBody>
                                 <TableRow>
                                     <TableCell><b>{t("inspections.obesity")}</b></TableCell>
@@ -156,16 +177,29 @@ export function AnimalDashboard({ id }: { id: number }) {
                                     <TableCell>{disease?.type?.id ? disease.type.name : '-'}</TableCell>
                                 </TableRow>
                             </TableBody>
-                        </Table>
+                        </Table>}
+                        {!disease && <EmptyState>
+                            <Button>
+                                <Plus />
+                                Добавить
+                            </Button>    
+                        </EmptyState>}
                     </CardContent>
                 </Card>
 
                 <Card className='shadow-none rounded'>
                     <CardHeader>
-                        <CardTitle>{t('animals.vaccine')}</CardTitle>
+                        <div className='flex items-center justify-between'>
+                            <CardTitle>{t('animals.vaccine')}</CardTitle>
+
+                            {vaccine && <Button>
+                                <Plus />
+                                Добавить
+                            </Button>}
+                        </div>
                     </CardHeader>
                     <CardContent className='px-4'>
-                        <Table>
+                        {vaccine && <Table>
                             <TableBody>
                                 <TableRow>
                                     <TableCell><b>{t("inspections.obesity")}</b></TableCell>
@@ -176,39 +210,30 @@ export function AnimalDashboard({ id }: { id: number }) {
                                     <TableCell>{vaccine?.type?.id ? vaccine.type.name : '-'}</TableCell>
                                 </TableRow>
                             </TableBody>
-                        </Table>
+                        </Table>}
+                        {!vaccine && <EmptyState>
+                            <Button>
+                                <Plus />
+                                Добавить
+                            </Button>    
+                        </EmptyState>}
                     </CardContent>
                 </Card>
 
 
-                {bloodSerum && <Card className='shadow-none rounded'>
+                <Card className='shadow-none rounded h-min'>
                     <CardHeader>
-                        <CardTitle>{t('nav.bloodSerumTests')}</CardTitle>
+                        <div className='flex items-center justify-between'>
+                            <CardTitle>{t('nav.generalBloodTests')}</CardTitle>
+
+                            {generalBlood && <Button>
+                                <Plus />
+                                Добавить
+                            </Button>}
+                        </div>
                     </CardHeader>
                     <CardContent className='px-4'>
-                        <Table>
-                            <TableBody>
-                                <TableRow>
-                                    <TableCell><b>{t("inspections.obesity")}</b></TableCell>
-                                    <TableCell>{new Date(bloodSerum.createdAt).toLocaleDateString()}</TableCell>
-                                </TableRow>
-                                {...Object.keys(BLOOD_SERUM_TESTS).map(key => (
-                                    <TableRow>
-                                        <TableCell><b>{t(BLOOD_SERUM_TESTS[key as keyof typeof BLOOD_SERUM_TESTS][locale])}</b></TableCell>
-                                        <TableCell>{bloodSerum[key as keyof typeof BLOOD_SERUM_TESTS] + " " + BLOOD_SERUM_TESTS[key as keyof typeof BLOOD_SERUM_TESTS][`unit_${locale}`]}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </CardContent>
-                </Card>}
-                
-                {generalBlood && <Card className='shadow-none rounded'>
-                    <CardHeader>
-                        <CardTitle>{t('nav.generalBloodTests')}</CardTitle>
-                    </CardHeader>
-                    <CardContent className='px-4'>
-                        <Table>
+                        {generalBlood?.id && <Table>
                             <TableBody>
                                 <TableRow>
                                     <TableCell><b>{t("inspections.obesity")}</b></TableCell>
@@ -216,14 +241,56 @@ export function AnimalDashboard({ id }: { id: number }) {
                                 </TableRow>
                                 {...Object.keys(GENERAL_BLOOD_TESTS).map(key => (
                                     <TableRow>
-                                        <TableCell><b>{t(GENERAL_BLOOD_TESTS[key as keyof typeof GENERAL_BLOOD_TESTS][locale])}</b></TableCell>
-                                        <TableCell>{generalBlood?.[key as keyof typeof GENERAL_BLOOD_TESTS] + " " + GENERAL_BLOOD_TESTS[key as keyof typeof GENERAL_BLOOD_TESTS][`unit_${locale}`]}</TableCell>
+                                        <TableCell><b>{(GENERAL_BLOOD_TESTS[key as keyof typeof GENERAL_BLOOD_TESTS]?.[locale])}</b></TableCell>
+                                        <TableCell>{generalBlood?.[key as keyof typeof GENERAL_BLOOD_TESTS] + " " + GENERAL_BLOOD_TESTS[key as keyof typeof GENERAL_BLOOD_TESTS]?.[`unit_${locale}`]}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
-                        </Table>
+                        </Table>}
+                        {(!generalBlood && !generalBloodTestsLoading) && <EmptyState>
+                            <Button>
+                                <Plus />
+                                Добавить
+                            </Button>    
+                        </EmptyState> }
                     </CardContent>
-                </Card>}
+                </Card>
+
+                <Card className='shadow-none rounded h-min'>
+                    <CardHeader>
+                        <div className='flex items-center justify-between'>
+                            <CardTitle>{t('nav.bloodSerumTests')}</CardTitle>
+
+                            {bloodSerum && <Button>
+                                <Plus />
+                                Добавить
+                            </Button>}
+                        </div>
+                    </CardHeader>
+                    <CardContent className='px-4'>
+                        {bloodSerum?.id && <Table>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell><b>{t("inspections.obesity")}</b></TableCell>
+                                    <TableCell>{new Date(bloodSerum.createdAt).toLocaleDateString()}</TableCell>
+                                </TableRow>
+                                {...Object.keys(BLOOD_SERUM_TESTS).map(key => (
+                                    <TableRow>
+                                        <TableCell><b>{(BLOOD_SERUM_TESTS[key as keyof typeof BLOOD_SERUM_TESTS]?.[locale])}</b></TableCell>
+                                        <TableCell>{bloodSerum[key as keyof typeof BLOOD_SERUM_TESTS] + " " + BLOOD_SERUM_TESTS[key as keyof typeof BLOOD_SERUM_TESTS][`unit_${locale}`]}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>}
+                        {!bloodSerum &&  <EmptyState>
+                            <Button>
+                                <Plus />
+                                Добавить
+                            </Button>    
+                        </EmptyState> }
+                    </CardContent>
+                </Card>
+                
             </div>
         </div>
     )

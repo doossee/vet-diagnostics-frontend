@@ -27,10 +27,10 @@ export default function Veterinarians() {
     return (
         <div>
             <Card className="shadow-none rounded-lg !max-w-[700px] w-full">
-                <CardHeader className="pl-4">
+                <CardHeader>
                     <CardTitle className="flex items-center gap-2">{t('users.changeUserData')} {isLoading&&<Loader className="animate-spin size-4" />}</CardTitle>
                 </CardHeader>
-                <CardContent className="p-4 pt-0">
+                <CardContent>
                     <ProfileForm onSubmit={onSubmit} defaultValues={profile as any} loading={isLoading} />
                 </CardContent>
             </Card>

@@ -1,16 +1,16 @@
 'use client'
 
 import { useMemo } from 'react'
+import { Plus } from 'lucide-react'
 import type { AnimalType } from "@/shared/types"
 import { useCrud } from '@/shared/hooks/use-crud'
 import { useI18n } from '@/shared/hooks/use-i18n'
 import { Button } from '@/shared/components/ui/button'
 import { DataTable } from '@/shared/components/data-table'
+import { Drawer } from '@/shared/components/elements/drawer'
 import { createAnimalTypeColums } from '@/entities/animal-types'
 import { AnimalTypeSchema, AnimalTypeForm } from '@/features/animal-types'
-import { Dialog, DialogTitle, DialogContent, DialogHeader } from "@/shared/components/ui/dialog"
 import { animalTypesControllerFindAll, animalTypesControllerCreate, animalTypesControllerRemove, animalTypesControllerUpdate } from '@/shared/api'
-import { Plus } from 'lucide-react'
 
 export default function AnimalTypes() {
     const { t } = useI18n()
@@ -38,15 +38,11 @@ export default function AnimalTypes() {
                 </Button>}
             />
 
-            <Dialog open={dialog} onOpenChange={handleClose}>
-                <DialogContent className="bg-card overflow-auto max-h-screen md:max-h-[95vh] max-w-[500px]" aria-describedby={undefined}>
-                    <DialogHeader>
-                        <DialogTitle>{t(itemId?'animalTypes.editAnimalType':'animalTypes.createAnimalType')}</DialogTitle>
-                    </DialogHeader>
-
-                    <AnimalTypeForm onSubmit={onSubmit} defaultValues={itemId?items.find(i => i.id === itemId):undefined} />
-                </DialogContent>
-            </Dialog>
+            <Drawer open={dialog}
+                onClose={handleClose}
+                title={t(itemId?'animalTypes.editAnimalType':'animalTypes.createAnimalType')}>
+                <AnimalTypeForm onSubmit={onSubmit} defaultValues={itemId?items.find(i => i.id === itemId):undefined} />
+            </Drawer>
         </div>
     )
 }

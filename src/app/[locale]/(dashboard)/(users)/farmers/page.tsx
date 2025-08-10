@@ -1,5 +1,6 @@
 'use client'
 
+import { Plus } from "lucide-react"
 import type { User } from "@/shared/types"
 import { useI18n } from "@/shared/hooks/use-i18n"
 import { useCrud } from "@/shared/hooks/use-crud"
@@ -8,9 +9,9 @@ import { Button } from '@/shared/components/ui/button'
 import { UserForm, UserSchema } from "@/features/users"
 import { useAuthData } from "@/shared/hooks/use-auth-data"
 import { DataTable } from '@/shared/components/data-table'
+import { Drawer } from "@/shared/components/elements/drawer"
 import { createUserColums, UserFilters, userFilters } from "@/entities/users"
 import { useDistricts, useRegions, useVeterinarians } from "@/shared/hooks/queries"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/shared/components/ui/dialog"
 import { farmersControllerCreate, farmersControllerFindAll, farmersControllerRemove, usersControllerUpdate } from '@/shared/api'
 
 export default function Veterinarians() {
@@ -78,28 +79,29 @@ export default function Veterinarians() {
                 totalItems={totalItems}
                 columns={columns as any}
                 callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="mt-0! w-full sm:w-fit">{t('users.createFarmer')}</Button>}
+                topSlot={<Button onClick={() => setDialog(true)} size={'sm'} className="mt-0! w-full sm:w-fit">
+                    <Plus />
+                    {t('users.createFarmer')}
+                </Button>}
             />
 
-            <Dialog open={dialog} onOpenChange={handleClose}>
-                <DialogContent className="overflow-auto max-h-screen md:max-h-[95vh] max-w-[650px]" aria-describedby={undefined}>
-                    <DialogHeader>
-                        <DialogTitle>{t(itemId?'users.editFarmer':'users.createFarmer')}</DialogTitle>
-                    </DialogHeader>
-
-                    <UserForm
-                        itemId={itemId}
-                        regions={regions}
-                        onSubmit={onSubmit}
-                        regionId={regionId}
-                        setRegionId={setRegionId}
-                        veterinarians={veterinarians}
-                        districts={filteredDistricts() as any}
-                        showVeterinarians={userData?.userRole === 'ADMIN'}
-                        defaultValues={itemId?items.find(i => i.id === itemId):undefined as any}
-                    />
-                </DialogContent>
-            </Dialog>
+            <Drawer
+                open={dialog}
+                onClose={handleClose}
+                widthClassName="max-w-[600px]!"
+                title={t(itemId?'users.editFarmer':'users.createFarmer')}>
+                <UserForm
+                    itemId={itemId}
+                    regions={regions}
+                    onSubmit={onSubmit}
+                    regionId={regionId}
+                    setRegionId={setRegionId}
+                    veterinarians={veterinarians}
+                    districts={filteredDistricts() as any}
+                    showVeterinarians={userData?.userRole === 'ADMIN'}
+                    defaultValues={itemId?items.find(i => i.id === itemId):undefined as any}
+                />
+            </Drawer>
         </div>
     )
 }

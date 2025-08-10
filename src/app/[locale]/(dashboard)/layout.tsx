@@ -7,6 +7,7 @@ import { ToggleLocale } from '@/shared/components/toggle-locale'
 import { LogoutButton } from "@/shared/components/logout-button"
 import { AppSidebar } from '@/shared/components/nav-drawer-variant'
 import { SidebarProvider, SidebarTrigger } from "@/shared/components/ui/sidebar"
+import { AppBreadcrumb } from "@/shared/components/elements/app-breadcrumb"
 
 export default async function Page({children}: {children: ReactNode}) {
   const cookie = await cookies()
@@ -20,11 +21,12 @@ export default async function Page({children}: {children: ReactNode}) {
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center gap-2 w-fit">
             <SidebarTrigger />
-            <ModeToggle />
+            <AppBreadcrumb />
           </div>
           <div className="flex items-center gap-2">
             <div id="top-bar-teleport" className="flex items-center gap-2"></div>
             <LogoutButton />
+            <ModeToggle />
             <ToggleLocale />
           </div>
         </div>

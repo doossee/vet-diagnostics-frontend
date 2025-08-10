@@ -1,3 +1,5 @@
+import clsx from "clsx"
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { VaccineType } from "@/shared/types"
 import { useI18n } from "@/shared/hooks/use-i18n"
@@ -8,7 +10,6 @@ import { AnimalSelect } from "@/shared/components/animal-select"
 import { VaccineSchema, createVaccineSchema, vaccineValues } from './vaccine.model'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/shared/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/components/ui/select'
-import { useEffect } from "react"
 
 interface VaccineFormProps {
     vaccineTypes: VaccineType[]
@@ -31,7 +32,7 @@ export function VaccineForm({ onSubmit, defaultValues, vaccineTypes, hideAnimals
     }, [hideAnimals])
 
     return (<Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 h-full">
             <FormField
                 name="date"
                 control={form.control}
@@ -70,7 +71,8 @@ export function VaccineForm({ onSubmit, defaultValues, vaccineTypes, hideAnimals
                     </FormItem>
                 )}
             />
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="flex-1" />
+            <div className={clsx("grid gap-4", !!onSkip?'md:grid-cols-2':'')}>
                 {!!onSkip && <Button onClick={onSkip} type="button" variant={"secondary"}>{t("form.skip")}</Button>}
                 <Button disabled={form.formState.isSubmitting} type="submit">{t(form.formState.isSubmitting?"form.submiting":"form.submit")}</Button>
             </div>

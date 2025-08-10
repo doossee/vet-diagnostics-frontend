@@ -1,6 +1,7 @@
 import { BLOOD_SERUM_TESTS } from '@/shared/constants'
 import { Button } from '@/shared/components/ui/button'
 import { BloodSerumTest, BLOOD_SERUM } from '@/shared/types'
+import { Edit, Trash } from 'lucide-react'
 
 export const createBloodSerumTestColums = (handleEditItem: (item: BloodSerumTest) => void, handleDelete: (id: number) => void, t: any, locale: 'uz' | 'ru') => [
     ...Object.keys(BLOOD_SERUM_TESTS).map(key => ({
@@ -14,11 +15,13 @@ export const createBloodSerumTestColums = (handleEditItem: (item: BloodSerumTest
         return item.animal?.nameOrCode
     } },
     { title: t("table.actions"), key: 'actions', render(item: BloodSerumTest) {
-        return (<div className="flex gap-2 items-center">
-            <Button onClick={() => handleEditItem(item)} size='sm'>
+        return (<div className="flex gap-2 items-center flex-wrap md:flex-nowrap justify-end md:justify-start">
+            <Button onClick={() => handleEditItem(item)} size='sm' className='text-xs!'>
+                <Edit />
                 {t("table.edit")}
             </Button>
-            <Button onClick={() => handleDelete(item.id)} size='sm'>
+            <Button onClick={() => handleDelete(item.id)} size='sm' className='text-xs!' variant={'destructive'}>
+                <Trash />
                 {t("table.delete")}
             </Button>
         </div>)

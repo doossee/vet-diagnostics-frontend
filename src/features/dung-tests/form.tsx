@@ -26,7 +26,7 @@ export function DungTestForm({ onSubmit, defaultValues, diseases, dungColors }: 
     })
 
     return (<Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 h-full">
             <FormField
                 name="consistency"
                 control={form.control}
@@ -164,6 +164,7 @@ export function DungTestForm({ onSubmit, defaultValues, diseases, dungColors }: 
                     </FormItem>
                 )}
             />
+            <div className="flex-1" />
             <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">{t(form.formState.isSubmitting?"form.submiting":"form.submit")}</Button>
         </form>
     </Form>)

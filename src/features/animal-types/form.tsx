@@ -20,7 +20,7 @@ export function AnimalTypeForm ({ onSubmit, defaultValues }: AnimalTypeFormProps
     })    
 
     return (<Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 h-full">
             <FormField
                 name="name"
                 control={form.control}
@@ -34,6 +34,7 @@ export function AnimalTypeForm ({ onSubmit, defaultValues }: AnimalTypeFormProps
                     </FormItem>
                 )}
             />
+            <div className="flex-1" />
             <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">{form.formState.isSubmitting?t('form.submiting'):t('form.submit')}</Button>
         </form>
     </Form>)

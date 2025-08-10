@@ -1,14 +1,15 @@
 'use client'
 
 import { useMemo } from 'react'
+import { Plus } from 'lucide-react'
 import type { VaccineType } from "@/shared/types"
 import { useI18n } from "@/shared/hooks/use-i18n"
 import { useCrud } from '@/shared/hooks/use-crud'
 import { Button } from '@/shared/components/ui/button'
 import { DataTable } from '@/shared/components/data-table'
+import { Drawer } from '@/shared/components/elements/drawer'
 import { createVaccineTypeColums } from '@/entities/vaccine-types'
 import { VaccineTypeForm, VaccineTypeSchema } from "@/features/vaccine-types"
-import { Dialog, DialogTitle, DialogContent, DialogHeader } from "@/shared/components/ui/dialog"
 import { vaccineTypesControllerCreate, vaccineTypesControllerFindAll, vaccineTypesControllerRemove, vaccineTypesControllerUpdate } from '@/shared/api'
 
 export default function VaccineTypes() {
@@ -31,18 +32,18 @@ export default function VaccineTypes() {
                 items={items as any}
                 totalItems={totalItems}
                 callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="mt-0! w-full sm:w-fit">{t("management.vaccineTypeCreate")}</Button>}
+                topSlot={<Button onClick={() => setDialog(true)} size={'sm'} className="mt-0! w-full sm:w-fit">
+                    <Plus />
+                    {t("management.vaccineTypeCreate")}
+                </Button>}
             />
 
-            <Dialog open={dialog} onOpenChange={handleClose}>
-                <DialogContent className="overflow-auto max-h-screen md:max-h-[95vh] max-w-[500px]" aria-describedby={undefined}>
-                    <DialogHeader>
-                    <DialogTitle>{t(itemId?"management.editType":"management.createType")}</DialogTitle>
-                    </DialogHeader>
-                    
-                    <VaccineTypeForm onSubmit={onSubmit} defaultValues={itemId?items.find(i => i.id === itemId):undefined as any} />
-                </DialogContent>
-            </Dialog>
+            <Drawer
+                open={dialog}
+                onClose={handleClose}
+                title={t(itemId?"management.editType":"management.createType")}>
+                <VaccineTypeForm onSubmit={onSubmit} defaultValues={itemId?items.find(i => i.id === itemId):undefined as any} />
+            </Drawer>
         </div>
     )
 }

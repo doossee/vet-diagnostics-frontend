@@ -21,7 +21,7 @@ export function DungColorForm({ onSubmit, defaultValues }: DungColorFormProps) {
     })
 
     return (<Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 h-full">
             <FormField
                 name="name"
                 control={form.control}
@@ -35,6 +35,7 @@ export function DungColorForm({ onSubmit, defaultValues }: DungColorFormProps) {
                     </FormItem>
                 )}
             />
+            <div className="flex-1" />
             <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">{t(form.formState.isSubmitting?"form.submiting":"form.submit")}</Button>
         </form>
     </Form>)

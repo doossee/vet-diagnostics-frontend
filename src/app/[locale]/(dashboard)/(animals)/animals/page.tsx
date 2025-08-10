@@ -1,5 +1,6 @@
 'use client'
 
+import { Plus } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import type { Animal } from "@/shared/types"
 import { useRouter } from '@/shared/i18n/routing'
@@ -8,10 +9,10 @@ import { useCrud } from '@/shared/hooks/use-crud'
 import { Button } from '@/shared/components/ui/button'
 import { DataTable } from '@/shared/components/data-table'
 import { useAuthData } from '@/shared/hooks/use-auth-data'
+import { Drawer } from '@/shared/components/elements/drawer'
 import { AnimalForm, AnimalSchema } from '@/features/animals'
 import { AnimalFilters, animalFilters, createAnimalColums } from '@/entities/animals'
 import { useAnimalColors, useAnimalTypes, useBreeds, useFarmers } from '@/shared/hooks/queries'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/shared/components/ui/dialog"
 import { animalsControllerFindAll, animalsControllerCreate, animalsControllerRemove, animalsControllerUpdate } from '@/shared/api'
 
 export default function Animals() {
@@ -57,25 +58,26 @@ export default function Animals() {
                 totalItems={totalItems}
                 callback={handleGetItems}
                 onRowClick={(item: Animal) => router.push(`/animals/${item.id}`)}
-                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="mt-0! w-full sm:w-fit">{t('animals.createButton')}</Button>}
+                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="mt-0! w-full sm:w-fit">
+                    <Plus />
+                    {t('animals.createButton')}
+                </Button>}
             />
 
-            <Dialog open={dialog} onOpenChange={handleClose}>
-                <DialogContent className="bg-card overflow-auto max-h-screen md:max-h-[95vh] max-w-[650px]" aria-describedby={undefined}>
-                    <DialogHeader>
-                        <DialogTitle>{t(itemId? "animals.editAnimal":"animals.createAnimal")}</DialogTitle>
-                    </DialogHeader>
-                    
-                    <AnimalForm
-                        breeds={breeds}
-                        farmers={farmers}
-                        onSubmit={onSubmit}
-                        colors={animalColors}
-                        animalTypes={animalTypes}
-                        showFarmer={userData?.userRole !== 'FARMER'}
-                        defaultValues={itemId?items.find(i => i.id === itemId):undefined} />
-                </DialogContent>
-            </Dialog>
+            <Drawer
+                open={dialog}
+                onClose={handleClose}
+                widthClassName='max-w-[650px]!'
+                title={t(itemId? "animals.editAnimal":"animals.createAnimal")}>
+                <AnimalForm
+                    breeds={breeds}
+                    farmers={farmers}
+                    onSubmit={onSubmit}
+                    colors={animalColors}
+                    animalTypes={animalTypes}
+                    showFarmer={userData?.userRole !== 'FARMER'}
+                    defaultValues={itemId?items.find(i => i.id === itemId):undefined} />
+            </Drawer>
         </div>
     )
 }

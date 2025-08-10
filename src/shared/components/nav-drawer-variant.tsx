@@ -97,7 +97,7 @@ export function AppSidebar() {
                                 className="group/collapsible">
                                 <SidebarMenuItem>
                                     <CollapsibleTrigger asChild>
-                                        <SidebarMenuButton tooltip={item.title}>
+                                        <SidebarMenuButton tooltip={t(item.title)}>
                                             {item.icon && <item.icon className="size-[1.1rem]! mr-2" />}
                                             <span>{t(item.title)}</span>
                                             <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />

@@ -1,15 +1,16 @@
 'use client'
 
+import { Plus } from "lucide-react"
 import type { VetStation } from "@/shared/types"
 import { useI18n } from "@/shared/hooks/use-i18n"
 import { useCrud } from "@/shared/hooks/use-crud"
 import { useCallback, useMemo, useState } from 'react'
 import { Button } from '@/shared/components/ui/button'
 import { DataTable } from '@/shared/components/data-table'
+import { Drawer } from "@/shared/components/elements/drawer"
 import { createVetStationColums } from '@/entities/vetstations'
 import { useDistricts, useRegions } from "@/shared/hooks/queries"
 import { VetStationForm, VetStationSchema } from '@/features/vetstations'
-import { Dialog, DialogTitle, DialogContent, DialogHeader } from "@/shared/components/ui/dialog"
 import { vetStationsControllerFindAll, vetStationsControllerCreate, vetStationsControllerUpdate, vetStationsControllerRemove } from '@/shared/api'
 
 export default function VetStations() {
@@ -40,24 +41,24 @@ export default function VetStations() {
                 items={items as any}
                 totalItems={totalItems}
                 callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="mt-0! w-full sm:w-fit">{t("regions.createVetStation")}</Button>} 
+                topSlot={<Button onClick={() => setDialog(true)} size={'sm'} className="mt-0! w-full sm:w-fit">
+                    <Plus />
+                    {t("regions.createVetStation")}
+                </Button>} 
             />
 
-            <Dialog open={dialog} onOpenChange={handleClose}>
-                <DialogContent className="bg-card overflow-auto max-h-screen md:max-h-[95vh] max-w-[500px]" aria-describedby={undefined}>
-                    <DialogHeader>
-                        <DialogTitle>{t(itemId?"regions.editVetStation":"regions.createVetStation")}</DialogTitle>
-                    </DialogHeader>
-                    
-                    <VetStationForm
-                        regions={regions}
-                        regionId={regionId}
-                        setRegionId={setRegionId}
-                        districts={filteredDistricts()}
-                        onSubmit={onSubmit}
-                        defaultValues={itemId?items.find(i => i.id === itemId):undefined} />
-                </DialogContent>
-            </Dialog>
+            <Drawer
+                open={dialog}
+                onClose={handleClose}
+                title={t(itemId?"regions.editVetStation":"regions.createVetStation")}>
+                <VetStationForm
+                    regions={regions}
+                    regionId={regionId}
+                    setRegionId={setRegionId}
+                    districts={filteredDistricts()}
+                    onSubmit={onSubmit}
+                    defaultValues={itemId?items.find(i => i.id === itemId):undefined} />
+            </Drawer>
         </div>
     )
 }

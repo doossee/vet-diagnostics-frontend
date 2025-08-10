@@ -1,15 +1,16 @@
 'use client'
 
 import { useMemo } from 'react'
+import { Plus } from 'lucide-react'
 import { useSearchParams } from "next/navigation"
 import { useI18n } from "@/shared/hooks/use-i18n"
 import { useCrud } from '@/shared/hooks/use-crud'
 import { Button } from '@/shared/components/ui/button'
 import type { GeneralBloodTest } from "@/shared/types"
 import { DataTable } from '@/shared/components/data-table'
+import { Drawer } from '@/shared/components/elements/drawer'
 import { usePathname, useRouter } from "@/shared/i18n/routing"
 import { createGeneralBloodTestColums } from '@/entities/general-blood-tests'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/shared/components/ui/dialog"
 import { GeneralBloodTestForm, GeneralBloodTestSchema, generalBloodTestValues } from '@/features/general-blood-tests'
 import { generalBloodTestControllerCreate, generalBloodTestControllerFindAll, generalBloodTestControllerUpdate, generalBloodTestControllerRemove } from '@/shared/api'
 
@@ -41,20 +42,21 @@ export default function GeneralBloodTests() {
                 items={items as any}
                 totalItems={totalItems}
                 callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="mt-0! w-full sm:w-fit">{t("inspections.createBloodTest")}</Button>} />
+                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="mt-0! w-full sm:w-fit">
+                    <Plus />
+                    {t("inspections.createBloodTest")}
+                </Button>} />
 
-            <Dialog open={dialog} onOpenChange={handleClose}>
-                <DialogContent className="overflow-auto max-h-screen md:max-h-[95vh] !max-w-[650px] w-full" aria-describedby={undefined}>
-                    <DialogHeader>
-                        <DialogTitle>{t(itemId?"inspections.editBloodTest":"inspections.createBloodTest")}</DialogTitle>
-                    </DialogHeader>
-                    
-                    <GeneralBloodTestForm
-                        onSubmit={onSubmit}
-                        animalId={animalId}
-                        defaultValues={itemId?items.find(i => i.id === itemId):(animalId?generalBloodTestValues(animalId):undefined)} />
-                </DialogContent>
-            </Dialog>
+            <Drawer
+                open={dialog}
+                onClose={handleClose}
+                widthClassName='max-w-[650px]!'
+                title={t(itemId?"inspections.editBloodTest":"inspections.createBloodTest")}>
+                <GeneralBloodTestForm
+                    onSubmit={onSubmit}
+                    animalId={animalId}
+                    defaultValues={itemId?items.find(i => i.id === itemId):(animalId?generalBloodTestValues(animalId):undefined)} />
+            </Drawer>
         </div>
     )
 }

@@ -76,8 +76,8 @@ export function DataTable<T extends { id: any }>({ onRowClick, columns, items, t
   }, [columns])
 
   return (
-    <div className="grid gap-2">
-      <div className='flex flex-col sm:flex-row justify-between items-start gap-2'>
+    <div className="bg-transparent p-0 flex flex-col gap-2 w-full">
+      <div className='flex flex-col sm:flex-row justify-between items-end gap-2'>
         {!hideSearch && <Input className='sm:max-w-[200px] bg-card' onChange={e => handleSearch(e.target.value.trim())} placeholder={t('table.search')} />}
         {topSlot}
       </div>
@@ -124,8 +124,8 @@ export function DataTable<T extends { id: any }>({ onRowClick, columns, items, t
                     {
                       columns.map((col, i) =>
                         <div key={i} className="w-full p-2">  
-                          <div className="flex sm:items-center w-full gap-2 items-start justify-between">
-                            {!col.hideTitleInMobile && <b>{col.title}:</b>}
+                          <div className="flex w-full gap-2 items-start justify-between">
+                            {!col.hideTitleInMobile && <b className="text-sm">{col.title}:</b>}
                             {
                               col.render ?
                               col.render(item) :

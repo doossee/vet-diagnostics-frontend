@@ -1,3 +1,4 @@
+import { Edit, Trash } from 'lucide-react'
 import { GeneralInspection } from '@/shared/types'
 import { Button } from '@/shared/components/ui/button'
 import { OBESITY_TYPES, POSITIONS, BODY_TYPES, CUSTOMER_TYPES, BODY_STRUCTURES } from '@/shared/constants'
@@ -25,11 +26,13 @@ export const createGeneralInspectionColums = (handleEditItem: (item: GeneralInsp
         return item.animal.nameOrCode
     } },
     {  title: t("table.actions"), key: 'actions', render(item: GeneralInspection) {
-        return (<div className="flex gap-2 items-center">
-            <Button onClick={() => handleEditItem(item)} size='sm'>
+        return (<div className="flex gap-2 items-center flex-wrap md:flex-nowrap justify-end md:justify-start">
+            <Button onClick={() => handleEditItem(item)} size='sm' className='text-xs!'>
+                <Edit />
                 {t("table.edit")}
             </Button>
-            <Button onClick={() => handleDelete(item.id)} size='sm'>
+            <Button onClick={() => handleDelete(item.id)} size='sm' className='text-xs!' variant={'destructive'}>
+                <Trash />
                 {t("table.delete")}
             </Button>
         </div>)

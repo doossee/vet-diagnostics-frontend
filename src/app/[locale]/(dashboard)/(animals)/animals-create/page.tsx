@@ -57,7 +57,7 @@ export default function Animals() {
         setTab("vaccine")
         setOpenTabs(3)
     }
-
+    // TODO: stepper
     return (
         <div className='overflow-hidden'>
             <Tabs value={tab}>

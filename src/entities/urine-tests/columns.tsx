@@ -1,4 +1,5 @@
 import { UrineTest } from '@/shared/types'
+import { Edit, Trash } from 'lucide-react'
 import { Button } from '@/shared/components/ui/button'
 import { SMELL_TYPES, CLARITY_TYPES } from '@/shared/constants'
 
@@ -20,11 +21,13 @@ export const createUrineTestColums = (handleEditItem: (item: UrineTest) => void,
         return `${new Date(item.disease?.startTime!).toLocaleDateString()}-${new Date(item.disease?.endTime!).toLocaleDateString()}`
     } },
     { title: t("table.actions"), key: 'actions', render(item: UrineTest) {
-        return (<div className="flex gap-2 items-center">
-            <Button onClick={() => handleEditItem(item)} size='sm'>
+        return (<div className="flex gap-2 items-center flex-wrap md:flex-nowrap justify-end md:justify-start">
+            <Button onClick={() => handleEditItem(item)} size='sm' className='text-xs!'>
+                <Edit />
                 {t("table.edit")}
             </Button>
-            <Button onClick={() => handleDelete(item.id)} size='sm'>
+            <Button onClick={() => handleDelete(item.id)} size='sm' className='text-xs!' variant={'destructive'}>
+                <Trash />
                 {t("table.delete")}
             </Button>
         </div>)

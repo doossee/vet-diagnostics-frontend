@@ -24,7 +24,7 @@ export function BloodSerumTestForm({ onSubmit, defaultValues, animalId }: BloodS
     })
 
     return (<Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
             
             <AnimalSelect form={form} />
             

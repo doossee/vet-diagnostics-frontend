@@ -27,13 +27,13 @@ export function AppSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <div>
+                            <div className="flex items-center gap-2">
                                 <div className="bg-primary text-primary-foreground flex aspect-square size-8 items-center justify-center rounded">
                                     <SquareActivity className="size-5" />
                                 </div>
-                                <div className="flex flex-col gap-0.5 leading-none text-nowrap">
+                                <div className="pt-1 flex flex-col gap-0.5 leading-none text-nowrap">
                                     <span className="font-medium">VET-CRM</span>
-                                    <span className="">Платформа ветеринарии</span>
+                                    <span className="text-xs">Платформа ветеринарии</span>
                                 </div>
                             </div>
                         </SidebarMenuButton>

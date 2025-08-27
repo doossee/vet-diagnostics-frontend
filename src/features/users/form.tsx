@@ -114,7 +114,7 @@ export function UserForm({ onSubmit, setRegionId, regions, regionId, showVeterin
                         <FormItem className="flex flex-col gap-1 pt-1.5">
                             <FormLabel>{t('form.phone')}</FormLabel>
                             <FormControl>
-                                <Input placeholder="+998 00 000 00 00" {...field} />
+                                <Input maxLength={13} placeholder="+998 00 000 00 00" {...field} />
                             </FormControl>
                         </FormItem>
                     )}
@@ -154,7 +154,9 @@ export function UserForm({ onSubmit, setRegionId, regions, regionId, showVeterin
                         </FormItem>
                     )}
                 />
+                {/* <RegionSelect form={form} name="regionId" /> */}
                 <div className="grid gap-2 pt-1">
+
                     <FormLabel>{t('form.regionName')}</FormLabel>
                     <FormControl>
                         <Select value={String(regionId)} onValueChange={e => setRegionId(+e)}>
@@ -176,7 +178,7 @@ export function UserForm({ onSubmit, setRegionId, regions, regionId, showVeterin
                         <FormItem>
                             <FormLabel>{t('form.districtName')}</FormLabel>
                             <FormControl>
-                                <Select value={value ? String(value) : ""} onValueChange={e => onChange(+e)} {...others}>
+                                <Select disabled={districts.length === 0} value={value ? String(value) : ""} onValueChange={e => onChange(+e)} {...others}>
                                     <SelectTrigger>
                                         <SelectValue placeholder={t('form.districtName')} />
                                     </SelectTrigger>
@@ -196,9 +198,9 @@ export function UserForm({ onSubmit, setRegionId, regions, regionId, showVeterin
                     control={form.control}
                     render={({ field: { value, onChange, ...others } }) => (
                         <FormItem>
-                            <FormLabel>{t('form.veterinarian')}</FormLabel>
+                            <FormLabel>{t('form.veterinarian')} ({vets()?.length??0})</FormLabel>
                             <FormControl>
-                                <Select value={value ? String(value) : ""} onValueChange={e => onChange(+e)} {...others}>
+                                <Select disabled={vets()?.length === 0} value={value ? String(value) : ""} onValueChange={e => onChange(+e)} {...others}>
                                     <SelectTrigger>
                                         <SelectValue placeholder={t('form.veterinarian')} />
                                     </SelectTrigger>

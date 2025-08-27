@@ -4,17 +4,16 @@ import { useI18n } from "@/shared/hooks/use-i18n"
 import { Input } from '@/shared/components/ui/input'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from '@/shared/components/ui/button'
+import { BreedSelect } from './components/breed-select'
 import { BreedSchema, breedValues, createBreedSchema } from './breed'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/shared/components/ui/form'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/components/ui/select'
 
 interface BreedFormProps {
-    breeds: Breed[]
     defaultValues?: BreedSchema
     onSubmit: (values: BreedSchema) => void
 }
 
-export function BreedForm({ onSubmit, breeds, defaultValues }: BreedFormProps) {
+export function BreedForm({ onSubmit, defaultValues }: BreedFormProps) {
     const { t } = useI18n()
 
     const form = useForm<BreedSchema>({
@@ -38,28 +37,9 @@ export function BreedForm({ onSubmit, breeds, defaultValues }: BreedFormProps) {
                     </FormItem>
                 )}
             />
-            <FormField
-                name="parentId"
-                control={form.control}
-                render={({ field: { value, onChange, ...others } }) => (
-                    <FormItem>
-                        <FormLabel>{t('management.breedParent')}</FormLabel>
-                        <FormControl>
-                            <Select value={value ? String(value) : ""} onValueChange={e => onChange(+e)} {...others}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder={t('management.breedParent')} />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {
-                                        breeds.map((b, i) => <SelectItem key={i} value={String(b.id)}>{b.name}</SelectItem>)
-                                    }
-                                </SelectContent>
-                            </Select>
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )}
-            />
+
+            <BreedSelect name="parentId" form={form} />
+
             <div className="flex-1" />
             <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">{t(form.formState.isSubmitting?"form.submiting":"form.submit")}</Button>
         </form>

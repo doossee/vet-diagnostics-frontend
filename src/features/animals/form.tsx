@@ -1,3 +1,5 @@
+import clsx from "clsx"
+import { ReactNode } from "react"
 import { useForm } from "react-hook-form"
 import { useI18n } from "@/shared/hooks/use-i18n"
 import { ANIMAL_GENDERS } from '@/shared/constants'
@@ -17,10 +19,11 @@ interface AnimalFormProps {
     showFarmer: boolean
     animalTypes: AnimalType[]
     defaultValues?: AnimalSchema
+    submitRightContent?: ReactNode
     onSubmit: (values: AnimalSchema) => void
 }
 
-export function AnimalForm({ onSubmit, animalTypes, breeds, colors, defaultValues, farmers, showFarmer }: AnimalFormProps) {
+export function AnimalForm({ onSubmit, animalTypes, breeds, colors, defaultValues, farmers, showFarmer, submitRightContent }: AnimalFormProps) {
     const { t, locale } = useI18n()
 
     const form = useForm<AnimalSchema>({
@@ -199,8 +202,12 @@ export function AnimalForm({ onSubmit, animalTypes, breeds, colors, defaultValue
                     )}
                 />}
             </div>
-            <div className="flex-1" />
-            <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">{t(form.formState.isSubmitting ? "form.submiting" : "form.submit")}</Button>
+            <div className="flex-1 flex items-end w-full">
+                <div className={clsx("grid place-items-end gap-4 w-full", submitRightContent ? "grid-cols-2" : "")}>
+                    <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">{t(form.formState.isSubmitting ? "form.submiting" : "form.submit")}</Button>
+                    {submitRightContent}
+                </div>
+            </div>
         </form>
     </Form>)
 }

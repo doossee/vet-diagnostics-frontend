@@ -1,35 +1,30 @@
 'use client'
 
 import { useMemo } from 'react'
-import { Plus } from 'lucide-react'
-import { useSearchParams } from "next/navigation"
 import { useI18n } from "@/shared/hooks/use-i18n"
 import { useCrud } from '@/shared/hooks/use-crud'
-import { Button } from '@/shared/components/ui/button'
 import type { GeneralBloodTest } from "@/shared/types"
 import { DataTable } from '@/shared/components/data-table'
 import { Drawer } from '@/shared/components/elements/drawer'
-import { usePathname, useRouter } from "@/shared/i18n/routing"
+import { useSearchQueryParams } from '@/shared/hooks/use-query-params'
 import { createGeneralBloodTestColums } from '@/entities/general-blood-tests'
+import { useGetGeneralBloodTests } from '@/entities/general-blood-tests/services/queries'
 import { GeneralBloodTestForm, GeneralBloodTestSchema, generalBloodTestValues } from '@/features/general-blood-tests'
-import { generalBloodTestControllerCreate, generalBloodTestControllerFindAll, generalBloodTestControllerUpdate, generalBloodTestControllerRemove } from '@/shared/api'
+import { useCreateGeneralBloodTest, useDeleteGeneralBloodTest, useUpdateGeneralBloodTest } from '@/entities/general-blood-tests/services/mutations'
 
 export default function GeneralBloodTests() {
-    const router = useRouter()
-    const pathname = usePathname()
-    const query = useSearchParams()
     const { t, locale } = useI18n()
+    const { get, set, remove } = useSearchQueryParams()
 
-    const newAnimal = query.get('new')
-    const animalId = query.get('animalId') ? Number(query.get('animalId')) : null
+    const newAnimal = get('new')
+    const animalId = get('animalId', true)
 
-    const { dialog, itemId, items, loading, totalItems, handleClose, handleDelete, handleEditItem, handleGetItems, onSubmit, setDialog } = useCrud<GeneralBloodTest, GeneralBloodTestSchema, GeneralBloodTestSchema>({
+    const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<GeneralBloodTest, GeneralBloodTestSchema, GeneralBloodTestSchema>({
         dialogValue: !!newAnimal,
-        findAll: generalBloodTestControllerFindAll,
-        create: generalBloodTestControllerCreate as any,
-        update: generalBloodTestControllerUpdate,
-        remove: generalBloodTestControllerRemove,
-        extraOnClose: () => newAnimal && router.push(pathname + ( animalId ? '?animalId='+animalId : ''))
+        createMutation: useCreateGeneralBloodTest,
+        updateMutation: useUpdateGeneralBloodTest,
+        removeMutation: useDeleteGeneralBloodTest,
+        extraOnClose: () => newAnimal && (animalId ? set('animalId', animalId) : remove('animalId'))
     })
 
     const columns = useMemo(() => createGeneralBloodTestColums(handleEditItem, handleDelete, t, locale), [handleEditItem, handleDelete])
@@ -37,25 +32,19 @@ export default function GeneralBloodTests() {
     return (
         <div>
             <DataTable
-                loading={loading}
                 columns={columns}
-                items={items as any}
-                totalItems={totalItems}
-                callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="mt-0! w-full sm:w-fit">
-                    <Plus />
-                    {t("inspections.createBloodTest")}
-                </Button>} />
+                queryFunction={useGetGeneralBloodTests}
+                topSlot={createButton(t("inspections.createBloodTest"))} />
 
             <Drawer
                 open={dialog}
                 onClose={handleClose}
                 widthClassName='max-w-[650px]!'
-                title={t(itemId?"inspections.editBloodTest":"inspections.createBloodTest")}>
+                title={t(editedItem?"inspections.editBloodTest":"inspections.createBloodTest")}>
                 <GeneralBloodTestForm
                     onSubmit={onSubmit}
-                    animalId={animalId}
-                    defaultValues={itemId?items.find(i => i.id === itemId):(animalId?generalBloodTestValues(animalId):undefined)} />
+                    animalId={animalId as number}
+                    defaultValues={editedItem?editedItem:(animalId?generalBloodTestValues(animalId as number):undefined)} />
             </Drawer>
         </div>
     )

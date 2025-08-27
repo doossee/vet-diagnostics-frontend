@@ -1,25 +1,23 @@
 'use client'
 
 import { useMemo } from 'react'
-import { Plus } from 'lucide-react'
 import type { DungColor } from "@/shared/types"
 import { useCrud } from '@/shared/hooks/use-crud'
 import { useI18n } from "@/shared/hooks/use-i18n"
-import { Button } from '@/shared/components/ui/button'
 import { DataTable } from '@/shared/components/data-table'
 import { Drawer } from '@/shared/components/elements/drawer'
 import { createDungColorColums } from '@/entities/dung-colors'
 import { DungColorForm, DungColorSchema } from '@/features/dung-colors'
-import { dungColorsControllerCreate, dungColorsControllerFindAll, dungColorsControllerRemove, dungColorsControllerUpdate } from '@/shared/api'
+import { useGetDungColors } from '@/entities/dung-colors/services/queries'
+import { useCreateDungColor, useDeleteDungColor, useUpdateDungColor } from '@/entities/dung-colors/services/mutations'
 
 export default function DungColors() {
     const { t } = useI18n()
     
-    const { dialog, itemId, items, loading, totalItems, handleClose, handleDelete, handleEditItem, handleGetItems, onSubmit, setDialog } = useCrud<DungColor, DungColorSchema, DungColorSchema>({
-        findAll: dungColorsControllerFindAll,
-        create: dungColorsControllerCreate,
-        update: dungColorsControllerUpdate,
-        remove: dungColorsControllerRemove,
+    const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<DungColor, DungColorSchema, DungColorSchema>({
+        createMutation: useCreateDungColor,
+        updateMutation: useUpdateDungColor,
+        removeMutation: useDeleteDungColor,
     })
 
     const columns = useMemo(() => createDungColorColums(handleEditItem, handleDelete, t), [handleEditItem, handleDelete])
@@ -27,22 +25,16 @@ export default function DungColors() {
     return (
         <div>
             <DataTable
-                loading={loading}
                 columns={columns}
-                items={items as any}
-                totalItems={totalItems}
-                callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'sm'} className="mt-0! w-full sm:w-fit">
-                    <Plus />
-                    {t("management.dungColorCreate")}
-                </Button>}
+                queryFunction={useGetDungColors}
+                topSlot={createButton(t("management.dungColorCreate"))}
             />
 
             <Drawer
                 open={dialog}
                 onClose={handleClose}
-                title={t(itemId? "management.editColor" : 'management.createColor')}>
-                <DungColorForm onSubmit={onSubmit} defaultValues={itemId?items.find(i => i.id === itemId):undefined as any} />
+                title={t(editedItem? "management.editColor" : 'management.createColor')}>
+                <DungColorForm onSubmit={onSubmit} defaultValues={editedItem?editedItem:undefined as any} />
             </Drawer>
         </div>
     )

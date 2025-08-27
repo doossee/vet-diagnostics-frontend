@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useTranslations } from "next-intl"
 import { useRouter } from '@/shared/i18n/routing'
+import { routes } from '@/shared/constants/routes'
 import { useAuthData } from '@/shared/hooks/use-auth-data'
 import { PawPrint, HeartPulse, Syringe } from 'lucide-react'
 import { AnimalForm, AnimalSchema } from '@/features/animals'
@@ -33,14 +34,17 @@ export default function Animals() {
     
     async function onSubmit(values: VaccineSchema | null = null) {
         try {
-            const { id } = await animalsControllerCreate(newAnimal as any)
+            const { id } = await animalsControllerCreate({
+                ...newAnimal,
+                ...(userData?.userRole === 'FARMER' ? { farmerId: userData?.userId } : {})
+            } as any)
             
             await generalInspectionControllerCreate({...newInspection, animalId: id} as any)
             if(values) {
                 await vaccinesControllerCreate({...values, animalId: id} as any)
             }
 
-            router.push('/animal/'+id)
+            router.push(routes.ANIMALS.ID(id))
         } catch (error) {
             console.log(error)            
         }
@@ -57,7 +61,7 @@ export default function Animals() {
         setTab("vaccine")
         setOpenTabs(3)
     }
-    // TODO: stepper
+
     return (
         <div className='overflow-hidden'>
             <Tabs value={tab}>
@@ -90,6 +94,7 @@ export default function Animals() {
                                 onSubmit={submitAnimal}
                                 animalTypes={animalTypes}
                                 showFarmer={userData?.userRole !== 'FARMER'}
+                                submitRightContent={<span />}
                             />
                         </CardContent>
                     </Card>

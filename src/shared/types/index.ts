@@ -1,5 +1,32 @@
 import { BLOOD_SERUM_TESTS, GENERAL_BLOOD_TESTS } from "../constants"
 
+export interface MetaDateEntity {
+  currentPage: number;
+  lastPage: number;
+  next: number;
+  perPage: number;
+  prev: number;
+  total: number;
+}
+
+export interface PaginatedEntity<T> {
+  data: T[];
+  meta: MetaDateEntity;
+}
+
+export interface UpdateBody<T> {
+  id: number | string
+  body: T
+}
+
+export type QueryParams = {
+  page?: number
+  perPage?: number
+  search?: string
+  id?: number | string
+  enabled?: boolean
+}
+
 export type BLOOD_SERUM = keyof typeof BLOOD_SERUM_TESTS
 
 export type GENERAL_BLOOD = keyof typeof GENERAL_BLOOD_TESTS

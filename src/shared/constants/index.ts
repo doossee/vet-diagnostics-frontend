@@ -21,7 +21,21 @@ import {
   FolderCog,
   Disc,
   UserCog,
+  Sun,
+  Moon,
+  Laptop,
 } from "lucide-react";
+
+export const THEMES = [
+  { name: "light", icon: Sun },
+  { name: "dark", icon: Moon },
+  { name: "system", icon: Laptop },
+]
+
+export const LOCALES = [
+  { name: "O'zbek", locale: 'uz' },
+  { name: 'Русский', locale: 'ru' },
+]
 
 export const GENDERS = [
   { uz: "Erkak", ru: "Мужской", value: "MALE" },

@@ -1,6 +1,6 @@
+import clsx from "clsx"
 import { ReactNode } from "react"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/shared/components/ui/sheet"
-import clsx from "clsx"
 
 interface Props {
   title?: string

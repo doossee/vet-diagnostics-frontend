@@ -4,16 +4,17 @@ import { cn } from "@/shared/lib/utils"
 import { CalendarIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { Button } from "@/shared/components/ui/button"
-import { CalendarComponent } from "@/shared/components/ui/calendar"
+import { Calendar } from "@/shared/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/components/ui/popover"
 
 interface DatePickerProps {
     field: any
     errors?: any
     buttonClass?: string
+    disabledToToday?: boolean
 }
 
-export function DatePicker({field, buttonClass}: DatePickerProps) {
+export function DatePicker({field, buttonClass, disabledToToday}: DatePickerProps) {
     const t = useTranslations()
 
     return (<Popover>
@@ -27,12 +28,13 @@ export function DatePicker({field, buttonClass}: DatePickerProps) {
             {/* </FormControl> */}
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0 z-1000 pointer-events-auto" align="start">
-            <CalendarComponent
+            <Calendar
                 mode="single"
                 initialFocus
+                captionLayout="dropdown"
                 selected={field.value}
                 onSelect={field.onChange}
-                disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
+                disabled={disabledToToday ? (date) => date > new Date() || date < new Date("1900-01-01") : false}
             />
         </PopoverContent>
     </Popover>)

@@ -1,0 +1,33 @@
+export const routes = {
+  ANIMALS: {
+    INDEX: "/animals",
+    ID: (id: number | string) => `/animals/${id}`,
+  },
+  ANIMALS_CREATE: "/animals-create",
+  ANIMAL_TYPES: "/animal-types",
+  ANIMAL_COLORS: "/animal-colors",
+  AUTH: {
+    LOGIN: "/login"
+  },
+  BREEDS: "/breeds",
+  DISEASE_TYPES: "/disease-types",
+  DUNG_COLORS: "/dung-colors",
+  EYE_LID: "/eye-lids",
+  LEATHER_COVER: "/leather-cover",
+  URINE_COLORS: "/urine-colors",
+  VACCINE_TYPES: "/vaccine-types",
+  DISTRICTS: "/districts",
+  REGIONS: "/regions",
+  VETSTATIONS: "/vetstations",
+  FARMERS: "/farmers",
+  PROFILE: "/profile",
+  VETERINARIANS: "/veterinarians",
+  BLOOD_SERUM_TEST: "/blood-serum-tests",
+  DISEASES: "/diseases",
+  DUNG_TESTS: "/dung-tests",
+  GENERAL_BLOOD_TESTS: "/general-blood-tests",
+  GENERAL_INSPECTIONS: "/general-inspections",
+  INSPECTIONS: "/inspections",
+  URINE_TESTS: "/urine-tests",
+  VACCINES: "/vaccines",
+}

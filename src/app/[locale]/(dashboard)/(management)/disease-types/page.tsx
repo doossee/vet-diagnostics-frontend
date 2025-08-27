@@ -1,25 +1,23 @@
 'use client'
 
 import { useMemo } from 'react'
-import { Plus } from 'lucide-react'
 import type { DiseaseType } from "@/shared/types"
 import { useCrud } from '@/shared/hooks/use-crud'
 import { useI18n } from "@/shared/hooks/use-i18n"
-import { Button } from '@/shared/components/ui/button'
 import { DataTable } from '@/shared/components/data-table'
 import { Drawer } from '@/shared/components/elements/drawer'
 import { createDiseaseTypeColums } from '@/entities/disease-types'
 import { DiseaseTypeForm, DiseaseTypeSchema } from '@/features/disease-types'
-import { diseaseTypesControllerCreate, diseaseTypesControllerFindAll, diseaseTypesControllerRemove, diseaseTypesControllerUpdate } from '@/shared/api'
+import { useGetDiseaseTypes } from '@/entities/disease-types/services/queries'
+import { useCreateDiseaseType, useDeleteDiseaseType, useUpdateDiseaseType } from '@/entities/disease-types/services/mutations'
 
 export default function DiseaseTypes() {
     const { t } = useI18n()
     
-    const { dialog, itemId, items, loading, totalItems, handleClose, handleDelete, handleEditItem, handleGetItems, onSubmit, setDialog } = useCrud<DiseaseType, DiseaseTypeSchema, DiseaseTypeSchema>({
-        findAll: diseaseTypesControllerFindAll,
-        create: diseaseTypesControllerCreate,
-        update: diseaseTypesControllerUpdate,
-        remove: diseaseTypesControllerRemove,
+    const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<DiseaseType, DiseaseTypeSchema, DiseaseTypeSchema>({
+        createMutation: useCreateDiseaseType,
+        updateMutation: useUpdateDiseaseType,
+        removeMutation: useDeleteDiseaseType,
     })
 
     const columns = useMemo(() => createDiseaseTypeColums(handleEditItem, handleDelete, t), [handleEditItem, handleDelete])
@@ -27,22 +25,16 @@ export default function DiseaseTypes() {
     return (
         <div>
             <DataTable
-                loading={loading}
                 columns={columns}
-                items={items as any}
-                totalItems={totalItems}
-                callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'sm'} className="mt-0! w-full sm:w-fit">
-                    <Plus />
-                    {t("management.diseaseTypeCreate")}
-                </Button>}
+                queryFunction={useGetDiseaseTypes}
+                topSlot={createButton(t("management.diseaseTypeCreate"))}
             />
 
             <Drawer
                 open={dialog}
                 onClose={handleClose}
-                title={t(itemId?"management.editType":"management.createType")}>
-                <DiseaseTypeForm onSubmit={onSubmit} defaultValues={itemId?items.find(i => i.id === itemId):undefined as any} />
+                title={t(editedItem?"management.editType":"management.createType")}>
+                <DiseaseTypeForm onSubmit={onSubmit} defaultValues={editedItem?editedItem:undefined as any} />
             </Drawer>
         </div>
     )

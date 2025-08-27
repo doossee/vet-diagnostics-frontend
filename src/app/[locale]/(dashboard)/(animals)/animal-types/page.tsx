@@ -1,25 +1,31 @@
 'use client'
 
 import { useMemo } from 'react'
-import { Plus } from 'lucide-react'
 import type { AnimalType } from "@/shared/types"
 import { useCrud } from '@/shared/hooks/use-crud'
 import { useI18n } from '@/shared/hooks/use-i18n'
-import { Button } from '@/shared/components/ui/button'
 import { DataTable } from '@/shared/components/data-table'
 import { Drawer } from '@/shared/components/elements/drawer'
 import { createAnimalTypeColums } from '@/entities/animal-types'
 import { AnimalTypeSchema, AnimalTypeForm } from '@/features/animal-types'
-import { animalTypesControllerFindAll, animalTypesControllerCreate, animalTypesControllerRemove, animalTypesControllerUpdate } from '@/shared/api'
+import { useGetAnimalTypes } from '@/entities/animal-types/services/animal-type-queries'
+import { useCreateAnimalType, useDeleteAnimalType, useUpdateAnimalType } from '@/entities/animal-types/services/animal-type-mutations'
 
 export default function AnimalTypes() {
     const { t } = useI18n()
 
-    const { dialog, itemId, items, loading, totalItems, handleClose, handleDelete, handleEditItem, handleGetItems, onSubmit, setDialog } = useCrud<AnimalType, AnimalTypeSchema, AnimalTypeSchema>({
-        findAll: animalTypesControllerFindAll,
-        create: animalTypesControllerCreate,
-        update: animalTypesControllerUpdate,
-        remove: animalTypesControllerRemove,
+    const {
+        dialog,
+        editedItem,
+        onSubmit,
+        handleClose,
+        handleDelete,
+        createButton,
+        handleEditItem
+    } = useCrud<AnimalType,AnimalTypeSchema, AnimalTypeSchema>({
+        createMutation: useCreateAnimalType,
+        updateMutation: useUpdateAnimalType,
+        removeMutation: useDeleteAnimalType,
     })
 
     const columns = useMemo(() => createAnimalTypeColums(handleEditItem, handleDelete, t), [handleEditItem, handleDelete])
@@ -27,21 +33,17 @@ export default function AnimalTypes() {
     return (
         <div>
             <DataTable
-                loading={loading}
                 columns={columns}
-                items={items as any}
-                totalItems={totalItems}
-                callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'sm'} className="mt-0! w-full sm:w-fit">
-                    <Plus />
-                    {t('animalTypes.createButton')}
-                </Button>}
-            />
+                queryFunction={useGetAnimalTypes}
+                topSlot={createButton(t('animalTypes.createButton'))} />
 
-            <Drawer open={dialog}
+            <Drawer
+                open={dialog}
                 onClose={handleClose}
-                title={t(itemId?'animalTypes.editAnimalType':'animalTypes.createAnimalType')}>
-                <AnimalTypeForm onSubmit={onSubmit} defaultValues={itemId?items.find(i => i.id === itemId):undefined} />
+                title={t(editedItem?'animalTypes.editAnimalType':'animalTypes.createAnimalType')}>
+                <AnimalTypeForm
+                    onSubmit={onSubmit}
+                    defaultValues={editedItem !== null ? editedItem : undefined} />
             </Drawer>
         </div>
     )

@@ -1,18 +1,17 @@
 'use client'
 
-import { Plus } from "lucide-react"
 import type { User } from "@/shared/types"
 import { useI18n } from "@/shared/hooks/use-i18n"
 import { useCrud } from "@/shared/hooks/use-crud"
-import { Button } from '@/shared/components/ui/button'
 import { useCallback, useMemo, useState } from 'react'
 import { UserForm, UserSchema } from '@/features/users'
 import { DataTable } from '@/shared/components/data-table'
 import { Drawer } from "@/shared/components/elements/drawer"
 import { useDistricts, useRegions } from "@/shared/hooks/queries"
 import { createUserColums, UserFilters, userFilters } from '@/entities/users'
-import { veterinariansControllerFindAll, veterinariansControllerCreate, veterinariansControllerRemove, usersControllerUpdate } from '@/shared/api'
-
+import { useGetVeterinarians } from "@/entities/users/services/queries"
+import { useUpdateVeterinarian, useCreateVeterinarian, useDeleteVeterinarian } from "@/entities/users/services/mutations"
+// TODO: fix
 export default function Veterinarians() {
     const { t, locale } = useI18n()
     const [filters, setFilters] = useState(userFilters)
@@ -21,19 +20,12 @@ export default function Veterinarians() {
     const { regions } = useRegions()
     const { districts } = useDistricts()
 
-    const { dialog, itemId, items, loading, totalItems, handleClose, handleDelete, handleEditItem, handleGetItems, onSubmit, setDialog } = useCrud<User, UserSchema, UserSchema>({
-        findAll: veterinariansControllerFindAll,
-        create: veterinariansControllerCreate as any,
-        update: usersControllerUpdate,
-        remove: veterinariansControllerRemove,
-        extraOnGet: (data) => {
-            return data.map(({ user }: any) => user)
-        },
+    const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<User, UserSchema, UserSchema>({
+        createMutation: useCreateVeterinarian,
+        updateMutation: useUpdateVeterinarian,
+        removeMutation: useDeleteVeterinarian,
         extraOnEdit: (item: any) => handleSetRegionId(item.districtId),
         extraOnCreate: ({veterinarianId, ...values}) => ({...values, role: 'VETERINARIAN'}),
-        extraOnAfterCreate: ({user}) => {
-            return user
-        },
         extraOnUpdate: (values) => {
             const { password, veterinarianId, ...others } = values
             if(password?.trim()) Object.assign(others, {password})
@@ -65,31 +57,24 @@ export default function Veterinarians() {
             />
 
             <DataTable
-                loading={loading}
-                filters={filters}
-                items={items as any}
-                totalItems={totalItems}
-                columns={columns as any}
-                callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'sm'} className="mt-0! w-full sm:w-fit">
-                    <Plus />
-                    {t('users.createVeterinarian')}
-                </Button>}
+                columns={columns}
+                queryFunction={useGetVeterinarians}
+                topSlot={createButton(t('users.createVeterinarian'))}
             />
 
             <Drawer
                 open={dialog}
                 onClose={handleClose}
                 widthClassName="max-w-[650px]!"
-                title={t(itemId?'users.editVeterinarian':'users.createVeterinarian')}>
+                title={t(editedItem?'users.editVeterinarian':'users.createVeterinarian')}>
                 <UserForm
-                    itemId={itemId}
+                    itemId={editedItem?.id}
                     regions={regions}
                     onSubmit={onSubmit}
                     regionId={regionId}
                     setRegionId={setRegionId}
                     districts={filteredDistricts()}
-                    defaultValues={itemId?items.find(i => i.id === itemId):undefined as any}
+                    defaultValues={editedItem?editedItem:undefined as any}
                 />
             </Drawer>
         </div>

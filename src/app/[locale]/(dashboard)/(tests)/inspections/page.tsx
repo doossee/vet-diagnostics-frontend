@@ -1,25 +1,23 @@
 'use client'
 
 import { useMemo } from 'react'
-import { Plus } from 'lucide-react'
 import type { Inspection } from "@/shared/types"
 import { useI18n } from "@/shared/hooks/use-i18n"
 import { useCrud } from "@/shared/hooks/use-crud"
-import { Button } from '@/shared/components/ui/button'
 import { DataTable } from '@/shared/components/data-table'
 import { Drawer } from '@/shared/components/elements/drawer'
 import { createInspectionColums } from "@/entities/inspections"
 import { InspectionForm, InspectionSchema } from '@/features/inspections'
-import { inspectionsControllerFindAll, inspectionsControllerCreate, inspectionsControllerRemove, inspectionsControllerUpdate } from '@/shared/api'
+import { useGetInspections } from '@/entities/inspections/services/queries'
+import { useCreateInspection, useDeleteInspection, useUpdateInspection } from '@/entities/inspections/services/mutations'
 
 export default function Inspections() {
     const { t, locale } = useI18n()
 
-    const { dialog, itemId, items, loading, totalItems, handleClose, handleDelete, handleEditItem, handleGetItems, onSubmit, setDialog } = useCrud<Inspection, InspectionSchema, InspectionSchema>({
-        findAll: inspectionsControllerFindAll,
-        create: inspectionsControllerCreate as any,
-        update: inspectionsControllerUpdate,
-        remove: inspectionsControllerRemove,
+    const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<Inspection, InspectionSchema, InspectionSchema>({
+        createMutation: useCreateInspection,
+        updateMutation: useUpdateInspection,
+        removeMutation: useDeleteInspection,
     })
 
     const columns = useMemo(() => createInspectionColums(handleEditItem, handleDelete, t, locale), [handleEditItem, handleDelete])   
@@ -27,24 +25,18 @@ export default function Inspections() {
     return (
         <div>
             <DataTable
-                loading={loading}
                 columns={columns}
-                items={items as any}
-                totalItems={totalItems}
-                callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="mt-0! w-full sm:w-fit">
-                    <Plus />
-                    {t("inspections.createInspection")}
-                </Button>} />
+                queryFunction={useGetInspections}
+                topSlot={createButton(t("inspections.createInspection"))} />
 
             <Drawer
                 open={dialog}
                 onClose={handleClose}
-                title={t(itemId?"inspections.editInspection":"inspections.createInspection")}>
+                title={t(editedItem?"inspections.editInspection":"inspections.createInspection")}>
                 <InspectionForm
                     type="MORNING"
                     onSubmit={onSubmit}
-                    defaultValues={itemId?items.find(i => i.id === itemId):undefined as any} />
+                    defaultValues={editedItem?editedItem:undefined as any} />
             </Drawer>
         </div>
     )

@@ -3,32 +3,29 @@
 import { useMemo } from 'react'
 import { Plus } from 'lucide-react'
 import { useI18n } from '@/shared/hooks/use-i18n'
-import { useSearchParams } from "next/navigation"
 import { useCrud } from '@/shared/hooks/use-crud'
 import type { BloodSerumTest } from "@/shared/types"
 import { Button } from '@/shared/components/ui/button'
 import { DataTable } from '@/shared/components/data-table'
 import { Drawer } from '@/shared/components/elements/drawer'
-import { useRouter, usePathname } from "@/shared/i18n/routing"
+import { useSearchQueryParams } from '@/shared/hooks/use-query-params'
 import { createBloodSerumTestColums } from '@/entities/blood-serum-tests'
 import { BloodSerumTestForm, BloodSerumTestSchema } from '@/features/blood-serum-tests'
-import { bloodSerumTestsControllerCreate, bloodSerumTestsControllerFindAll, bloodSerumTestsControllerRemove, bloodSerumTestsControllerUpdate } from '@/shared/api'
+import { useGetBloodSerumTests } from '@/entities/blood-serum-tests/services/queries'
+import { useCreateBloodSerumTest, useDeleteBloodSerumTest, useUpdateBloodSerumTest } from '@/entities/blood-serum-tests/services/mutations'
 
 export default function BloodSerumTests() {
-    const router = useRouter()
-    const pathname = usePathname()
     const { t, locale } = useI18n()
-    const query = useSearchParams()
-    const newAnimal = query.get('new')
-    const animalId = query.get('animalId') ? Number(query.get('animalId')) : null
+    const { get, set, remove } = useSearchQueryParams()
+    const newAnimal = get('new')
+    const animalId = get('animalId', true)
 
-    const { dialog, itemId, items, loading, totalItems, handleClose, handleDelete, handleEditItem, handleGetItems, onSubmit, setDialog } = useCrud<BloodSerumTest, BloodSerumTestSchema, BloodSerumTestSchema>({
+    const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<BloodSerumTest, BloodSerumTestSchema, BloodSerumTestSchema>({
         dialogValue: !!newAnimal,
-        findAll: bloodSerumTestsControllerFindAll,
-        create: bloodSerumTestsControllerCreate as any,
-        update: bloodSerumTestsControllerUpdate,
-        remove: bloodSerumTestsControllerRemove,
-        extraOnClose: () => newAnimal && router.push(pathname + ( animalId ? '?animalId='+animalId : ''))
+        createMutation: useCreateBloodSerumTest,
+        updateMutation: useUpdateBloodSerumTest,
+        removeMutation: useDeleteBloodSerumTest,
+        extraOnClose: () => newAnimal && (animalId ? set('animalId', animalId) : remove('animalId')),
     })
 
     const columns = useMemo(() => createBloodSerumTestColums(handleEditItem, handleDelete, t, locale), [handleEditItem, handleDelete])
@@ -36,26 +33,20 @@ export default function BloodSerumTests() {
     return (
         <div>
             <DataTable
-                loading={loading}
                 columns={columns}
-                items={items as any}
-                totalItems={totalItems}
-                callback={handleGetItems}
-                topSlot={<Button onClick={() => setDialog(true)} size={'default'} className="mt-0! w-full sm:w-fit">
-                    <Plus />
-                    {t('inspections.createBloodSerumTest')}
-                </Button>}
+                queryFunction={useGetBloodSerumTests}
+                topSlot={createButton(t('inspections.createBloodSerumTest'))}
             />
 
             <Drawer
                 open={dialog}
                 onClose={handleClose}
                 widthClassName='max-w-[600px]!'
-                title={t(itemId?"inspections.editBloodSerumTest":"inspections.createBloodSerumTest")}>
+                title={t(editedItem?"inspections.editBloodSerumTest":"inspections.createBloodSerumTest")}>
                 <BloodSerumTestForm
-                    animalId={animalId}
                     onSubmit={onSubmit}
-                    defaultValues={itemId?items.find(i => i.id === itemId):undefined}
+                    animalId={animalId as number}
+                    defaultValues={editedItem?editedItem:undefined}
                 />
             </Drawer>
         </div>

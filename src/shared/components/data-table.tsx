@@ -4,56 +4,54 @@ import debounce from "lodash/debounce"
 import { cn } from "@/shared/lib/utils"
 import { createPortal } from "react-dom"
 import { useTranslations } from 'next-intl'
+import { PaginatedEntity } from "@/shared/types"
 import { Input } from '@/shared/components/ui/input'
 import { Button } from '@/shared/components/ui/button'
+import { UseQueryResult } from "@tanstack/react-query"
 import { useIsMobile } from '@/shared/hooks/use-mobile'
 import { useIsClient } from "@/shared/hooks/use-client"
-import { ReactNode, useCallback, useEffect, useState } from "react"
+import { ReactNode, useCallback, useMemo, useState } from "react"
+import { Card, CardContent } from "@/shared/components/ui/card"
 import { ArrowLeft, ArrowRight, MoveUp, MoveDown, ListFilter } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardFooter } from "@/shared/components/ui/card"
 import { Popover, PopoverTrigger, PopoverContent } from '@/shared/components/ui/popover'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/components/ui/table'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select"
+import { Spinner } from "./elements/spinner"
 
 interface DataTableColumn<T> {
-  key: string | keyof T
   title: string
   hide?: boolean
   sorting?: string
+  key: string | keyof T
   hideTitleInMobile?: boolean
   render?: (item: T) => ReactNode
 }
 
 interface DataTableProps<T> {
-  items: T[]
-  callback: any
   filters?: any,
-  loading?: boolean
-  totalItems: number
+  onRowClick?: any
   hideBottom?: boolean
   hideSearch?: boolean
   topSlot?: React.ReactNode
+  disablePagination?: boolean
   columns: DataTableColumn<T>[]
-  onRowClick?: any
+  queryFunction: (params: Record<string, unknown>, enabled?: boolean) => UseQueryResult<PaginatedEntity<T>, Error>
 }
 
-export function DataTable<T extends { id: any }>({ onRowClick, columns, items, totalItems, loading, topSlot, callback, hideBottom, filters, hideSearch }: DataTableProps<T>) {
+export function DataTable<T extends { id: any }>({ onRowClick, columns, topSlot, hideBottom, filters, hideSearch, disablePagination, queryFunction }: DataTableProps<T>) {
   const t = useTranslations()
   const isMobile = useIsMobile()
   const isClient = useIsClient()
 
-  const [page, setPage] = useState(1)
-  const [search, setSearch] = useState("")
-  const [perPage, setPerPage] = useState(20)
   const [sorting, setSorting] = useState<{ [k: string]: 'asc' | 'desc' }>({})
+  const [initialParams, setInitialParams] = useState({
+    page: 1,
+    search: "",
+    perPage: 20,
+  })
 
-  const handleFetch = () => {
-    const params = { page, perPage, ...sorting }
-    filters && Object.keys(filters).map(key => {
-      if (filters[key]) Object.assign(params, { [key]: filters[key] })
-    })
-    search && Object.assign(params, { search })
-    callback(params)
+  const handleSetInitials = (key: keyof typeof initialParams, value: string | number) => {
+    setInitialParams(p => ({ ...p, [key]: value }))
   }
 
   const handleSetSorting = (sort: string) => {
@@ -65,20 +63,51 @@ export function DataTable<T extends { id: any }>({ onRowClick, columns, items, t
     }
   }
 
-  const handleSearch = useCallback(debounce((text: string) => setSearch(text), 500), [])
-
-  useEffect(() => {
-    handleFetch()
-  }, [page, perPage, search, sorting, filters])
+  const handleSearch = useCallback(debounce((text: string) => handleSetInitials('search', text), 500), [])
 
   const hasSorting = useCallback(() => {
     return columns.some(c => c.sorting)
   }, [columns])
 
+  const queryParams = useCallback(() => {
+    return {
+      ...sorting,
+
+      page: initialParams.page,
+      perPage: initialParams.perPage,
+      
+      ...(initialParams.search?.trim() && { search: initialParams.search }),
+
+      ...Object.fromEntries(Object.entries(filters ?? {}).filter(([_, value]) => Boolean(value)))
+    }
+  }, [initialParams, sorting, filters])
+
+  const { isLoading, data } = queryFunction(queryParams())
+
+  const items = useCallback(() => {
+    return isLoading ? [] : (data?.data) ?? []
+  }, [data, isLoading])
+
+  const totalItems = useCallback(() => {
+    return isLoading ? 0 : data?.meta?.total ?? 0
+  }, [data, isLoading])
+
+  const disableButtons = useCallback(() => {
+    return {
+      prev: initialParams.page === 1 || disablePagination,
+      next: initialParams.page === Math.ceil((data?.meta?.total ?? 0) / initialParams.perPage) || (data?.meta?.total??0) == 0 || disablePagination,
+    }
+  }, [initialParams, data, isLoading])
+
+  const pageContent = useMemo(() => {
+    return `${initialParams.page}/${Math.ceil(totalItems() / initialParams.perPage)}`
+  }, [initialParams, data, isLoading])
+
+
   return (
     <div className="bg-transparent p-0 flex flex-col gap-2 w-full">
       <div className='flex flex-col sm:flex-row justify-between items-end gap-2'>
-        {!hideSearch && <Input className='sm:max-w-[200px] bg-card' onChange={e => handleSearch(e.target.value.trim())} placeholder={t('table.search')} />}
+        {hideSearch ? <span /> : <Input className='sm:max-w-[200px] bg-card' onChange={e => handleSearch(e.target.value.trim())} placeholder={t('table.search')} />}
         {topSlot}
       </div>
       {
@@ -112,13 +141,18 @@ export function DataTable<T extends { id: any }>({ onRowClick, columns, items, t
         <div className="overflow-y-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {
-              loading && <div className="text-center text-gray-300 col-span-1 sm:col-span-2">{t('table.loading')}...</div>
+              isLoading && <div className="text-center text-gray-300 col-span-1 sm:col-span-2 flex justify-center">
+                <div className="flex items-center justify-center gap-2">
+                  <Spinner />
+                  {t('table.loading')}...
+                </div>
+              </div>
             }
             {
-              (items.length == 0 && !loading) && <div className="text-center text-gray-300 col-span-1 sm:col-span-2">{t('table.none')}</div>
+              (items().length == 0 && !isLoading) && <div className="text-center text-gray-300 col-span-1 sm:col-span-2">{t('table.none')}</div>
             }
             {
-              items.map((item, i) =>
+              items().map((item, i) =>
                 <Card key={i} className={cn("shadow-none rounded p-0 bg-card border", !!onRowClick ? "cursor-pointer hover:bg-card" : "")} onClick={() => !!onRowClick && onRowClick(item, i)}>
                   <CardContent className="p-2 py-1 divide-y">
                     {
@@ -164,17 +198,24 @@ export function DataTable<T extends { id: any }>({ onRowClick, columns, items, t
                 </TableHeader>
                 <TableBody>
                   {
-                    loading && <TableRow>
-                      <TableCell colSpan={columns.length} className="text-center text-gray-300">{t('table.loading')}...</TableCell>
+                    isLoading && <TableRow>
+                      <TableCell colSpan={columns.length} className="text-center text-gray-300">
+                        <div className="w-full flex justify-center">
+                          <div className="flex items-center justify-center gap-2">
+                            <Spinner />
+                            {t('table.loading')}...
+                          </div>
+                        </div>
+                      </TableCell>
                     </TableRow>
                   }
                   {
-                    (items.length == 0 && !loading) && <TableRow>
+                    (items().length == 0 && !isLoading) && <TableRow>
                       <TableCell colSpan={columns.length} className="text-center text-gray-300">{t('table.none')}</TableCell>
                     </TableRow>
                   }
                   {
-                    items.map((item, i) =>
+                    items().map((item, i) =>
                       <TableRow key={i} onClick={() => !!onRowClick && onRowClick(item, i)}>
                         {
                           columns.map((col, i) =>
@@ -191,7 +232,7 @@ export function DataTable<T extends { id: any }>({ onRowClick, columns, items, t
         </Card>
       }
       {!hideBottom && <div className='flex justify-between items-center gap-2 w-full'>
-        <Select value={String(perPage)} onValueChange={v => setPerPage(+v)}>
+        <Select disabled={disablePagination} value={String(initialParams.perPage)} onValueChange={v => handleSetInitials('perPage', +v)}>
           <SelectTrigger className="w-[100px] bg-card">
             <SelectValue placeholder="20" />
           </SelectTrigger>
@@ -204,11 +245,11 @@ export function DataTable<T extends { id: any }>({ onRowClick, columns, items, t
         </Select>
 
         <div className='flex items-center gap-2'>
-          <Button disabled={page === 1} size={'sm'} onClick={() => setPage((p) => p - 1)}>
+          <Button disabled={disableButtons().prev} size={'sm'} onClick={() => handleSetInitials('page', initialParams.page - 1)}>
             <ArrowLeft />
           </Button>
-          <div>{page}/{Math.ceil(totalItems / perPage)}</div>
-          <Button disabled={page === Math.ceil(totalItems / perPage) || totalItems == 0} size={'sm'} onClick={() => setPage((p) => p + 1)}>
+          <div>{pageContent}</div>
+          <Button disabled={disableButtons().next} size={'sm'} onClick={() => handleSetInitials('page', initialParams.page + 1)}>
             <ArrowRight />
           </Button>
         </div>

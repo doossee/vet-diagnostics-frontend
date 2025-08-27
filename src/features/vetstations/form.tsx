@@ -7,6 +7,7 @@ import { Button } from '@/shared/components/ui/button'
 import { VetStationSchema, createVetStationSchema, vetStationValues } from './vetstations'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/shared/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/components/ui/select'
+import { RegionSelect } from "../regions/components/region-select"
 
 interface VetStationFormProps {
     regions: Region[]
@@ -54,7 +55,8 @@ export function VetStationForm({ onSubmit, setRegionId, regions, districts, regi
                 )}
             />
             
-            <div className="grid gap-2 pt-2">
+            <RegionSelect form={form} name="regionId" />
+            {/* <div className="grid gap-2 pt-2">
                 <FormLabel>{t('form.regionName')}</FormLabel>
                 <FormControl>
                     <Select value={regionId?String(regionId):""} onValueChange={e => setRegionId(+e)}>
@@ -68,7 +70,7 @@ export function VetStationForm({ onSubmit, setRegionId, regions, districts, regi
                         </SelectContent>
                     </Select>
                 </FormControl>
-            </div>
+            </div> */}
             <FormField
                 name="districtId"
                 control={form.control}
@@ -76,7 +78,7 @@ export function VetStationForm({ onSubmit, setRegionId, regions, districts, regi
                     <FormItem>
                         <FormLabel>{t("form.districtName")}</FormLabel>
                         <FormControl>
-                            <Select value={value?String(value):""} onValueChange={e => onChange(+e)} {...others}>
+                            <Select disabled={!regionId} value={value?String(value):""} onValueChange={e => onChange(+e)} {...others}>
                                 <SelectTrigger>
                                     <SelectValue placeholder={t("form.districtName")} />
                                 </SelectTrigger>

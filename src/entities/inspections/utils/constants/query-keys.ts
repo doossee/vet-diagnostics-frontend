@@ -1,0 +1,4 @@
+export const InspectionQueryKeys = {
+  INSPECTION: "INSPECTION",
+  INSPECTION_SELECT: "INSPECTION_SELECT",
+}

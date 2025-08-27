@@ -4,7 +4,12 @@ import { Edit, Trash } from 'lucide-react'
 
 export const createAnimalColorColums = (handleEditItem: (item: Color) => void, handleDelete: (id: number) => void, t: any) =>  [
     { title: t('management.colorName'), key: 'name'},
-    { title: t('management.colorPick'), key: 'hex' },
+    { title: t('management.colorPick'), key: 'hex', render(item: Color) {
+        return <div className='flex gap-2 items-center'>
+            <div className='w-4 h-4 rounded-full border' style={{ background: item.hex ?? '#000' }}></div>
+            {item.hex}
+        </div>
+    } },
     { title: t('table.actions'), key: 'actions', render(item: Color) {
         return (<div className="flex gap-2 items-center flex-wrap md:flex-nowrap justify-end md:justify-start">
             <Button onClick={() => handleEditItem(item)} size='sm' className='text-xs!'>

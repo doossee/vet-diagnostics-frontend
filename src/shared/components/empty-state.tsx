@@ -11,10 +11,10 @@ export function EmptyState ({ children }: PropsWithChildren) {
           <LucideFile className="size-6" />
         </div>
         <div className="flex flex-col gap-2">
-          <h1 className="text-lg font-bold">No data found</h1>
+          <h1 className="text-lg font-bold">Данные не найдены</h1>
           <p className="text-muted-foreground text-sm">
-            It looks like there's no data in this page. You can create a new one
-            or refresh the page.
+            Похоже, на этой странице нет данных. Вы можете создать новую
+            или обновить страницу. 
           </p>
         </div>
         <div className="flex items-center gap-2">

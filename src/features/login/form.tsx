@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl"
 import { useRouter } from '@/shared/i18n/routing'
 import { TOAST_OPTIONS } from '@/shared/constants'
 import { authControllerLogin } from '@/shared/api'
+import { routes } from "@/shared/constants/routes"
 import { Input } from "@/shared/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/shared/components/ui/button"
@@ -35,11 +36,11 @@ export function LoginForm() {
       setAuthData(JSON.stringify(user), 'USER_DATA')
       
       if(user.userRole === "ADMIN"){
-        router.push('/animal-types')
+        router.push(routes.ANIMAL_TYPES)
       } else if(user.userRole === "VETERINARIAN") {
-        router.push('/farmers')
+        router.push(routes.FARMERS)
       } else if(user.userRole === "FARMER") {
-        router.push('/animals')
+        router.push(routes.ANIMALS.INDEX)
       }
     } catch (error) {
       console.log(error);

@@ -3007,7 +3007,7 @@ export const usersControllerFindOne = (
   
 export const usersControllerUpdate = (
     id: number,
-    updateUserDto: BodyType<UpdateUserDto>,
+    updateUserDto: BodyType<any>,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<UserEntity>(
       {url: `/users/${id}`, method: 'PATCH',
@@ -3027,9 +3027,9 @@ export const usersControllerRemove = (
     }
   
 export const veterinariansControllerCreate = (
-    createUserDto: BodyType<CreateUserDto>,
+    createUserDto: BodyType<any>,
  options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<VeterinarianEntity>(
+      return createInstance<any>(
       {url: `/veterinarians`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: createUserDto
@@ -3040,7 +3040,7 @@ export const veterinariansControllerCreate = (
 export const veterinariansControllerFindAll = (
     params?: VeterinariansControllerFindAllParams,
  options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<PaginatedVeterinariansEntity>(
+      return createInstance<any>(
       {url: `/veterinarians`, method: 'GET',
         params
     },
@@ -3069,7 +3069,7 @@ export const veterinariansControllerUpdate = (
     }
   
 export const veterinariansControllerRemove = (
-    id: number,
+    id: number | string,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<UserEntity>(
       {url: `/veterinarians/${id}`, method: 'DELETE'
@@ -3078,7 +3078,7 @@ export const veterinariansControllerRemove = (
     }
   
 export const farmersControllerCreate = (
-    createFarmerDto: BodyType<CreateFarmerDto>,
+    createFarmerDto: BodyType<any>,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<FarmerEntity>(
       {url: `/farmers`, method: 'POST',
@@ -3089,9 +3089,9 @@ export const farmersControllerCreate = (
     }
   
 export const farmersControllerFindAll = (
-    params?: FarmersControllerFindAllParams,
+    params?: any,
  options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<PaginatedFarmersEntity>(
+      return createInstance<any>(
       {url: `/farmers`, method: 'GET',
         params
     },
@@ -3120,7 +3120,7 @@ export const farmersControllerUpdate = (
     }
   
 export const farmersControllerRemove = (
-    id: number,
+    id: number | string,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<UserEntity>(
       {url: `/farmers/${id}`, method: 'DELETE'
@@ -3129,7 +3129,7 @@ export const farmersControllerRemove = (
     }
   
 export const animalsControllerCreate = (
-    createAnimalDto: BodyType<CreateAnimalDto>,
+    createAnimalDto: BodyType<any>,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<AnimalEntity>(
       {url: `/animals`, method: 'POST',
@@ -3142,7 +3142,7 @@ export const animalsControllerCreate = (
 export const animalsControllerFindAll = (
     params?: AnimalsControllerFindAllParams,
  options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<AnimalEntity>(
+      return createInstance<any>(
       {url: `/animals`, method: 'GET',
         params
     },
@@ -3160,7 +3160,7 @@ export const animalsControllerFindOne = (
   
 export const animalsControllerUpdate = (
     id: number,
-    updateAnimalDto: BodyType<UpdateAnimalDto>,
+    updateAnimalDto: BodyType<any>,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<AnimalEntity>(
       {url: `/animals/${id}`, method: 'PATCH',
@@ -3171,7 +3171,7 @@ export const animalsControllerUpdate = (
     }
   
 export const animalsControllerRemove = (
-    id: number,
+    id: number | string,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<AnimalEntity>(
       {url: `/animals/${id}`, method: 'DELETE'
@@ -3180,7 +3180,7 @@ export const animalsControllerRemove = (
     }
   
 export const vaccinesControllerCreate = (
-    createVaccineDto: BodyType<CreateVaccineDto>,
+    createVaccineDto: BodyType<any>,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<VaccineEntity>(
       {url: `/vaccines`, method: 'POST',
@@ -3193,7 +3193,7 @@ export const vaccinesControllerCreate = (
 export const vaccinesControllerFindAll = (
     params?: VaccinesControllerFindAllParams,
  options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<VaccineEntity>(
+      return createInstance<any>(
       {url: `/vaccines`, method: 'GET',
         params
     },
@@ -3211,7 +3211,7 @@ export const vaccinesControllerFindOne = (
   
 export const vaccinesControllerUpdate = (
     id: number,
-    updateVaccineDto: BodyType<UpdateVaccineDto>,
+    updateVaccineDto: BodyType<any>,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<VaccineEntity>(
       {url: `/vaccines/${id}`, method: 'PATCH',
@@ -3222,7 +3222,7 @@ export const vaccinesControllerUpdate = (
     }
   
 export const vaccinesControllerRemove = (
-    id: number,
+    id: number | string,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<VaccineEntity>(
       {url: `/vaccines/${id}`, method: 'DELETE'
@@ -3273,7 +3273,7 @@ export const regionsControllerUpdate = (
     }
   
 export const regionsControllerRemove = (
-    id: number,
+    id: number | string,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<RegionEntity>(
       {url: `/regions/${id}`, method: 'DELETE'
@@ -3324,9 +3324,9 @@ export const districtsControllerUpdate = (
     }
   
 export const districtsControllerRemove = (
-    id: number,
+    id: number | string,
  options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<DistrictEntity>(
+      return createInstance<any>(
       {url: `/districts/${id}`, method: 'DELETE'
     },
       options);
@@ -3346,7 +3346,7 @@ export const vetStationsControllerCreate = (
 export const vetStationsControllerFindAll = (
     params?: VetStationsControllerFindAllParams,
  options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<PaginatedVetStationsEntity>(
+      return createInstance<any>(
       {url: `/vet-stations`, method: 'GET',
         params
     },
@@ -3375,7 +3375,7 @@ export const vetStationsControllerUpdate = (
     }
   
 export const vetStationsControllerRemove = (
-    id: number,
+    id: number | string,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<VetStationEntity>(
       {url: `/vet-stations/${id}`, method: 'DELETE'
@@ -3426,7 +3426,7 @@ export const animalTypesControllerUpdate = (
     }
   
 export const animalTypesControllerRemove = (
-    id: number,
+    id: number | string,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<AnimalTypeEntity>(
       {url: `/animal-types/${id}`, method: 'DELETE'
@@ -3435,7 +3435,7 @@ export const animalTypesControllerRemove = (
     }
   
 export const colorsControllerCreate = (
-    createColorDto: BodyType<CreateColorDto>,
+    createColorDto: BodyType<any>,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<ColorEntity>(
       {url: `/colors`, method: 'POST',
@@ -3477,7 +3477,7 @@ export const colorsControllerUpdate = (
     }
   
 export const colorsControllerRemove = (
-    id: number,
+    id: number | string,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<ColorEntity>(
       {url: `/colors/${id}`, method: 'DELETE'
@@ -3528,7 +3528,7 @@ export const urineColorsControllerUpdate = (
     }
   
 export const urineColorsControllerRemove = (
-    id: number,
+    id: number | string,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<UrineColorEntity>(
       {url: `/urine-colors/${id}`, method: 'DELETE'
@@ -3579,7 +3579,7 @@ export const dungColorsControllerUpdate = (
     }
   
 export const dungColorsControllerRemove = (
-    id: number,
+    id: number | string,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<DungColorEntity>(
       {url: `/dung-colors/${id}`, method: 'DELETE'
@@ -3630,7 +3630,7 @@ export const leatherCoversControllerUpdate = (
     }
   
 export const leatherCoversControllerRemove = (
-    id: number,
+    id: number | string,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<LeatherCoverEntity>(
       {url: `/leather-covers/${id}`, method: 'DELETE'
@@ -3681,7 +3681,7 @@ export const eyelidsControllerUpdate = (
     }
   
 export const eyelidsControllerRemove = (
-    id: number,
+    id: number | string,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<EyelidEntity>(
       {url: `/eyelids/${id}`, method: 'DELETE'
@@ -3732,7 +3732,7 @@ export const vaccineTypesControllerUpdate = (
     }
   
 export const vaccineTypesControllerRemove = (
-    id: number,
+    id: number | string,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<VaccineTypeEntity>(
       {url: `/vaccine-types/${id}`, method: 'DELETE'
@@ -3783,7 +3783,7 @@ export const diseaseTypesControllerUpdate = (
     }
   
 export const diseaseTypesControllerRemove = (
-    id: number,
+    id: number | string,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<DiseaseTypeEntity>(
       {url: `/disease-types/${id}`, method: 'DELETE'
@@ -3792,7 +3792,7 @@ export const diseaseTypesControllerRemove = (
     }
   
 export const breedsControllerCreate = (
-    createBreedDto: BodyType<CreateBreedDto>,
+    createBreedDto: BodyType<any>,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<BreedEntity>(
       {url: `/breeds`, method: 'POST',
@@ -3823,7 +3823,7 @@ export const breedsControllerFindOne = (
   
 export const breedsControllerUpdate = (
     id: number,
-    updateBreedDto: BodyType<UpdateBreedDto>,
+    updateBreedDto: BodyType<any>,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<BreedEntity>(
       {url: `/breeds/${id}`, method: 'PATCH',
@@ -3834,7 +3834,7 @@ export const breedsControllerUpdate = (
     }
   
 export const breedsControllerRemove = (
-    id: number,
+    id: number | string,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<BreedEntity>(
       {url: `/breeds/${id}`, method: 'DELETE'
@@ -3856,7 +3856,7 @@ export const generalInspectionControllerCreate = (
 export const generalInspectionControllerFindAll = (
     params?: GeneralInspectionControllerFindAllParams,
  options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<PaginatedGeneralInspectionEntity>(
+      return createInstance<any>(
       {url: `/general-inspections`, method: 'GET',
         params
     },
@@ -3885,7 +3885,7 @@ export const generalInspectionControllerUpdate = (
     }
   
 export const generalInspectionControllerRemove = (
-    id: number,
+    id: number | string,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<GeneralInspectionEntity>(
       {url: `/general-inspections/${id}`, method: 'DELETE'
@@ -3894,7 +3894,7 @@ export const generalInspectionControllerRemove = (
     }
   
 export const inspectionsControllerCreate = (
-    createInspectionDto: BodyType<CreateInspectionDto>,
+    createInspectionDto: BodyType<any>,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<InspectionEntity>(
       {url: `/inspections`, method: 'POST',
@@ -3907,7 +3907,7 @@ export const inspectionsControllerCreate = (
 export const inspectionsControllerFindAll = (
     params?: InspectionsControllerFindAllParams,
  options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<PaginatedInspectionEntity>(
+      return createInstance<any>(
       {url: `/inspections`, method: 'GET',
         params
     },
@@ -3925,7 +3925,7 @@ export const inspectionsControllerFindOne = (
   
 export const inspectionsControllerUpdate = (
     id: number,
-    updateInspectionDto: BodyType<UpdateInspectionDto>,
+    updateInspectionDto: BodyType<any>,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<InspectionEntity>(
       {url: `/inspections/${id}`, method: 'PATCH',
@@ -3936,7 +3936,7 @@ export const inspectionsControllerUpdate = (
     }
   
 export const inspectionsControllerRemove = (
-    id: number,
+    id: number | string,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<InspectionEntity>(
       {url: `/inspections/${id}`, method: 'DELETE'
@@ -3945,7 +3945,7 @@ export const inspectionsControllerRemove = (
     }
   
 export const diseasesControllerCreate = (
-    createDiseaseDto: BodyType<CreateDiseaseDto>,
+    createDiseaseDto: BodyType<any>,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<DiseaseEntity>(
       {url: `/diseases`, method: 'POST',
@@ -3956,9 +3956,9 @@ export const diseasesControllerCreate = (
     }
   
 export const diseasesControllerFindAll = (
-    params?: DiseasesControllerFindAllParams,
+    params?: any,
  options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<PaginatedDiseaseEntity>(
+      return createInstance<any>(
       {url: `/diseases`, method: 'GET',
         params
     },
@@ -3976,7 +3976,7 @@ export const diseasesControllerFindOne = (
   
 export const diseasesControllerUpdate = (
     id: number,
-    updateDiseaseDto: BodyType<UpdateDiseaseDto>,
+    updateDiseaseDto: BodyType<any>,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<DiseaseEntity>(
       {url: `/diseases/${id}`, method: 'PATCH',
@@ -3987,7 +3987,7 @@ export const diseasesControllerUpdate = (
     }
   
 export const diseasesControllerRemove = (
-    id: number,
+    id: number | string,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<DiseaseEntity>(
       {url: `/diseases/${id}`, method: 'DELETE'
@@ -3996,7 +3996,7 @@ export const diseasesControllerRemove = (
     }
   
 export const generalBloodTestControllerCreate = (
-    createGeneralBloodTestDto: BodyType<CreateGeneralBloodTestDto>,
+    createGeneralBloodTestDto: BodyType<any>,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<GeneralBloodTestEntity>(
       {url: `/general-blood-tests`, method: 'POST',
@@ -4009,7 +4009,7 @@ export const generalBloodTestControllerCreate = (
 export const generalBloodTestControllerFindAll = (
     params?: GeneralBloodTestControllerFindAllParams,
  options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<PaginatedGeneralBloodTestEntity>(
+      return createInstance<any>(
       {url: `/general-blood-tests`, method: 'GET',
         params
     },
@@ -4027,7 +4027,7 @@ export const generalBloodTestControllerFindOne = (
   
 export const generalBloodTestControllerUpdate = (
     id: number,
-    updateGeneralBloodTestDto: BodyType<UpdateGeneralBloodTestDto>,
+    updateGeneralBloodTestDto: BodyType<any>,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<GeneralBloodTestEntity>(
       {url: `/general-blood-tests/${id}`, method: 'PATCH',
@@ -4038,7 +4038,7 @@ export const generalBloodTestControllerUpdate = (
     }
   
 export const generalBloodTestControllerRemove = (
-    id: number,
+    id: number | string,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<GeneralBloodTestEntity>(
       {url: `/general-blood-tests/${id}`, method: 'DELETE'
@@ -4047,7 +4047,7 @@ export const generalBloodTestControllerRemove = (
     }
   
 export const bloodSerumTestsControllerCreate = (
-    createBloodSerumTestDto: BodyType<CreateBloodSerumTestDto>,
+    createBloodSerumTestDto: BodyType<any>,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<BloodSerumTestEntity>(
       {url: `/blood-serum-tests`, method: 'POST',
@@ -4060,7 +4060,7 @@ export const bloodSerumTestsControllerCreate = (
 export const bloodSerumTestsControllerFindAll = (
     params?: BloodSerumTestsControllerFindAllParams,
  options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<PaginatedBloodSerumTestEntity>(
+      return createInstance<any>(
       {url: `/blood-serum-tests`, method: 'GET',
         params
     },
@@ -4089,7 +4089,7 @@ export const bloodSerumTestsControllerUpdate = (
     }
   
 export const bloodSerumTestsControllerRemove = (
-    id: number,
+    id: number | string,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<BloodSerumTestEntity>(
       {url: `/blood-serum-tests/${id}`, method: 'DELETE'
@@ -4111,7 +4111,7 @@ export const urineTestsControllerCreate = (
 export const urineTestsControllerFindAll = (
     params?: UrineTestsControllerFindAllParams,
  options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<PaginatedUrineTestEntity>(
+      return createInstance<any>(
       {url: `/urine-tests`, method: 'GET',
         params
     },
@@ -4140,7 +4140,7 @@ export const urineTestsControllerUpdate = (
     }
   
 export const urineTestsControllerRemove = (
-    id: number,
+    id: number | string,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<UrineTestEntity>(
       {url: `/urine-tests/${id}`, method: 'DELETE'
@@ -4149,7 +4149,7 @@ export const urineTestsControllerRemove = (
     }
   
 export const dungTestsControllerCreate = (
-    createDungTestDto: BodyType<CreateDungTestDto>,
+    createDungTestDto: BodyType<any>,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<DungTestEntity>(
       {url: `/dung-tests`, method: 'POST',
@@ -4162,7 +4162,7 @@ export const dungTestsControllerCreate = (
 export const dungTestsControllerFindAll = (
     params?: DungTestsControllerFindAllParams,
  options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<PaginatedDungTestEntity>(
+      return createInstance<any>(
       {url: `/dung-tests`, method: 'GET',
         params
     },
@@ -4191,7 +4191,7 @@ export const dungTestsControllerUpdate = (
     }
   
 export const dungTestsControllerRemove = (
-    id: number,
+    id: number | string,
  options?: SecondParameter<typeof createInstance>,) => {
       return createInstance<DungTestEntity>(
       {url: `/dung-tests/${id}`, method: 'DELETE'

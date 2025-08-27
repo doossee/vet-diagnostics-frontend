@@ -1,0 +1,4 @@
+export const VaccineTypesQueryKeys = {
+  VACCINE_TYPES: "VACCINE_TYPES",
+  VACCINE_TYPES_SELECT: "VACCINE_TYPES_SELECT",
+}

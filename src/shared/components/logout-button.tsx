@@ -21,8 +21,8 @@ export function LogoutButton() {
     }
 
     return (
-        <Button onClick={() => handleLogout()} variant="outline" size="icon">
-          <LogOut />
+        <Button onClick={() => handleLogout()} variant="outline" size={"sm"} className="text-sm font-normal">
+          <LogOut /> Chiqish
         </Button>
     )
 }

@@ -1,0 +1,4 @@
+export const VetStationQueryKeys = {
+  VETSTATIONS: "VETSTATIONS",
+  VETSTATIONS_SELECT: "VETSTATIONS_SELECT",
+}

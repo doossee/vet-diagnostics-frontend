@@ -1,0 +1,4 @@
+export const UrineColorQueryKeys = {
+  URINE_COLORS: "URINE_COLORS",
+  URINE_COLORS_SELECT: "URINE_COLORS_SELECT",
+}

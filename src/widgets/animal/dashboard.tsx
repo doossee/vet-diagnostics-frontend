@@ -3,7 +3,8 @@
 import { useI18n } from '@/shared/hooks/use-i18n'
 import { useRouter } from '@/shared/i18n/routing'
 import { Button } from '@/shared/components/ui/button'
-import { FlaskConical, Shovel, Syringe, FlaskRound, Plus } from 'lucide-react'
+import { useSearchQueryParams } from '@/shared/hooks/use-query-params';
+import { FlaskConical, Shovel, Syringe, FlaskRound, Plus } from 'lucide-react';
 import { BLOOD_SERUM_TESTS, GENERAL_BLOOD_TESTS } from '@/shared/constants'
 import { Table, TableBody, TableCell, TableRow } from '@/shared/components/ui/table'
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card"
@@ -14,6 +15,7 @@ import { EmptyState } from '@/shared/components/empty-state';
 export function AnimalDashboard({ id }: { id: number }) {
     const router = useRouter()
     const { t, locale } = useI18n()
+    const searchParams = useSearchQueryParams()
 
     const { animals } = useAnimals({ id: +id })
     const { diseases } = useDiseases({ last: true, animalId: +id })

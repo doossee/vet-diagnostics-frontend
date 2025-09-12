@@ -26,16 +26,22 @@ import {
   Laptop,
 } from "lucide-react";
 
+export const TABLE_QUERY_PARAMS = {
+  PAGE: "page",
+  SEARCH: "search",
+  PER_PAGE: "perPage"
+}
+
 export const THEMES = [
   { name: "light", icon: Sun },
   { name: "dark", icon: Moon },
   { name: "system", icon: Laptop },
-]
+];
 
 export const LOCALES = [
-  { name: "O'zbek", locale: 'uz' },
-  { name: 'Русский', locale: 'ru' },
-]
+  { name: "O'zbek", locale: "uz" },
+  { name: "Русский", locale: "ru" },
+];
 
 export const GENDERS = [
   { uz: "Erkak", ru: "Мужской", value: "MALE" },
@@ -53,37 +59,167 @@ export const BREED = [
 ];
 
 export const BLOOD_SERUM_TESTS = {
-  totalProtein: { ru: "Общий белок сыворотки", uz: "Umumiy oqsil", unit_ru: 'г/л', unit_uz: 'g/L' },
-  totalCalcium: { ru: "Общий кальций", uz: "Umumiy kalsiy", unit_ru: 'ммоль/л', unit_uz: 'mmol/L' },
-  organicPhosphorus: { ru: "Органический фосфор", uz: "Organik fosfor", unit_ru: 'ммоль/л', unit_uz: 'mmol/L' },
-  albumen: { ru: "Альбумин", uz: "Albumin", unit_ru: '%', unit_uz: '%' },
-  alphaGlobulin: { ru: "Альфа-глобулин", uz: "Alfa globulin", unit_ru: '%', unit_uz: '%' },
-  betaGlobulin: { ru: "Бета-глобулин", uz: "Beta globulin", unit_ru: '%', unit_uz: '%' },
-  gammaGlobulin: { ru: "Гамма-глобулин", uz: "Gamma globulin", unit_ru: '%', unit_uz: '%' },
-  creatine: { ru: "Креатин", uz: "Kreatin", unit_ru: 'мкмоль/л', unit_uz: 'µmol/L' },
-  alkalineReserve: { ru: "Щелочной резерв", uz: "Ishqoriy zahira",  unit_ru: 'Об%CO²', unit_uz: 'Ob%CO²' },
-  glucose: { ru: "Глюкоза", uz: "Glyukoza", unit_ru: 'ммоль/л', unit_uz: 'mmol/L' },
-  totalBilirubin: { ru: "Общий билирубин", uz: "Umumiy Bilirubin", unit_ru: 'мкмоль/л', unit_uz: 'µmol/L' },
-  cholesterol: { ru: "Холестерин", uz: "Xolestrin", unit_ru: 'ммоль/л', unit_uz: 'mmol/L' },
-  totalLipids: { ru: "Общие липиды", uz: "Umumiy lipidlar", unit_ru: 'г/л', unit_uz: 'g/L' },
-  vitaminA: { ru: "Витамин A", uz: "A vitamin", unit_ru: 'мкмоль/л', unit_uz: 'µmol/L' },
-  vitaminB: { ru: "Витамин B", uz: "B vitamin", unit_ru: 'мкмоль/л', unit_uz: 'µmol/L' },
-  lacticAcid: { ru: "Молочная кислота", uz: "Sut kislotasi", unit_ru: 'ммоль/л', unit_uz: 'mmol/L' },
-  pyruvicAcid: { ru: "Пировиноградная кислота", uz: "Pirouzum kislotasi", unit_ru: 'ммоль/л', unit_uz: 'mmol/L' },
-  urea: { ru: "Мочевина", uz: "Karbamid", unit_ru: 'ммоль/л', unit_uz: 'mmol/L' },
-  citricAcid: { ru: "Лимонная кислота", uz: "Limon kislotasi", unit_ru: 'ммоль/л', unit_uz: 'mmol/L' },
-  ureaAcid: { ru: "Мочевая кислота", uz: "Karbamid kislotasi", unit_ru: 'ммоль/л', unit_uz: 'mmol/L' },
+  totalProtein: {
+    ru: "Общий белок сыворотки",
+    uz: "Umumiy oqsil",
+    unit_ru: "г/л",
+    unit_uz: "g/L",
+  },
+  totalCalcium: {
+    ru: "Общий кальций",
+    uz: "Umumiy kalsiy",
+    unit_ru: "ммоль/л",
+    unit_uz: "mmol/L",
+  },
+  organicPhosphorus: {
+    ru: "Органический фосфор",
+    uz: "Organik fosfor",
+    unit_ru: "ммоль/л",
+    unit_uz: "mmol/L",
+  },
+  albumen: { ru: "Альбумин", uz: "Albumin", unit_ru: "%", unit_uz: "%" },
+  alphaGlobulin: {
+    ru: "Альфа-глобулин",
+    uz: "Alfa globulin",
+    unit_ru: "%",
+    unit_uz: "%",
+  },
+  betaGlobulin: {
+    ru: "Бета-глобулин",
+    uz: "Beta globulin",
+    unit_ru: "%",
+    unit_uz: "%",
+  },
+  gammaGlobulin: {
+    ru: "Гамма-глобулин",
+    uz: "Gamma globulin",
+    unit_ru: "%",
+    unit_uz: "%",
+  },
+  creatine: {
+    ru: "Креатин",
+    uz: "Kreatin",
+    unit_ru: "мкмоль/л",
+    unit_uz: "µmol/L",
+  },
+  alkalineReserve: {
+    ru: "Щелочной резерв",
+    uz: "Ishqoriy zahira",
+    unit_ru: "Об%CO²",
+    unit_uz: "Ob%CO²",
+  },
+  glucose: {
+    ru: "Глюкоза",
+    uz: "Glyukoza",
+    unit_ru: "ммоль/л",
+    unit_uz: "mmol/L",
+  },
+  totalBilirubin: {
+    ru: "Общий билирубин",
+    uz: "Umumiy Bilirubin",
+    unit_ru: "мкмоль/л",
+    unit_uz: "µmol/L",
+  },
+  cholesterol: {
+    ru: "Холестерин",
+    uz: "Xolestrin",
+    unit_ru: "ммоль/л",
+    unit_uz: "mmol/L",
+  },
+  totalLipids: {
+    ru: "Общие липиды",
+    uz: "Umumiy lipidlar",
+    unit_ru: "г/л",
+    unit_uz: "g/L",
+  },
+  vitaminA: {
+    ru: "Витамин A",
+    uz: "A vitamin",
+    unit_ru: "мкмоль/л",
+    unit_uz: "µmol/L",
+  },
+  vitaminB: {
+    ru: "Витамин B",
+    uz: "B vitamin",
+    unit_ru: "мкмоль/л",
+    unit_uz: "µmol/L",
+  },
+  lacticAcid: {
+    ru: "Молочная кислота",
+    uz: "Sut kislotasi",
+    unit_ru: "ммоль/л",
+    unit_uz: "mmol/L",
+  },
+  pyruvicAcid: {
+    ru: "Пировиноградная кислота",
+    uz: "Pirouzum kislotasi",
+    unit_ru: "ммоль/л",
+    unit_uz: "mmol/L",
+  },
+  urea: {
+    ru: "Мочевина",
+    uz: "Karbamid",
+    unit_ru: "ммоль/л",
+    unit_uz: "mmol/L",
+  },
+  citricAcid: {
+    ru: "Лимонная кислота",
+    uz: "Limon kislotasi",
+    unit_ru: "ммоль/л",
+    unit_uz: "mmol/L",
+  },
+  ureaAcid: {
+    ru: "Мочевая кислота",
+    uz: "Karbamid kislotasi",
+    unit_ru: "ммоль/л",
+    unit_uz: "mmol/L",
+  },
 };
 
 export const GENERAL_BLOOD_TESTS = {
-  coe: { ru: "СОЭ", uz: "COE", unit_ru: "Мм/ч", unit_uz: "mm/soat", },
-  leukocyteCount: { ru: "Количество лейкоцитов", uz: "Leykotsitlar soni", unit_ru: "тыс./мкл", unit_uz: "ming/mkL", },
-  erythrocyteCount: { ru: "Количество эритроцитов", uz: "Eritrotsitlar soni", unit_ru: "млн/мкл", unit_uz: "mln/mkL", },
-  thrombocyteCount: { ru: "Количество тромбоцитов", uz: "Trombotsitlar soni", unit_ru: "тыс./мкл", unit_uz: "ming/mkL", },
-  hemoglobin: { ru: "Гемоглобин", uz: "Gemoglobin", unit_ru: "г/л", unit_uz: "g/L", },
-  glutathione: { ru: "Глутатион", uz: "Glutation", unit_ru: "ммоль/л", unit_uz: "mmol/L", },
-  waterPercentage: { ru: "Процент воды", uz: "Suv foizi", unit_ru: "%", unit_uz: "%", },
-  dryResiduePercentage: { ru: "Процент сухого остатка", uz: "Quruq qoldiq foizi", unit_ru: "%", unit_uz: "%", },
+  coe: { ru: "СОЭ", uz: "COE", unit_ru: "Мм/ч", unit_uz: "mm/soat" },
+  leukocyteCount: {
+    ru: "Количество лейкоцитов",
+    uz: "Leykotsitlar soni",
+    unit_ru: "тыс./мкл",
+    unit_uz: "ming/mkL",
+  },
+  erythrocyteCount: {
+    ru: "Количество эритроцитов",
+    uz: "Eritrotsitlar soni",
+    unit_ru: "млн/мкл",
+    unit_uz: "mln/mkL",
+  },
+  thrombocyteCount: {
+    ru: "Количество тромбоцитов",
+    uz: "Trombotsitlar soni",
+    unit_ru: "тыс./мкл",
+    unit_uz: "ming/mkL",
+  },
+  hemoglobin: {
+    ru: "Гемоглобин",
+    uz: "Gemoglobin",
+    unit_ru: "г/л",
+    unit_uz: "g/L",
+  },
+  glutathione: {
+    ru: "Глутатион",
+    uz: "Glutation",
+    unit_ru: "ммоль/л",
+    unit_uz: "mmol/L",
+  },
+  waterPercentage: {
+    ru: "Процент воды",
+    uz: "Suv foizi",
+    unit_ru: "%",
+    unit_uz: "%",
+  },
+  dryResiduePercentage: {
+    ru: "Процент сухого остатка",
+    uz: "Quruq qoldiq foizi",
+    unit_ru: "%",
+    unit_uz: "%",
+  },
 };
 
 export const CLARITY_TYPES = {
@@ -93,24 +229,30 @@ export const CLARITY_TYPES = {
 
 export const POSITIONS = {
   NATURAL: {
-    ru: "Естественное", uz: "Tabiiy",
+    ru: "Естественное",
+    uz: "Tabiiy",
   },
   FORCED: {
-    ru: "Принудительное", uz: "Majbiriy",
+    ru: "Принудительное",
+    uz: "Majbiriy",
   },
   FORCED_STANDING: {
-    ru: "Принудительное стоя", uz: "Majbiriy tik turgan",
+    ru: "Принудительное стоя",
+    uz: "Majbiriy tik turgan",
   },
   FORCED_LYING: {
-    ru: "Принудительное лежа", uz: "Majbiriy yotgan",
+    ru: "Принудительное лежа",
+    uz: "Majbiriy yotgan",
   },
   FORCED_SITTING: {
-    ru: "Принудительное сидя", uz: "Majbiriy o’tirgan",
+    ru: "Принудительное сидя",
+    uz: "Majbiriy o’tirgan",
   },
   NON_THERAPEUTIC: {
-    ru: "Не терапевтическое", uz: "Tabiy bo’lmagan",
+    ru: "Не терапевтическое",
+    uz: "Tabiy bo’lmagan",
   },
-}
+};
 
 export const SMELL_TYPES = {
   PUNGENT: { ru: "Резкий запах", uz: "Hidi o'tkir" },
@@ -160,37 +302,63 @@ export const INSPECTION_TYPES = {
 };
 
 export const ALERT_MESSAGES = {
-  DATA_CREATED: { ru: "Данные успешно созданы!", uz: "Ma'lumot muvaffaqiyatli yaratildi!" },
-  DATA_UPDATED: { ru: "Данные успешно обновлены!", uz: "Ma'lumot muvaffaqiyatli yangilandi!" },
-  DATA_DELETED: { ru: "Данные успешно удалены!", uz: "Ma'lumot muvaffaqiyatli o'chirildi!" },
+  DATA_CREATED: {
+    ru: "Данные успешно созданы!",
+    uz: "Ma'lumot muvaffaqiyatli yaratildi!",
+  },
+  DATA_UPDATED: {
+    ru: "Данные успешно обновлены!",
+    uz: "Ma'lumot muvaffaqiyatli yangilandi!",
+  },
+  DATA_DELETED: {
+    ru: "Данные успешно удалены!",
+    uz: "Ma'lumot muvaffaqiyatli o'chirildi!",
+  },
   DATA_NOT_FOUND: { ru: "Данные не найдены!", uz: "Ma'lumot topilmadi!" },
-  INVALID_INPUT: { ru: "Введенные данные некорректны!", uz: "Kiritilgan ma'lumot noto'g'ri!" },
+  INVALID_INPUT: {
+    ru: "Введенные данные некорректны!",
+    uz: "Kiritilgan ma'lumot noto'g'ri!",
+  },
   ACCESS_DENIED: { ru: "Доступ запрещен!", uz: "Kirish taqiqlangan!" },
   LOGIN_SUCCESS: { ru: "Успешный вход!", uz: "Muvaffaqiyatli kirildi!" },
-  LOGIN_FAILED: { ru: "Логин или пароль неверны!", uz: "Login yoki parol noto'g'ri!" },
-  PERMISSION_REQUIRED: { ru: "Требуется разрешение!", uz: "Ruxsat talab qilinadi!" },
-  SERVER_ERROR: { ru: "Произошла ошибка на сервере!", uz: "Serverda xatolik yuz berdi!" },
+  LOGIN_FAILED: {
+    ru: "Логин или пароль неверны!",
+    uz: "Login yoki parol noto'g'ri!",
+  },
+  PERMISSION_REQUIRED: {
+    ru: "Требуется разрешение!",
+    uz: "Ruxsat talab qilinadi!",
+  },
+  SERVER_ERROR: {
+    ru: "Произошла ошибка на сервере!",
+    uz: "Serverda xatolik yuz berdi!",
+  },
   OPERATION_FAILED: { ru: "Операция не выполнена!", uz: "Amal bajarilmadi!" },
-  OPERATION_SUCCESS: { ru: "Операция выполнена успешно!", uz: "Amal muvaffaqiyatli bajarildi!" },
+  OPERATION_SUCCESS: {
+    ru: "Операция выполнена успешно!",
+    uz: "Amal muvaffaqiyatli bajarildi!",
+  },
   LOADING: { ru: "Загрузка...", uz: "Yuklanmoqda..." },
   SAVING: { ru: "Сохранение...", uz: "Saqlanmoqda..." },
   UPLOADING: { ru: "Загрузка...", uz: "Yuklanmoqda..." },
   NO_DATA: { ru: "Данные отсутствуют!", uz: "Ma'lumot mavjud emas!" },
-  DELETE_CONFIRM: { ru: "Вы уверены, что хотите удалить эти данные?", uz: "Ushbu ma'lumotni o'chirmoqchimisiz?" }
+  DELETE_CONFIRM: {
+    ru: "Вы уверены, что хотите удалить эти данные?",
+    uz: "Ushbu ma'lumotni o'chirmoqchimisiz?",
+  },
 };
 
-export const navLinksVariant: Record<
-  UserRole,
-  {
-    title: string;
-    icon: any;
-    isActive?: boolean;
-    items: { title: string; icon?: any; url: string }[];
-  }[]
-> = {
+export type NavLink = {
+  title: string
+  icon: any
+  isActive?: boolean
+  url?: string
+  items?: NavLink[]
+}
+
+export const navLinksVariant: Record<UserRole, NavLink[]> = {
   ADMIN: [
     {
-      isActive: true,
       title: "nav.management",
       icon: FolderCog,
       items: [
@@ -283,13 +451,7 @@ export const navLinksVariant: Record<
     {
       title: "nav.animals",
       icon: PawPrint,
-      items: [
-        {
-          title: "nav.animals",
-          icon: PawPrint,
-          url: "/animals",
-        },
-      ],
+      url: "/animals",
     },
     {
       title: "nav.inspections",
@@ -340,7 +502,7 @@ export const navLinksVariant: Record<
   ],
   FARMER: [
     {
-      isActive: true,
+      // isActive: true,
       title: "nav.management",
       icon: FolderCog,
       items: [
@@ -405,7 +567,7 @@ export const navLinksVariant: Record<
   ],
   VETERINARIAN: [
     {
-      isActive: true,
+      // isActive: true,
       title: "nav.management",
       icon: FolderCog,
       items: [
@@ -425,7 +587,11 @@ export const navLinksVariant: Record<
       title: "nav.animals",
       icon: PawPrint,
       items: [
-        { title: "animals.createAnimal", url: "/animals-create", icon: CirclePlus },
+        {
+          title: "animals.createAnimal",
+          url: "/animals-create",
+          icon: CirclePlus,
+        },
         {
           title: "nav.animals",
           icon: PawPrint,

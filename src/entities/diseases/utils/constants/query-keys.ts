@@ -1,4 +1,5 @@
 export const DiseaseQueryKeys = {
   DISEASES: "DISEASES",
+  LAST_DISEASES: "LAST_DISEASES",
   DISEASES_SELECT: "DISEASES_SELECT",
-}
+};

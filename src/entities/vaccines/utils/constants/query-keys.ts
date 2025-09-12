@@ -1,4 +1,5 @@
 export const VaccineQueryKeys = {
   VACCINES: "VACCINES",
+  LAST_VACCINES: "LAST_VACCINES",
   VACCINES_SELECT: "VACCINES_SELECT",
-}
+};

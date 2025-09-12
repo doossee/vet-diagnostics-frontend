@@ -1,4 +1,4 @@
 export const UrineTestQueryKeys = {
   URINE_TESTS: "URINE_TESTS",
   URINE_TESTS_SELECT: "URINE_TESTS_SELECT",
-}
+};

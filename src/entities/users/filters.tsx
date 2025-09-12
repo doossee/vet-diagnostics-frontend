@@ -1,63 +1,42 @@
-import { GENDERS } from "@/shared/constants"
-import { useI18n } from "@/shared/hooks/use-i18n"
-import type { Gender, Region, District } from "@/shared/types"
-import { FiltersWrapper } from '@/shared/components/filters-wrapper'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/components/ui/select'
+import { GENDERS } from "@/shared/constants";
+import { useI18n } from "@/shared/hooks/use-i18n";
+import { FiltersWrapper } from "@/shared/components/filters-wrapper";
+import { useSearchQueryParams } from "@/shared/hooks/use-query-params";
+import { RegionSelect } from "@/features/regions/components/region-select";
+import { UsersQueryParamKeys } from './utils/constants/users-query-param-keys';
+import { DistrictSelect } from "@/features/districts/components/district-select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
 
-export const userFilters = {
-    gender: null as Gender | null,
-    birthDate: null as null | Date,
-    regionId: null as null | number,
-    districtId: null as null | number,
-}
+export function UserFilters() {
+  const { t, locale } = useI18n();
+  const { get, set, remove } = useSearchQueryParams()
 
-interface UserFiltersProps {
-    regions: Region[]
-    districts: District[]
-    filters: typeof userFilters
-    setFilters: (prev: any) => any
-}
+  const gender = get(UsersQueryParamKeys.GENDER) as string ?? ""
+  // const birthDate = get(UsersQueryParamKeys.BIRTH_DATE)
+  const regionId = get(UsersQueryParamKeys.REGION_ID, true)
+  const districtId = get(UsersQueryParamKeys.DISTRICT_ID, true)
 
-export function UserFilters ({ filters, districts, regions, setFilters }: UserFiltersProps) {
-    const { t, locale } = useI18n()
+  return (
+    <FiltersWrapper>
+      <div className="flex items-center justify-start gap-2 mb-2">
+        <Select value={gender} onValueChange={(e) => set(UsersQueryParamKeys.GENDER, e)}>
+          <SelectTrigger className="bg-card w-min">
+            <SelectValue placeholder={t("filters.byGender")} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value={null as any}>{t("filters.all")}</SelectItem>
+            {GENDERS.map((g) => (
+              <SelectItem key={g.value} value={g.value}>
+                {g[locale]}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
-    return (
-        <FiltersWrapper>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mb-2">
-                <Select value={filters.gender?filters.gender:""} onValueChange={e => setFilters({...filters, gender: e as any})}>
-                    <SelectTrigger className="bg-card">
-                        <SelectValue placeholder={t('filters.byGender')} />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value={null as any}>{t('filters.all')}</SelectItem>
-                        {
-                            GENDERS.map(g => <SelectItem key={g.value} value={g.value}>{g[locale]}</SelectItem>)
-                        }
-                    </SelectContent>
-                </Select>
-                <Select value={filters.regionId ? String(filters.regionId) : ""} onValueChange={e => setFilters({...filters, regionId: +e})}>
-                    <SelectTrigger className="bg-card">
-                        <SelectValue placeholder={t('filters.byRegion')} />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value={null as any}>{t('filters.all')}</SelectItem>
-                        {
-                            regions.map(r => <SelectItem key={r.id} value={String(r.id)}>{r.name}</SelectItem>)
-                        }
-                    </SelectContent>
-                </Select>
-                <Select value={filters.districtId ? String(filters.districtId) : ""} onValueChange={e => setFilters({...filters, districtId: +e})}>
-                    <SelectTrigger className="bg-card">
-                        <SelectValue placeholder={t('filters.byDistrict')} />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value={null as any}>{t('filters.all')}</SelectItem>
-                        {
-                            districts.filter(d => d.regionId === filters.regionId).map(d => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)
-                        }
-                    </SelectContent>
-                </Select>
-            </div>
-        </FiltersWrapper>
-    )
+        <RegionSelect placeholder={t("filters.byRegion")} onRemove={() => remove(UsersQueryParamKeys.REGION_ID)} value={regionId} onChange={(e) => set(UsersQueryParamKeys.REGION_ID, e)} />
+        
+        <DistrictSelect placeholder={t("filters.byDistrict")} onRemove={() => remove(UsersQueryParamKeys.DISTRICT_ID)} value={districtId} onChange={e => set(UsersQueryParamKeys.DISTRICT_ID, e)} regionId={regionId as number} disabled={!regionId} />
+      </div>
+    </FiltersWrapper>
+  );
 }

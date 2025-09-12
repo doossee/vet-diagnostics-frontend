@@ -1,11 +1,12 @@
-import { z } from "zod"
+import { z } from "zod";
 
 export const eyeLidValues = {
-    name: "",
-}
+  name: "",
+};
 
-export const createEyeLidSchema = (t: any) => z.object({
+export const createEyeLidSchema = (t: any) =>
+  z.object({
     name: z.string().min(1, t("required.eyeLidNameRequired")),
-})
+  });
 
-export type EyeLidSchema = z.infer<ReturnType<typeof createEyeLidSchema>>
+export type EyeLidSchema = z.infer<ReturnType<typeof createEyeLidSchema>>;

@@ -1,16 +1,17 @@
-import { getCookie, setCookie } from 'cookies-next'
+import { LanguageLocales } from "../types";
+import { getCookie, setCookie } from "cookies-next";
 
-const APP_LOCALE = "APP_LOCALE"
+const APP_LOCALE = "APP_LOCALE";
 
 export function useLanguage() {
-    const getLocale = (getCookie(APP_LOCALE) || "uz") as "uz" | "ru"
+  const getLocale = (getCookie(APP_LOCALE) || "uz") as LanguageLocales;
 
-    const setLocale = (data: string) => {
-        setCookie(APP_LOCALE, data)
-    }
+  const setLocale = (data: string) => {
+    setCookie(APP_LOCALE, data);
+  };
 
-    return {
-        getLocale,
-        setLocale,
-    }
+  return {
+    getLocale,
+    setLocale,
+  };
 }

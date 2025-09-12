@@ -1,28 +1,27 @@
-'use client'
+"use client";
 
-import { Button } from "./ui/button"
-import { LogOut } from 'lucide-react'
-import { useRouter } from "@/shared/i18n/routing"
-import { useAuthData } from "@/shared/hooks/use-auth-data"
-
+import { Button } from "./ui/button";
+import { LogOut } from "lucide-react";
+import { useRouter } from "@/shared/i18n/routing";
+import { useAuthData } from "@/shared/hooks/use-auth-data";
 
 export function LogoutButton() {
-    const router = useRouter()
-    const { setAuthData } = useAuthData()
+  const router = useRouter();
+  const { setAuthData } = useAuthData();
 
-    const handleLogout = () => {
-        if(!confirm('Hisobingizdan chiqishni hohlaysizmi?')) return
+  const handleLogout = () => {
+    if (!confirm("Hisobingizdan chiqishni hohlaysizmi?")) return;
 
-        setAuthData(null, "ACCESS_TOKEN")
-        setAuthData(null, "REFRESH_TOKEN")
-        setAuthData(null, "USER_DATA")
-        
-        router.push('/login')
-    }
+    setAuthData(null, "ACCESS_TOKEN");
+    setAuthData(null, "REFRESH_TOKEN");
+    setAuthData(null, "USER_DATA");
 
-    return (
-        <Button onClick={() => handleLogout()} variant="outline" size={"sm"} className="text-sm font-normal">
-          <LogOut /> Chiqish
-        </Button>
-    )
+    router.push("/login");
+  };
+
+  return (
+    <Button onClick={() => handleLogout()} variant="outline" size={"sm"} className="text-sm font-normal">
+      <LogOut /> Chiqish
+    </Button>
+  );
 }

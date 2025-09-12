@@ -1,4 +1,4 @@
 export const LeatherCoverQueryKeys = {
   LEATHER_COVER: "LEATHER_COVER",
   LEATHER_COVER_SELECT: "LEATHER_COVER_SELECT",
-}
+};

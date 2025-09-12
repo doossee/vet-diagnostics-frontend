@@ -1,20 +1,17 @@
-import { ReactNode } from "react"
-import { cookies } from 'next/headers'
-import { getLocale } from 'next-intl/server'
-import { redirect } from '@/shared/i18n/routing'
-import { routes } from "@/shared/constants/routes"
-import { ModeToggle } from "@/shared/components/theme-toggler"
-import { ToggleLocale } from '@/shared/components/toggle-locale'
-import { LogoutButton } from "@/shared/components/logout-button"
-import { AppSidebar } from '@/shared/components/nav-drawer-variant'
-import { SidebarProvider, SidebarTrigger } from "@/shared/components/ui/sidebar"
-import { AppBreadcrumb } from "@/shared/components/elements/app-breadcrumb"
-import { UserMenu } from "@/shared/components/elements/user-menu"
+import { ReactNode } from "react";
+import { cookies } from "next/headers";
+import { getLocale } from "next-intl/server";
+import { redirect } from "@/shared/i18n/routing";
+import { routes } from "@/shared/constants/routes";
+import { UserMenu } from "@/shared/components/elements/user-menu";
+import { AppSidebar } from "@/shared/components/nav-drawer-variant";
+import { SidebarProvider, SidebarTrigger } from "@/shared/components/ui/sidebar";
+import { AppBreadcrumb } from "@/shared/components/elements/app-breadcrumb";
 
-export default async function Page({children}: {children: ReactNode}) {
-  const cookie = await cookies()
-  const locale = await getLocale()
-  if(!cookie.get('ACCESS_TOKEN')?.value) return redirect({ href: routes.AUTH.LOGIN, locale })
+export default async function Page({ children }: { children: ReactNode }) {
+  const cookie = await cookies();
+  const locale = await getLocale();
+  if (!cookie.get("ACCESS_TOKEN")?.value) return redirect({ href: routes.AUTH.LOGIN, locale });
 
   return (
     <SidebarProvider>
@@ -33,5 +30,5 @@ export default async function Page({children}: {children: ReactNode}) {
         {children}
       </main>
     </SidebarProvider>
-  )
+  );
 }

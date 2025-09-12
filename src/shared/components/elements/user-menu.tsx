@@ -1,15 +1,15 @@
-import { UserCog } from "lucide-react"
-import { Button } from "@/shared/components/ui/button"
-import { ModeToggle } from "@/shared/components/theme-toggler"
-import { LogoutButton } from "@/shared/components/logout-button"
-import { ToggleLocale } from "@/shared/components/toggle-locale"
-import { Popover, PopoverContent, PopoverTrigger } from "@/shared/components/ui/popover"
+import { UserCog } from "lucide-react";
+import { Button } from "@/shared/components/ui/button";
+import { ModeToggle } from "@/shared/components/theme-toggler";
+import { LogoutButton } from "@/shared/components/logout-button";
+import { ToggleLocale } from "@/shared/components/toggle-locale";
+import { Popover, PopoverContent, PopoverTrigger } from "@/shared/components/ui/popover";
 
 export function UserMenu() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-          <Button size={"icon"} variant={"outline"}>
+        <Button size={"icon"} variant={"outline"}>
           <UserCog />
         </Button>
       </PopoverTrigger>
@@ -23,5 +23,5 @@ export function UserMenu() {
         </div>
       </PopoverContent>
     </Popover>
-  )
+  );
 }

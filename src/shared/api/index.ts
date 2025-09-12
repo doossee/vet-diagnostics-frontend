@@ -5,1153 +5,1082 @@
  * The dr-ikramov API description
  * OpenAPI spec version: 0.1
  */
-import { createInstance } from './api-instance';
-import type { BodyType } from './api-instance';
-export type DungTestsControllerFindAllByCreatedDate = typeof DungTestsControllerFindAllByCreatedDate[keyof typeof DungTestsControllerFindAllByCreatedDate];
-
+import { createInstance } from "./api-instance";
+import type { BodyType } from "./api-instance";
+export type DungTestsControllerFindAllByCreatedDate = (typeof DungTestsControllerFindAllByCreatedDate)[keyof typeof DungTestsControllerFindAllByCreatedDate];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DungTestsControllerFindAllByCreatedDate = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type DungTestsControllerFindAllById = typeof DungTestsControllerFindAllById[keyof typeof DungTestsControllerFindAllById];
-
+export type DungTestsControllerFindAllById = (typeof DungTestsControllerFindAllById)[keyof typeof DungTestsControllerFindAllById];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DungTestsControllerFindAllById = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
 export type DungTestsControllerFindAllParams = {
-search?: string;
-page?: number;
-perPage?: number;
-byId?: DungTestsControllerFindAllById;
-/**
- * Filter by animal id
- */
-animalId?: number;
-/**
- * Filter by user creation date in ISO format
- */
-createdDate?: string;
-/**
- * Sort by creation date (ASC or DESC)
- */
-byCreatedDate?: DungTestsControllerFindAllByCreatedDate;
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: DungTestsControllerFindAllById;
+  /**
+   * Filter by animal id
+   */
+  animalId?: number;
+  /**
+   * Filter by user creation date in ISO format
+   */
+  createdDate?: string;
+  /**
+   * Sort by creation date (ASC or DESC)
+   */
+  byCreatedDate?: DungTestsControllerFindAllByCreatedDate;
 };
 
-export type UrineTestsControllerFindAllByCreatedDate = typeof UrineTestsControllerFindAllByCreatedDate[keyof typeof UrineTestsControllerFindAllByCreatedDate];
-
+export type UrineTestsControllerFindAllByCreatedDate = (typeof UrineTestsControllerFindAllByCreatedDate)[keyof typeof UrineTestsControllerFindAllByCreatedDate];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UrineTestsControllerFindAllByCreatedDate = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type UrineTestsControllerFindAllById = typeof UrineTestsControllerFindAllById[keyof typeof UrineTestsControllerFindAllById];
-
+export type UrineTestsControllerFindAllById = (typeof UrineTestsControllerFindAllById)[keyof typeof UrineTestsControllerFindAllById];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UrineTestsControllerFindAllById = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
 export type UrineTestsControllerFindAllParams = {
-search?: string;
-page?: number;
-perPage?: number;
-byId?: UrineTestsControllerFindAllById;
-/**
- * Filter by animal id
- */
-animalId?: number;
-/**
- * Filter by user creation date in ISO format
- */
-createdDate?: string;
-/**
- * Sort by creation date (ASC or DESC)
- */
-byCreatedDate?: UrineTestsControllerFindAllByCreatedDate;
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: UrineTestsControllerFindAllById;
+  /**
+   * Filter by animal id
+   */
+  animalId?: number;
+  /**
+   * Filter by user creation date in ISO format
+   */
+  createdDate?: string;
+  /**
+   * Sort by creation date (ASC or DESC)
+   */
+  byCreatedDate?: UrineTestsControllerFindAllByCreatedDate;
 };
 
-export type BloodSerumTestsControllerFindAllByCreatedDate = typeof BloodSerumTestsControllerFindAllByCreatedDate[keyof typeof BloodSerumTestsControllerFindAllByCreatedDate];
-
+export type BloodSerumTestsControllerFindAllByCreatedDate = (typeof BloodSerumTestsControllerFindAllByCreatedDate)[keyof typeof BloodSerumTestsControllerFindAllByCreatedDate];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const BloodSerumTestsControllerFindAllByCreatedDate = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type BloodSerumTestsControllerFindAllById = typeof BloodSerumTestsControllerFindAllById[keyof typeof BloodSerumTestsControllerFindAllById];
-
+export type BloodSerumTestsControllerFindAllById = (typeof BloodSerumTestsControllerFindAllById)[keyof typeof BloodSerumTestsControllerFindAllById];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const BloodSerumTestsControllerFindAllById = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
 export type BloodSerumTestsControllerFindAllParams = {
-search?: string;
-page?: number;
-perPage?: number;
-byId?: BloodSerumTestsControllerFindAllById;
-/**
- * Filter by animal id
- */
-animalId?: number;
-/**
- * Filter by user creation date in ISO format
- */
-createdDate?: string;
-/**
- * Sort by creation date (ASC or DESC)
- */
-byCreatedDate?: BloodSerumTestsControllerFindAllByCreatedDate;
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: BloodSerumTestsControllerFindAllById;
+  /**
+   * Filter by animal id
+   */
+  animalId?: number | string;
+  /**
+   * Filter by user creation date in ISO format
+   */
+  createdDate?: string;
+  /**
+   * Sort by creation date (ASC or DESC)
+   */
+  byCreatedDate?: BloodSerumTestsControllerFindAllByCreatedDate;
 };
 
-export type GeneralBloodTestControllerFindAllByCreatedDate = typeof GeneralBloodTestControllerFindAllByCreatedDate[keyof typeof GeneralBloodTestControllerFindAllByCreatedDate];
-
+export type GeneralBloodTestControllerFindAllByCreatedDate = (typeof GeneralBloodTestControllerFindAllByCreatedDate)[keyof typeof GeneralBloodTestControllerFindAllByCreatedDate];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GeneralBloodTestControllerFindAllByCreatedDate = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type GeneralBloodTestControllerFindAllById = typeof GeneralBloodTestControllerFindAllById[keyof typeof GeneralBloodTestControllerFindAllById];
-
+export type GeneralBloodTestControllerFindAllById = (typeof GeneralBloodTestControllerFindAllById)[keyof typeof GeneralBloodTestControllerFindAllById];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GeneralBloodTestControllerFindAllById = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
 export type GeneralBloodTestControllerFindAllParams = {
-search?: string;
-page?: number;
-perPage?: number;
-byId?: GeneralBloodTestControllerFindAllById;
-/**
- * Filter by animal id
- */
-animalId?: number;
-/**
- * Filter by user creation date in ISO format
- */
-createdDate?: string;
-/**
- * Sort by creation date (ASC or DESC)
- */
-byCreatedDate?: GeneralBloodTestControllerFindAllByCreatedDate;
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: GeneralBloodTestControllerFindAllById;
+  /**
+   * Filter by animal id
+   */
+  animalId?: number | string;
+  /**
+   * Filter by user creation date in ISO format
+   */
+  createdDate?: string;
+  /**
+   * Sort by creation date (ASC or DESC)
+   */
+  byCreatedDate?: GeneralBloodTestControllerFindAllByCreatedDate;
 };
 
-export type DiseasesControllerFindAllByCreatedDate = typeof DiseasesControllerFindAllByCreatedDate[keyof typeof DiseasesControllerFindAllByCreatedDate];
-
+export type DiseasesControllerFindAllByCreatedDate = (typeof DiseasesControllerFindAllByCreatedDate)[keyof typeof DiseasesControllerFindAllByCreatedDate];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DiseasesControllerFindAllByCreatedDate = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type DiseasesControllerFindAllById = typeof DiseasesControllerFindAllById[keyof typeof DiseasesControllerFindAllById];
-
+export type DiseasesControllerFindAllById = (typeof DiseasesControllerFindAllById)[keyof typeof DiseasesControllerFindAllById];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DiseasesControllerFindAllById = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
 export type DiseasesControllerFindAllParams = {
-search?: string;
-page?: number;
-perPage?: number;
-byId?: DiseasesControllerFindAllById;
-/**
- * Filter by animal id
- */
-animalId?: number;
-/**
- * Filter by user creation date in ISO format
- */
-createdDate?: string;
-/**
- * Sort by creation date (ASC or DESC)
- */
-byCreatedDate?: DiseasesControllerFindAllByCreatedDate;
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: DiseasesControllerFindAllById;
+  /**
+   * Filter by animal id
+   */
+  animalId?: number;
+  /**
+   * Filter by user creation date in ISO format
+   */
+  createdDate?: string;
+  /**
+   * Sort by creation date (ASC or DESC)
+   */
+  byCreatedDate?: DiseasesControllerFindAllByCreatedDate;
 };
 
-export type InspectionsControllerFindAllByCreatedDate = typeof InspectionsControllerFindAllByCreatedDate[keyof typeof InspectionsControllerFindAllByCreatedDate];
-
+export type InspectionsControllerFindAllByCreatedDate = (typeof InspectionsControllerFindAllByCreatedDate)[keyof typeof InspectionsControllerFindAllByCreatedDate];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const InspectionsControllerFindAllByCreatedDate = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type InspectionsControllerFindAllById = typeof InspectionsControllerFindAllById[keyof typeof InspectionsControllerFindAllById];
-
+export type InspectionsControllerFindAllById = (typeof InspectionsControllerFindAllById)[keyof typeof InspectionsControllerFindAllById];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const InspectionsControllerFindAllById = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
 export type InspectionsControllerFindAllParams = {
-search?: string;
-page?: number;
-perPage?: number;
-byId?: InspectionsControllerFindAllById;
-/**
- * Filter by animal id
- */
-animalId?: number;
-/**
- * Filter by user creation date in ISO format
- */
-createdDate?: string;
-/**
- * Sort by creation date (ASC or DESC)
- */
-byCreatedDate?: InspectionsControllerFindAllByCreatedDate;
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: InspectionsControllerFindAllById;
+  /**
+   * Filter by animal id
+   */
+  animalId?: number;
+  /**
+   * Filter by user creation date in ISO format
+   */
+  createdDate?: string;
+  /**
+   * Sort by creation date (ASC or DESC)
+   */
+  byCreatedDate?: InspectionsControllerFindAllByCreatedDate;
 };
 
-export type GeneralInspectionControllerFindAllByCreatedDate = typeof GeneralInspectionControllerFindAllByCreatedDate[keyof typeof GeneralInspectionControllerFindAllByCreatedDate];
-
+export type GeneralInspectionControllerFindAllByCreatedDate = (typeof GeneralInspectionControllerFindAllByCreatedDate)[keyof typeof GeneralInspectionControllerFindAllByCreatedDate];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GeneralInspectionControllerFindAllByCreatedDate = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type GeneralInspectionControllerFindAllById = typeof GeneralInspectionControllerFindAllById[keyof typeof GeneralInspectionControllerFindAllById];
-
+export type GeneralInspectionControllerFindAllById = (typeof GeneralInspectionControllerFindAllById)[keyof typeof GeneralInspectionControllerFindAllById];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GeneralInspectionControllerFindAllById = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
 export type GeneralInspectionControllerFindAllParams = {
-search?: string;
-page?: number;
-perPage?: number;
-byId?: GeneralInspectionControllerFindAllById;
-/**
- * Filter by animal id
- */
-animalId?: number;
-/**
- * Filter by user creation date in ISO format
- */
-createdDate?: string;
-/**
- * Sort by creation date (ASC or DESC)
- */
-byCreatedDate?: GeneralInspectionControllerFindAllByCreatedDate;
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: GeneralInspectionControllerFindAllById;
+  /**
+   * Filter by animal id
+   */
+  animalId?: number | string;
+  /**
+   * Filter by user creation date in ISO format
+   */
+  createdDate?: string;
+  /**
+   * Sort by creation date (ASC or DESC)
+   */
+  byCreatedDate?: GeneralInspectionControllerFindAllByCreatedDate;
 };
 
-export type BreedsControllerFindAllById = typeof BreedsControllerFindAllById[keyof typeof BreedsControllerFindAllById];
-
+export type BreedsControllerFindAllById = (typeof BreedsControllerFindAllById)[keyof typeof BreedsControllerFindAllById];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const BreedsControllerFindAllById = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
 export type BreedsControllerFindAllParams = {
-search?: string;
-page?: number;
-perPage?: number;
-byId?: BreedsControllerFindAllById;
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: BreedsControllerFindAllById;
 };
 
-export type DiseaseTypesControllerFindAllById = typeof DiseaseTypesControllerFindAllById[keyof typeof DiseaseTypesControllerFindAllById];
-
+export type DiseaseTypesControllerFindAllById = (typeof DiseaseTypesControllerFindAllById)[keyof typeof DiseaseTypesControllerFindAllById];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DiseaseTypesControllerFindAllById = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
 export type DiseaseTypesControllerFindAllParams = {
-search?: string;
-page?: number;
-perPage?: number;
-byId?: DiseaseTypesControllerFindAllById;
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: DiseaseTypesControllerFindAllById;
 };
 
-export type VaccineTypesControllerFindAllById = typeof VaccineTypesControllerFindAllById[keyof typeof VaccineTypesControllerFindAllById];
-
+export type VaccineTypesControllerFindAllById = (typeof VaccineTypesControllerFindAllById)[keyof typeof VaccineTypesControllerFindAllById];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VaccineTypesControllerFindAllById = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
 export type VaccineTypesControllerFindAllParams = {
-search?: string;
-page?: number;
-perPage?: number;
-byId?: VaccineTypesControllerFindAllById;
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: VaccineTypesControllerFindAllById;
 };
 
-export type EyelidsControllerFindAllById = typeof EyelidsControllerFindAllById[keyof typeof EyelidsControllerFindAllById];
-
+export type EyelidsControllerFindAllById = (typeof EyelidsControllerFindAllById)[keyof typeof EyelidsControllerFindAllById];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const EyelidsControllerFindAllById = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
 export type EyelidsControllerFindAllParams = {
-search?: string;
-page?: number;
-perPage?: number;
-byId?: EyelidsControllerFindAllById;
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: EyelidsControllerFindAllById;
 };
 
-export type LeatherCoversControllerFindAllById = typeof LeatherCoversControllerFindAllById[keyof typeof LeatherCoversControllerFindAllById];
-
+export type LeatherCoversControllerFindAllById = (typeof LeatherCoversControllerFindAllById)[keyof typeof LeatherCoversControllerFindAllById];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const LeatherCoversControllerFindAllById = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
 export type LeatherCoversControllerFindAllParams = {
-search?: string;
-page?: number;
-perPage?: number;
-byId?: LeatherCoversControllerFindAllById;
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: LeatherCoversControllerFindAllById;
 };
 
-export type DungColorsControllerFindAllById = typeof DungColorsControllerFindAllById[keyof typeof DungColorsControllerFindAllById];
-
+export type DungColorsControllerFindAllById = (typeof DungColorsControllerFindAllById)[keyof typeof DungColorsControllerFindAllById];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DungColorsControllerFindAllById = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
 export type DungColorsControllerFindAllParams = {
-search?: string;
-page?: number;
-perPage?: number;
-byId?: DungColorsControllerFindAllById;
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: DungColorsControllerFindAllById;
 };
 
-export type UrineColorsControllerFindAllById = typeof UrineColorsControllerFindAllById[keyof typeof UrineColorsControllerFindAllById];
-
+export type UrineColorsControllerFindAllById = (typeof UrineColorsControllerFindAllById)[keyof typeof UrineColorsControllerFindAllById];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UrineColorsControllerFindAllById = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
 export type UrineColorsControllerFindAllParams = {
-search?: string;
-page?: number;
-perPage?: number;
-byId?: UrineColorsControllerFindAllById;
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: UrineColorsControllerFindAllById;
 };
 
-export type ColorsControllerFindAllById = typeof ColorsControllerFindAllById[keyof typeof ColorsControllerFindAllById];
-
+export type ColorsControllerFindAllById = (typeof ColorsControllerFindAllById)[keyof typeof ColorsControllerFindAllById];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ColorsControllerFindAllById = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
 export type ColorsControllerFindAllParams = {
-search?: string;
-page?: number;
-perPage?: number;
-byId?: ColorsControllerFindAllById;
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: ColorsControllerFindAllById;
 };
 
-export type AnimalTypesControllerFindAllById = typeof AnimalTypesControllerFindAllById[keyof typeof AnimalTypesControllerFindAllById];
-
+export type AnimalTypesControllerFindAllById = (typeof AnimalTypesControllerFindAllById)[keyof typeof AnimalTypesControllerFindAllById];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AnimalTypesControllerFindAllById = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
 export type AnimalTypesControllerFindAllParams = {
-search?: string;
-page?: number;
-perPage?: number;
-byId?: AnimalTypesControllerFindAllById;
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: AnimalTypesControllerFindAllById;
 };
 
-export type VetStationsControllerFindAllById = typeof VetStationsControllerFindAllById[keyof typeof VetStationsControllerFindAllById];
-
+export type VetStationsControllerFindAllById = (typeof VetStationsControllerFindAllById)[keyof typeof VetStationsControllerFindAllById];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VetStationsControllerFindAllById = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
 export type VetStationsControllerFindAllParams = {
-search?: string;
-page?: number;
-perPage?: number;
-byId?: VetStationsControllerFindAllById;
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: VetStationsControllerFindAllById;
 };
 
-export type DistrictsControllerFindAllById = typeof DistrictsControllerFindAllById[keyof typeof DistrictsControllerFindAllById];
-
+export type DistrictsControllerFindAllById = (typeof DistrictsControllerFindAllById)[keyof typeof DistrictsControllerFindAllById];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DistrictsControllerFindAllById = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
 export type DistrictsControllerFindAllParams = {
-search?: string;
-page?: number;
-perPage?: number;
-byId?: DistrictsControllerFindAllById;
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: DistrictsControllerFindAllById;
 };
 
-export type RegionsControllerFindAllById = typeof RegionsControllerFindAllById[keyof typeof RegionsControllerFindAllById];
-
+export type RegionsControllerFindAllById = (typeof RegionsControllerFindAllById)[keyof typeof RegionsControllerFindAllById];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RegionsControllerFindAllById = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
 export type RegionsControllerFindAllParams = {
-search?: string;
-page?: number;
-perPage?: number;
-byId?: RegionsControllerFindAllById;
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: RegionsControllerFindAllById;
 };
 
-export type VaccinesControllerFindAllByCreatedDate = typeof VaccinesControllerFindAllByCreatedDate[keyof typeof VaccinesControllerFindAllByCreatedDate];
-
+export type VaccinesControllerFindAllByCreatedDate = (typeof VaccinesControllerFindAllByCreatedDate)[keyof typeof VaccinesControllerFindAllByCreatedDate];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VaccinesControllerFindAllByCreatedDate = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type VaccinesControllerFindAllByAnimalId = typeof VaccinesControllerFindAllByAnimalId[keyof typeof VaccinesControllerFindAllByAnimalId];
-
+export type VaccinesControllerFindAllByAnimalId = (typeof VaccinesControllerFindAllByAnimalId)[keyof typeof VaccinesControllerFindAllByAnimalId];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VaccinesControllerFindAllByAnimalId = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type VaccinesControllerFindAllByTypeId = typeof VaccinesControllerFindAllByTypeId[keyof typeof VaccinesControllerFindAllByTypeId];
-
+export type VaccinesControllerFindAllByTypeId = (typeof VaccinesControllerFindAllByTypeId)[keyof typeof VaccinesControllerFindAllByTypeId];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VaccinesControllerFindAllByTypeId = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type VaccinesControllerFindAllByDate = typeof VaccinesControllerFindAllByDate[keyof typeof VaccinesControllerFindAllByDate];
-
+export type VaccinesControllerFindAllByDate = (typeof VaccinesControllerFindAllByDate)[keyof typeof VaccinesControllerFindAllByDate];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VaccinesControllerFindAllByDate = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type VaccinesControllerFindAllById = typeof VaccinesControllerFindAllById[keyof typeof VaccinesControllerFindAllById];
-
+export type VaccinesControllerFindAllById = (typeof VaccinesControllerFindAllById)[keyof typeof VaccinesControllerFindAllById];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VaccinesControllerFindAllById = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
 export type VaccinesControllerFindAllParams = {
-search?: string;
-page?: number;
-perPage?: number;
-byId?: VaccinesControllerFindAllById;
-/**
- * Filter by vaccine date in ISO format
- */
-date?: string;
-/**
- * Filter by vaccine type ID
- */
-typeId?: number;
-/**
- * Filter by animal ID
- */
-animalId?: number;
-/**
- * Filter by creation date in ISO format
- */
-createdDate?: string;
-/**
- * Sort by vaccine date (ASC or DESC)
- */
-byDate?: VaccinesControllerFindAllByDate;
-/**
- * Sort by vaccine type ID (ASC or DESC)
- */
-byTypeId?: VaccinesControllerFindAllByTypeId;
-/**
- * Sort by animal ID (ASC or DESC)
- */
-byAnimalId?: VaccinesControllerFindAllByAnimalId;
-/**
- * Sort by creation date (ASC or DESC)
- */
-byCreatedDate?: VaccinesControllerFindAllByCreatedDate;
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: VaccinesControllerFindAllById;
+  /**
+   * Filter by vaccine date in ISO format
+   */
+  date?: string;
+  /**
+   * Filter by vaccine type ID
+   */
+  typeId?: number;
+  /**
+   * Filter by animal ID
+   */
+  animalId?: number | string;
+  /**
+   * Filter by creation date in ISO format
+   */
+  createdDate?: string;
+  /**
+   * Sort by vaccine date (ASC or DESC)
+   */
+  byDate?: VaccinesControllerFindAllByDate;
+  /**
+   * Sort by vaccine type ID (ASC or DESC)
+   */
+  byTypeId?: VaccinesControllerFindAllByTypeId;
+  /**
+   * Sort by animal ID (ASC or DESC)
+   */
+  byAnimalId?: VaccinesControllerFindAllByAnimalId;
+  /**
+   * Sort by creation date (ASC or DESC)
+   */
+  byCreatedDate?: VaccinesControllerFindAllByCreatedDate;
 };
 
-export type AnimalsControllerFindAllByCreatedDate = typeof AnimalsControllerFindAllByCreatedDate[keyof typeof AnimalsControllerFindAllByCreatedDate];
-
+export type AnimalsControllerFindAllByCreatedDate = (typeof AnimalsControllerFindAllByCreatedDate)[keyof typeof AnimalsControllerFindAllByCreatedDate];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AnimalsControllerFindAllByCreatedDate = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type AnimalsControllerFindAllByColorId = typeof AnimalsControllerFindAllByColorId[keyof typeof AnimalsControllerFindAllByColorId];
-
+export type AnimalsControllerFindAllByColorId = (typeof AnimalsControllerFindAllByColorId)[keyof typeof AnimalsControllerFindAllByColorId];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AnimalsControllerFindAllByColorId = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type AnimalsControllerFindAllByBirthDate = typeof AnimalsControllerFindAllByBirthDate[keyof typeof AnimalsControllerFindAllByBirthDate];
-
+export type AnimalsControllerFindAllByBirthDate = (typeof AnimalsControllerFindAllByBirthDate)[keyof typeof AnimalsControllerFindAllByBirthDate];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AnimalsControllerFindAllByBirthDate = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type AnimalsControllerFindAllByBreedId = typeof AnimalsControllerFindAllByBreedId[keyof typeof AnimalsControllerFindAllByBreedId];
-
+export type AnimalsControllerFindAllByBreedId = (typeof AnimalsControllerFindAllByBreedId)[keyof typeof AnimalsControllerFindAllByBreedId];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AnimalsControllerFindAllByBreedId = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type AnimalsControllerFindAllByGender = typeof AnimalsControllerFindAllByGender[keyof typeof AnimalsControllerFindAllByGender];
-
+export type AnimalsControllerFindAllByGender = (typeof AnimalsControllerFindAllByGender)[keyof typeof AnimalsControllerFindAllByGender];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AnimalsControllerFindAllByGender = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type AnimalsControllerFindAllByTypeId = typeof AnimalsControllerFindAllByTypeId[keyof typeof AnimalsControllerFindAllByTypeId];
-
+export type AnimalsControllerFindAllByTypeId = (typeof AnimalsControllerFindAllByTypeId)[keyof typeof AnimalsControllerFindAllByTypeId];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AnimalsControllerFindAllByTypeId = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type AnimalsControllerFindAllByFarmedId = typeof AnimalsControllerFindAllByFarmedId[keyof typeof AnimalsControllerFindAllByFarmedId];
-
+export type AnimalsControllerFindAllByFarmedId = (typeof AnimalsControllerFindAllByFarmedId)[keyof typeof AnimalsControllerFindAllByFarmedId];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AnimalsControllerFindAllByFarmedId = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type AnimalsControllerFindAllGender = typeof AnimalsControllerFindAllGender[keyof typeof AnimalsControllerFindAllGender];
-
+export type AnimalsControllerFindAllGender = (typeof AnimalsControllerFindAllGender)[keyof typeof AnimalsControllerFindAllGender];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AnimalsControllerFindAllGender = {
-  MALE: 'MALE',
-  FEMALE: 'FEMALE',
+  MALE: "MALE",
+  FEMALE: "FEMALE",
 } as const;
 
-export type AnimalsControllerFindAllById = typeof AnimalsControllerFindAllById[keyof typeof AnimalsControllerFindAllById];
-
+export type AnimalsControllerFindAllById = (typeof AnimalsControllerFindAllById)[keyof typeof AnimalsControllerFindAllById];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AnimalsControllerFindAllById = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
 export type AnimalsControllerFindAllParams = {
-search?: string;
-page?: number;
-perPage?: number;
-byId?: AnimalsControllerFindAllById;
-/**
- * Filter by farmer ID
- */
-farmerId?: number;
-/**
- * Filter by animal type ID
- */
-typeId?: number;
-/**
- * Filter by animal gender (MALE or FEMALE)
- */
-gender?: AnimalsControllerFindAllGender;
-/**
- * Filter by animal breedId
- */
-breedId?: number;
-/**
- * Filter by animal birth date in ISO format
- */
-birthDate?: string;
-/**
- * Filter by color ID
- */
-colorId?: number;
-/**
- * Filter by creation date in ISO format
- */
-createdDate?: string;
-/**
- * Sort by farmer ID (ASC or DESC)
- */
-byFarmedId?: AnimalsControllerFindAllByFarmedId;
-/**
- * Sort by type ID (ASC or DESC)
- */
-byTypeId?: AnimalsControllerFindAllByTypeId;
-/**
- * Sort by gender (ASC or DESC)
- */
-byGender?: AnimalsControllerFindAllByGender;
-/**
- * Sort by breed (ASC or DESC)
- */
-byBreedId?: AnimalsControllerFindAllByBreedId;
-/**
- * Sort by birth date (ASC or DESC)
- */
-byBirthDate?: AnimalsControllerFindAllByBirthDate;
-/**
- * Sort by color ID (ASC or DESC)
- */
-byColorId?: AnimalsControllerFindAllByColorId;
-/**
- * Sort by creation date (ASC or DESC)
- */
-byCreatedDate?: AnimalsControllerFindAllByCreatedDate;
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: AnimalsControllerFindAllById;
+  /**
+   * Filter by farmer ID
+   */
+  farmerId?: number;
+  /**
+   * Filter by animal type ID
+   */
+  typeId?: number;
+  /**
+   * Filter by animal gender (MALE or FEMALE)
+   */
+  gender?: AnimalsControllerFindAllGender;
+  /**
+   * Filter by animal breedId
+   */
+  breedId?: number;
+  /**
+   * Filter by animal birth date in ISO format
+   */
+  birthDate?: string;
+  /**
+   * Filter by color ID
+   */
+  colorId?: number;
+  /**
+   * Filter by creation date in ISO format
+   */
+  createdDate?: string;
+  /**
+   * Sort by farmer ID (ASC or DESC)
+   */
+  byFarmedId?: AnimalsControllerFindAllByFarmedId;
+  /**
+   * Sort by type ID (ASC or DESC)
+   */
+  byTypeId?: AnimalsControllerFindAllByTypeId;
+  /**
+   * Sort by gender (ASC or DESC)
+   */
+  byGender?: AnimalsControllerFindAllByGender;
+  /**
+   * Sort by breed (ASC or DESC)
+   */
+  byBreedId?: AnimalsControllerFindAllByBreedId;
+  /**
+   * Sort by birth date (ASC or DESC)
+   */
+  byBirthDate?: AnimalsControllerFindAllByBirthDate;
+  /**
+   * Sort by color ID (ASC or DESC)
+   */
+  byColorId?: AnimalsControllerFindAllByColorId;
+  /**
+   * Sort by creation date (ASC or DESC)
+   */
+  byCreatedDate?: AnimalsControllerFindAllByCreatedDate;
 };
 
-export type FarmersControllerFindAllByVeterinarianId = typeof FarmersControllerFindAllByVeterinarianId[keyof typeof FarmersControllerFindAllByVeterinarianId];
-
+export type FarmersControllerFindAllByVeterinarianId = (typeof FarmersControllerFindAllByVeterinarianId)[keyof typeof FarmersControllerFindAllByVeterinarianId];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FarmersControllerFindAllByVeterinarianId = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type FarmersControllerFindAllByCreatedDate = typeof FarmersControllerFindAllByCreatedDate[keyof typeof FarmersControllerFindAllByCreatedDate];
-
+export type FarmersControllerFindAllByCreatedDate = (typeof FarmersControllerFindAllByCreatedDate)[keyof typeof FarmersControllerFindAllByCreatedDate];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FarmersControllerFindAllByCreatedDate = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type FarmersControllerFindAllByRegionId = typeof FarmersControllerFindAllByRegionId[keyof typeof FarmersControllerFindAllByRegionId];
-
+export type FarmersControllerFindAllByRegionId = (typeof FarmersControllerFindAllByRegionId)[keyof typeof FarmersControllerFindAllByRegionId];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FarmersControllerFindAllByRegionId = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type FarmersControllerFindAllByDistrictId = typeof FarmersControllerFindAllByDistrictId[keyof typeof FarmersControllerFindAllByDistrictId];
-
+export type FarmersControllerFindAllByDistrictId = (typeof FarmersControllerFindAllByDistrictId)[keyof typeof FarmersControllerFindAllByDistrictId];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FarmersControllerFindAllByDistrictId = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type FarmersControllerFindAllByRole = typeof FarmersControllerFindAllByRole[keyof typeof FarmersControllerFindAllByRole];
-
+export type FarmersControllerFindAllByRole = (typeof FarmersControllerFindAllByRole)[keyof typeof FarmersControllerFindAllByRole];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FarmersControllerFindAllByRole = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type FarmersControllerFindAllByGender = typeof FarmersControllerFindAllByGender[keyof typeof FarmersControllerFindAllByGender];
-
+export type FarmersControllerFindAllByGender = (typeof FarmersControllerFindAllByGender)[keyof typeof FarmersControllerFindAllByGender];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FarmersControllerFindAllByGender = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type FarmersControllerFindAllByBirthDate = typeof FarmersControllerFindAllByBirthDate[keyof typeof FarmersControllerFindAllByBirthDate];
-
+export type FarmersControllerFindAllByBirthDate = (typeof FarmersControllerFindAllByBirthDate)[keyof typeof FarmersControllerFindAllByBirthDate];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FarmersControllerFindAllByBirthDate = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type FarmersControllerFindAllRole = typeof FarmersControllerFindAllRole[keyof typeof FarmersControllerFindAllRole];
-
+export type FarmersControllerFindAllRole = (typeof FarmersControllerFindAllRole)[keyof typeof FarmersControllerFindAllRole];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FarmersControllerFindAllRole = {
-  ADMIN: 'ADMIN',
-  VETERINARIAN: 'VETERINARIAN',
-  FARMER: 'FARMER',
+  ADMIN: "ADMIN",
+  VETERINARIAN: "VETERINARIAN",
+  FARMER: "FARMER",
 } as const;
 
-export type FarmersControllerFindAllGender = typeof FarmersControllerFindAllGender[keyof typeof FarmersControllerFindAllGender];
-
+export type FarmersControllerFindAllGender = (typeof FarmersControllerFindAllGender)[keyof typeof FarmersControllerFindAllGender];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FarmersControllerFindAllGender = {
-  MALE: 'MALE',
-  FEMALE: 'FEMALE',
+  MALE: "MALE",
+  FEMALE: "FEMALE",
 } as const;
 
-export type FarmersControllerFindAllById = typeof FarmersControllerFindAllById[keyof typeof FarmersControllerFindAllById];
-
+export type FarmersControllerFindAllById = (typeof FarmersControllerFindAllById)[keyof typeof FarmersControllerFindAllById];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FarmersControllerFindAllById = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
 export type FarmersControllerFindAllParams = {
-search?: string;
-page?: number;
-perPage?: number;
-byId?: FarmersControllerFindAllById;
-/**
- * Filter by user gender (MALE or FEMALE)
- */
-gender?: FarmersControllerFindAllGender;
-/**
- * Filter by user role (e.g., ADMIN, USER)
- */
-role?: FarmersControllerFindAllRole;
-/**
- * Filter by user birth date in ISO format
- */
-birthDate?: string;
-/**
- * Filter by district ID
- */
-districtId?: number;
-/**
- * Filter by region ID
- */
-regionId?: number;
-/**
- * Filter by user creation date in ISO format
- */
-createdDate?: string;
-/**
- * Sort by birth date (ASC or DESC)
- */
-byBirthDate?: FarmersControllerFindAllByBirthDate;
-/**
- * Sort by gender (ASC or DESC)
- */
-byGender?: FarmersControllerFindAllByGender;
-/**
- * Sort by role (ASC or DESC)
- */
-byRole?: FarmersControllerFindAllByRole;
-/**
- * Sort by district ID (ASC or DESC)
- */
-byDistrictId?: FarmersControllerFindAllByDistrictId;
-/**
- * Sort by region ID (ASC or DESC)
- */
-byRegionId?: FarmersControllerFindAllByRegionId;
-/**
- * Sort by creation date (ASC or DESC)
- */
-byCreatedDate?: FarmersControllerFindAllByCreatedDate;
-/**
- * Filter by veterinarian ID
- */
-veterinarianId?: number;
-/**
- * Sort by veterinarian ID (ASC or DESC)
- */
-byVeterinarianId?: FarmersControllerFindAllByVeterinarianId;
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: FarmersControllerFindAllById;
+  /**
+   * Filter by user gender (MALE or FEMALE)
+   */
+  gender?: FarmersControllerFindAllGender;
+  /**
+   * Filter by user role (e.g., ADMIN, USER)
+   */
+  role?: FarmersControllerFindAllRole;
+  /**
+   * Filter by user birth date in ISO format
+   */
+  birthDate?: string;
+  /**
+   * Filter by district ID
+   */
+  districtId?: number;
+  /**
+   * Filter by region ID
+   */
+  regionId?: number;
+  /**
+   * Filter by user creation date in ISO format
+   */
+  createdDate?: string;
+  /**
+   * Sort by birth date (ASC or DESC)
+   */
+  byBirthDate?: FarmersControllerFindAllByBirthDate;
+  /**
+   * Sort by gender (ASC or DESC)
+   */
+  byGender?: FarmersControllerFindAllByGender;
+  /**
+   * Sort by role (ASC or DESC)
+   */
+  byRole?: FarmersControllerFindAllByRole;
+  /**
+   * Sort by district ID (ASC or DESC)
+   */
+  byDistrictId?: FarmersControllerFindAllByDistrictId;
+  /**
+   * Sort by region ID (ASC or DESC)
+   */
+  byRegionId?: FarmersControllerFindAllByRegionId;
+  /**
+   * Sort by creation date (ASC or DESC)
+   */
+  byCreatedDate?: FarmersControllerFindAllByCreatedDate;
+  /**
+   * Filter by veterinarian ID
+   */
+  veterinarianId?: number;
+  /**
+   * Sort by veterinarian ID (ASC or DESC)
+   */
+  byVeterinarianId?: FarmersControllerFindAllByVeterinarianId;
 };
 
-export type VeterinariansControllerFindAllByCreatedDate = typeof VeterinariansControllerFindAllByCreatedDate[keyof typeof VeterinariansControllerFindAllByCreatedDate];
-
+export type VeterinariansControllerFindAllByCreatedDate = (typeof VeterinariansControllerFindAllByCreatedDate)[keyof typeof VeterinariansControllerFindAllByCreatedDate];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VeterinariansControllerFindAllByCreatedDate = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type VeterinariansControllerFindAllByRegionId = typeof VeterinariansControllerFindAllByRegionId[keyof typeof VeterinariansControllerFindAllByRegionId];
-
+export type VeterinariansControllerFindAllByRegionId = (typeof VeterinariansControllerFindAllByRegionId)[keyof typeof VeterinariansControllerFindAllByRegionId];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VeterinariansControllerFindAllByRegionId = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type VeterinariansControllerFindAllByDistrictId = typeof VeterinariansControllerFindAllByDistrictId[keyof typeof VeterinariansControllerFindAllByDistrictId];
-
+export type VeterinariansControllerFindAllByDistrictId = (typeof VeterinariansControllerFindAllByDistrictId)[keyof typeof VeterinariansControllerFindAllByDistrictId];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VeterinariansControllerFindAllByDistrictId = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type VeterinariansControllerFindAllByRole = typeof VeterinariansControllerFindAllByRole[keyof typeof VeterinariansControllerFindAllByRole];
-
+export type VeterinariansControllerFindAllByRole = (typeof VeterinariansControllerFindAllByRole)[keyof typeof VeterinariansControllerFindAllByRole];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VeterinariansControllerFindAllByRole = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type VeterinariansControllerFindAllByGender = typeof VeterinariansControllerFindAllByGender[keyof typeof VeterinariansControllerFindAllByGender];
-
+export type VeterinariansControllerFindAllByGender = (typeof VeterinariansControllerFindAllByGender)[keyof typeof VeterinariansControllerFindAllByGender];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VeterinariansControllerFindAllByGender = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type VeterinariansControllerFindAllByBirthDate = typeof VeterinariansControllerFindAllByBirthDate[keyof typeof VeterinariansControllerFindAllByBirthDate];
-
+export type VeterinariansControllerFindAllByBirthDate = (typeof VeterinariansControllerFindAllByBirthDate)[keyof typeof VeterinariansControllerFindAllByBirthDate];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VeterinariansControllerFindAllByBirthDate = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type VeterinariansControllerFindAllRole = typeof VeterinariansControllerFindAllRole[keyof typeof VeterinariansControllerFindAllRole];
-
+export type VeterinariansControllerFindAllRole = (typeof VeterinariansControllerFindAllRole)[keyof typeof VeterinariansControllerFindAllRole];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VeterinariansControllerFindAllRole = {
-  ADMIN: 'ADMIN',
-  VETERINARIAN: 'VETERINARIAN',
-  FARMER: 'FARMER',
+  ADMIN: "ADMIN",
+  VETERINARIAN: "VETERINARIAN",
+  FARMER: "FARMER",
 } as const;
 
-export type VeterinariansControllerFindAllGender = typeof VeterinariansControllerFindAllGender[keyof typeof VeterinariansControllerFindAllGender];
-
+export type VeterinariansControllerFindAllGender = (typeof VeterinariansControllerFindAllGender)[keyof typeof VeterinariansControllerFindAllGender];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VeterinariansControllerFindAllGender = {
-  MALE: 'MALE',
-  FEMALE: 'FEMALE',
+  MALE: "MALE",
+  FEMALE: "FEMALE",
 } as const;
 
-export type VeterinariansControllerFindAllById = typeof VeterinariansControllerFindAllById[keyof typeof VeterinariansControllerFindAllById];
-
+export type VeterinariansControllerFindAllById = (typeof VeterinariansControllerFindAllById)[keyof typeof VeterinariansControllerFindAllById];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VeterinariansControllerFindAllById = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
 export type VeterinariansControllerFindAllParams = {
-search?: string;
-page?: number;
-perPage?: number;
-byId?: VeterinariansControllerFindAllById;
-/**
- * Filter by user gender (MALE or FEMALE)
- */
-gender?: VeterinariansControllerFindAllGender;
-/**
- * Filter by user role (e.g., ADMIN, USER)
- */
-role?: VeterinariansControllerFindAllRole;
-/**
- * Filter by user birth date in ISO format
- */
-birthDate?: string;
-/**
- * Filter by district ID
- */
-districtId?: number;
-/**
- * Filter by region ID
- */
-regionId?: number;
-/**
- * Filter by user creation date in ISO format
- */
-createdDate?: string;
-/**
- * Sort by birth date (ASC or DESC)
- */
-byBirthDate?: VeterinariansControllerFindAllByBirthDate;
-/**
- * Sort by gender (ASC or DESC)
- */
-byGender?: VeterinariansControllerFindAllByGender;
-/**
- * Sort by role (ASC or DESC)
- */
-byRole?: VeterinariansControllerFindAllByRole;
-/**
- * Sort by district ID (ASC or DESC)
- */
-byDistrictId?: VeterinariansControllerFindAllByDistrictId;
-/**
- * Sort by region ID (ASC or DESC)
- */
-byRegionId?: VeterinariansControllerFindAllByRegionId;
-/**
- * Sort by creation date (ASC or DESC)
- */
-byCreatedDate?: VeterinariansControllerFindAllByCreatedDate;
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: VeterinariansControllerFindAllById;
+  /**
+   * Filter by user gender (MALE or FEMALE)
+   */
+  gender?: VeterinariansControllerFindAllGender;
+  /**
+   * Filter by user role (e.g., ADMIN, USER)
+   */
+  role?: VeterinariansControllerFindAllRole;
+  /**
+   * Filter by user birth date in ISO format
+   */
+  birthDate?: string;
+  /**
+   * Filter by district ID
+   */
+  districtId?: number;
+  /**
+   * Filter by region ID
+   */
+  regionId?: number;
+  /**
+   * Filter by user creation date in ISO format
+   */
+  createdDate?: string;
+  /**
+   * Sort by birth date (ASC or DESC)
+   */
+  byBirthDate?: VeterinariansControllerFindAllByBirthDate;
+  /**
+   * Sort by gender (ASC or DESC)
+   */
+  byGender?: VeterinariansControllerFindAllByGender;
+  /**
+   * Sort by role (ASC or DESC)
+   */
+  byRole?: VeterinariansControllerFindAllByRole;
+  /**
+   * Sort by district ID (ASC or DESC)
+   */
+  byDistrictId?: VeterinariansControllerFindAllByDistrictId;
+  /**
+   * Sort by region ID (ASC or DESC)
+   */
+  byRegionId?: VeterinariansControllerFindAllByRegionId;
+  /**
+   * Sort by creation date (ASC or DESC)
+   */
+  byCreatedDate?: VeterinariansControllerFindAllByCreatedDate;
 };
 
-export type UsersControllerFindAllByCreatedDate = typeof UsersControllerFindAllByCreatedDate[keyof typeof UsersControllerFindAllByCreatedDate];
-
+export type UsersControllerFindAllByCreatedDate = (typeof UsersControllerFindAllByCreatedDate)[keyof typeof UsersControllerFindAllByCreatedDate];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UsersControllerFindAllByCreatedDate = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type UsersControllerFindAllByRegionId = typeof UsersControllerFindAllByRegionId[keyof typeof UsersControllerFindAllByRegionId];
-
+export type UsersControllerFindAllByRegionId = (typeof UsersControllerFindAllByRegionId)[keyof typeof UsersControllerFindAllByRegionId];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UsersControllerFindAllByRegionId = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type UsersControllerFindAllByDistrictId = typeof UsersControllerFindAllByDistrictId[keyof typeof UsersControllerFindAllByDistrictId];
-
+export type UsersControllerFindAllByDistrictId = (typeof UsersControllerFindAllByDistrictId)[keyof typeof UsersControllerFindAllByDistrictId];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UsersControllerFindAllByDistrictId = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type UsersControllerFindAllByRole = typeof UsersControllerFindAllByRole[keyof typeof UsersControllerFindAllByRole];
-
+export type UsersControllerFindAllByRole = (typeof UsersControllerFindAllByRole)[keyof typeof UsersControllerFindAllByRole];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UsersControllerFindAllByRole = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type UsersControllerFindAllByGender = typeof UsersControllerFindAllByGender[keyof typeof UsersControllerFindAllByGender];
-
+export type UsersControllerFindAllByGender = (typeof UsersControllerFindAllByGender)[keyof typeof UsersControllerFindAllByGender];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UsersControllerFindAllByGender = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type UsersControllerFindAllByBirthDate = typeof UsersControllerFindAllByBirthDate[keyof typeof UsersControllerFindAllByBirthDate];
-
+export type UsersControllerFindAllByBirthDate = (typeof UsersControllerFindAllByBirthDate)[keyof typeof UsersControllerFindAllByBirthDate];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UsersControllerFindAllByBirthDate = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
-export type UsersControllerFindAllRole = typeof UsersControllerFindAllRole[keyof typeof UsersControllerFindAllRole];
-
+export type UsersControllerFindAllRole = (typeof UsersControllerFindAllRole)[keyof typeof UsersControllerFindAllRole];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UsersControllerFindAllRole = {
-  ADMIN: 'ADMIN',
-  VETERINARIAN: 'VETERINARIAN',
-  FARMER: 'FARMER',
+  ADMIN: "ADMIN",
+  VETERINARIAN: "VETERINARIAN",
+  FARMER: "FARMER",
 } as const;
 
-export type UsersControllerFindAllGender = typeof UsersControllerFindAllGender[keyof typeof UsersControllerFindAllGender];
-
+export type UsersControllerFindAllGender = (typeof UsersControllerFindAllGender)[keyof typeof UsersControllerFindAllGender];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UsersControllerFindAllGender = {
-  MALE: 'MALE',
-  FEMALE: 'FEMALE',
+  MALE: "MALE",
+  FEMALE: "FEMALE",
 } as const;
 
-export type UsersControllerFindAllById = typeof UsersControllerFindAllById[keyof typeof UsersControllerFindAllById];
-
+export type UsersControllerFindAllById = (typeof UsersControllerFindAllById)[keyof typeof UsersControllerFindAllById];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UsersControllerFindAllById = {
-  asc: 'asc',
-  desc: 'desc',
+  asc: "asc",
+  desc: "desc",
 } as const;
 
 export type UsersControllerFindAllParams = {
-search?: string;
-page?: number;
-perPage?: number;
-byId?: UsersControllerFindAllById;
-/**
- * Filter by user gender (MALE or FEMALE)
- */
-gender?: UsersControllerFindAllGender;
-/**
- * Filter by user role (e.g., ADMIN, USER)
- */
-role?: UsersControllerFindAllRole;
-/**
- * Filter by user birth date in ISO format
- */
-birthDate?: string;
-/**
- * Filter by district ID
- */
-districtId?: number;
-/**
- * Filter by region ID
- */
-regionId?: number;
-/**
- * Filter by user creation date in ISO format
- */
-createdDate?: string;
-/**
- * Sort by birth date (ASC or DESC)
- */
-byBirthDate?: UsersControllerFindAllByBirthDate;
-/**
- * Sort by gender (ASC or DESC)
- */
-byGender?: UsersControllerFindAllByGender;
-/**
- * Sort by role (ASC or DESC)
- */
-byRole?: UsersControllerFindAllByRole;
-/**
- * Sort by district ID (ASC or DESC)
- */
-byDistrictId?: UsersControllerFindAllByDistrictId;
-/**
- * Sort by region ID (ASC or DESC)
- */
-byRegionId?: UsersControllerFindAllByRegionId;
-/**
- * Sort by creation date (ASC or DESC)
- */
-byCreatedDate?: UsersControllerFindAllByCreatedDate;
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: UsersControllerFindAllById;
+  /**
+   * Filter by user gender (MALE or FEMALE)
+   */
+  gender?: UsersControllerFindAllGender;
+  /**
+   * Filter by user role (e.g., ADMIN, USER)
+   */
+  role?: UsersControllerFindAllRole;
+  /**
+   * Filter by user birth date in ISO format
+   */
+  birthDate?: string;
+  /**
+   * Filter by district ID
+   */
+  districtId?: number;
+  /**
+   * Filter by region ID
+   */
+  regionId?: number;
+  /**
+   * Filter by user creation date in ISO format
+   */
+  createdDate?: string;
+  /**
+   * Sort by birth date (ASC or DESC)
+   */
+  byBirthDate?: UsersControllerFindAllByBirthDate;
+  /**
+   * Sort by gender (ASC or DESC)
+   */
+  byGender?: UsersControllerFindAllByGender;
+  /**
+   * Sort by role (ASC or DESC)
+   */
+  byRole?: UsersControllerFindAllByRole;
+  /**
+   * Sort by district ID (ASC or DESC)
+   */
+  byDistrictId?: UsersControllerFindAllByDistrictId;
+  /**
+   * Sort by region ID (ASC or DESC)
+   */
+  byRegionId?: UsersControllerFindAllByRegionId;
+  /**
+   * Sort by creation date (ASC or DESC)
+   */
+  byCreatedDate?: UsersControllerFindAllByCreatedDate;
 };
 
 /**
  * The smell type of the dung sample.
  */
-export type UpdateDungTestDtoSmell = typeof UpdateDungTestDtoSmell[keyof typeof UpdateDungTestDtoSmell];
-
+export type UpdateDungTestDtoSmell = (typeof UpdateDungTestDtoSmell)[keyof typeof UpdateDungTestDtoSmell];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UpdateDungTestDtoSmell = {
-  PUNGENT: 'PUNGENT',
-  WEAK: 'WEAK',
-  HAS: 'HAS',
-  NO: 'NO',
+  PUNGENT: "PUNGENT",
+  WEAK: "WEAK",
+  HAS: "HAS",
+  NO: "NO",
 } as const;
 
 /**
  * The form of the dung sample.
  */
-export type UpdateDungTestDtoForm = typeof UpdateDungTestDtoForm[keyof typeof UpdateDungTestDtoForm];
-
+export type UpdateDungTestDtoForm = (typeof UpdateDungTestDtoForm)[keyof typeof UpdateDungTestDtoForm];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UpdateDungTestDtoForm = {
-  NORMAL: 'NORMAL',
-  SOLID: 'SOLID',
-  LIQUID: 'LIQUID',
-  MEDIUM: 'MEDIUM',
+  NORMAL: "NORMAL",
+  SOLID: "SOLID",
+  LIQUID: "LIQUID",
+  MEDIUM: "MEDIUM",
 } as const;
 
 /**
  * The clarity of the dung sample.
  */
-export type UpdateDungTestDtoClarity = typeof UpdateDungTestDtoClarity[keyof typeof UpdateDungTestDtoClarity];
-
+export type UpdateDungTestDtoClarity = (typeof UpdateDungTestDtoClarity)[keyof typeof UpdateDungTestDtoClarity];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UpdateDungTestDtoClarity = {
-  CLEAR: 'CLEAR',
-  NOT_CLEAR: 'NOT_CLEAR',
+  CLEAR: "CLEAR",
+  NOT_CLEAR: "NOT_CLEAR",
 } as const;
 
 export interface UpdateDungTestDto {
@@ -1181,41 +1110,38 @@ export interface PaginatedDungTestEntity {
 /**
  * The smell type of the dung.
  */
-export type DungTestEntitySmell = typeof DungTestEntitySmell[keyof typeof DungTestEntitySmell];
-
+export type DungTestEntitySmell = (typeof DungTestEntitySmell)[keyof typeof DungTestEntitySmell];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DungTestEntitySmell = {
-  PUNGENT: 'PUNGENT',
-  WEAK: 'WEAK',
-  HAS: 'HAS',
-  NO: 'NO',
+  PUNGENT: "PUNGENT",
+  WEAK: "WEAK",
+  HAS: "HAS",
+  NO: "NO",
 } as const;
 
 /**
  * The form of the dung (e.g., solid, semi-solid, or liquid).
  */
-export type DungTestEntityForm = typeof DungTestEntityForm[keyof typeof DungTestEntityForm];
-
+export type DungTestEntityForm = (typeof DungTestEntityForm)[keyof typeof DungTestEntityForm];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DungTestEntityForm = {
-  NORMAL: 'NORMAL',
-  SOLID: 'SOLID',
-  LIQUID: 'LIQUID',
-  MEDIUM: 'MEDIUM',
+  NORMAL: "NORMAL",
+  SOLID: "SOLID",
+  LIQUID: "LIQUID",
+  MEDIUM: "MEDIUM",
 } as const;
 
 /**
  * The clarity of the dung sample.
  */
-export type DungTestEntityClarity = typeof DungTestEntityClarity[keyof typeof DungTestEntityClarity];
-
+export type DungTestEntityClarity = (typeof DungTestEntityClarity)[keyof typeof DungTestEntityClarity];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DungTestEntityClarity = {
-  CLEAR: 'CLEAR',
-  NOT_CLEAR: 'NOT_CLEAR',
+  CLEAR: "CLEAR",
+  NOT_CLEAR: "NOT_CLEAR",
 } as const;
 
 export interface DungTestEntity {
@@ -1246,41 +1172,38 @@ export interface DungTestEntity {
 /**
  * The smell type of the dung sample.
  */
-export type CreateDungTestDtoSmell = typeof CreateDungTestDtoSmell[keyof typeof CreateDungTestDtoSmell];
-
+export type CreateDungTestDtoSmell = (typeof CreateDungTestDtoSmell)[keyof typeof CreateDungTestDtoSmell];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateDungTestDtoSmell = {
-  PUNGENT: 'PUNGENT',
-  WEAK: 'WEAK',
-  HAS: 'HAS',
-  NO: 'NO',
+  PUNGENT: "PUNGENT",
+  WEAK: "WEAK",
+  HAS: "HAS",
+  NO: "NO",
 } as const;
 
 /**
  * The form of the dung sample.
  */
-export type CreateDungTestDtoForm = typeof CreateDungTestDtoForm[keyof typeof CreateDungTestDtoForm];
-
+export type CreateDungTestDtoForm = (typeof CreateDungTestDtoForm)[keyof typeof CreateDungTestDtoForm];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateDungTestDtoForm = {
-  NORMAL: 'NORMAL',
-  SOLID: 'SOLID',
-  LIQUID: 'LIQUID',
-  MEDIUM: 'MEDIUM',
+  NORMAL: "NORMAL",
+  SOLID: "SOLID",
+  LIQUID: "LIQUID",
+  MEDIUM: "MEDIUM",
 } as const;
 
 /**
  * The clarity of the dung sample.
  */
-export type CreateDungTestDtoClarity = typeof CreateDungTestDtoClarity[keyof typeof CreateDungTestDtoClarity];
-
+export type CreateDungTestDtoClarity = (typeof CreateDungTestDtoClarity)[keyof typeof CreateDungTestDtoClarity];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateDungTestDtoClarity = {
-  CLEAR: 'CLEAR',
-  NOT_CLEAR: 'NOT_CLEAR',
+  CLEAR: "CLEAR",
+  NOT_CLEAR: "NOT_CLEAR",
 } as const;
 
 export interface CreateDungTestDto {
@@ -1305,27 +1228,25 @@ export interface CreateDungTestDto {
 /**
  * The smell of the urine sample, categorized using the SmellType enum.
  */
-export type UpdateUrineTestDtoSmell = typeof UpdateUrineTestDtoSmell[keyof typeof UpdateUrineTestDtoSmell];
-
+export type UpdateUrineTestDtoSmell = (typeof UpdateUrineTestDtoSmell)[keyof typeof UpdateUrineTestDtoSmell];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UpdateUrineTestDtoSmell = {
-  PUNGENT: 'PUNGENT',
-  WEAK: 'WEAK',
-  HAS: 'HAS',
-  NO: 'NO',
+  PUNGENT: "PUNGENT",
+  WEAK: "WEAK",
+  HAS: "HAS",
+  NO: "NO",
 } as const;
 
 /**
  * The clarity of the urine sample, categorized using the UrineClarity enum.
  */
-export type UpdateUrineTestDtoClarity = typeof UpdateUrineTestDtoClarity[keyof typeof UpdateUrineTestDtoClarity];
-
+export type UpdateUrineTestDtoClarity = (typeof UpdateUrineTestDtoClarity)[keyof typeof UpdateUrineTestDtoClarity];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UpdateUrineTestDtoClarity = {
-  CLEAR: 'CLEAR',
-  NOT_CLEAR: 'NOT_CLEAR',
+  CLEAR: "CLEAR",
+  NOT_CLEAR: "NOT_CLEAR",
 } as const;
 
 export interface UpdateUrineTestDto {
@@ -1346,27 +1267,25 @@ export interface UpdateUrineTestDto {
 /**
  * The smell type of the urine.
  */
-export type UrineTestEntitySmell = typeof UrineTestEntitySmell[keyof typeof UrineTestEntitySmell];
-
+export type UrineTestEntitySmell = (typeof UrineTestEntitySmell)[keyof typeof UrineTestEntitySmell];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UrineTestEntitySmell = {
-  PUNGENT: 'PUNGENT',
-  WEAK: 'WEAK',
-  HAS: 'HAS',
-  NO: 'NO',
+  PUNGENT: "PUNGENT",
+  WEAK: "WEAK",
+  HAS: "HAS",
+  NO: "NO",
 } as const;
 
 /**
  * The clarity level of the urine.
  */
-export type UrineTestEntityClarity = typeof UrineTestEntityClarity[keyof typeof UrineTestEntityClarity];
-
+export type UrineTestEntityClarity = (typeof UrineTestEntityClarity)[keyof typeof UrineTestEntityClarity];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UrineTestEntityClarity = {
-  CLEAR: 'CLEAR',
-  NOT_CLEAR: 'NOT_CLEAR',
+  CLEAR: "CLEAR",
+  NOT_CLEAR: "NOT_CLEAR",
 } as const;
 
 export interface UrineTestEntity {
@@ -1398,27 +1317,25 @@ export interface PaginatedUrineTestEntity {
 /**
  * The smell of the urine sample, categorized using the SmellType enum.
  */
-export type CreateUrineTestDtoSmell = typeof CreateUrineTestDtoSmell[keyof typeof CreateUrineTestDtoSmell];
-
+export type CreateUrineTestDtoSmell = (typeof CreateUrineTestDtoSmell)[keyof typeof CreateUrineTestDtoSmell];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateUrineTestDtoSmell = {
-  PUNGENT: 'PUNGENT',
-  WEAK: 'WEAK',
-  HAS: 'HAS',
-  NO: 'NO',
+  PUNGENT: "PUNGENT",
+  WEAK: "WEAK",
+  HAS: "HAS",
+  NO: "NO",
 } as const;
 
 /**
  * The clarity of the urine sample, categorized using the UrineClarity enum.
  */
-export type CreateUrineTestDtoClarity = typeof CreateUrineTestDtoClarity[keyof typeof CreateUrineTestDtoClarity];
-
+export type CreateUrineTestDtoClarity = (typeof CreateUrineTestDtoClarity)[keyof typeof CreateUrineTestDtoClarity];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateUrineTestDtoClarity = {
-  CLEAR: 'CLEAR',
-  NOT_CLEAR: 'NOT_CLEAR',
+  CLEAR: "CLEAR",
+  NOT_CLEAR: "NOT_CLEAR",
 } as const;
 
 export interface CreateUrineTestDto {
@@ -1721,15 +1638,14 @@ export interface CreateDiseaseDto {
 /**
  * The type of the inspection.
  */
-export type UpdateInspectionDtoType = typeof UpdateInspectionDtoType[keyof typeof UpdateInspectionDtoType];
-
+export type UpdateInspectionDtoType = (typeof UpdateInspectionDtoType)[keyof typeof UpdateInspectionDtoType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UpdateInspectionDtoType = {
-  MORNING: 'MORNING',
-  EVENING: 'EVENING',
-  DISEASE: 'DISEASE',
-  GENERAL: 'GENERAL',
+  MORNING: "MORNING",
+  EVENING: "EVENING",
+  DISEASE: "DISEASE",
+  GENERAL: "GENERAL",
 } as const;
 
 export interface UpdateInspectionDto {
@@ -1756,15 +1672,14 @@ export interface UpdateInspectionDto {
 /**
  * Body type of the animal
  */
-export type InspectionEntityType = typeof InspectionEntityType[keyof typeof InspectionEntityType];
-
+export type InspectionEntityType = (typeof InspectionEntityType)[keyof typeof InspectionEntityType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const InspectionEntityType = {
-  MORNING: 'MORNING',
-  EVENING: 'EVENING',
-  DISEASE: 'DISEASE',
-  GENERAL: 'GENERAL',
+  MORNING: "MORNING",
+  EVENING: "EVENING",
+  DISEASE: "DISEASE",
+  GENERAL: "GENERAL",
 } as const;
 
 export interface InspectionEntity {
@@ -1802,15 +1717,14 @@ export interface PaginatedInspectionEntity {
 /**
  * The type of the inspection.
  */
-export type CreateInspectionDtoType = typeof CreateInspectionDtoType[keyof typeof CreateInspectionDtoType];
-
+export type CreateInspectionDtoType = (typeof CreateInspectionDtoType)[keyof typeof CreateInspectionDtoType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateInspectionDtoType = {
-  MORNING: 'MORNING',
-  EVENING: 'EVENING',
-  DISEASE: 'DISEASE',
-  GENERAL: 'GENERAL',
+  MORNING: "MORNING",
+  EVENING: "EVENING",
+  DISEASE: "DISEASE",
+  GENERAL: "GENERAL",
 } as const;
 
 export interface CreateInspectionDto {
@@ -1837,71 +1751,66 @@ export interface CreateInspectionDto {
 /**
  * The obesity level/type of the animal.
  */
-export type UpdateGeneralInspectionDtoObesity = typeof UpdateGeneralInspectionDtoObesity[keyof typeof UpdateGeneralInspectionDtoObesity];
-
+export type UpdateGeneralInspectionDtoObesity = (typeof UpdateGeneralInspectionDtoObesity)[keyof typeof UpdateGeneralInspectionDtoObesity];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UpdateGeneralInspectionDtoObesity = {
-  HIGH: 'HIGH',
-  MEDIUM: 'MEDIUM',
-  LOW: 'LOW',
-  LEAN: 'LEAN',
-  CACHEXIA: 'CACHEXIA',
+  HIGH: "HIGH",
+  MEDIUM: "MEDIUM",
+  LOW: "LOW",
+  LEAN: "LEAN",
+  CACHEXIA: "CACHEXIA",
 } as const;
 
 /**
  * The customer type associated with the animal.
  */
-export type UpdateGeneralInspectionDtoCharacter = typeof UpdateGeneralInspectionDtoCharacter[keyof typeof UpdateGeneralInspectionDtoCharacter];
-
+export type UpdateGeneralInspectionDtoCharacter = (typeof UpdateGeneralInspectionDtoCharacter)[keyof typeof UpdateGeneralInspectionDtoCharacter];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UpdateGeneralInspectionDtoCharacter = {
-  MOBILE: 'MOBILE',
-  CALM: 'CALM',
+  MOBILE: "MOBILE",
+  CALM: "CALM",
 } as const;
 
 /**
  * The body type of the animal.
  */
-export type UpdateGeneralInspectionDtoBodyType = typeof UpdateGeneralInspectionDtoBodyType[keyof typeof UpdateGeneralInspectionDtoBodyType];
-
+export type UpdateGeneralInspectionDtoBodyType = (typeof UpdateGeneralInspectionDtoBodyType)[keyof typeof UpdateGeneralInspectionDtoBodyType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UpdateGeneralInspectionDtoBodyType = {
-  WEAK: 'WEAK',
-  MEDIUM: 'MEDIUM',
-  STRONG: 'STRONG',
+  WEAK: "WEAK",
+  MEDIUM: "MEDIUM",
+  STRONG: "STRONG",
 } as const;
 
 /**
  * The body structure of the animal.
  */
-export type UpdateGeneralInspectionDtoBodyStructure = typeof UpdateGeneralInspectionDtoBodyStructure[keyof typeof UpdateGeneralInspectionDtoBodyStructure];
-
+export type UpdateGeneralInspectionDtoBodyStructure = (typeof UpdateGeneralInspectionDtoBodyStructure)[keyof typeof UpdateGeneralInspectionDtoBodyStructure];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UpdateGeneralInspectionDtoBodyStructure = {
-  COARSE: 'COARSE',
-  SLIM: 'SLIM',
-  DENSE: 'DENSE',
-  WEAK: 'WEAK',
+  COARSE: "COARSE",
+  SLIM: "SLIM",
+  DENSE: "DENSE",
+  WEAK: "WEAK",
 } as const;
 
 /**
  * The body position of the animal.
  */
-export type UpdateGeneralInspectionDtoBodyPosition = typeof UpdateGeneralInspectionDtoBodyPosition[keyof typeof UpdateGeneralInspectionDtoBodyPosition];
-
+export type UpdateGeneralInspectionDtoBodyPosition = (typeof UpdateGeneralInspectionDtoBodyPosition)[keyof typeof UpdateGeneralInspectionDtoBodyPosition];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UpdateGeneralInspectionDtoBodyPosition = {
-  NATURAL: 'NATURAL',
-  FORCED: 'FORCED',
-  FORCED_STANDING: 'FORCED_STANDING',
-  FORCED_LYING: 'FORCED_LYING',
-  FORCED_SITTING: 'FORCED_SITTING',
-  NON_THERAPEUTIC: 'NON_THERAPEUTIC',
+  NATURAL: "NATURAL",
+  FORCED: "FORCED",
+  FORCED_STANDING: "FORCED_STANDING",
+  FORCED_LYING: "FORCED_LYING",
+  FORCED_SITTING: "FORCED_SITTING",
+  NON_THERAPEUTIC: "NON_THERAPEUTIC",
 } as const;
 
 export interface UpdateGeneralInspectionDto {
@@ -1943,71 +1852,66 @@ export interface PaginatedGeneralInspectionEntity {
 /**
  * Obesity type of the animal
  */
-export type GeneralInspectionEntityObesity = typeof GeneralInspectionEntityObesity[keyof typeof GeneralInspectionEntityObesity];
-
+export type GeneralInspectionEntityObesity = (typeof GeneralInspectionEntityObesity)[keyof typeof GeneralInspectionEntityObesity];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GeneralInspectionEntityObesity = {
-  HIGH: 'HIGH',
-  MEDIUM: 'MEDIUM',
-  LOW: 'LOW',
-  LEAN: 'LEAN',
-  CACHEXIA: 'CACHEXIA',
+  HIGH: "HIGH",
+  MEDIUM: "MEDIUM",
+  LOW: "LOW",
+  LEAN: "LEAN",
+  CACHEXIA: "CACHEXIA",
 } as const;
 
 /**
  * Customer type
  */
-export type GeneralInspectionEntityCharacter = typeof GeneralInspectionEntityCharacter[keyof typeof GeneralInspectionEntityCharacter];
-
+export type GeneralInspectionEntityCharacter = (typeof GeneralInspectionEntityCharacter)[keyof typeof GeneralInspectionEntityCharacter];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GeneralInspectionEntityCharacter = {
-  MOBILE: 'MOBILE',
-  CALM: 'CALM',
+  MOBILE: "MOBILE",
+  CALM: "CALM",
 } as const;
 
 /**
  * Body type of the animal
  */
-export type GeneralInspectionEntityBodyType = typeof GeneralInspectionEntityBodyType[keyof typeof GeneralInspectionEntityBodyType];
-
+export type GeneralInspectionEntityBodyType = (typeof GeneralInspectionEntityBodyType)[keyof typeof GeneralInspectionEntityBodyType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GeneralInspectionEntityBodyType = {
-  WEAK: 'WEAK',
-  MEDIUM: 'MEDIUM',
-  STRONG: 'STRONG',
+  WEAK: "WEAK",
+  MEDIUM: "MEDIUM",
+  STRONG: "STRONG",
 } as const;
 
 /**
  * Body structure of the animal
  */
-export type GeneralInspectionEntityBodyStructure = typeof GeneralInspectionEntityBodyStructure[keyof typeof GeneralInspectionEntityBodyStructure];
-
+export type GeneralInspectionEntityBodyStructure = (typeof GeneralInspectionEntityBodyStructure)[keyof typeof GeneralInspectionEntityBodyStructure];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GeneralInspectionEntityBodyStructure = {
-  COARSE: 'COARSE',
-  SLIM: 'SLIM',
-  DENSE: 'DENSE',
-  WEAK: 'WEAK',
+  COARSE: "COARSE",
+  SLIM: "SLIM",
+  DENSE: "DENSE",
+  WEAK: "WEAK",
 } as const;
 
 /**
  * Body position of the animal
  */
-export type GeneralInspectionEntityBodyPosition = typeof GeneralInspectionEntityBodyPosition[keyof typeof GeneralInspectionEntityBodyPosition];
-
+export type GeneralInspectionEntityBodyPosition = (typeof GeneralInspectionEntityBodyPosition)[keyof typeof GeneralInspectionEntityBodyPosition];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GeneralInspectionEntityBodyPosition = {
-  NATURAL: 'NATURAL',
-  FORCED: 'FORCED',
-  FORCED_STANDING: 'FORCED_STANDING',
-  FORCED_LYING: 'FORCED_LYING',
-  FORCED_SITTING: 'FORCED_SITTING',
-  NON_THERAPEUTIC: 'NON_THERAPEUTIC',
+  NATURAL: "NATURAL",
+  FORCED: "FORCED",
+  FORCED_STANDING: "FORCED_STANDING",
+  FORCED_LYING: "FORCED_LYING",
+  FORCED_SITTING: "FORCED_SITTING",
+  NON_THERAPEUTIC: "NON_THERAPEUTIC",
 } as const;
 
 export interface GeneralInspectionEntity {
@@ -2040,71 +1944,66 @@ export interface GeneralInspectionEntity {
 /**
  * The obesity level/type of the animal.
  */
-export type CreateGeneralInspectionDtoObesity = typeof CreateGeneralInspectionDtoObesity[keyof typeof CreateGeneralInspectionDtoObesity];
-
+export type CreateGeneralInspectionDtoObesity = (typeof CreateGeneralInspectionDtoObesity)[keyof typeof CreateGeneralInspectionDtoObesity];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateGeneralInspectionDtoObesity = {
-  HIGH: 'HIGH',
-  MEDIUM: 'MEDIUM',
-  LOW: 'LOW',
-  LEAN: 'LEAN',
-  CACHEXIA: 'CACHEXIA',
+  HIGH: "HIGH",
+  MEDIUM: "MEDIUM",
+  LOW: "LOW",
+  LEAN: "LEAN",
+  CACHEXIA: "CACHEXIA",
 } as const;
 
 /**
  * The customer type associated with the animal.
  */
-export type CreateGeneralInspectionDtoCharacter = typeof CreateGeneralInspectionDtoCharacter[keyof typeof CreateGeneralInspectionDtoCharacter];
-
+export type CreateGeneralInspectionDtoCharacter = (typeof CreateGeneralInspectionDtoCharacter)[keyof typeof CreateGeneralInspectionDtoCharacter];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateGeneralInspectionDtoCharacter = {
-  MOBILE: 'MOBILE',
-  CALM: 'CALM',
+  MOBILE: "MOBILE",
+  CALM: "CALM",
 } as const;
 
 /**
  * The body type of the animal.
  */
-export type CreateGeneralInspectionDtoBodyType = typeof CreateGeneralInspectionDtoBodyType[keyof typeof CreateGeneralInspectionDtoBodyType];
-
+export type CreateGeneralInspectionDtoBodyType = (typeof CreateGeneralInspectionDtoBodyType)[keyof typeof CreateGeneralInspectionDtoBodyType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateGeneralInspectionDtoBodyType = {
-  WEAK: 'WEAK',
-  MEDIUM: 'MEDIUM',
-  STRONG: 'STRONG',
+  WEAK: "WEAK",
+  MEDIUM: "MEDIUM",
+  STRONG: "STRONG",
 } as const;
 
 /**
  * The body structure of the animal.
  */
-export type CreateGeneralInspectionDtoBodyStructure = typeof CreateGeneralInspectionDtoBodyStructure[keyof typeof CreateGeneralInspectionDtoBodyStructure];
-
+export type CreateGeneralInspectionDtoBodyStructure = (typeof CreateGeneralInspectionDtoBodyStructure)[keyof typeof CreateGeneralInspectionDtoBodyStructure];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateGeneralInspectionDtoBodyStructure = {
-  COARSE: 'COARSE',
-  SLIM: 'SLIM',
-  DENSE: 'DENSE',
-  WEAK: 'WEAK',
+  COARSE: "COARSE",
+  SLIM: "SLIM",
+  DENSE: "DENSE",
+  WEAK: "WEAK",
 } as const;
 
 /**
  * The body position of the animal.
  */
-export type CreateGeneralInspectionDtoBodyPosition = typeof CreateGeneralInspectionDtoBodyPosition[keyof typeof CreateGeneralInspectionDtoBodyPosition];
-
+export type CreateGeneralInspectionDtoBodyPosition = (typeof CreateGeneralInspectionDtoBodyPosition)[keyof typeof CreateGeneralInspectionDtoBodyPosition];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateGeneralInspectionDtoBodyPosition = {
-  NATURAL: 'NATURAL',
-  FORCED: 'FORCED',
-  FORCED_STANDING: 'FORCED_STANDING',
-  FORCED_LYING: 'FORCED_LYING',
-  FORCED_SITTING: 'FORCED_SITTING',
-  NON_THERAPEUTIC: 'NON_THERAPEUTIC',
+  NATURAL: "NATURAL",
+  FORCED: "FORCED",
+  FORCED_STANDING: "FORCED_STANDING",
+  FORCED_LYING: "FORCED_LYING",
+  FORCED_SITTING: "FORCED_SITTING",
+  NON_THERAPEUTIC: "NON_THERAPEUTIC",
 } as const;
 
 export interface CreateGeneralInspectionDto {
@@ -2470,13 +2369,12 @@ export interface CreateVaccineDto {
 /**
  * Gender of the animal
  */
-export type UpdateAnimalDtoGender = typeof UpdateAnimalDtoGender[keyof typeof UpdateAnimalDtoGender];
-
+export type UpdateAnimalDtoGender = (typeof UpdateAnimalDtoGender)[keyof typeof UpdateAnimalDtoGender];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UpdateAnimalDtoGender = {
-  MALE: 'MALE',
-  FEMALE: 'FEMALE',
+  MALE: "MALE",
+  FEMALE: "FEMALE",
 } as const;
 
 export interface UpdateAnimalDto {
@@ -2507,13 +2405,12 @@ export interface UpdateAnimalDto {
 /**
  * Gender of the animal
  */
-export type AnimalEntityGender = typeof AnimalEntityGender[keyof typeof AnimalEntityGender];
-
+export type AnimalEntityGender = (typeof AnimalEntityGender)[keyof typeof AnimalEntityGender];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AnimalEntityGender = {
-  MALE: 'MALE',
-  FEMALE: 'FEMALE',
+  MALE: "MALE",
+  FEMALE: "FEMALE",
 } as const;
 
 export interface AnimalEntity {
@@ -2550,13 +2447,12 @@ export interface AnimalEntity {
 /**
  * Gender of the animal
  */
-export type CreateAnimalDtoGender = typeof CreateAnimalDtoGender[keyof typeof CreateAnimalDtoGender];
-
+export type CreateAnimalDtoGender = (typeof CreateAnimalDtoGender)[keyof typeof CreateAnimalDtoGender];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateAnimalDtoGender = {
-  MALE: 'MALE',
-  FEMALE: 'FEMALE',
+  MALE: "MALE",
+  FEMALE: "FEMALE",
 } as const;
 
 export interface CreateAnimalDto {
@@ -2588,13 +2484,12 @@ export interface CreateAnimalDto {
  * The user's gender
  * @nullable
  */
-export type UpdateFarmerDtoGender = typeof UpdateFarmerDtoGender[keyof typeof UpdateFarmerDtoGender] | null;
-
+export type UpdateFarmerDtoGender = (typeof UpdateFarmerDtoGender)[keyof typeof UpdateFarmerDtoGender] | null;
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UpdateFarmerDtoGender = {
-  MALE: 'MALE',
-  FEMALE: 'FEMALE',
+  MALE: "MALE",
+  FEMALE: "FEMALE",
 } as const;
 
 /**
@@ -2658,13 +2553,12 @@ export interface PaginatedFarmersEntity {
  * The user's gender
  * @nullable
  */
-export type CreateFarmerDtoGender = typeof CreateFarmerDtoGender[keyof typeof CreateFarmerDtoGender] | null;
-
+export type CreateFarmerDtoGender = (typeof CreateFarmerDtoGender)[keyof typeof CreateFarmerDtoGender] | null;
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateFarmerDtoGender = {
-  MALE: 'MALE',
-  FEMALE: 'FEMALE',
+  MALE: "MALE",
+  FEMALE: "FEMALE",
 } as const;
 
 /**
@@ -2711,27 +2605,25 @@ export interface CreateFarmerDto {
 /**
  * The user's role in the system
  */
-export type UpdateUserDtoRole = typeof UpdateUserDtoRole[keyof typeof UpdateUserDtoRole];
-
+export type UpdateUserDtoRole = (typeof UpdateUserDtoRole)[keyof typeof UpdateUserDtoRole];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UpdateUserDtoRole = {
-  ADMIN: 'ADMIN',
-  VETERINARIAN: 'VETERINARIAN',
-  FARMER: 'FARMER',
+  ADMIN: "ADMIN",
+  VETERINARIAN: "VETERINARIAN",
+  FARMER: "FARMER",
 } as const;
 
 /**
  * The user's gender
  * @nullable
  */
-export type UpdateUserDtoGender = typeof UpdateUserDtoGender[keyof typeof UpdateUserDtoGender] | null;
-
+export type UpdateUserDtoGender = (typeof UpdateUserDtoGender)[keyof typeof UpdateUserDtoGender] | null;
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UpdateUserDtoGender = {
-  MALE: 'MALE',
-  FEMALE: 'FEMALE',
+  MALE: "MALE",
+  FEMALE: "FEMALE",
 } as const;
 
 /**
@@ -2797,26 +2689,24 @@ export interface PaginatedUsersEntity {
 /**
  * User's role in the system
  */
-export type UserEntityRole = typeof UserEntityRole[keyof typeof UserEntityRole];
-
+export type UserEntityRole = (typeof UserEntityRole)[keyof typeof UserEntityRole];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UserEntityRole = {
-  ADMIN: 'ADMIN',
-  VETERINARIAN: 'VETERINARIAN',
-  FARMER: 'FARMER',
+  ADMIN: "ADMIN",
+  VETERINARIAN: "VETERINARIAN",
+  FARMER: "FARMER",
 } as const;
 
 /**
  * Gender of the user
  */
-export type UserEntityGender = typeof UserEntityGender[keyof typeof UserEntityGender];
-
+export type UserEntityGender = (typeof UserEntityGender)[keyof typeof UserEntityGender];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UserEntityGender = {
-  MALE: 'MALE',
-  FEMALE: 'FEMALE',
+  MALE: "MALE",
+  FEMALE: "FEMALE",
 } as const;
 
 export interface UserEntity {
@@ -2856,27 +2746,25 @@ export interface VeterinarianEntity {
 /**
  * The user's role in the system
  */
-export type CreateUserDtoRole = typeof CreateUserDtoRole[keyof typeof CreateUserDtoRole];
-
+export type CreateUserDtoRole = (typeof CreateUserDtoRole)[keyof typeof CreateUserDtoRole];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateUserDtoRole = {
-  ADMIN: 'ADMIN',
-  VETERINARIAN: 'VETERINARIAN',
-  FARMER: 'FARMER',
+  ADMIN: "ADMIN",
+  VETERINARIAN: "VETERINARIAN",
+  FARMER: "FARMER",
 } as const;
 
 /**
  * The user's gender
  * @nullable
  */
-export type CreateUserDtoGender = typeof CreateUserDtoGender[keyof typeof CreateUserDtoGender] | null;
-
+export type CreateUserDtoGender = (typeof CreateUserDtoGender)[keyof typeof CreateUserDtoGender] | null;
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateUserDtoGender = {
-  MALE: 'MALE',
-  FEMALE: 'FEMALE',
+  MALE: "MALE",
+  FEMALE: "FEMALE",
 } as const;
 
 /**
@@ -2938,1387 +2826,1020 @@ export interface AuthDto {
   phone: string;
 }
 
-
-
-
 type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1];
 
+export const appControllerGetHello = (options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<void>({ url: `/`, method: "GET" }, options);
+};
 
-  export const appControllerGetHello = (
-    
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<void>(
-      {url: `/`, method: 'GET'
-    },
-      options);
-    }
-  
-export const authControllerLogin = (
-    authDto: BodyType<AuthDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<AuthEntity>(
-      {url: `/auth/login`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: authDto
-    },
-      options);
-    }
-  
-export const authControllerRefresh = (
-    refreshTokenDto: BodyType<RefreshTokenDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<AuthEntity>(
-      {url: `/auth/refresh`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: refreshTokenDto
-    },
-      options);
-    }
-  
-export const usersControllerCreate = (
-    createUserDto: BodyType<CreateUserDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<UserEntity>(
-      {url: `/users`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createUserDto
-    },
-      options);
-    }
-  
-export const usersControllerFindAll = (
-    params?: UsersControllerFindAllParams,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<PaginatedUsersEntity>(
-      {url: `/users`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-export const usersControllerFindOne = (
-    id: number,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<UserEntity>(
-      {url: `/users/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-export const usersControllerUpdate = (
-    id: number,
-    updateUserDto: BodyType<any>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<UserEntity>(
-      {url: `/users/${id}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json', },
-      data: updateUserDto
-    },
-      options);
-    }
-  
-export const usersControllerRemove = (
-    id: number,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<UserEntity>(
-      {url: `/users/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-export const veterinariansControllerCreate = (
-    createUserDto: BodyType<any>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<any>(
-      {url: `/veterinarians`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createUserDto
-    },
-      options);
-    }
-  
-export const veterinariansControllerFindAll = (
-    params?: VeterinariansControllerFindAllParams,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<any>(
-      {url: `/veterinarians`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-export const veterinariansControllerFindOne = (
-    id: number,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<VeterinarianEntity>(
-      {url: `/veterinarians/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-export const veterinariansControllerUpdate = (
-    id: number,
-    updateUserDto: BodyType<UpdateUserDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<VeterinarianEntity>(
-      {url: `/veterinarians/${id}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json', },
-      data: updateUserDto
-    },
-      options);
-    }
-  
-export const veterinariansControllerRemove = (
-    id: number | string,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<UserEntity>(
-      {url: `/veterinarians/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-export const farmersControllerCreate = (
-    createFarmerDto: BodyType<any>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<FarmerEntity>(
-      {url: `/farmers`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createFarmerDto
-    },
-      options);
-    }
-  
-export const farmersControllerFindAll = (
-    params?: any,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<any>(
-      {url: `/farmers`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-export const farmersControllerFindOne = (
-    id: number,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<FarmerEntity>(
-      {url: `/farmers/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-export const farmersControllerUpdate = (
-    id: number,
-    updateFarmerDto: BodyType<UpdateFarmerDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<FarmerEntity>(
-      {url: `/farmers/${id}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json', },
-      data: updateFarmerDto
-    },
-      options);
-    }
-  
-export const farmersControllerRemove = (
-    id: number | string,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<UserEntity>(
-      {url: `/farmers/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-export const animalsControllerCreate = (
-    createAnimalDto: BodyType<any>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<AnimalEntity>(
-      {url: `/animals`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createAnimalDto
-    },
-      options);
-    }
-  
-export const animalsControllerFindAll = (
-    params?: AnimalsControllerFindAllParams,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<any>(
-      {url: `/animals`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-export const animalsControllerFindOne = (
-    id: number,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<AnimalEntity>(
-      {url: `/animals/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-export const animalsControllerUpdate = (
-    id: number,
-    updateAnimalDto: BodyType<any>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<AnimalEntity>(
-      {url: `/animals/${id}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json', },
-      data: updateAnimalDto
-    },
-      options);
-    }
-  
-export const animalsControllerRemove = (
-    id: number | string,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<AnimalEntity>(
-      {url: `/animals/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-export const vaccinesControllerCreate = (
-    createVaccineDto: BodyType<any>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<VaccineEntity>(
-      {url: `/vaccines`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createVaccineDto
-    },
-      options);
-    }
-  
-export const vaccinesControllerFindAll = (
-    params?: VaccinesControllerFindAllParams,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<any>(
-      {url: `/vaccines`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-export const vaccinesControllerFindOne = (
-    id: number,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<VaccineEntity>(
-      {url: `/vaccines/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-export const vaccinesControllerUpdate = (
-    id: number,
-    updateVaccineDto: BodyType<any>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<VaccineEntity>(
-      {url: `/vaccines/${id}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json', },
-      data: updateVaccineDto
-    },
-      options);
-    }
-  
-export const vaccinesControllerRemove = (
-    id: number | string,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<VaccineEntity>(
-      {url: `/vaccines/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-export const regionsControllerCreate = (
-    createRegionDto: BodyType<CreateRegionDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<RegionEntity>(
-      {url: `/regions`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createRegionDto
-    },
-      options);
-    }
-  
-export const regionsControllerFindAll = (
-    params?: RegionsControllerFindAllParams,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<PaginatedRegionsEntity>(
-      {url: `/regions`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-export const regionsControllerFindOne = (
-    id: number,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<RegionEntity>(
-      {url: `/regions/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-export const regionsControllerUpdate = (
-    id: number,
-    updateRegionDto: BodyType<UpdateRegionDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<RegionEntity>(
-      {url: `/regions/${id}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json', },
-      data: updateRegionDto
-    },
-      options);
-    }
-  
-export const regionsControllerRemove = (
-    id: number | string,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<RegionEntity>(
-      {url: `/regions/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-export const districtsControllerCreate = (
-    createDistrictDto: BodyType<CreateDistrictDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<DistrictEntity>(
-      {url: `/districts`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createDistrictDto
-    },
-      options);
-    }
-  
-export const districtsControllerFindAll = (
-    params?: DistrictsControllerFindAllParams,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<PaginatedDistrictsEntity>(
-      {url: `/districts`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-export const districtsControllerFindOne = (
-    id: number,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<DistrictEntity>(
-      {url: `/districts/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-export const districtsControllerUpdate = (
-    id: number,
-    updateDistrictDto: BodyType<UpdateDistrictDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<DistrictEntity>(
-      {url: `/districts/${id}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json', },
-      data: updateDistrictDto
-    },
-      options);
-    }
-  
-export const districtsControllerRemove = (
-    id: number | string,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<any>(
-      {url: `/districts/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-export const vetStationsControllerCreate = (
-    createVetStationDto: BodyType<CreateVetStationDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<VetStationEntity>(
-      {url: `/vet-stations`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createVetStationDto
-    },
-      options);
-    }
-  
-export const vetStationsControllerFindAll = (
-    params?: VetStationsControllerFindAllParams,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<any>(
-      {url: `/vet-stations`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-export const vetStationsControllerFindOne = (
-    id: number,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<VetStationEntity>(
-      {url: `/vet-stations/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-export const vetStationsControllerUpdate = (
-    id: number,
-    updateVetStationDto: BodyType<UpdateVetStationDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<VetStationEntity>(
-      {url: `/vet-stations/${id}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json', },
-      data: updateVetStationDto
-    },
-      options);
-    }
-  
-export const vetStationsControllerRemove = (
-    id: number | string,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<VetStationEntity>(
-      {url: `/vet-stations/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-export const animalTypesControllerCreate = (
-    createAnimalTypeDto: BodyType<CreateAnimalTypeDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<AnimalTypeEntity>(
-      {url: `/animal-types`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createAnimalTypeDto
-    },
-      options);
-    }
-  
-export const animalTypesControllerFindAll = (
-    params?: AnimalTypesControllerFindAllParams,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<PaginatedAnimalTypesEntity>(
-      {url: `/animal-types`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-export const animalTypesControllerFindOne = (
-    id: number,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<AnimalTypeEntity>(
-      {url: `/animal-types/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-export const animalTypesControllerUpdate = (
-    id: number,
-    updateAnimalTypeDto: BodyType<UpdateAnimalTypeDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<AnimalTypeEntity>(
-      {url: `/animal-types/${id}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json', },
-      data: updateAnimalTypeDto
-    },
-      options);
-    }
-  
-export const animalTypesControllerRemove = (
-    id: number | string,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<AnimalTypeEntity>(
-      {url: `/animal-types/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-export const colorsControllerCreate = (
-    createColorDto: BodyType<any>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<ColorEntity>(
-      {url: `/colors`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createColorDto
-    },
-      options);
-    }
-  
-export const colorsControllerFindAll = (
-    params?: ColorsControllerFindAllParams,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<PaginatedColorsEntity>(
-      {url: `/colors`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-export const colorsControllerFindOne = (
-    id: number,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<ColorEntity>(
-      {url: `/colors/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-export const colorsControllerUpdate = (
-    id: number,
-    updateColorDto: BodyType<UpdateColorDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<ColorEntity>(
-      {url: `/colors/${id}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json', },
-      data: updateColorDto
-    },
-      options);
-    }
-  
-export const colorsControllerRemove = (
-    id: number | string,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<ColorEntity>(
-      {url: `/colors/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-export const urineColorsControllerCreate = (
-    createUrineColorDto: BodyType<CreateUrineColorDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<UrineColorEntity>(
-      {url: `/urine-colors`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createUrineColorDto
-    },
-      options);
-    }
-  
-export const urineColorsControllerFindAll = (
-    params?: UrineColorsControllerFindAllParams,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<PaginatedUrineColorsEntity>(
-      {url: `/urine-colors`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-export const urineColorsControllerFindOne = (
-    id: number,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<UrineColorEntity>(
-      {url: `/urine-colors/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-export const urineColorsControllerUpdate = (
-    id: number,
-    updateUrineColorDto: BodyType<UpdateUrineColorDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<UrineColorEntity>(
-      {url: `/urine-colors/${id}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json', },
-      data: updateUrineColorDto
-    },
-      options);
-    }
-  
-export const urineColorsControllerRemove = (
-    id: number | string,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<UrineColorEntity>(
-      {url: `/urine-colors/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-export const dungColorsControllerCreate = (
-    createDungColorDto: BodyType<CreateDungColorDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<DungColorEntity>(
-      {url: `/dung-colors`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createDungColorDto
-    },
-      options);
-    }
-  
-export const dungColorsControllerFindAll = (
-    params?: DungColorsControllerFindAllParams,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<PaginatedDungColorsEntity>(
-      {url: `/dung-colors`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-export const dungColorsControllerFindOne = (
-    id: number,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<DungColorEntity>(
-      {url: `/dung-colors/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-export const dungColorsControllerUpdate = (
-    id: number,
-    updateDungColorDto: BodyType<UpdateDungColorDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<DungColorEntity>(
-      {url: `/dung-colors/${id}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json', },
-      data: updateDungColorDto
-    },
-      options);
-    }
-  
-export const dungColorsControllerRemove = (
-    id: number | string,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<DungColorEntity>(
-      {url: `/dung-colors/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-export const leatherCoversControllerCreate = (
-    createLeatherCoverDto: BodyType<CreateLeatherCoverDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<LeatherCoverEntity>(
-      {url: `/leather-covers`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createLeatherCoverDto
-    },
-      options);
-    }
-  
-export const leatherCoversControllerFindAll = (
-    params?: LeatherCoversControllerFindAllParams,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<PaginatedLeatherCoversEntity>(
-      {url: `/leather-covers`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-export const leatherCoversControllerFindOne = (
-    id: number,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<LeatherCoverEntity>(
-      {url: `/leather-covers/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-export const leatherCoversControllerUpdate = (
-    id: number,
-    updateLeatherCoverDto: BodyType<UpdateLeatherCoverDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<LeatherCoverEntity>(
-      {url: `/leather-covers/${id}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json', },
-      data: updateLeatherCoverDto
-    },
-      options);
-    }
-  
-export const leatherCoversControllerRemove = (
-    id: number | string,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<LeatherCoverEntity>(
-      {url: `/leather-covers/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-export const eyelidsControllerCreate = (
-    createEyelidDto: BodyType<CreateEyelidDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<EyelidEntity>(
-      {url: `/eyelids`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createEyelidDto
-    },
-      options);
-    }
-  
-export const eyelidsControllerFindAll = (
-    params?: EyelidsControllerFindAllParams,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<PaginatedEyelidsEntity>(
-      {url: `/eyelids`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-export const eyelidsControllerFindOne = (
-    id: number,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<EyelidEntity>(
-      {url: `/eyelids/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-export const eyelidsControllerUpdate = (
-    id: number,
-    updateEyelidDto: BodyType<UpdateEyelidDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<EyelidEntity>(
-      {url: `/eyelids/${id}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json', },
-      data: updateEyelidDto
-    },
-      options);
-    }
-  
-export const eyelidsControllerRemove = (
-    id: number | string,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<EyelidEntity>(
-      {url: `/eyelids/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-export const vaccineTypesControllerCreate = (
-    createVaccineTypeDto: BodyType<CreateVaccineTypeDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<VaccineTypeEntity>(
-      {url: `/vaccine-types`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createVaccineTypeDto
-    },
-      options);
-    }
-  
-export const vaccineTypesControllerFindAll = (
-    params?: VaccineTypesControllerFindAllParams,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<PaginatedVaccineTypesEntity>(
-      {url: `/vaccine-types`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-export const vaccineTypesControllerFindOne = (
-    id: number,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<VaccineTypeEntity>(
-      {url: `/vaccine-types/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-export const vaccineTypesControllerUpdate = (
-    id: number,
-    updateVaccineTypeDto: BodyType<UpdateVaccineTypeDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<VaccineTypeEntity>(
-      {url: `/vaccine-types/${id}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json', },
-      data: updateVaccineTypeDto
-    },
-      options);
-    }
-  
-export const vaccineTypesControllerRemove = (
-    id: number | string,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<VaccineTypeEntity>(
-      {url: `/vaccine-types/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-export const diseaseTypesControllerCreate = (
-    createDiseaseTypeDto: BodyType<CreateDiseaseTypeDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<DiseaseTypeEntity>(
-      {url: `/disease-types`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createDiseaseTypeDto
-    },
-      options);
-    }
-  
-export const diseaseTypesControllerFindAll = (
-    params?: DiseaseTypesControllerFindAllParams,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<PaginatedDiseaseTypesEntity>(
-      {url: `/disease-types`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-export const diseaseTypesControllerFindOne = (
-    id: number,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<DiseaseTypeEntity>(
-      {url: `/disease-types/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-export const diseaseTypesControllerUpdate = (
-    id: number,
-    updateDiseaseTypeDto: BodyType<UpdateDiseaseTypeDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<DiseaseTypeEntity>(
-      {url: `/disease-types/${id}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json', },
-      data: updateDiseaseTypeDto
-    },
-      options);
-    }
-  
-export const diseaseTypesControllerRemove = (
-    id: number | string,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<DiseaseTypeEntity>(
-      {url: `/disease-types/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-export const breedsControllerCreate = (
-    createBreedDto: BodyType<any>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<BreedEntity>(
-      {url: `/breeds`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createBreedDto
-    },
-      options);
-    }
-  
-export const breedsControllerFindAll = (
-    params?: BreedsControllerFindAllParams,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<PaginatedBreedsEntity>(
-      {url: `/breeds`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-export const breedsControllerFindOne = (
-    id: number,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<BreedEntity>(
-      {url: `/breeds/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-export const breedsControllerUpdate = (
-    id: number,
-    updateBreedDto: BodyType<any>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<BreedEntity>(
-      {url: `/breeds/${id}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json', },
-      data: updateBreedDto
-    },
-      options);
-    }
-  
-export const breedsControllerRemove = (
-    id: number | string,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<BreedEntity>(
-      {url: `/breeds/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-export const generalInspectionControllerCreate = (
-    createGeneralInspectionDto: BodyType<CreateGeneralInspectionDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<GeneralInspectionEntity>(
-      {url: `/general-inspections`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createGeneralInspectionDto
-    },
-      options);
-    }
-  
-export const generalInspectionControllerFindAll = (
-    params?: GeneralInspectionControllerFindAllParams,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<any>(
-      {url: `/general-inspections`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-export const generalInspectionControllerFindOne = (
-    id: number,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<GeneralInspectionEntity>(
-      {url: `/general-inspections/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-export const generalInspectionControllerUpdate = (
-    id: number,
-    updateGeneralInspectionDto: BodyType<UpdateGeneralInspectionDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<GeneralInspectionEntity>(
-      {url: `/general-inspections/${id}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json', },
-      data: updateGeneralInspectionDto
-    },
-      options);
-    }
-  
-export const generalInspectionControllerRemove = (
-    id: number | string,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<GeneralInspectionEntity>(
-      {url: `/general-inspections/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-export const inspectionsControllerCreate = (
-    createInspectionDto: BodyType<any>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<InspectionEntity>(
-      {url: `/inspections`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createInspectionDto
-    },
-      options);
-    }
-  
-export const inspectionsControllerFindAll = (
-    params?: InspectionsControllerFindAllParams,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<any>(
-      {url: `/inspections`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-export const inspectionsControllerFindOne = (
-    id: number,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<InspectionEntity>(
-      {url: `/inspections/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-export const inspectionsControllerUpdate = (
-    id: number,
-    updateInspectionDto: BodyType<any>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<InspectionEntity>(
-      {url: `/inspections/${id}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json', },
-      data: updateInspectionDto
-    },
-      options);
-    }
-  
-export const inspectionsControllerRemove = (
-    id: number | string,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<InspectionEntity>(
-      {url: `/inspections/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-export const diseasesControllerCreate = (
-    createDiseaseDto: BodyType<any>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<DiseaseEntity>(
-      {url: `/diseases`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createDiseaseDto
-    },
-      options);
-    }
-  
-export const diseasesControllerFindAll = (
-    params?: any,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<any>(
-      {url: `/diseases`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-export const diseasesControllerFindOne = (
-    id: number,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<DiseaseEntity>(
-      {url: `/diseases/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-export const diseasesControllerUpdate = (
-    id: number,
-    updateDiseaseDto: BodyType<any>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<DiseaseEntity>(
-      {url: `/diseases/${id}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json', },
-      data: updateDiseaseDto
-    },
-      options);
-    }
-  
-export const diseasesControllerRemove = (
-    id: number | string,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<DiseaseEntity>(
-      {url: `/diseases/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-export const generalBloodTestControllerCreate = (
-    createGeneralBloodTestDto: BodyType<any>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<GeneralBloodTestEntity>(
-      {url: `/general-blood-tests`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createGeneralBloodTestDto
-    },
-      options);
-    }
-  
-export const generalBloodTestControllerFindAll = (
-    params?: GeneralBloodTestControllerFindAllParams,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<any>(
-      {url: `/general-blood-tests`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-export const generalBloodTestControllerFindOne = (
-    id: number,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<GeneralBloodTestEntity>(
-      {url: `/general-blood-tests/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-export const generalBloodTestControllerUpdate = (
-    id: number,
-    updateGeneralBloodTestDto: BodyType<any>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<GeneralBloodTestEntity>(
-      {url: `/general-blood-tests/${id}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json', },
-      data: updateGeneralBloodTestDto
-    },
-      options);
-    }
-  
-export const generalBloodTestControllerRemove = (
-    id: number | string,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<GeneralBloodTestEntity>(
-      {url: `/general-blood-tests/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-export const bloodSerumTestsControllerCreate = (
-    createBloodSerumTestDto: BodyType<any>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<BloodSerumTestEntity>(
-      {url: `/blood-serum-tests`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createBloodSerumTestDto
-    },
-      options);
-    }
-  
-export const bloodSerumTestsControllerFindAll = (
-    params?: BloodSerumTestsControllerFindAllParams,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<any>(
-      {url: `/blood-serum-tests`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-export const bloodSerumTestsControllerFindOne = (
-    id: number,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<BloodSerumTestEntity>(
-      {url: `/blood-serum-tests/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-export const bloodSerumTestsControllerUpdate = (
-    id: number,
-    updateBloodSerumTestDto: BodyType<UpdateBloodSerumTestDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<BloodSerumTestEntity>(
-      {url: `/blood-serum-tests/${id}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json', },
-      data: updateBloodSerumTestDto
-    },
-      options);
-    }
-  
-export const bloodSerumTestsControllerRemove = (
-    id: number | string,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<BloodSerumTestEntity>(
-      {url: `/blood-serum-tests/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-export const urineTestsControllerCreate = (
-    createUrineTestDto: BodyType<CreateUrineTestDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<UrineTestEntity>(
-      {url: `/urine-tests`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createUrineTestDto
-    },
-      options);
-    }
-  
-export const urineTestsControllerFindAll = (
-    params?: UrineTestsControllerFindAllParams,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<any>(
-      {url: `/urine-tests`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-export const urineTestsControllerFindOne = (
-    id: number,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<UrineTestEntity>(
-      {url: `/urine-tests/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-export const urineTestsControllerUpdate = (
-    id: number,
-    updateUrineTestDto: BodyType<UpdateUrineTestDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<UrineTestEntity>(
-      {url: `/urine-tests/${id}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json', },
-      data: updateUrineTestDto
-    },
-      options);
-    }
-  
-export const urineTestsControllerRemove = (
-    id: number | string,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<UrineTestEntity>(
-      {url: `/urine-tests/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-export const dungTestsControllerCreate = (
-    createDungTestDto: BodyType<any>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<DungTestEntity>(
-      {url: `/dung-tests`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createDungTestDto
-    },
-      options);
-    }
-  
-export const dungTestsControllerFindAll = (
-    params?: DungTestsControllerFindAllParams,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<any>(
-      {url: `/dung-tests`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-export const dungTestsControllerFindOne = (
-    id: number,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<DungTestEntity>(
-      {url: `/dung-tests/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-export const dungTestsControllerUpdate = (
-    id: number,
-    updateDungTestDto: BodyType<UpdateDungTestDto>,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<DungTestEntity>(
-      {url: `/dung-tests/${id}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json', },
-      data: updateDungTestDto
-    },
-      options);
-    }
-  
-export const dungTestsControllerRemove = (
-    id: number | string,
- options?: SecondParameter<typeof createInstance>,) => {
-      return createInstance<DungTestEntity>(
-      {url: `/dung-tests/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-export type AppControllerGetHelloResult = NonNullable<Awaited<ReturnType<typeof appControllerGetHello>>>
-export type AuthControllerLoginResult = NonNullable<Awaited<ReturnType<typeof authControllerLogin>>>
-export type AuthControllerRefreshResult = NonNullable<Awaited<ReturnType<typeof authControllerRefresh>>>
-export type UsersControllerCreateResult = NonNullable<Awaited<ReturnType<typeof usersControllerCreate>>>
-export type UsersControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof usersControllerFindAll>>>
-export type UsersControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof usersControllerFindOne>>>
-export type UsersControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof usersControllerUpdate>>>
-export type UsersControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof usersControllerRemove>>>
-export type VeterinariansControllerCreateResult = NonNullable<Awaited<ReturnType<typeof veterinariansControllerCreate>>>
-export type VeterinariansControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof veterinariansControllerFindAll>>>
-export type VeterinariansControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof veterinariansControllerFindOne>>>
-export type VeterinariansControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof veterinariansControllerUpdate>>>
-export type VeterinariansControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof veterinariansControllerRemove>>>
-export type FarmersControllerCreateResult = NonNullable<Awaited<ReturnType<typeof farmersControllerCreate>>>
-export type FarmersControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof farmersControllerFindAll>>>
-export type FarmersControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof farmersControllerFindOne>>>
-export type FarmersControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof farmersControllerUpdate>>>
-export type FarmersControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof farmersControllerRemove>>>
-export type AnimalsControllerCreateResult = NonNullable<Awaited<ReturnType<typeof animalsControllerCreate>>>
-export type AnimalsControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof animalsControllerFindAll>>>
-export type AnimalsControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof animalsControllerFindOne>>>
-export type AnimalsControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof animalsControllerUpdate>>>
-export type AnimalsControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof animalsControllerRemove>>>
-export type VaccinesControllerCreateResult = NonNullable<Awaited<ReturnType<typeof vaccinesControllerCreate>>>
-export type VaccinesControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof vaccinesControllerFindAll>>>
-export type VaccinesControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof vaccinesControllerFindOne>>>
-export type VaccinesControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof vaccinesControllerUpdate>>>
-export type VaccinesControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof vaccinesControllerRemove>>>
-export type RegionsControllerCreateResult = NonNullable<Awaited<ReturnType<typeof regionsControllerCreate>>>
-export type RegionsControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof regionsControllerFindAll>>>
-export type RegionsControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof regionsControllerFindOne>>>
-export type RegionsControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof regionsControllerUpdate>>>
-export type RegionsControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof regionsControllerRemove>>>
-export type DistrictsControllerCreateResult = NonNullable<Awaited<ReturnType<typeof districtsControllerCreate>>>
-export type DistrictsControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof districtsControllerFindAll>>>
-export type DistrictsControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof districtsControllerFindOne>>>
-export type DistrictsControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof districtsControllerUpdate>>>
-export type DistrictsControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof districtsControllerRemove>>>
-export type VetStationsControllerCreateResult = NonNullable<Awaited<ReturnType<typeof vetStationsControllerCreate>>>
-export type VetStationsControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof vetStationsControllerFindAll>>>
-export type VetStationsControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof vetStationsControllerFindOne>>>
-export type VetStationsControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof vetStationsControllerUpdate>>>
-export type VetStationsControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof vetStationsControllerRemove>>>
-export type AnimalTypesControllerCreateResult = NonNullable<Awaited<ReturnType<typeof animalTypesControllerCreate>>>
-export type AnimalTypesControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof animalTypesControllerFindAll>>>
-export type AnimalTypesControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof animalTypesControllerFindOne>>>
-export type AnimalTypesControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof animalTypesControllerUpdate>>>
-export type AnimalTypesControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof animalTypesControllerRemove>>>
-export type ColorsControllerCreateResult = NonNullable<Awaited<ReturnType<typeof colorsControllerCreate>>>
-export type ColorsControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof colorsControllerFindAll>>>
-export type ColorsControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof colorsControllerFindOne>>>
-export type ColorsControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof colorsControllerUpdate>>>
-export type ColorsControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof colorsControllerRemove>>>
-export type UrineColorsControllerCreateResult = NonNullable<Awaited<ReturnType<typeof urineColorsControllerCreate>>>
-export type UrineColorsControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof urineColorsControllerFindAll>>>
-export type UrineColorsControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof urineColorsControllerFindOne>>>
-export type UrineColorsControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof urineColorsControllerUpdate>>>
-export type UrineColorsControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof urineColorsControllerRemove>>>
-export type DungColorsControllerCreateResult = NonNullable<Awaited<ReturnType<typeof dungColorsControllerCreate>>>
-export type DungColorsControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof dungColorsControllerFindAll>>>
-export type DungColorsControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof dungColorsControllerFindOne>>>
-export type DungColorsControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof dungColorsControllerUpdate>>>
-export type DungColorsControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof dungColorsControllerRemove>>>
-export type LeatherCoversControllerCreateResult = NonNullable<Awaited<ReturnType<typeof leatherCoversControllerCreate>>>
-export type LeatherCoversControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof leatherCoversControllerFindAll>>>
-export type LeatherCoversControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof leatherCoversControllerFindOne>>>
-export type LeatherCoversControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof leatherCoversControllerUpdate>>>
-export type LeatherCoversControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof leatherCoversControllerRemove>>>
-export type EyelidsControllerCreateResult = NonNullable<Awaited<ReturnType<typeof eyelidsControllerCreate>>>
-export type EyelidsControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof eyelidsControllerFindAll>>>
-export type EyelidsControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof eyelidsControllerFindOne>>>
-export type EyelidsControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof eyelidsControllerUpdate>>>
-export type EyelidsControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof eyelidsControllerRemove>>>
-export type VaccineTypesControllerCreateResult = NonNullable<Awaited<ReturnType<typeof vaccineTypesControllerCreate>>>
-export type VaccineTypesControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof vaccineTypesControllerFindAll>>>
-export type VaccineTypesControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof vaccineTypesControllerFindOne>>>
-export type VaccineTypesControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof vaccineTypesControllerUpdate>>>
-export type VaccineTypesControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof vaccineTypesControllerRemove>>>
-export type DiseaseTypesControllerCreateResult = NonNullable<Awaited<ReturnType<typeof diseaseTypesControllerCreate>>>
-export type DiseaseTypesControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof diseaseTypesControllerFindAll>>>
-export type DiseaseTypesControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof diseaseTypesControllerFindOne>>>
-export type DiseaseTypesControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof diseaseTypesControllerUpdate>>>
-export type DiseaseTypesControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof diseaseTypesControllerRemove>>>
-export type BreedsControllerCreateResult = NonNullable<Awaited<ReturnType<typeof breedsControllerCreate>>>
-export type BreedsControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof breedsControllerFindAll>>>
-export type BreedsControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof breedsControllerFindOne>>>
-export type BreedsControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof breedsControllerUpdate>>>
-export type BreedsControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof breedsControllerRemove>>>
-export type GeneralInspectionControllerCreateResult = NonNullable<Awaited<ReturnType<typeof generalInspectionControllerCreate>>>
-export type GeneralInspectionControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof generalInspectionControllerFindAll>>>
-export type GeneralInspectionControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof generalInspectionControllerFindOne>>>
-export type GeneralInspectionControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof generalInspectionControllerUpdate>>>
-export type GeneralInspectionControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof generalInspectionControllerRemove>>>
-export type InspectionsControllerCreateResult = NonNullable<Awaited<ReturnType<typeof inspectionsControllerCreate>>>
-export type InspectionsControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof inspectionsControllerFindAll>>>
-export type InspectionsControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof inspectionsControllerFindOne>>>
-export type InspectionsControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof inspectionsControllerUpdate>>>
-export type InspectionsControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof inspectionsControllerRemove>>>
-export type DiseasesControllerCreateResult = NonNullable<Awaited<ReturnType<typeof diseasesControllerCreate>>>
-export type DiseasesControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof diseasesControllerFindAll>>>
-export type DiseasesControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof diseasesControllerFindOne>>>
-export type DiseasesControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof diseasesControllerUpdate>>>
-export type DiseasesControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof diseasesControllerRemove>>>
-export type GeneralBloodTestControllerCreateResult = NonNullable<Awaited<ReturnType<typeof generalBloodTestControllerCreate>>>
-export type GeneralBloodTestControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof generalBloodTestControllerFindAll>>>
-export type GeneralBloodTestControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof generalBloodTestControllerFindOne>>>
-export type GeneralBloodTestControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof generalBloodTestControllerUpdate>>>
-export type GeneralBloodTestControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof generalBloodTestControllerRemove>>>
-export type BloodSerumTestsControllerCreateResult = NonNullable<Awaited<ReturnType<typeof bloodSerumTestsControllerCreate>>>
-export type BloodSerumTestsControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof bloodSerumTestsControllerFindAll>>>
-export type BloodSerumTestsControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof bloodSerumTestsControllerFindOne>>>
-export type BloodSerumTestsControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof bloodSerumTestsControllerUpdate>>>
-export type BloodSerumTestsControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof bloodSerumTestsControllerRemove>>>
-export type UrineTestsControllerCreateResult = NonNullable<Awaited<ReturnType<typeof urineTestsControllerCreate>>>
-export type UrineTestsControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof urineTestsControllerFindAll>>>
-export type UrineTestsControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof urineTestsControllerFindOne>>>
-export type UrineTestsControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof urineTestsControllerUpdate>>>
-export type UrineTestsControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof urineTestsControllerRemove>>>
-export type DungTestsControllerCreateResult = NonNullable<Awaited<ReturnType<typeof dungTestsControllerCreate>>>
-export type DungTestsControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof dungTestsControllerFindAll>>>
-export type DungTestsControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof dungTestsControllerFindOne>>>
-export type DungTestsControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof dungTestsControllerUpdate>>>
-export type DungTestsControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof dungTestsControllerRemove>>>
+export const authControllerLogin = (authDto: BodyType<AuthDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<AuthEntity>(
+    {
+      url: `/auth/login`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: authDto,
+    },
+    options,
+  );
+};
+
+export const authControllerRefresh = (refreshTokenDto: BodyType<RefreshTokenDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<AuthEntity>(
+    {
+      url: `/auth/refresh`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: refreshTokenDto,
+    },
+    options,
+  );
+};
+
+export const usersControllerCreate = (createUserDto: BodyType<CreateUserDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<UserEntity>(
+    {
+      url: `/users`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createUserDto,
+    },
+    options,
+  );
+};
+
+export const usersControllerFindAll = (params?: UsersControllerFindAllParams, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<PaginatedUsersEntity>({ url: `/users`, method: "GET", params }, options);
+};
+
+export const usersControllerFindOne = (id: number, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<UserEntity>({ url: `/users/${id}`, method: "GET" }, options);
+};
+
+export const usersControllerUpdate = (id: number, updateUserDto: BodyType<any>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<UserEntity>(
+    {
+      url: `/users/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateUserDto,
+    },
+    options,
+  );
+};
+
+export const usersControllerRemove = (id: number, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<UserEntity>({ url: `/users/${id}`, method: "DELETE" }, options);
+};
+
+export const veterinariansControllerCreate = (createUserDto: BodyType<any>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<any>(
+    {
+      url: `/veterinarians`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createUserDto,
+    },
+    options,
+  );
+};
+
+export const veterinariansControllerFindAll = (params?: VeterinariansControllerFindAllParams, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<any>({ url: `/veterinarians`, method: "GET", params }, options);
+};
+
+export const veterinariansControllerFindOne = (id: number, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<VeterinarianEntity>({ url: `/veterinarians/${id}`, method: "GET" }, options);
+};
+
+export const veterinariansControllerUpdate = (id: number, updateUserDto: BodyType<UpdateUserDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<VeterinarianEntity>(
+    {
+      url: `/veterinarians/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateUserDto,
+    },
+    options,
+  );
+};
+
+export const veterinariansControllerRemove = (id: number | string, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<UserEntity>({ url: `/veterinarians/${id}`, method: "DELETE" }, options);
+};
+
+export const farmersControllerCreate = (createFarmerDto: BodyType<any>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<FarmerEntity>(
+    {
+      url: `/farmers`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createFarmerDto,
+    },
+    options,
+  );
+};
+
+export const farmersControllerFindAll = (params?: any, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<any>({ url: `/farmers`, method: "GET", params }, options);
+};
+
+export const farmersControllerFindOne = (id: number, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<FarmerEntity>({ url: `/farmers/${id}`, method: "GET" }, options);
+};
+
+export const farmersControllerUpdate = (id: number, updateFarmerDto: BodyType<UpdateFarmerDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<FarmerEntity>(
+    {
+      url: `/farmers/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateFarmerDto,
+    },
+    options,
+  );
+};
+
+export const farmersControllerRemove = (id: number | string, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<UserEntity>({ url: `/farmers/${id}`, method: "DELETE" }, options);
+};
+
+export const animalsControllerCreate = (createAnimalDto: BodyType<any>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<AnimalEntity>(
+    {
+      url: `/animals`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createAnimalDto,
+    },
+    options,
+  );
+};
+
+export const animalsControllerFindAll = (params?: AnimalsControllerFindAllParams, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<any>({ url: `/animals`, method: "GET", params }, options);
+};
+
+export const animalsControllerFindOne = (id: number|string, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<any>({ url: `/animals/${id}`, method: "GET" }, options);
+};
+
+export const animalsControllerUpdate = (id: number, updateAnimalDto: BodyType<any>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<AnimalEntity>(
+    {
+      url: `/animals/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateAnimalDto,
+    },
+    options,
+  );
+};
+
+export const animalsControllerRemove = (id: number | string, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<AnimalEntity>({ url: `/animals/${id}`, method: "DELETE" }, options);
+};
+
+export const vaccinesControllerCreate = (createVaccineDto: BodyType<any>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<VaccineEntity>(
+    {
+      url: `/vaccines`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createVaccineDto,
+    },
+    options,
+  );
+};
+
+export const vaccinesControllerFindAll = (params?: VaccinesControllerFindAllParams, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<any>({ url: `/vaccines`, method: "GET", params }, options);
+};
+
+export const vaccinesControllerFindOne = (id: number, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<VaccineEntity>({ url: `/vaccines/${id}`, method: "GET" }, options);
+};
+
+export const vaccinesControllerUpdate = (id: number, updateVaccineDto: BodyType<any>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<VaccineEntity>(
+    {
+      url: `/vaccines/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateVaccineDto,
+    },
+    options,
+  );
+};
+
+export const vaccinesControllerRemove = (id: number | string, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<VaccineEntity>({ url: `/vaccines/${id}`, method: "DELETE" }, options);
+};
+
+export const regionsControllerCreate = (createRegionDto: BodyType<CreateRegionDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<RegionEntity>(
+    {
+      url: `/regions`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createRegionDto,
+    },
+    options,
+  );
+};
+
+export const regionsControllerFindAll = (params?: RegionsControllerFindAllParams, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<PaginatedRegionsEntity>({ url: `/regions`, method: "GET", params }, options);
+};
+
+export const regionsControllerFindOne = (id: number, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<RegionEntity>({ url: `/regions/${id}`, method: "GET" }, options);
+};
+
+export const regionsControllerUpdate = (id: number, updateRegionDto: BodyType<UpdateRegionDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<RegionEntity>(
+    {
+      url: `/regions/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateRegionDto,
+    },
+    options,
+  );
+};
+
+export const regionsControllerRemove = (id: number | string, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<RegionEntity>({ url: `/regions/${id}`, method: "DELETE" }, options);
+};
+
+export const districtsControllerCreate = (createDistrictDto: BodyType<CreateDistrictDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<DistrictEntity>(
+    {
+      url: `/districts`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createDistrictDto,
+    },
+    options,
+  );
+};
+
+export const districtsControllerFindAll = (params?: DistrictsControllerFindAllParams, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<PaginatedDistrictsEntity>({ url: `/districts`, method: "GET", params }, options);
+};
+
+export const districtsControllerFindOne = (id: number, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<DistrictEntity>({ url: `/districts/${id}`, method: "GET" }, options);
+};
+
+export const districtsControllerUpdate = (id: number, updateDistrictDto: BodyType<UpdateDistrictDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<DistrictEntity>(
+    {
+      url: `/districts/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateDistrictDto,
+    },
+    options,
+  );
+};
+
+export const districtsControllerRemove = (id: number | string, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<any>({ url: `/districts/${id}`, method: "DELETE" }, options);
+};
+
+export const vetStationsControllerCreate = (createVetStationDto: BodyType<CreateVetStationDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<VetStationEntity>(
+    {
+      url: `/vet-stations`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createVetStationDto,
+    },
+    options,
+  );
+};
+
+export const vetStationsControllerFindAll = (params?: VetStationsControllerFindAllParams, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<any>({ url: `/vet-stations`, method: "GET", params }, options);
+};
+
+export const vetStationsControllerFindOne = (id: number, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<VetStationEntity>({ url: `/vet-stations/${id}`, method: "GET" }, options);
+};
+
+export const vetStationsControllerUpdate = (id: number, updateVetStationDto: BodyType<UpdateVetStationDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<VetStationEntity>(
+    {
+      url: `/vet-stations/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateVetStationDto,
+    },
+    options,
+  );
+};
+
+export const vetStationsControllerRemove = (id: number | string, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<VetStationEntity>({ url: `/vet-stations/${id}`, method: "DELETE" }, options);
+};
+
+export const animalTypesControllerCreate = (createAnimalTypeDto: BodyType<CreateAnimalTypeDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<AnimalTypeEntity>(
+    {
+      url: `/animal-types`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createAnimalTypeDto,
+    },
+    options,
+  );
+};
+
+export const animalTypesControllerFindAll = (params?: AnimalTypesControllerFindAllParams, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<PaginatedAnimalTypesEntity>({ url: `/animal-types`, method: "GET", params }, options);
+};
+
+export const animalTypesControllerFindOne = (id: number | string, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<any>({ url: `/animal-types/${id}`, method: "GET" }, options);
+};
+
+export const animalTypesControllerUpdate = (id: number, updateAnimalTypeDto: BodyType<UpdateAnimalTypeDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<AnimalTypeEntity>(
+    {
+      url: `/animal-types/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateAnimalTypeDto,
+    },
+    options,
+  );
+};
+
+export const animalTypesControllerRemove = (id: number | string, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<AnimalTypeEntity>({ url: `/animal-types/${id}`, method: "DELETE" }, options);
+};
+
+export const colorsControllerCreate = (createColorDto: BodyType<any>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<ColorEntity>(
+    {
+      url: `/colors`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createColorDto,
+    },
+    options,
+  );
+};
+
+export const colorsControllerFindAll = (params?: ColorsControllerFindAllParams, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<PaginatedColorsEntity>({ url: `/colors`, method: "GET", params }, options);
+};
+
+export const colorsControllerFindOne = (id: number, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<ColorEntity>({ url: `/colors/${id}`, method: "GET" }, options);
+};
+
+export const colorsControllerUpdate = (id: number, updateColorDto: BodyType<UpdateColorDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<ColorEntity>(
+    {
+      url: `/colors/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateColorDto,
+    },
+    options,
+  );
+};
+
+export const colorsControllerRemove = (id: number | string, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<ColorEntity>({ url: `/colors/${id}`, method: "DELETE" }, options);
+};
+
+export const urineColorsControllerCreate = (createUrineColorDto: BodyType<CreateUrineColorDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<UrineColorEntity>(
+    {
+      url: `/urine-colors`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createUrineColorDto,
+    },
+    options,
+  );
+};
+
+export const urineColorsControllerFindAll = (params?: UrineColorsControllerFindAllParams, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<PaginatedUrineColorsEntity>({ url: `/urine-colors`, method: "GET", params }, options);
+};
+
+export const urineColorsControllerFindOne = (id: number, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<UrineColorEntity>({ url: `/urine-colors/${id}`, method: "GET" }, options);
+};
+
+export const urineColorsControllerUpdate = (id: number, updateUrineColorDto: BodyType<UpdateUrineColorDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<UrineColorEntity>(
+    {
+      url: `/urine-colors/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateUrineColorDto,
+    },
+    options,
+  );
+};
+
+export const urineColorsControllerRemove = (id: number | string, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<UrineColorEntity>({ url: `/urine-colors/${id}`, method: "DELETE" }, options);
+};
+
+export const dungColorsControllerCreate = (createDungColorDto: BodyType<CreateDungColorDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<DungColorEntity>(
+    {
+      url: `/dung-colors`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createDungColorDto,
+    },
+    options,
+  );
+};
+
+export const dungColorsControllerFindAll = (params?: DungColorsControllerFindAllParams, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<PaginatedDungColorsEntity>({ url: `/dung-colors`, method: "GET", params }, options);
+};
+
+export const dungColorsControllerFindOne = (id: number, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<DungColorEntity>({ url: `/dung-colors/${id}`, method: "GET" }, options);
+};
+
+export const dungColorsControllerUpdate = (id: number, updateDungColorDto: BodyType<UpdateDungColorDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<DungColorEntity>(
+    {
+      url: `/dung-colors/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateDungColorDto,
+    },
+    options,
+  );
+};
+
+export const dungColorsControllerRemove = (id: number | string, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<DungColorEntity>({ url: `/dung-colors/${id}`, method: "DELETE" }, options);
+};
+
+export const leatherCoversControllerCreate = (createLeatherCoverDto: BodyType<CreateLeatherCoverDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<LeatherCoverEntity>(
+    {
+      url: `/leather-covers`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createLeatherCoverDto,
+    },
+    options,
+  );
+};
+
+export const leatherCoversControllerFindAll = (params?: LeatherCoversControllerFindAllParams, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<PaginatedLeatherCoversEntity>({ url: `/leather-covers`, method: "GET", params }, options);
+};
+
+export const leatherCoversControllerFindOne = (id: number, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<LeatherCoverEntity>({ url: `/leather-covers/${id}`, method: "GET" }, options);
+};
+
+export const leatherCoversControllerUpdate = (id: number, updateLeatherCoverDto: BodyType<UpdateLeatherCoverDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<LeatherCoverEntity>(
+    {
+      url: `/leather-covers/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateLeatherCoverDto,
+    },
+    options,
+  );
+};
+
+export const leatherCoversControllerRemove = (id: number | string, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<LeatherCoverEntity>({ url: `/leather-covers/${id}`, method: "DELETE" }, options);
+};
+
+export const eyelidsControllerCreate = (createEyelidDto: BodyType<CreateEyelidDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<EyelidEntity>(
+    {
+      url: `/eyelids`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createEyelidDto,
+    },
+    options,
+  );
+};
+
+export const eyelidsControllerFindAll = (params?: EyelidsControllerFindAllParams, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<PaginatedEyelidsEntity>({ url: `/eyelids`, method: "GET", params }, options);
+};
+
+export const eyelidsControllerFindOne = (id: number, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<EyelidEntity>({ url: `/eyelids/${id}`, method: "GET" }, options);
+};
+
+export const eyelidsControllerUpdate = (id: number, updateEyelidDto: BodyType<UpdateEyelidDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<EyelidEntity>(
+    {
+      url: `/eyelids/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateEyelidDto,
+    },
+    options,
+  );
+};
+
+export const eyelidsControllerRemove = (id: number | string, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<EyelidEntity>({ url: `/eyelids/${id}`, method: "DELETE" }, options);
+};
+
+export const vaccineTypesControllerCreate = (createVaccineTypeDto: BodyType<CreateVaccineTypeDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<VaccineTypeEntity>(
+    {
+      url: `/vaccine-types`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createVaccineTypeDto,
+    },
+    options,
+  );
+};
+
+export const vaccineTypesControllerFindAll = (params?: VaccineTypesControllerFindAllParams, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<PaginatedVaccineTypesEntity>({ url: `/vaccine-types`, method: "GET", params }, options);
+};
+
+export const vaccineTypesControllerFindOne = (id: number, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<VaccineTypeEntity>({ url: `/vaccine-types/${id}`, method: "GET" }, options);
+};
+
+export const vaccineTypesControllerUpdate = (id: number, updateVaccineTypeDto: BodyType<UpdateVaccineTypeDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<VaccineTypeEntity>(
+    {
+      url: `/vaccine-types/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateVaccineTypeDto,
+    },
+    options,
+  );
+};
+
+export const vaccineTypesControllerRemove = (id: number | string, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<VaccineTypeEntity>({ url: `/vaccine-types/${id}`, method: "DELETE" }, options);
+};
+
+export const diseaseTypesControllerCreate = (createDiseaseTypeDto: BodyType<CreateDiseaseTypeDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<DiseaseTypeEntity>(
+    {
+      url: `/disease-types`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createDiseaseTypeDto,
+    },
+    options,
+  );
+};
+
+export const diseaseTypesControllerFindAll = (params?: DiseaseTypesControllerFindAllParams, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<PaginatedDiseaseTypesEntity>({ url: `/disease-types`, method: "GET", params }, options);
+};
+
+export const diseaseTypesControllerFindOne = (id: number, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<DiseaseTypeEntity>({ url: `/disease-types/${id}`, method: "GET" }, options);
+};
+
+export const diseaseTypesControllerUpdate = (id: number, updateDiseaseTypeDto: BodyType<UpdateDiseaseTypeDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<DiseaseTypeEntity>(
+    {
+      url: `/disease-types/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateDiseaseTypeDto,
+    },
+    options,
+  );
+};
+
+export const diseaseTypesControllerRemove = (id: number | string, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<DiseaseTypeEntity>({ url: `/disease-types/${id}`, method: "DELETE" }, options);
+};
+
+export const breedsControllerCreate = (createBreedDto: BodyType<any>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<BreedEntity>(
+    {
+      url: `/breeds`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createBreedDto,
+    },
+    options,
+  );
+};
+
+export const breedsControllerFindAll = (params?: BreedsControllerFindAllParams, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<PaginatedBreedsEntity>({ url: `/breeds`, method: "GET", params }, options);
+};
+
+export const breedsControllerFindOne = (id: number, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<BreedEntity>({ url: `/breeds/${id}`, method: "GET" }, options);
+};
+
+export const breedsControllerUpdate = (id: number, updateBreedDto: BodyType<any>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<BreedEntity>(
+    {
+      url: `/breeds/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateBreedDto,
+    },
+    options,
+  );
+};
+
+export const breedsControllerRemove = (id: number | string, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<BreedEntity>({ url: `/breeds/${id}`, method: "DELETE" }, options);
+};
+
+export const generalInspectionControllerCreate = (createGeneralInspectionDto: BodyType<CreateGeneralInspectionDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<GeneralInspectionEntity>(
+    {
+      url: `/general-inspections`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createGeneralInspectionDto,
+    },
+    options,
+  );
+};
+
+export const generalInspectionControllerFindAll = (params?: GeneralInspectionControllerFindAllParams, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<any>({ url: `/general-inspections`, method: "GET", params }, options);
+};
+
+export const generalInspectionControllerFindOne = (id: number, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<GeneralInspectionEntity>({ url: `/general-inspections/${id}`, method: "GET" }, options);
+};
+
+export const generalInspectionControllerUpdate = (id: number, updateGeneralInspectionDto: BodyType<UpdateGeneralInspectionDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<GeneralInspectionEntity>(
+    {
+      url: `/general-inspections/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateGeneralInspectionDto,
+    },
+    options,
+  );
+};
+
+export const generalInspectionControllerRemove = (id: number | string, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<GeneralInspectionEntity>({ url: `/general-inspections/${id}`, method: "DELETE" }, options);
+};
+
+export const inspectionsControllerCreate = (createInspectionDto: BodyType<any>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<InspectionEntity>(
+    {
+      url: `/inspections`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createInspectionDto,
+    },
+    options,
+  );
+};
+
+export const inspectionsControllerFindAll = (params?: InspectionsControllerFindAllParams, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<any>({ url: `/inspections`, method: "GET", params }, options);
+};
+
+export const inspectionsControllerFindOne = (id: number, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<InspectionEntity>({ url: `/inspections/${id}`, method: "GET" }, options);
+};
+
+export const inspectionsControllerUpdate = (id: number, updateInspectionDto: BodyType<any>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<InspectionEntity>(
+    {
+      url: `/inspections/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateInspectionDto,
+    },
+    options,
+  );
+};
+
+export const inspectionsControllerRemove = (id: number | string, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<InspectionEntity>({ url: `/inspections/${id}`, method: "DELETE" }, options);
+};
+
+export const diseasesControllerCreate = (createDiseaseDto: BodyType<any>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<DiseaseEntity>(
+    {
+      url: `/diseases`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createDiseaseDto,
+    },
+    options,
+  );
+};
+
+export const diseasesControllerFindAll = (params?: any, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<any>({ url: `/diseases`, method: "GET", params }, options);
+};
+
+export const diseasesControllerFindOne = (id: number, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<DiseaseEntity>({ url: `/diseases/${id}`, method: "GET" }, options);
+};
+
+export const diseasesControllerUpdate = (id: number, updateDiseaseDto: BodyType<any>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<DiseaseEntity>(
+    {
+      url: `/diseases/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateDiseaseDto,
+    },
+    options,
+  );
+};
+
+export const diseasesControllerRemove = (id: number | string, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<DiseaseEntity>({ url: `/diseases/${id}`, method: "DELETE" }, options);
+};
+
+export const generalBloodTestControllerCreate = (createGeneralBloodTestDto: BodyType<any>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<GeneralBloodTestEntity>(
+    {
+      url: `/general-blood-tests`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createGeneralBloodTestDto,
+    },
+    options,
+  );
+};
+
+export const generalBloodTestControllerFindAll = (params?: GeneralBloodTestControllerFindAllParams, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<any>({ url: `/general-blood-tests`, method: "GET", params }, options);
+};
+
+export const generalBloodTestControllerFindOne = (id: number, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<GeneralBloodTestEntity>({ url: `/general-blood-tests/${id}`, method: "GET" }, options);
+};
+
+export const generalBloodTestControllerUpdate = (id: number, updateGeneralBloodTestDto: BodyType<any>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<GeneralBloodTestEntity>(
+    {
+      url: `/general-blood-tests/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateGeneralBloodTestDto,
+    },
+    options,
+  );
+};
+
+export const generalBloodTestControllerRemove = (id: number | string, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<GeneralBloodTestEntity>({ url: `/general-blood-tests/${id}`, method: "DELETE" }, options);
+};
+
+export const bloodSerumTestsControllerCreate = (createBloodSerumTestDto: BodyType<any>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<BloodSerumTestEntity>(
+    {
+      url: `/blood-serum-tests`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createBloodSerumTestDto,
+    },
+    options,
+  );
+};
+
+export const bloodSerumTestsControllerFindAll = (params?: BloodSerumTestsControllerFindAllParams, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<any>({ url: `/blood-serum-tests`, method: "GET", params }, options);
+};
+
+export const bloodSerumTestsControllerFindOne = (id: number, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<BloodSerumTestEntity>({ url: `/blood-serum-tests/${id}`, method: "GET" }, options);
+};
+
+export const bloodSerumTestsControllerUpdate = (id: number, updateBloodSerumTestDto: BodyType<UpdateBloodSerumTestDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<BloodSerumTestEntity>(
+    {
+      url: `/blood-serum-tests/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateBloodSerumTestDto,
+    },
+    options,
+  );
+};
+
+export const bloodSerumTestsControllerRemove = (id: number | string, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<BloodSerumTestEntity>({ url: `/blood-serum-tests/${id}`, method: "DELETE" }, options);
+};
+
+export const urineTestsControllerCreate = (createUrineTestDto: BodyType<CreateUrineTestDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<UrineTestEntity>(
+    {
+      url: `/urine-tests`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createUrineTestDto,
+    },
+    options,
+  );
+};
+
+export const urineTestsControllerFindAll = (params?: UrineTestsControllerFindAllParams, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<any>({ url: `/urine-tests`, method: "GET", params }, options);
+};
+
+export const urineTestsControllerFindOne = (id: number, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<UrineTestEntity>({ url: `/urine-tests/${id}`, method: "GET" }, options);
+};
+
+export const urineTestsControllerUpdate = (id: number, updateUrineTestDto: BodyType<UpdateUrineTestDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<UrineTestEntity>(
+    {
+      url: `/urine-tests/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateUrineTestDto,
+    },
+    options,
+  );
+};
+
+export const urineTestsControllerRemove = (id: number | string, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<UrineTestEntity>({ url: `/urine-tests/${id}`, method: "DELETE" }, options);
+};
+
+export const dungTestsControllerCreate = (createDungTestDto: BodyType<any>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<DungTestEntity>(
+    {
+      url: `/dung-tests`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createDungTestDto,
+    },
+    options,
+  );
+};
+
+export const dungTestsControllerFindAll = (params?: DungTestsControllerFindAllParams, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<any>({ url: `/dung-tests`, method: "GET", params }, options);
+};
+
+export const dungTestsControllerFindOne = (id: number, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<DungTestEntity>({ url: `/dung-tests/${id}`, method: "GET" }, options);
+};
+
+export const dungTestsControllerUpdate = (id: number, updateDungTestDto: BodyType<UpdateDungTestDto>, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<DungTestEntity>(
+    {
+      url: `/dung-tests/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateDungTestDto,
+    },
+    options,
+  );
+};
+
+export const dungTestsControllerRemove = (id: number | string, options?: SecondParameter<typeof createInstance>) => {
+  return createInstance<DungTestEntity>({ url: `/dung-tests/${id}`, method: "DELETE" }, options);
+};
+
+export type AppControllerGetHelloResult = NonNullable<Awaited<ReturnType<typeof appControllerGetHello>>>;
+export type AuthControllerLoginResult = NonNullable<Awaited<ReturnType<typeof authControllerLogin>>>;
+export type AuthControllerRefreshResult = NonNullable<Awaited<ReturnType<typeof authControllerRefresh>>>;
+export type UsersControllerCreateResult = NonNullable<Awaited<ReturnType<typeof usersControllerCreate>>>;
+export type UsersControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof usersControllerFindAll>>>;
+export type UsersControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof usersControllerFindOne>>>;
+export type UsersControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof usersControllerUpdate>>>;
+export type UsersControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof usersControllerRemove>>>;
+export type VeterinariansControllerCreateResult = NonNullable<Awaited<ReturnType<typeof veterinariansControllerCreate>>>;
+export type VeterinariansControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof veterinariansControllerFindAll>>>;
+export type VeterinariansControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof veterinariansControllerFindOne>>>;
+export type VeterinariansControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof veterinariansControllerUpdate>>>;
+export type VeterinariansControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof veterinariansControllerRemove>>>;
+export type FarmersControllerCreateResult = NonNullable<Awaited<ReturnType<typeof farmersControllerCreate>>>;
+export type FarmersControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof farmersControllerFindAll>>>;
+export type FarmersControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof farmersControllerFindOne>>>;
+export type FarmersControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof farmersControllerUpdate>>>;
+export type FarmersControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof farmersControllerRemove>>>;
+export type AnimalsControllerCreateResult = NonNullable<Awaited<ReturnType<typeof animalsControllerCreate>>>;
+export type AnimalsControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof animalsControllerFindAll>>>;
+export type AnimalsControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof animalsControllerFindOne>>>;
+export type AnimalsControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof animalsControllerUpdate>>>;
+export type AnimalsControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof animalsControllerRemove>>>;
+export type VaccinesControllerCreateResult = NonNullable<Awaited<ReturnType<typeof vaccinesControllerCreate>>>;
+export type VaccinesControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof vaccinesControllerFindAll>>>;
+export type VaccinesControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof vaccinesControllerFindOne>>>;
+export type VaccinesControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof vaccinesControllerUpdate>>>;
+export type VaccinesControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof vaccinesControllerRemove>>>;
+export type RegionsControllerCreateResult = NonNullable<Awaited<ReturnType<typeof regionsControllerCreate>>>;
+export type RegionsControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof regionsControllerFindAll>>>;
+export type RegionsControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof regionsControllerFindOne>>>;
+export type RegionsControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof regionsControllerUpdate>>>;
+export type RegionsControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof regionsControllerRemove>>>;
+export type DistrictsControllerCreateResult = NonNullable<Awaited<ReturnType<typeof districtsControllerCreate>>>;
+export type DistrictsControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof districtsControllerFindAll>>>;
+export type DistrictsControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof districtsControllerFindOne>>>;
+export type DistrictsControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof districtsControllerUpdate>>>;
+export type DistrictsControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof districtsControllerRemove>>>;
+export type VetStationsControllerCreateResult = NonNullable<Awaited<ReturnType<typeof vetStationsControllerCreate>>>;
+export type VetStationsControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof vetStationsControllerFindAll>>>;
+export type VetStationsControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof vetStationsControllerFindOne>>>;
+export type VetStationsControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof vetStationsControllerUpdate>>>;
+export type VetStationsControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof vetStationsControllerRemove>>>;
+export type AnimalTypesControllerCreateResult = NonNullable<Awaited<ReturnType<typeof animalTypesControllerCreate>>>;
+export type AnimalTypesControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof animalTypesControllerFindAll>>>;
+export type AnimalTypesControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof animalTypesControllerFindOne>>>;
+export type AnimalTypesControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof animalTypesControllerUpdate>>>;
+export type AnimalTypesControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof animalTypesControllerRemove>>>;
+export type ColorsControllerCreateResult = NonNullable<Awaited<ReturnType<typeof colorsControllerCreate>>>;
+export type ColorsControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof colorsControllerFindAll>>>;
+export type ColorsControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof colorsControllerFindOne>>>;
+export type ColorsControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof colorsControllerUpdate>>>;
+export type ColorsControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof colorsControllerRemove>>>;
+export type UrineColorsControllerCreateResult = NonNullable<Awaited<ReturnType<typeof urineColorsControllerCreate>>>;
+export type UrineColorsControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof urineColorsControllerFindAll>>>;
+export type UrineColorsControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof urineColorsControllerFindOne>>>;
+export type UrineColorsControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof urineColorsControllerUpdate>>>;
+export type UrineColorsControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof urineColorsControllerRemove>>>;
+export type DungColorsControllerCreateResult = NonNullable<Awaited<ReturnType<typeof dungColorsControllerCreate>>>;
+export type DungColorsControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof dungColorsControllerFindAll>>>;
+export type DungColorsControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof dungColorsControllerFindOne>>>;
+export type DungColorsControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof dungColorsControllerUpdate>>>;
+export type DungColorsControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof dungColorsControllerRemove>>>;
+export type LeatherCoversControllerCreateResult = NonNullable<Awaited<ReturnType<typeof leatherCoversControllerCreate>>>;
+export type LeatherCoversControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof leatherCoversControllerFindAll>>>;
+export type LeatherCoversControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof leatherCoversControllerFindOne>>>;
+export type LeatherCoversControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof leatherCoversControllerUpdate>>>;
+export type LeatherCoversControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof leatherCoversControllerRemove>>>;
+export type EyelidsControllerCreateResult = NonNullable<Awaited<ReturnType<typeof eyelidsControllerCreate>>>;
+export type EyelidsControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof eyelidsControllerFindAll>>>;
+export type EyelidsControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof eyelidsControllerFindOne>>>;
+export type EyelidsControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof eyelidsControllerUpdate>>>;
+export type EyelidsControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof eyelidsControllerRemove>>>;
+export type VaccineTypesControllerCreateResult = NonNullable<Awaited<ReturnType<typeof vaccineTypesControllerCreate>>>;
+export type VaccineTypesControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof vaccineTypesControllerFindAll>>>;
+export type VaccineTypesControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof vaccineTypesControllerFindOne>>>;
+export type VaccineTypesControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof vaccineTypesControllerUpdate>>>;
+export type VaccineTypesControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof vaccineTypesControllerRemove>>>;
+export type DiseaseTypesControllerCreateResult = NonNullable<Awaited<ReturnType<typeof diseaseTypesControllerCreate>>>;
+export type DiseaseTypesControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof diseaseTypesControllerFindAll>>>;
+export type DiseaseTypesControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof diseaseTypesControllerFindOne>>>;
+export type DiseaseTypesControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof diseaseTypesControllerUpdate>>>;
+export type DiseaseTypesControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof diseaseTypesControllerRemove>>>;
+export type BreedsControllerCreateResult = NonNullable<Awaited<ReturnType<typeof breedsControllerCreate>>>;
+export type BreedsControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof breedsControllerFindAll>>>;
+export type BreedsControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof breedsControllerFindOne>>>;
+export type BreedsControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof breedsControllerUpdate>>>;
+export type BreedsControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof breedsControllerRemove>>>;
+export type GeneralInspectionControllerCreateResult = NonNullable<Awaited<ReturnType<typeof generalInspectionControllerCreate>>>;
+export type GeneralInspectionControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof generalInspectionControllerFindAll>>>;
+export type GeneralInspectionControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof generalInspectionControllerFindOne>>>;
+export type GeneralInspectionControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof generalInspectionControllerUpdate>>>;
+export type GeneralInspectionControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof generalInspectionControllerRemove>>>;
+export type InspectionsControllerCreateResult = NonNullable<Awaited<ReturnType<typeof inspectionsControllerCreate>>>;
+export type InspectionsControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof inspectionsControllerFindAll>>>;
+export type InspectionsControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof inspectionsControllerFindOne>>>;
+export type InspectionsControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof inspectionsControllerUpdate>>>;
+export type InspectionsControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof inspectionsControllerRemove>>>;
+export type DiseasesControllerCreateResult = NonNullable<Awaited<ReturnType<typeof diseasesControllerCreate>>>;
+export type DiseasesControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof diseasesControllerFindAll>>>;
+export type DiseasesControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof diseasesControllerFindOne>>>;
+export type DiseasesControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof diseasesControllerUpdate>>>;
+export type DiseasesControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof diseasesControllerRemove>>>;
+export type GeneralBloodTestControllerCreateResult = NonNullable<Awaited<ReturnType<typeof generalBloodTestControllerCreate>>>;
+export type GeneralBloodTestControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof generalBloodTestControllerFindAll>>>;
+export type GeneralBloodTestControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof generalBloodTestControllerFindOne>>>;
+export type GeneralBloodTestControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof generalBloodTestControllerUpdate>>>;
+export type GeneralBloodTestControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof generalBloodTestControllerRemove>>>;
+export type BloodSerumTestsControllerCreateResult = NonNullable<Awaited<ReturnType<typeof bloodSerumTestsControllerCreate>>>;
+export type BloodSerumTestsControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof bloodSerumTestsControllerFindAll>>>;
+export type BloodSerumTestsControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof bloodSerumTestsControllerFindOne>>>;
+export type BloodSerumTestsControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof bloodSerumTestsControllerUpdate>>>;
+export type BloodSerumTestsControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof bloodSerumTestsControllerRemove>>>;
+export type UrineTestsControllerCreateResult = NonNullable<Awaited<ReturnType<typeof urineTestsControllerCreate>>>;
+export type UrineTestsControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof urineTestsControllerFindAll>>>;
+export type UrineTestsControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof urineTestsControllerFindOne>>>;
+export type UrineTestsControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof urineTestsControllerUpdate>>>;
+export type UrineTestsControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof urineTestsControllerRemove>>>;
+export type DungTestsControllerCreateResult = NonNullable<Awaited<ReturnType<typeof dungTestsControllerCreate>>>;
+export type DungTestsControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof dungTestsControllerFindAll>>>;
+export type DungTestsControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof dungTestsControllerFindOne>>>;
+export type DungTestsControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof dungTestsControllerUpdate>>>;
+export type DungTestsControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof dungTestsControllerRemove>>>;

@@ -1,4 +1,4 @@
 export const AnimalColorQueryKeys = {
   ANIMAL_COLORS: "ANIMAL_COLORS",
   ANIMAL_COLORS_SELECT: "ANIMAL_COLORS_SELECT",
-}
+};

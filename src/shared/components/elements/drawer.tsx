@@ -1,13 +1,13 @@
-import clsx from "clsx"
-import { ReactNode } from "react"
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/shared/components/ui/sheet"
+import clsx from "clsx";
+import { ReactNode } from "react";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/shared/components/ui/sheet";
 
 interface Props {
-  title?: string
-  open?: boolean
-  children?: ReactNode
-  widthClassName?: string
-  onClose?: () => void
+  title?: string;
+  open?: boolean;
+  children?: ReactNode;
+  widthClassName?: string;
+  onClose?: () => void;
 }
 
 export function Drawer({ children, open, title, widthClassName, onClose }: Props) {
@@ -17,10 +17,8 @@ export function Drawer({ children, open, title, widthClassName, onClose }: Props
         <SheetHeader>
           <SheetTitle>{title}</SheetTitle>
         </SheetHeader>
-        <div className="overflow-y-auto h-full p-4 border-t">
-          {children}
-        </div>
+        <div className="overflow-y-auto h-full p-4 border-t">{children}</div>
       </SheetContent>
     </Sheet>
-  )
+  );
 }

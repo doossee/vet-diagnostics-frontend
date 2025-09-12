@@ -1,2 +1,2 @@
-export { GeneralInspectionForm } from './form'
-export { generalInspectionValues, type GeneralInspectionSchema } from './general-inspection.model'
+export { GeneralInspectionForm } from "./form";
+export { generalInspectionValues, type GeneralInspectionSchema } from "./general-inspection.model";

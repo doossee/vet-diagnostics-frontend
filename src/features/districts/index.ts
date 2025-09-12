@@ -1,2 +1,2 @@
-export { DistrictForm } from './form'
-export { districtValues, type DistrictSchema } from './districts'
+export { DistrictForm } from "./form";
+export { districtValues, type DistrictSchema } from "./districts";

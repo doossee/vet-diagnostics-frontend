@@ -5,5 +5,5 @@ export function Spinner() {
     <div className="w-full justify-center items-center mx-auto">
       <Loader className="animate-spin text-accent-foreground" />
     </div>
-  )
+  );
 }

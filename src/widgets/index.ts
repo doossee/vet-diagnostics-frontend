@@ -1,1 +1,1 @@
-export { AnimalDashboard } from './animal/dashboard'
+export { AnimalDashboard } from "./animal/dashboard";

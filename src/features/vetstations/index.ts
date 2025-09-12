@@ -1,2 +1,2 @@
-export { VetStationForm } from './form'
-export { vetStationValues, type VetStationSchema } from './vetstations'
+export { VetStationForm } from "./form";
+export { vetStationValues, type VetStationSchema } from "./vetstations";

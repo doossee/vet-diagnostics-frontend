@@ -1,1 +1,1 @@
-export { createInspectionColums } from './columns'
+export { createInspectionColums } from "./columns";

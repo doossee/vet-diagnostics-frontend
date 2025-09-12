@@ -1,12 +1,13 @@
-import "../globals.css"
-import type { Metadata } from "next"
-import localFont from "next/font/local"
-import { getMessages } from 'next-intl/server'
-import { NextIntlClientProvider } from 'next-intl'
-import { Toaster } from "@/shared/components/ui/sonner"
-import { ThemeProvider } from "@/shared/components/theme-provider"
-import { ClientProfider } from '@/shared/components/query-client'
-import { PageLoadingIndicator } from "@/shared/components/page-loading-indicator"
+import "../globals.css";
+
+import type { Metadata } from "next";
+import localFont from "next/font/local";
+import { getMessages } from "next-intl/server";
+import { NextIntlClientProvider } from "next-intl";
+import { Toaster } from "@/shared/components/ui/sonner";
+import { ThemeProvider } from "@/shared/components/theme-provider";
+import { ClientProfider } from "@/shared/components/query-client";
+import { PageLoadingIndicator } from "@/shared/components/page-loading-indicator";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -26,27 +27,21 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
-  params
+  params,
 }: Readonly<{
-  children: React.ReactNode,
-  params: Promise<{ locale: string }>
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }>) {
-  const { locale } = await params
-  const messages = await getMessages()
+  const { locale } = await params;
+  const messages = await getMessages();
 
   return (
     <html lang={locale} suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <NextIntlClientProvider messages={messages}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange>    
-              <PageLoadingIndicator />
-              <ClientProfider>
-                {children}
-              </ClientProfider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+            <PageLoadingIndicator />
+            <ClientProfider>{children}</ClientProfider>
             <Toaster />
           </ThemeProvider>
         </NextIntlClientProvider>

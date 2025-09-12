@@ -1,85 +1,85 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { cn } from "@/shared/lib/utils"
-import * as SelectPrimitive from "@radix-ui/react-select"
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon, XIcon, SearchIcon } from "lucide-react"
+import * as React from "react";
+import { cn } from "@/shared/lib/utils";
+import * as SelectPrimitive from "@radix-ui/react-select";
+import { CheckIcon, ChevronDownIcon, ChevronUpIcon, XIcon, SearchIcon } from "lucide-react";
 
 // Основные типы для Ant Design Select
 export interface AntSelectOption {
-  label: React.ReactNode
-  value: string | number
-  disabled?: boolean
-  className?: string
-  title?: string
+  label: React.ReactNode;
+  value: string | number;
+  disabled?: boolean;
+  className?: string;
+  title?: string;
 }
 
 export interface AntSelectOptGroup {
-  label: React.ReactNode
-  key?: string
-  className?: string
-  title?: string
-  options: AntSelectOption[]
+  label: React.ReactNode;
+  key?: string;
+  className?: string;
+  title?: string;
+  options: AntSelectOption[];
 }
 
 export interface AntSelectProps {
   // Основные пропсы
-  allowClear?: boolean | { clearIcon?: React.ReactNode }
-  autoClearSearchValue?: boolean
-  autoFocus?: boolean
-  defaultActiveFirstOption?: boolean
-  defaultOpen?: boolean
-  defaultValue?: string | string[] | number | number[]
-  disabled?: boolean
-  dropdownClassName?: string
-  dropdownMatchSelectWidth?: boolean | number
-  dropdownRender?: (originNode: React.ReactNode) => React.ReactNode
-  dropdownStyle?: React.CSSProperties
-  filterOption?: boolean | ((inputValue: string, option: AntSelectOption) => boolean)
-  getPopupContainer?: (triggerNode: Element) => HTMLElement
-  labelInValue?: boolean
-  listHeight?: number
-  loading?: boolean
-  maxCount?: number
-  maxTagCount?: number | "responsive"
-  maxTagPlaceholder?: React.ReactNode | ((omittedValues: any[]) => React.ReactNode)
-  maxTagTextLength?: number
-  mode?: "multiple" | "tags"
-  notFoundContent?: React.ReactNode
-  open?: boolean
-  optionFilterProp?: string
-  optionLabelProp?: string
-  options?: (AntSelectOption | AntSelectOptGroup)[]
-  placeholder?: React.ReactNode
-  placement?: "bottomLeft" | "bottomRight" | "topLeft" | "topRight"
-  removeIcon?: React.ReactNode
-  searchValue?: string
-  showSearch?: boolean
-  size?: "large" | "middle" | "small"
-  status?: "error" | "warning"
-  suffixIcon?: React.ReactNode
-  tagRender?: (props: any) => React.ReactNode
-  tokenSeparators?: string[]
-  value?: string | string[] | number | number[]
-  variant?: "outlined" | "borderless" | "filled"
-  virtual?: boolean
+  allowClear?: boolean | { clearIcon?: React.ReactNode };
+  autoClearSearchValue?: boolean;
+  autoFocus?: boolean;
+  defaultActiveFirstOption?: boolean;
+  defaultOpen?: boolean;
+  defaultValue?: string | string[] | number | number[];
+  disabled?: boolean;
+  dropdownClassName?: string;
+  dropdownMatchSelectWidth?: boolean | number;
+  dropdownRender?: (originNode: React.ReactNode) => React.ReactNode;
+  dropdownStyle?: React.CSSProperties;
+  filterOption?: boolean | ((inputValue: string, option: AntSelectOption) => boolean);
+  getPopupContainer?: (triggerNode: Element) => HTMLElement;
+  labelInValue?: boolean;
+  listHeight?: number;
+  loading?: boolean;
+  maxCount?: number;
+  maxTagCount?: number | "responsive";
+  maxTagPlaceholder?: React.ReactNode | ((omittedValues: any[]) => React.ReactNode);
+  maxTagTextLength?: number;
+  mode?: "multiple" | "tags";
+  notFoundContent?: React.ReactNode;
+  open?: boolean;
+  optionFilterProp?: string;
+  optionLabelProp?: string;
+  options?: (AntSelectOption | AntSelectOptGroup)[];
+  placeholder?: React.ReactNode;
+  placement?: "bottomLeft" | "bottomRight" | "topLeft" | "topRight";
+  removeIcon?: React.ReactNode;
+  searchValue?: string;
+  showSearch?: boolean;
+  size?: "large" | "middle" | "small";
+  status?: "error" | "warning";
+  suffixIcon?: React.ReactNode;
+  tagRender?: (props: any) => React.ReactNode;
+  tokenSeparators?: string[];
+  value?: string | string[] | number | number[];
+  variant?: "outlined" | "borderless" | "filled";
+  virtual?: boolean;
 
   // События
-  onBlur?: (event: React.FocusEvent) => void
-  onChange?: (value: any, option: any) => void
-  onClear?: () => void
-  onDeselect?: (value: string | number) => void
-  onDropdownVisibleChange?: (open: boolean) => void
-  onFocus?: (event: React.FocusEvent) => void
-  onInputKeyDown?: (event: React.KeyboardEvent) => void
-  onPopupScroll?: (event: React.UIEvent) => void
-  onSearch?: (value: string) => void
-  onSelect?: (value: string | number, option: AntSelectOption) => void
+  onBlur?: (event: React.FocusEvent) => void;
+  onChange?: (value: any, option: any) => void;
+  onClear?: () => void;
+  onDeselect?: (value: string | number) => void;
+  onDropdownVisibleChange?: (open: boolean) => void;
+  onFocus?: (event: React.FocusEvent) => void;
+  onInputKeyDown?: (event: React.KeyboardEvent) => void;
+  onPopupScroll?: (event: React.UIEvent) => void;
+  onSearch?: (value: string) => void;
+  onSelect?: (value: string | number, option: AntSelectOption) => void;
 
   // Дополнительные пропсы
-  className?: string
-  style?: React.CSSProperties
-  children?: React.ReactNode
+  className?: string;
+  style?: React.CSSProperties;
+  children?: React.ReactNode;
 }
 
 // Основной компонент AntSelect
@@ -142,185 +142,160 @@ const AntSelect = React.forwardRef<React.ElementRef<typeof SelectPrimitive.Root>
     },
     ref,
   ) => {
-    const [internalValue, setInternalValue] = React.useState<string | string[]>(defaultValue || (mode === "multiple" || mode === "tags" ? [] : ""))
-    const [searchText, setSearchText] = React.useState("")
-    const [isOpen, setIsOpen] = React.useState(defaultOpen || false)
+    const [internalValue, setInternalValue] = React.useState<string | string[]>(defaultValue || (mode === "multiple" || mode === "tags" ? [] : ""));
+    const [searchText, setSearchText] = React.useState("");
+    const [isOpen, setIsOpen] = React.useState(defaultOpen || false);
 
-    const currentValue = value !== undefined ? value : internalValue
-    const isMultiple = mode === "multiple" || mode === "tags"
-    const shouldShowSearch = showSearch !== undefined ? showSearch : isMultiple
+    const currentValue = value !== undefined ? value : internalValue;
+    const isMultiple = mode === "multiple" || mode === "tags";
+    const shouldShowSearch = showSearch !== undefined ? showSearch : isMultiple;
 
     // Обработка изменения значения
     const handleValueChange = (newValue: string) => {
       if (isMultiple) {
-        const currentArray = Array.isArray(currentValue) ? currentValue : []
-        const newArray = currentArray.includes(newValue)
-          ? currentArray.filter((v) => v !== newValue)
-          : [...currentArray, newValue]
+        const currentArray = Array.isArray(currentValue) ? currentValue : [];
+        const newArray = currentArray.includes(newValue) ? currentArray.filter((v) => v !== newValue) : [...currentArray, newValue];
 
         if (value === undefined) {
-          setInternalValue(newArray)
+          setInternalValue(newArray);
         }
-        onChange?.(newArray, null)
+        onChange?.(newArray, null);
       } else {
         if (value === undefined) {
-          setInternalValue(newValue)
+          setInternalValue(newValue);
         }
-        onChange?.(newValue, null)
-        setIsOpen(false)
+        onChange?.(newValue, null);
+        setIsOpen(false);
       }
-    }
+    };
 
     // Обработка очистки
     const handleClear = (e: React.MouseEvent) => {
-      e.stopPropagation()
-      const clearedValue = isMultiple ? [] : ""
+      e.stopPropagation();
+      const clearedValue = isMultiple ? [] : "";
       if (value === undefined) {
-        setInternalValue(clearedValue)
+        setInternalValue(clearedValue);
       }
-      onChange?.(clearedValue, null)
-      onClear?.()
-    }
+      onChange?.(clearedValue, null);
+      onClear?.();
+    };
 
     // Фильтрация опций
     const filteredOptions = React.useMemo(() => {
-      if (!shouldShowSearch || !searchText) return options
+      if (!shouldShowSearch || !searchText) return options;
 
       return options.filter((option) => {
         if ("options" in option) {
           // Это группа опций
           const filteredGroupOptions = option.options.filter((opt) => {
-            const searchIn = optionFilterProp === "label" ? opt.label : opt.value
-            return String(searchIn).toLowerCase().includes(searchText.toLowerCase())
-          })
-          return filteredGroupOptions.length > 0
+            const searchIn = optionFilterProp === "label" ? opt.label : opt.value;
+            return String(searchIn).toLowerCase().includes(searchText.toLowerCase());
+          });
+          return filteredGroupOptions.length > 0;
         } else {
           // Это обычная опция
-          const searchIn = optionFilterProp === "label" ? option.label : option.value
-          return String(searchIn).toLowerCase().includes(searchText.toLowerCase())
+          const searchIn = optionFilterProp === "label" ? option.label : option.value;
+          return String(searchIn).toLowerCase().includes(searchText.toLowerCase());
         }
-      })
-    }, [options, searchText, shouldShowSearch, optionFilterProp])
+      });
+    }, [options, searchText, shouldShowSearch, optionFilterProp]);
 
     // Получение размеров
     const getSizeClasses = () => {
       switch (size) {
         case "large":
-          return "h-10 px-3 text-base"
+          return "h-10 px-3 text-base";
         case "small":
-          return "h-6 px-2 text-xs"
+          return "h-6 px-2 text-xs";
         default:
-          return "h-8 px-3 text-sm"
+          return "h-8 px-3 text-sm";
       }
-    }
+    };
 
     // Получение вариантов стилей
     const getVariantClasses = () => {
       switch (variant) {
         case "filled":
-          return "bg-gray-50 border-transparent hover:bg-gray-100 focus:bg-white focus:border-blue-500"
+          return "bg-gray-50 border-transparent hover:bg-gray-100 focus:bg-white focus:border-blue-500";
         case "borderless":
-          return "border-transparent shadow-none hover:bg-gray-50 focus:bg-gray-50"
+          return "border-transparent shadow-none hover:bg-gray-50 focus:bg-gray-50";
         default:
-          return "bg-white border-gray-300 hover:border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+          return "bg-white border-gray-300 hover:border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200";
       }
-    }
+    };
 
     // Получение статусных классов
     const getStatusClasses = () => {
       switch (status) {
         case "error":
-          return "border-red-500 focus:border-red-500 focus:ring-red-200"
+          return "border-red-500 focus:border-red-500 focus:ring-red-200";
         case "warning":
-          return "border-yellow-500 focus:border-yellow-500 focus:ring-yellow-200"
+          return "border-yellow-500 focus:border-yellow-500 focus:ring-yellow-200";
         default:
-          return ""
+          return "";
       }
-    }
+    };
 
     // Рендер выбранных значений для множественного выбора
     const renderMultipleValues = () => {
       if (!isMultiple || !Array.isArray(currentValue) || currentValue.length === 0) {
-        return null
+        return null;
       }
 
       return (
         <div className="flex flex-wrap gap-1">
           {currentValue.map((val, index) => {
-            const option = options.find((opt) =>
-              opt?.value ? opt.value === val : opt.options?.some((o) => o.value === val),
-            )
-            const optionData = option?.value ? option : option?.options?.find((o) => o.value === val)
+            const option = options.find((opt) => (opt?.value ? opt.value === val : opt.options?.some((o) => o.value === val)));
+            const optionData = option?.value ? option : option?.options?.find((o) => o.value === val);
 
             return (
-              <span
-                key={`${val}-${index}`}
-                className="inline-flex items-center gap-1 px-2 py-0.5 bg-gray-100 text-gray-800 text-xs rounded border"
-              >
+              <span key={`${val}-${index}`} className="inline-flex items-center gap-1 px-2 py-0.5 bg-gray-100 text-gray-800 text-xs rounded border">
                 {optionData?.label || val}
                 <button
                   type="button"
                   onClick={(e) => {
-                    e.stopPropagation()
-                    handleValueChange(String(val))
+                    e.stopPropagation();
+                    handleValueChange(String(val));
                   }}
-                  className="hover:bg-gray-200 rounded p-0.5"
-                >
+                  className="hover:bg-gray-200 rounded p-0.5">
                   <XIcon className="w-3 h-3" />
                 </button>
               </span>
-            )
+            );
           })}
         </div>
-      )
-    }
+      );
+    };
 
     // Рендер одиночного значения
     const renderSingleValue = () => {
-      if (isMultiple) return null
+      if (isMultiple) return null;
 
-      const option = options.find((opt) =>
-        opt?.value ? opt.value === currentValue : opt.options?.some((o) => o.value === currentValue),
-      )
-      const optionData = option?.value ? option : option?.options?.find((o) => o.value === currentValue)
+      const option = options.find((opt) => (opt?.value ? opt.value === currentValue : opt.options?.some((o) => o.value === currentValue)));
+      const optionData = option?.value ? option : option?.options?.find((o) => o.value === currentValue);
 
-      return optionData?.label || currentValue || placeholder
-    }
+      return optionData?.label || currentValue || placeholder;
+    };
 
     return (
       <SelectPrimitive.Root
         open={open !== undefined ? open : isOpen}
         onOpenChange={(newOpen) => {
-          setIsOpen(newOpen)
-          onDropdownVisibleChange?.(newOpen)
+          setIsOpen(newOpen);
+          onDropdownVisibleChange?.(newOpen);
         }}
         value={isMultiple ? undefined : String(currentValue)}
         onValueChange={isMultiple ? undefined : handleValueChange}
         disabled={disabled}
-        {...props}
-      >
+        {...props}>
         <SelectPrimitive.Trigger
           ref={ref}
-          className={cn(
-            "flex items-center justify-between w-full rounded border transition-colors outline-none",
-            getSizeClasses(),
-            getVariantClasses(),
-            getStatusClasses(),
-            disabled && "opacity-50 cursor-not-allowed",
-            className,
-          )}
+          className={cn("flex items-center justify-between w-full rounded border transition-colors outline-none", getSizeClasses(), getVariantClasses(), getStatusClasses(), disabled && "opacity-50 cursor-not-allowed", className)}
           style={style}
           onFocus={onFocus}
           onBlur={onBlur}
-          onKeyDown={onInputKeyDown}
-        >
-          <div className="flex-1 flex items-center gap-2 min-w-0">
-            {isMultiple ? (
-              renderMultipleValues()
-            ) : (
-              <span className={cn("truncate", !currentValue && "text-gray-400")}>{renderSingleValue()}</span>
-            )}
-          </div>
+          onKeyDown={onInputKeyDown}>
+          <div className="flex-1 flex items-center gap-2 min-w-0">{isMultiple ? renderMultipleValues() : <span className={cn("truncate", !currentValue && "text-gray-400")}>{renderSingleValue()}</span>}</div>
 
           <div className="flex items-center gap-1 ml-2">
             {allowClear && currentValue && (
@@ -329,9 +304,7 @@ const AntSelect = React.forwardRef<React.ElementRef<typeof SelectPrimitive.Root>
               </button>
             )}
 
-            <SelectPrimitive.Icon asChild>
-              {suffixIcon || <ChevronDownIcon className="w-4 h-4 text-gray-400" />}
-            </SelectPrimitive.Icon>
+            <SelectPrimitive.Icon asChild>{suffixIcon || <ChevronDownIcon className="w-4 h-4 text-gray-400" />}</SelectPrimitive.Icon>
           </div>
         </SelectPrimitive.Trigger>
 
@@ -352,8 +325,7 @@ const AntSelect = React.forwardRef<React.ElementRef<typeof SelectPrimitive.Root>
               minWidth: dropdownMatchSelectWidth ? "var(--radix-select-trigger-width)" : undefined,
             }}
             position="popper"
-            onScroll={onPopupScroll}
-          >
+            onScroll={onPopupScroll}>
             {shouldShowSearch && (
               <div className="flex items-center border-b px-3 py-2">
                 <SearchIcon className="w-4 h-4 text-gray-400 mr-2" />
@@ -362,8 +334,8 @@ const AntSelect = React.forwardRef<React.ElementRef<typeof SelectPrimitive.Root>
                   placeholder="Search..."
                   value={searchText}
                   onChange={(e) => {
-                    setSearchText(e.target.value)
-                    onSearch?.(e.target.value)
+                    setSearchText(e.target.value);
+                    onSearch?.(e.target.value);
                   }}
                   className="flex-1 outline-none text-sm"
                   onClick={(e) => e.stopPropagation()}
@@ -386,9 +358,7 @@ const AntSelect = React.forwardRef<React.ElementRef<typeof SelectPrimitive.Root>
                     // Рендер группы опций
                     return (
                       <SelectPrimitive.Group key={option.key || index}>
-                        <SelectPrimitive.Label className="px-2 py-1.5 text-xs font-semibold text-gray-500">
-                          {option.label}
-                        </SelectPrimitive.Label>
+                        <SelectPrimitive.Label className="px-2 py-1.5 text-xs font-semibold text-gray-500">{option.label}</SelectPrimitive.Label>
                         {option.options.map((groupOption) => (
                           <SelectPrimitive.Item
                             key={groupOption.value}
@@ -402,11 +372,10 @@ const AntSelect = React.forwardRef<React.ElementRef<typeof SelectPrimitive.Root>
                             )}
                             onSelect={() => {
                               if (isMultiple) {
-                                handleValueChange(String(groupOption.value))
+                                handleValueChange(String(groupOption.value));
                               }
-                              onSelect?.(groupOption.value, groupOption)
-                            }}
-                          >
+                              onSelect?.(groupOption.value, groupOption);
+                            }}>
                             <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
                               <SelectPrimitive.ItemIndicator>
                                 <CheckIcon className="h-4 w-4" />
@@ -416,7 +385,7 @@ const AntSelect = React.forwardRef<React.ElementRef<typeof SelectPrimitive.Root>
                           </SelectPrimitive.Item>
                         ))}
                       </SelectPrimitive.Group>
-                    )
+                    );
                   } else {
                     // Рендер обычной опции
                     return (
@@ -432,11 +401,10 @@ const AntSelect = React.forwardRef<React.ElementRef<typeof SelectPrimitive.Root>
                         )}
                         onSelect={() => {
                           if (isMultiple) {
-                            handleValueChange(String(option.value))
+                            handleValueChange(String(option.value));
                           }
-                          onSelect?.(option.value, option)
-                        }}
-                      >
+                          onSelect?.(option.value, option);
+                        }}>
                         <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
                           <SelectPrimitive.ItemIndicator>
                             <CheckIcon className="h-4 w-4" />
@@ -444,7 +412,7 @@ const AntSelect = React.forwardRef<React.ElementRef<typeof SelectPrimitive.Root>
                         </span>
                         <SelectPrimitive.ItemText>{option.label}</SelectPrimitive.ItemText>
                       </SelectPrimitive.Item>
-                    )
+                    );
                   }
                 })
               )}
@@ -456,10 +424,10 @@ const AntSelect = React.forwardRef<React.ElementRef<typeof SelectPrimitive.Root>
           </SelectPrimitive.Content>
         </SelectPrimitive.Portal>
       </SelectPrimitive.Root>
-    )
+    );
   },
-)
+);
 
-AntSelect.displayName = "AntSelect"
+AntSelect.displayName = "AntSelect";
 
-export { AntSelect }
+export { AntSelect };

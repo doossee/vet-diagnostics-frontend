@@ -1,55 +1,62 @@
-import { useForm } from "react-hook-form"
-import { useI18n } from "@/shared/hooks/use-i18n"
-import { Input } from '@/shared/components/ui/input'
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Button } from '@/shared/components/ui/button'
-import { AnimalColorSchema, animalColorValues, createAnimalColorSchema } from './animal-color.model'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/shared/components/ui/form'
+import { useForm } from "react-hook-form";
+import { useI18n } from "@/shared/hooks/use-i18n";
+import { Input } from "@/shared/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@/shared/components/ui/button";
+import { AnimalColorSchema, animalColorValues, createAnimalColorSchema } from "./animal-color.model";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 
 interface AnimalColorFormProps {
-    defaultValues?: AnimalColorSchema
-    onSubmit: (values: AnimalColorSchema) => void
+  defaultValues?: AnimalColorSchema;
+  onSubmit: (values: AnimalColorSchema) => void;
 }
 
 export function AnimalColorForm({ onSubmit, defaultValues }: AnimalColorFormProps) {
-    const { t } = useI18n()
+  const { t } = useI18n();
 
-    const form = useForm<AnimalColorSchema>({
-        resolver: zodResolver(createAnimalColorSchema(t)),
-        defaultValues: defaultValues || animalColorValues,
-    })
+  const form = useForm<AnimalColorSchema>({
+    resolver: zodResolver(createAnimalColorSchema(t)),
+    defaultValues: defaultValues || animalColorValues,
+  });
 
-    return (<Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 h-full">
-            <FormField
-                name="name"
-                control={form.control}
-                render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>{t("management.colorName")}</FormLabel>
-                        <FormControl>
-                            <Input placeholder={t("management.colorName")} {...field} />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )}
-            />
-            <FormField
-                name="hex"
-                control={form.control}
-                render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>{t("management.colorPick")} {field.value}</FormLabel>
-                        <FormControl>
-                            <Input type="color" placeholder={t("management.colorPick")} {...field} />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )}
-            />
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 h-full">
+        <FormField
+          name="name"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("management.colorName")}</FormLabel>
+              <FormControl>
+                <Input placeholder={t("management.colorName")} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="hex"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                {t("management.colorPick")} {field.value}
+              </FormLabel>
+              <FormControl>
+                <Input type="color" placeholder={t("management.colorPick")} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-            <div className="flex-1" />
-            <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">{t(form.formState.isSubmitting?"form.submiting":"form.submit")}</Button>
-        </form>
-    </Form>)
+        <div className="flex-1 flex items-end">
+          <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">
+            {t(form.formState.isSubmitting ? "form.submiting" : "form.submit")}
+          </Button>
+        </div>
+      </form>
+    </Form>
+  );
 }

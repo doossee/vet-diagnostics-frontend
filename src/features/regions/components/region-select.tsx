@@ -1,32 +1,25 @@
-'use client'
+"use client";
 
-import { UseFormReturn } from "react-hook-form"
-import { useI18n } from "@/shared/hooks/use-i18n"
-import { Autocomplete } from '@/shared/components/ui/autocomplete'
-import { useGetRegionsInfinite } from '@/entities/regions/services/queries'
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form"
+import { searchUtil } from "@/shared/helpers/search-util";
+import { Autocomplete } from "@/shared/components/ui/autocomplete";
+import { useGetRegionsInfinite } from "@/entities/regions/services/queries";
 
 interface Props {
-  name: string
-  form: UseFormReturn<any, any, unknown>
+  value?: unknown
+  placeholder?: string
+  onRemove?: () => void
+  onChange?: (value: unknown) => void
 }
 
-export function RegionSelect({ name, form }: Props) {
-  const { t } = useI18n()
- 
+export function RegionSelect({ value, placeholder, onChange, onRemove }: Props) {
   return (
-    <FormField
-      name={name}
-      control={form.control}
-      render={({ field }) => (
-        <FormItem>
-            <FormLabel>{t('form.regionName')}</FormLabel>
-            <FormControl>
-              <Autocomplete onSelect={e => field.onChange(e?.id)} placeholder={t('form.regionName')} queryFn={useGetRegionsInfinite} />
-            </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-  />
-  )
+    <Autocomplete
+      onRemove={onRemove}
+      defaultValue={value}
+      placeholder={placeholder}
+      queryFn={useGetRegionsInfinite}
+      onSelect={(e: any) => onChange?.(e?.id)}
+      clientSearch={(search, item) => searchUtil(search, item, ["id", "name"] as any)}
+    />
+  );
 }

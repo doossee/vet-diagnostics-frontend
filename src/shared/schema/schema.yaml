@@ -5,8 +5,8 @@ paths:
       operationId: AppController_getHello
       parameters: []
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
       tags:
         - App
   /auth/login:
@@ -18,14 +18,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AuthDto'
+              $ref: "#/components/schemas/AuthDto"
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthEntity'
+                $ref: "#/components/schemas/AuthEntity"
       tags:
         - auth
   /auth/refresh:
@@ -37,14 +37,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RefreshTokenDto'
+              $ref: "#/components/schemas/RefreshTokenDto"
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthEntity'
+                $ref: "#/components/schemas/AuthEntity"
       tags:
         - auth
   /users:
@@ -56,14 +56,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateUserDto'
+              $ref: "#/components/schemas/CreateUserDto"
       responses:
-        '201':
-          description: ''
+        "201":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserEntity'
+                $ref: "#/components/schemas/UserEntity"
       tags:
         - users
     get:
@@ -117,7 +117,7 @@ paths:
           description: Filter by user birth date in ISO format
           schema:
             format: date-time
-            example: '1990-01-01T00:00:00.000Z'
+            example: "1990-01-01T00:00:00.000Z"
             type: string
         - name: districtId
           required: false
@@ -139,7 +139,7 @@ paths:
           description: Filter by user creation date in ISO format
           schema:
             format: date-time
-            example: '2024-01-01T00:00:00.000Z'
+            example: "2024-01-01T00:00:00.000Z"
             type: string
         - name: byBirthDate
           required: false
@@ -196,12 +196,12 @@ paths:
               - desc
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedUsersEntity'
+                $ref: "#/components/schemas/PaginatedUsersEntity"
       tags:
         - users
   /users/{id}:
@@ -214,12 +214,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserEntity'
+                $ref: "#/components/schemas/UserEntity"
       tags:
         - users
     patch:
@@ -235,14 +235,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateUserDto'
+              $ref: "#/components/schemas/UpdateUserDto"
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserEntity'
+                $ref: "#/components/schemas/UserEntity"
       tags:
         - users
     delete:
@@ -254,12 +254,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserEntity'
+                $ref: "#/components/schemas/UserEntity"
       tags:
         - users
   /veterinarians:
@@ -271,14 +271,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateUserDto'
+              $ref: "#/components/schemas/CreateUserDto"
       responses:
-        '201':
-          description: ''
+        "201":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VeterinarianEntity'
+                $ref: "#/components/schemas/VeterinarianEntity"
       tags:
         - veterinarians
     get:
@@ -332,7 +332,7 @@ paths:
           description: Filter by user birth date in ISO format
           schema:
             format: date-time
-            example: '1990-01-01T00:00:00.000Z'
+            example: "1990-01-01T00:00:00.000Z"
             type: string
         - name: districtId
           required: false
@@ -354,7 +354,7 @@ paths:
           description: Filter by user creation date in ISO format
           schema:
             format: date-time
-            example: '2024-01-01T00:00:00.000Z'
+            example: "2024-01-01T00:00:00.000Z"
             type: string
         - name: byBirthDate
           required: false
@@ -411,12 +411,12 @@ paths:
               - desc
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedVeterinariansEntity'
+                $ref: "#/components/schemas/PaginatedVeterinariansEntity"
       tags:
         - veterinarians
   /veterinarians/{id}:
@@ -429,12 +429,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VeterinarianEntity'
+                $ref: "#/components/schemas/VeterinarianEntity"
       tags:
         - veterinarians
     patch:
@@ -450,14 +450,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateUserDto'
+              $ref: "#/components/schemas/UpdateUserDto"
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VeterinarianEntity'
+                $ref: "#/components/schemas/VeterinarianEntity"
       tags:
         - veterinarians
     delete:
@@ -469,12 +469,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserEntity'
+                $ref: "#/components/schemas/UserEntity"
       tags:
         - veterinarians
   /farmers:
@@ -486,14 +486,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateFarmerDto'
+              $ref: "#/components/schemas/CreateFarmerDto"
       responses:
-        '201':
-          description: ''
+        "201":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FarmerEntity'
+                $ref: "#/components/schemas/FarmerEntity"
       tags:
         - farmers
     get:
@@ -547,7 +547,7 @@ paths:
           description: Filter by user birth date in ISO format
           schema:
             format: date-time
-            example: '1990-01-01T00:00:00.000Z'
+            example: "1990-01-01T00:00:00.000Z"
             type: string
         - name: districtId
           required: false
@@ -569,7 +569,7 @@ paths:
           description: Filter by user creation date in ISO format
           schema:
             format: date-time
-            example: '2024-01-01T00:00:00.000Z'
+            example: "2024-01-01T00:00:00.000Z"
             type: string
         - name: byBirthDate
           required: false
@@ -642,12 +642,12 @@ paths:
               - desc
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedFarmersEntity'
+                $ref: "#/components/schemas/PaginatedFarmersEntity"
       tags:
         - farmers
   /farmers/{id}:
@@ -660,12 +660,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FarmerEntity'
+                $ref: "#/components/schemas/FarmerEntity"
       tags:
         - farmers
     patch:
@@ -681,14 +681,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateFarmerDto'
+              $ref: "#/components/schemas/UpdateFarmerDto"
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FarmerEntity'
+                $ref: "#/components/schemas/FarmerEntity"
       tags:
         - farmers
     delete:
@@ -700,12 +700,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserEntity'
+                $ref: "#/components/schemas/UserEntity"
       tags:
         - farmers
   /animals:
@@ -717,14 +717,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateAnimalDto'
+              $ref: "#/components/schemas/CreateAnimalDto"
       responses:
-        '201':
-          description: ''
+        "201":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AnimalEntity'
+                $ref: "#/components/schemas/AnimalEntity"
       tags:
         - animals
     get:
@@ -788,7 +788,7 @@ paths:
           description: Filter by animal birth date in ISO format
           schema:
             format: date-time
-            example: '2020-01-01T00:00:00.000Z'
+            example: "2020-01-01T00:00:00.000Z"
             type: string
         - name: colorId
           required: false
@@ -803,7 +803,7 @@ paths:
           description: Filter by creation date in ISO format
           schema:
             format: date-time
-            example: '2024-01-01T00:00:00.000Z'
+            example: "2024-01-01T00:00:00.000Z"
             type: string
         - name: byFarmedId
           required: false
@@ -869,12 +869,12 @@ paths:
               - desc
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AnimalEntity'
+                $ref: "#/components/schemas/AnimalEntity"
       tags:
         - animals
   /animals/{id}:
@@ -887,12 +887,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AnimalEntity'
+                $ref: "#/components/schemas/AnimalEntity"
       tags:
         - animals
     patch:
@@ -908,14 +908,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateAnimalDto'
+              $ref: "#/components/schemas/UpdateAnimalDto"
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AnimalEntity'
+                $ref: "#/components/schemas/AnimalEntity"
       tags:
         - animals
     delete:
@@ -927,12 +927,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AnimalEntity'
+                $ref: "#/components/schemas/AnimalEntity"
       tags:
         - animals
   /vaccines:
@@ -944,14 +944,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateVaccineDto'
+              $ref: "#/components/schemas/CreateVaccineDto"
       responses:
-        '201':
-          description: ''
+        "201":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VaccineEntity'
+                $ref: "#/components/schemas/VaccineEntity"
       tags:
         - vaccines
     get:
@@ -986,7 +986,7 @@ paths:
           description: Filter by vaccine date in ISO format
           schema:
             format: date-time
-            example: '2024-01-01T00:00:00.000Z'
+            example: "2024-01-01T00:00:00.000Z"
             type: string
         - name: typeId
           required: false
@@ -1008,7 +1008,7 @@ paths:
           description: Filter by creation date in ISO format
           schema:
             format: date-time
-            example: '2024-01-01T00:00:00.000Z'
+            example: "2024-01-01T00:00:00.000Z"
             type: string
         - name: byDate
           required: false
@@ -1047,12 +1047,12 @@ paths:
               - desc
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VaccineEntity'
+                $ref: "#/components/schemas/VaccineEntity"
       tags:
         - vaccines
   /vaccines/{id}:
@@ -1065,12 +1065,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VaccineEntity'
+                $ref: "#/components/schemas/VaccineEntity"
       tags:
         - vaccines
     patch:
@@ -1086,14 +1086,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateVaccineDto'
+              $ref: "#/components/schemas/UpdateVaccineDto"
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VaccineEntity'
+                $ref: "#/components/schemas/VaccineEntity"
       tags:
         - vaccines
     delete:
@@ -1105,12 +1105,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VaccineEntity'
+                $ref: "#/components/schemas/VaccineEntity"
       tags:
         - vaccines
   /regions:
@@ -1122,14 +1122,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateRegionDto'
+              $ref: "#/components/schemas/CreateRegionDto"
       responses:
-        '201':
-          description: ''
+        "201":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RegionEntity'
+                $ref: "#/components/schemas/RegionEntity"
       tags:
         - regions
     get:
@@ -1159,12 +1159,12 @@ paths:
               - desc
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedRegionsEntity'
+                $ref: "#/components/schemas/PaginatedRegionsEntity"
       tags:
         - regions
   /regions/{id}:
@@ -1177,12 +1177,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RegionEntity'
+                $ref: "#/components/schemas/RegionEntity"
       tags:
         - regions
     patch:
@@ -1198,14 +1198,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateRegionDto'
+              $ref: "#/components/schemas/UpdateRegionDto"
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RegionEntity'
+                $ref: "#/components/schemas/RegionEntity"
       tags:
         - regions
     delete:
@@ -1217,12 +1217,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RegionEntity'
+                $ref: "#/components/schemas/RegionEntity"
       tags:
         - regions
   /districts:
@@ -1234,14 +1234,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateDistrictDto'
+              $ref: "#/components/schemas/CreateDistrictDto"
       responses:
-        '201':
-          description: ''
+        "201":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DistrictEntity'
+                $ref: "#/components/schemas/DistrictEntity"
       tags:
         - districts
     get:
@@ -1271,12 +1271,12 @@ paths:
               - desc
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedDistrictsEntity'
+                $ref: "#/components/schemas/PaginatedDistrictsEntity"
       tags:
         - districts
   /districts/{id}:
@@ -1289,12 +1289,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DistrictEntity'
+                $ref: "#/components/schemas/DistrictEntity"
       tags:
         - districts
     patch:
@@ -1310,14 +1310,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateDistrictDto'
+              $ref: "#/components/schemas/UpdateDistrictDto"
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DistrictEntity'
+                $ref: "#/components/schemas/DistrictEntity"
       tags:
         - districts
     delete:
@@ -1329,12 +1329,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DistrictEntity'
+                $ref: "#/components/schemas/DistrictEntity"
       tags:
         - districts
   /vet-stations:
@@ -1346,14 +1346,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateVetStationDto'
+              $ref: "#/components/schemas/CreateVetStationDto"
       responses:
-        '201':
-          description: ''
+        "201":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VetStationEntity'
+                $ref: "#/components/schemas/VetStationEntity"
       tags:
         - vet-stations
     get:
@@ -1383,12 +1383,12 @@ paths:
               - desc
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedVetStationsEntity'
+                $ref: "#/components/schemas/PaginatedVetStationsEntity"
       tags:
         - vet-stations
   /vet-stations/{id}:
@@ -1401,12 +1401,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VetStationEntity'
+                $ref: "#/components/schemas/VetStationEntity"
       tags:
         - vet-stations
     patch:
@@ -1422,14 +1422,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateVetStationDto'
+              $ref: "#/components/schemas/UpdateVetStationDto"
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VetStationEntity'
+                $ref: "#/components/schemas/VetStationEntity"
       tags:
         - vet-stations
     delete:
@@ -1441,12 +1441,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VetStationEntity'
+                $ref: "#/components/schemas/VetStationEntity"
       tags:
         - vet-stations
   /animal-types:
@@ -1458,14 +1458,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateAnimalTypeDto'
+              $ref: "#/components/schemas/CreateAnimalTypeDto"
       responses:
-        '201':
-          description: ''
+        "201":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AnimalTypeEntity'
+                $ref: "#/components/schemas/AnimalTypeEntity"
       tags:
         - animal-types
     get:
@@ -1495,12 +1495,12 @@ paths:
               - desc
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedAnimalTypesEntity'
+                $ref: "#/components/schemas/PaginatedAnimalTypesEntity"
       tags:
         - animal-types
   /animal-types/{id}:
@@ -1513,12 +1513,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AnimalTypeEntity'
+                $ref: "#/components/schemas/AnimalTypeEntity"
       tags:
         - animal-types
     patch:
@@ -1534,14 +1534,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateAnimalTypeDto'
+              $ref: "#/components/schemas/UpdateAnimalTypeDto"
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AnimalTypeEntity'
+                $ref: "#/components/schemas/AnimalTypeEntity"
       tags:
         - animal-types
     delete:
@@ -1553,12 +1553,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AnimalTypeEntity'
+                $ref: "#/components/schemas/AnimalTypeEntity"
       tags:
         - animal-types
   /colors:
@@ -1570,14 +1570,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateColorDto'
+              $ref: "#/components/schemas/CreateColorDto"
       responses:
-        '201':
-          description: ''
+        "201":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ColorEntity'
+                $ref: "#/components/schemas/ColorEntity"
       tags:
         - colors
     get:
@@ -1607,12 +1607,12 @@ paths:
               - desc
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedColorsEntity'
+                $ref: "#/components/schemas/PaginatedColorsEntity"
       tags:
         - colors
   /colors/{id}:
@@ -1625,12 +1625,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ColorEntity'
+                $ref: "#/components/schemas/ColorEntity"
       tags:
         - colors
     patch:
@@ -1646,14 +1646,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateColorDto'
+              $ref: "#/components/schemas/UpdateColorDto"
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ColorEntity'
+                $ref: "#/components/schemas/ColorEntity"
       tags:
         - colors
     delete:
@@ -1665,12 +1665,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ColorEntity'
+                $ref: "#/components/schemas/ColorEntity"
       tags:
         - colors
   /urine-colors:
@@ -1682,14 +1682,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateUrineColorDto'
+              $ref: "#/components/schemas/CreateUrineColorDto"
       responses:
-        '201':
-          description: ''
+        "201":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UrineColorEntity'
+                $ref: "#/components/schemas/UrineColorEntity"
       tags:
         - urine-colors
     get:
@@ -1719,12 +1719,12 @@ paths:
               - desc
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedUrineColorsEntity'
+                $ref: "#/components/schemas/PaginatedUrineColorsEntity"
       tags:
         - urine-colors
   /urine-colors/{id}:
@@ -1737,12 +1737,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UrineColorEntity'
+                $ref: "#/components/schemas/UrineColorEntity"
       tags:
         - urine-colors
     patch:
@@ -1758,14 +1758,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateUrineColorDto'
+              $ref: "#/components/schemas/UpdateUrineColorDto"
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UrineColorEntity'
+                $ref: "#/components/schemas/UrineColorEntity"
       tags:
         - urine-colors
     delete:
@@ -1777,12 +1777,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UrineColorEntity'
+                $ref: "#/components/schemas/UrineColorEntity"
       tags:
         - urine-colors
   /dung-colors:
@@ -1794,14 +1794,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateDungColorDto'
+              $ref: "#/components/schemas/CreateDungColorDto"
       responses:
-        '201':
-          description: ''
+        "201":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DungColorEntity'
+                $ref: "#/components/schemas/DungColorEntity"
       tags:
         - dung-colors
     get:
@@ -1831,12 +1831,12 @@ paths:
               - desc
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedDungColorsEntity'
+                $ref: "#/components/schemas/PaginatedDungColorsEntity"
       tags:
         - dung-colors
   /dung-colors/{id}:
@@ -1849,12 +1849,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DungColorEntity'
+                $ref: "#/components/schemas/DungColorEntity"
       tags:
         - dung-colors
     patch:
@@ -1870,14 +1870,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateDungColorDto'
+              $ref: "#/components/schemas/UpdateDungColorDto"
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DungColorEntity'
+                $ref: "#/components/schemas/DungColorEntity"
       tags:
         - dung-colors
     delete:
@@ -1889,12 +1889,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DungColorEntity'
+                $ref: "#/components/schemas/DungColorEntity"
       tags:
         - dung-colors
   /leather-covers:
@@ -1906,14 +1906,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateLeatherCoverDto'
+              $ref: "#/components/schemas/CreateLeatherCoverDto"
       responses:
-        '201':
-          description: ''
+        "201":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LeatherCoverEntity'
+                $ref: "#/components/schemas/LeatherCoverEntity"
       tags:
         - leather-covers
     get:
@@ -1943,12 +1943,12 @@ paths:
               - desc
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedLeatherCoversEntity'
+                $ref: "#/components/schemas/PaginatedLeatherCoversEntity"
       tags:
         - leather-covers
   /leather-covers/{id}:
@@ -1961,12 +1961,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LeatherCoverEntity'
+                $ref: "#/components/schemas/LeatherCoverEntity"
       tags:
         - leather-covers
     patch:
@@ -1982,14 +1982,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateLeatherCoverDto'
+              $ref: "#/components/schemas/UpdateLeatherCoverDto"
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LeatherCoverEntity'
+                $ref: "#/components/schemas/LeatherCoverEntity"
       tags:
         - leather-covers
     delete:
@@ -2001,12 +2001,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LeatherCoverEntity'
+                $ref: "#/components/schemas/LeatherCoverEntity"
       tags:
         - leather-covers
   /eyelids:
@@ -2018,14 +2018,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateEyelidDto'
+              $ref: "#/components/schemas/CreateEyelidDto"
       responses:
-        '201':
-          description: ''
+        "201":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EyelidEntity'
+                $ref: "#/components/schemas/EyelidEntity"
       tags:
         - eyelids
     get:
@@ -2055,12 +2055,12 @@ paths:
               - desc
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedEyelidsEntity'
+                $ref: "#/components/schemas/PaginatedEyelidsEntity"
       tags:
         - eyelids
   /eyelids/{id}:
@@ -2073,12 +2073,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EyelidEntity'
+                $ref: "#/components/schemas/EyelidEntity"
       tags:
         - eyelids
     patch:
@@ -2094,14 +2094,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateEyelidDto'
+              $ref: "#/components/schemas/UpdateEyelidDto"
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EyelidEntity'
+                $ref: "#/components/schemas/EyelidEntity"
       tags:
         - eyelids
     delete:
@@ -2113,12 +2113,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EyelidEntity'
+                $ref: "#/components/schemas/EyelidEntity"
       tags:
         - eyelids
   /vaccine-types:
@@ -2130,14 +2130,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateVaccineTypeDto'
+              $ref: "#/components/schemas/CreateVaccineTypeDto"
       responses:
-        '201':
-          description: ''
+        "201":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VaccineTypeEntity'
+                $ref: "#/components/schemas/VaccineTypeEntity"
       tags:
         - vaccine-types
     get:
@@ -2167,12 +2167,12 @@ paths:
               - desc
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedVaccineTypesEntity'
+                $ref: "#/components/schemas/PaginatedVaccineTypesEntity"
       tags:
         - vaccine-types
   /vaccine-types/{id}:
@@ -2185,12 +2185,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VaccineTypeEntity'
+                $ref: "#/components/schemas/VaccineTypeEntity"
       tags:
         - vaccine-types
     patch:
@@ -2206,14 +2206,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateVaccineTypeDto'
+              $ref: "#/components/schemas/UpdateVaccineTypeDto"
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VaccineTypeEntity'
+                $ref: "#/components/schemas/VaccineTypeEntity"
       tags:
         - vaccine-types
     delete:
@@ -2225,12 +2225,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VaccineTypeEntity'
+                $ref: "#/components/schemas/VaccineTypeEntity"
       tags:
         - vaccine-types
   /disease-types:
@@ -2242,14 +2242,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateDiseaseTypeDto'
+              $ref: "#/components/schemas/CreateDiseaseTypeDto"
       responses:
-        '201':
-          description: ''
+        "201":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DiseaseTypeEntity'
+                $ref: "#/components/schemas/DiseaseTypeEntity"
       tags:
         - disease-types
     get:
@@ -2279,12 +2279,12 @@ paths:
               - desc
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedDiseaseTypesEntity'
+                $ref: "#/components/schemas/PaginatedDiseaseTypesEntity"
       tags:
         - disease-types
   /disease-types/{id}:
@@ -2297,12 +2297,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DiseaseTypeEntity'
+                $ref: "#/components/schemas/DiseaseTypeEntity"
       tags:
         - disease-types
     patch:
@@ -2318,14 +2318,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateDiseaseTypeDto'
+              $ref: "#/components/schemas/UpdateDiseaseTypeDto"
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DiseaseTypeEntity'
+                $ref: "#/components/schemas/DiseaseTypeEntity"
       tags:
         - disease-types
     delete:
@@ -2337,12 +2337,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DiseaseTypeEntity'
+                $ref: "#/components/schemas/DiseaseTypeEntity"
       tags:
         - disease-types
   /breeds:
@@ -2354,14 +2354,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateBreedDto'
+              $ref: "#/components/schemas/CreateBreedDto"
       responses:
-        '201':
-          description: ''
+        "201":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BreedEntity'
+                $ref: "#/components/schemas/BreedEntity"
       tags:
         - breeds
     get:
@@ -2391,12 +2391,12 @@ paths:
               - desc
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedBreedsEntity'
+                $ref: "#/components/schemas/PaginatedBreedsEntity"
       tags:
         - breeds
   /breeds/{id}:
@@ -2409,12 +2409,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BreedEntity'
+                $ref: "#/components/schemas/BreedEntity"
       tags:
         - breeds
     patch:
@@ -2430,14 +2430,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateBreedDto'
+              $ref: "#/components/schemas/UpdateBreedDto"
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BreedEntity'
+                $ref: "#/components/schemas/BreedEntity"
       tags:
         - breeds
     delete:
@@ -2449,12 +2449,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BreedEntity'
+                $ref: "#/components/schemas/BreedEntity"
       tags:
         - breeds
   /general-inspections:
@@ -2466,14 +2466,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateGeneralInspectionDto'
+              $ref: "#/components/schemas/CreateGeneralInspectionDto"
       responses:
-        '201':
-          description: ''
+        "201":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GeneralInspectionEntity'
+                $ref: "#/components/schemas/GeneralInspectionEntity"
       tags:
         - general-inspections
     get:
@@ -2515,7 +2515,7 @@ paths:
           description: Filter by user creation date in ISO format
           schema:
             format: date-time
-            example: '2024-01-01T00:00:00.000Z'
+            example: "2024-01-01T00:00:00.000Z"
             type: string
         - name: byCreatedDate
           required: false
@@ -2527,12 +2527,12 @@ paths:
               - desc
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedGeneralInspectionEntity'
+                $ref: "#/components/schemas/PaginatedGeneralInspectionEntity"
       tags:
         - general-inspections
   /general-inspections/{id}:
@@ -2545,12 +2545,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GeneralInspectionEntity'
+                $ref: "#/components/schemas/GeneralInspectionEntity"
       tags:
         - general-inspections
     patch:
@@ -2566,14 +2566,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateGeneralInspectionDto'
+              $ref: "#/components/schemas/UpdateGeneralInspectionDto"
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GeneralInspectionEntity'
+                $ref: "#/components/schemas/GeneralInspectionEntity"
       tags:
         - general-inspections
     delete:
@@ -2585,12 +2585,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GeneralInspectionEntity'
+                $ref: "#/components/schemas/GeneralInspectionEntity"
       tags:
         - general-inspections
   /inspections:
@@ -2602,14 +2602,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateInspectionDto'
+              $ref: "#/components/schemas/CreateInspectionDto"
       responses:
-        '201':
-          description: ''
+        "201":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InspectionEntity'
+                $ref: "#/components/schemas/InspectionEntity"
       tags:
         - inspections
     get:
@@ -2651,7 +2651,7 @@ paths:
           description: Filter by user creation date in ISO format
           schema:
             format: date-time
-            example: '2024-01-01T00:00:00.000Z'
+            example: "2024-01-01T00:00:00.000Z"
             type: string
         - name: byCreatedDate
           required: false
@@ -2663,12 +2663,12 @@ paths:
               - desc
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedInspectionEntity'
+                $ref: "#/components/schemas/PaginatedInspectionEntity"
       tags:
         - inspections
   /inspections/{id}:
@@ -2681,12 +2681,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InspectionEntity'
+                $ref: "#/components/schemas/InspectionEntity"
       tags:
         - inspections
     patch:
@@ -2702,14 +2702,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateInspectionDto'
+              $ref: "#/components/schemas/UpdateInspectionDto"
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InspectionEntity'
+                $ref: "#/components/schemas/InspectionEntity"
       tags:
         - inspections
     delete:
@@ -2721,12 +2721,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InspectionEntity'
+                $ref: "#/components/schemas/InspectionEntity"
       tags:
         - inspections
   /diseases:
@@ -2738,14 +2738,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateDiseaseDto'
+              $ref: "#/components/schemas/CreateDiseaseDto"
       responses:
-        '201':
-          description: ''
+        "201":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DiseaseEntity'
+                $ref: "#/components/schemas/DiseaseEntity"
       tags:
         - diseases
     get:
@@ -2787,7 +2787,7 @@ paths:
           description: Filter by user creation date in ISO format
           schema:
             format: date-time
-            example: '2024-01-01T00:00:00.000Z'
+            example: "2024-01-01T00:00:00.000Z"
             type: string
         - name: byCreatedDate
           required: false
@@ -2799,12 +2799,12 @@ paths:
               - desc
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedDiseaseEntity'
+                $ref: "#/components/schemas/PaginatedDiseaseEntity"
       tags:
         - diseases
   /diseases/{id}:
@@ -2817,12 +2817,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DiseaseEntity'
+                $ref: "#/components/schemas/DiseaseEntity"
       tags:
         - diseases
     patch:
@@ -2838,14 +2838,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateDiseaseDto'
+              $ref: "#/components/schemas/UpdateDiseaseDto"
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DiseaseEntity'
+                $ref: "#/components/schemas/DiseaseEntity"
       tags:
         - diseases
     delete:
@@ -2857,12 +2857,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DiseaseEntity'
+                $ref: "#/components/schemas/DiseaseEntity"
       tags:
         - diseases
   /general-blood-tests:
@@ -2874,14 +2874,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateGeneralBloodTestDto'
+              $ref: "#/components/schemas/CreateGeneralBloodTestDto"
       responses:
-        '201':
-          description: ''
+        "201":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GeneralBloodTestEntity'
+                $ref: "#/components/schemas/GeneralBloodTestEntity"
       tags:
         - general-blood-tests
     get:
@@ -2923,7 +2923,7 @@ paths:
           description: Filter by user creation date in ISO format
           schema:
             format: date-time
-            example: '2024-01-01T00:00:00.000Z'
+            example: "2024-01-01T00:00:00.000Z"
             type: string
         - name: byCreatedDate
           required: false
@@ -2935,12 +2935,12 @@ paths:
               - desc
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedGeneralBloodTestEntity'
+                $ref: "#/components/schemas/PaginatedGeneralBloodTestEntity"
       tags:
         - general-blood-tests
   /general-blood-tests/{id}:
@@ -2953,12 +2953,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GeneralBloodTestEntity'
+                $ref: "#/components/schemas/GeneralBloodTestEntity"
       tags:
         - general-blood-tests
     patch:
@@ -2974,14 +2974,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateGeneralBloodTestDto'
+              $ref: "#/components/schemas/UpdateGeneralBloodTestDto"
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GeneralBloodTestEntity'
+                $ref: "#/components/schemas/GeneralBloodTestEntity"
       tags:
         - general-blood-tests
     delete:
@@ -2993,12 +2993,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GeneralBloodTestEntity'
+                $ref: "#/components/schemas/GeneralBloodTestEntity"
       tags:
         - general-blood-tests
   /blood-serum-tests:
@@ -3010,14 +3010,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateBloodSerumTestDto'
+              $ref: "#/components/schemas/CreateBloodSerumTestDto"
       responses:
-        '201':
-          description: ''
+        "201":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BloodSerumTestEntity'
+                $ref: "#/components/schemas/BloodSerumTestEntity"
       tags:
         - blood-serum-tests
     get:
@@ -3059,7 +3059,7 @@ paths:
           description: Filter by user creation date in ISO format
           schema:
             format: date-time
-            example: '2024-01-01T00:00:00.000Z'
+            example: "2024-01-01T00:00:00.000Z"
             type: string
         - name: byCreatedDate
           required: false
@@ -3071,12 +3071,12 @@ paths:
               - desc
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedBloodSerumTestEntity'
+                $ref: "#/components/schemas/PaginatedBloodSerumTestEntity"
       tags:
         - blood-serum-tests
   /blood-serum-tests/{id}:
@@ -3089,12 +3089,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BloodSerumTestEntity'
+                $ref: "#/components/schemas/BloodSerumTestEntity"
       tags:
         - blood-serum-tests
     patch:
@@ -3110,14 +3110,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateBloodSerumTestDto'
+              $ref: "#/components/schemas/UpdateBloodSerumTestDto"
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BloodSerumTestEntity'
+                $ref: "#/components/schemas/BloodSerumTestEntity"
       tags:
         - blood-serum-tests
     delete:
@@ -3129,12 +3129,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BloodSerumTestEntity'
+                $ref: "#/components/schemas/BloodSerumTestEntity"
       tags:
         - blood-serum-tests
   /urine-tests:
@@ -3146,14 +3146,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateUrineTestDto'
+              $ref: "#/components/schemas/CreateUrineTestDto"
       responses:
-        '201':
-          description: ''
+        "201":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UrineTestEntity'
+                $ref: "#/components/schemas/UrineTestEntity"
       tags:
         - urine-tests
     get:
@@ -3195,7 +3195,7 @@ paths:
           description: Filter by user creation date in ISO format
           schema:
             format: date-time
-            example: '2024-01-01T00:00:00.000Z'
+            example: "2024-01-01T00:00:00.000Z"
             type: string
         - name: byCreatedDate
           required: false
@@ -3207,12 +3207,12 @@ paths:
               - desc
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedUrineTestEntity'
+                $ref: "#/components/schemas/PaginatedUrineTestEntity"
       tags:
         - urine-tests
   /urine-tests/{id}:
@@ -3225,12 +3225,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UrineTestEntity'
+                $ref: "#/components/schemas/UrineTestEntity"
       tags:
         - urine-tests
     patch:
@@ -3246,14 +3246,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateUrineTestDto'
+              $ref: "#/components/schemas/UpdateUrineTestDto"
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UrineTestEntity'
+                $ref: "#/components/schemas/UrineTestEntity"
       tags:
         - urine-tests
     delete:
@@ -3265,12 +3265,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UrineTestEntity'
+                $ref: "#/components/schemas/UrineTestEntity"
       tags:
         - urine-tests
   /dung-tests:
@@ -3282,14 +3282,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateDungTestDto'
+              $ref: "#/components/schemas/CreateDungTestDto"
       responses:
-        '201':
-          description: ''
+        "201":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DungTestEntity'
+                $ref: "#/components/schemas/DungTestEntity"
       tags:
         - dung-tests
     get:
@@ -3331,7 +3331,7 @@ paths:
           description: Filter by user creation date in ISO format
           schema:
             format: date-time
-            example: '2024-01-01T00:00:00.000Z'
+            example: "2024-01-01T00:00:00.000Z"
             type: string
         - name: byCreatedDate
           required: false
@@ -3343,12 +3343,12 @@ paths:
               - desc
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedDungTestEntity'
+                $ref: "#/components/schemas/PaginatedDungTestEntity"
       tags:
         - dung-tests
   /dung-tests/{id}:
@@ -3361,12 +3361,12 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DungTestEntity'
+                $ref: "#/components/schemas/DungTestEntity"
       tags:
         - dung-tests
     patch:
@@ -3382,14 +3382,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateDungTestDto'
+              $ref: "#/components/schemas/UpdateDungTestDto"
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DungTestEntity'
+                $ref: "#/components/schemas/DungTestEntity"
       tags:
         - dung-tests
     delete:
@@ -3401,18 +3401,18 @@ paths:
           schema:
             type: number
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DungTestEntity'
+                $ref: "#/components/schemas/DungTestEntity"
       tags:
         - dung-tests
 info:
   title: dr-ikramov
   description: The dr-ikramov API description
-  version: '0.1'
+  version: "0.1"
   contact: {}
 tags: []
 servers:
@@ -3429,7 +3429,7 @@ components:
       properties:
         phone:
           type: string
-          example: '+998901234567'
+          example: "+998901234567"
         password:
           type: string
           example: 123qazwsx
@@ -3479,7 +3479,7 @@ components:
         phone:
           type: string
           description: The user's phone number in international format
-          example: '+998901234567'
+          example: "+998901234567"
         password:
           type: string
           description: The user's password (hashed)
@@ -3508,7 +3508,7 @@ components:
         birthDate:
           type: object
           description: The user's birthdate
-          example: '2000-01-01'
+          example: "2000-01-01"
           nullable: true
         districtId:
           type: number
@@ -3544,7 +3544,7 @@ components:
         phone:
           type: string
           description: User's phone number
-          example: '+1234567890'
+          example: "+1234567890"
         firstName:
           type: string
           description: First name of the user
@@ -3567,7 +3567,7 @@ components:
         birthDate:
           type: string
           description: User's birthdate
-          example: '2000-01-01'
+          example: "2000-01-01"
         districtId:
           type: number
           description: District identifier associated with the user
@@ -3587,11 +3587,11 @@ components:
         createdAt:
           type: string
           description: Record creation timestamp
-          example: '2024-01-01T00:00:00.000Z'
+          example: "2024-01-01T00:00:00.000Z"
         updatedAt:
           type: string
           description: Record last update timestamp
-          example: '2024-01-10T00:00:00.000Z'
+          example: "2024-01-10T00:00:00.000Z"
       required:
         - id
         - phone
@@ -3638,9 +3638,9 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/UserEntity'
+            $ref: "#/components/schemas/UserEntity"
         meta:
-          $ref: '#/components/schemas/MetaDateEntity'
+          $ref: "#/components/schemas/MetaDateEntity"
       required:
         - data
         - meta
@@ -3650,7 +3650,7 @@ components:
         phone:
           type: string
           description: The user's phone number in international format
-          example: '+998901234567'
+          example: "+998901234567"
         password:
           type: string
           description: The user's password (hashed)
@@ -3679,7 +3679,7 @@ components:
         birthDate:
           type: object
           description: The user's birthdate
-          example: '2000-01-01'
+          example: "2000-01-01"
           nullable: true
         districtId:
           type: number
@@ -3708,7 +3708,7 @@ components:
         user:
           description: User data associated with the veterinarian
           allOf:
-            - $ref: '#/components/schemas/UserEntity'
+            - $ref: "#/components/schemas/UserEntity"
       required:
         - userPtrId
         - user
@@ -3718,9 +3718,9 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/VeterinarianEntity'
+            $ref: "#/components/schemas/VeterinarianEntity"
         meta:
-          $ref: '#/components/schemas/MetaDateEntity'
+          $ref: "#/components/schemas/MetaDateEntity"
       required:
         - data
         - meta
@@ -3730,7 +3730,7 @@ components:
         phone:
           type: string
           description: The user's phone number in international format
-          example: '+998901234566'
+          example: "+998901234566"
         password:
           type: string
           description: The user's password (hashed)
@@ -3759,7 +3759,7 @@ components:
         birthDate:
           type: object
           description: The user's birthdate
-          example: '1999-01-01'
+          example: "1999-01-01"
           nullable: true
         districtId:
           type: number
@@ -3791,7 +3791,7 @@ components:
         user:
           description: User data associated with the farmer
           allOf:
-            - $ref: '#/components/schemas/UserEntity'
+            - $ref: "#/components/schemas/UserEntity"
         veterinarianId:
           type: number
           description: Veterinarian ID associated with the farmer
@@ -3799,7 +3799,7 @@ components:
         veterinarian:
           description: Veterinarian data associated with the farmer
           allOf:
-            - $ref: '#/components/schemas/VeterinarianEntity'
+            - $ref: "#/components/schemas/VeterinarianEntity"
       required:
         - userPtrId
         - user
@@ -3811,9 +3811,9 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/FarmerEntity'
+            $ref: "#/components/schemas/FarmerEntity"
         meta:
-          $ref: '#/components/schemas/MetaDateEntity'
+          $ref: "#/components/schemas/MetaDateEntity"
       required:
         - data
         - meta
@@ -3823,7 +3823,7 @@ components:
         phone:
           type: string
           description: The user's phone number in international format
-          example: '+998901234566'
+          example: "+998901234566"
         password:
           type: string
           description: The user's password (hashed)
@@ -3852,7 +3852,7 @@ components:
         birthDate:
           type: object
           description: The user's birthdate
-          example: '1999-01-01'
+          example: "1999-01-01"
           nullable: true
         districtId:
           type: number
@@ -3873,7 +3873,7 @@ components:
         arrivalDate:
           type: string
           description: Date when the animal arrived
-          example: '2023-12-11T00:00:00Z'
+          example: "2023-12-11T00:00:00Z"
           format: date-time
         farmerId:
           type: number
@@ -3903,7 +3903,7 @@ components:
         birthDate:
           type: string
           description: Birth date of the animal
-          example: '2023-01-01T00:00:00Z'
+          example: "2023-01-01T00:00:00Z"
           format: date-time
         weight:
           type: number
@@ -3941,7 +3941,7 @@ components:
         arrivalDate:
           type: string
           description: The date the animal arrived
-          example: '2023-12-11T00:00:00Z'
+          example: "2023-12-11T00:00:00Z"
           format: date-time
         farmerId:
           type: number
@@ -3965,7 +3965,7 @@ components:
         birthDate:
           type: string
           description: Birth date of the animal
-          example: '2023-01-01T00:00:00Z'
+          example: "2023-01-01T00:00:00Z"
           format: date-time
         weight:
           type: number
@@ -3982,12 +3982,12 @@ components:
         createdAt:
           type: string
           description: Date when the animal record was created
-          example: '2023-12-01T00:00:00Z'
+          example: "2023-12-01T00:00:00Z"
           format: date-time
         updatedAt:
           type: string
           description: Date when the animal record was last updated
-          example: '2023-12-10T00:00:00Z'
+          example: "2023-12-10T00:00:00Z"
           format: date-time
       required:
         - nameOrCode
@@ -4010,7 +4010,7 @@ components:
         arrivalDate:
           type: string
           description: Date when the animal arrived
-          example: '2023-12-11T00:00:00Z'
+          example: "2023-12-11T00:00:00Z"
           format: date-time
         farmerId:
           type: number
@@ -4040,7 +4040,7 @@ components:
         birthDate:
           type: string
           description: Birth date of the animal
-          example: '2023-01-01T00:00:00Z'
+          example: "2023-01-01T00:00:00Z"
           format: date-time
         weight:
           type: number
@@ -4056,7 +4056,7 @@ components:
         date:
           type: string
           description: The date when the vaccine was administered
-          example: '2023-12-11T00:00:00Z'
+          example: "2023-12-11T00:00:00Z"
           format: date-time
         typeId:
           type: number
@@ -4080,7 +4080,7 @@ components:
         date:
           type: string
           description: Date when the vaccine was administered
-          example: '2023-12-11T00:00:00Z'
+          example: "2023-12-11T00:00:00Z"
           format: date-time
         typeId:
           type: number
@@ -4093,12 +4093,12 @@ components:
         createdAt:
           type: string
           description: Date when the vaccine record was created
-          example: '2023-12-01T00:00:00Z'
+          example: "2023-12-01T00:00:00Z"
           format: date-time
         updatedAt:
           type: string
           description: Date when the vaccine record was last updated
-          example: '2023-12-10T00:00:00Z'
+          example: "2023-12-10T00:00:00Z"
           format: date-time
       required:
         - id
@@ -4113,7 +4113,7 @@ components:
         date:
           type: string
           description: The date when the vaccine was administered
-          example: '2023-12-11T00:00:00Z'
+          example: "2023-12-11T00:00:00Z"
           format: date-time
         typeId:
           type: number
@@ -4152,9 +4152,9 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/RegionEntity'
+            $ref: "#/components/schemas/RegionEntity"
         meta:
-          $ref: '#/components/schemas/MetaDateEntity'
+          $ref: "#/components/schemas/MetaDateEntity"
       required:
         - data
         - meta
@@ -4204,9 +4204,9 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/DistrictEntity'
+            $ref: "#/components/schemas/DistrictEntity"
         meta:
-          $ref: '#/components/schemas/MetaDateEntity'
+          $ref: "#/components/schemas/MetaDateEntity"
       required:
         - data
         - meta
@@ -4262,12 +4262,12 @@ components:
         createdAt:
           type: string
           description: Timestamp when the record was created
-          example: '2023-12-01T00:00:00Z'
+          example: "2023-12-01T00:00:00Z"
           format: date-time
         updatedAt:
           type: string
           description: Timestamp when the record was last updated
-          example: '2023-12-10T00:00:00Z'
+          example: "2023-12-10T00:00:00Z"
           format: date-time
       required:
         - id
@@ -4282,9 +4282,9 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/VetStationEntity'
+            $ref: "#/components/schemas/VetStationEntity"
         meta:
-          $ref: '#/components/schemas/MetaDateEntity'
+          $ref: "#/components/schemas/MetaDateEntity"
       required:
         - data
         - meta
@@ -4330,9 +4330,9 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/AnimalTypeEntity'
+            $ref: "#/components/schemas/AnimalTypeEntity"
         meta:
-          $ref: '#/components/schemas/MetaDateEntity'
+          $ref: "#/components/schemas/MetaDateEntity"
       required:
         - data
         - meta
@@ -4351,7 +4351,7 @@ components:
         hex:
           type: string
           description: The hex code of the color
-          example: '#FF0000'
+          example: "#FF0000"
       required:
         - name
         - hex
@@ -4369,7 +4369,7 @@ components:
         hex:
           type: string
           description: Hex code representing the color
-          example: '#A52A2A'
+          example: "#A52A2A"
       required:
         - id
         - name
@@ -4380,9 +4380,9 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/ColorEntity'
+            $ref: "#/components/schemas/ColorEntity"
         meta:
-          $ref: '#/components/schemas/MetaDateEntity'
+          $ref: "#/components/schemas/MetaDateEntity"
       required:
         - data
         - meta
@@ -4396,7 +4396,7 @@ components:
         hex:
           type: string
           description: The hex code of the color
-          example: '#FF0000'
+          example: "#FF0000"
     CreateUrineColorDto:
       type: object
       properties:
@@ -4426,9 +4426,9 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/UrineColorEntity'
+            $ref: "#/components/schemas/UrineColorEntity"
         meta:
-          $ref: '#/components/schemas/MetaDateEntity'
+          $ref: "#/components/schemas/MetaDateEntity"
       required:
         - data
         - meta
@@ -4468,9 +4468,9 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/DungColorEntity'
+            $ref: "#/components/schemas/DungColorEntity"
         meta:
-          $ref: '#/components/schemas/MetaDateEntity'
+          $ref: "#/components/schemas/MetaDateEntity"
       required:
         - data
         - meta
@@ -4510,9 +4510,9 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/LeatherCoverEntity'
+            $ref: "#/components/schemas/LeatherCoverEntity"
         meta:
-          $ref: '#/components/schemas/MetaDateEntity'
+          $ref: "#/components/schemas/MetaDateEntity"
       required:
         - data
         - meta
@@ -4552,9 +4552,9 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/EyelidEntity'
+            $ref: "#/components/schemas/EyelidEntity"
         meta:
-          $ref: '#/components/schemas/MetaDateEntity'
+          $ref: "#/components/schemas/MetaDateEntity"
       required:
         - data
         - meta
@@ -4594,9 +4594,9 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/VaccineTypeEntity'
+            $ref: "#/components/schemas/VaccineTypeEntity"
         meta:
-          $ref: '#/components/schemas/MetaDateEntity'
+          $ref: "#/components/schemas/MetaDateEntity"
       required:
         - data
         - meta
@@ -4636,9 +4636,9 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/DiseaseTypeEntity'
+            $ref: "#/components/schemas/DiseaseTypeEntity"
         meta:
-          $ref: '#/components/schemas/MetaDateEntity'
+          $ref: "#/components/schemas/MetaDateEntity"
       required:
         - data
         - meta
@@ -4686,9 +4686,9 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/BreedEntity'
+            $ref: "#/components/schemas/BreedEntity"
         meta:
-          $ref: '#/components/schemas/MetaDateEntity'
+          $ref: "#/components/schemas/MetaDateEntity"
       required:
         - data
         - meta
@@ -4868,12 +4868,12 @@ components:
         createdAt:
           type: string
           description: Creation timestamp
-          example: '2023-12-11T00:00:00Z'
+          example: "2023-12-11T00:00:00Z"
           format: date-time
         updatedAt:
           type: string
           description: Last update timestamp
-          example: '2023-12-12T00:00:00Z'
+          example: "2023-12-12T00:00:00Z"
           format: date-time
       required:
         - id
@@ -4894,9 +4894,9 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/GeneralInspectionEntity'
+            $ref: "#/components/schemas/GeneralInspectionEntity"
         meta:
-          $ref: '#/components/schemas/MetaDateEntity'
+          $ref: "#/components/schemas/MetaDateEntity"
       required:
         - data
         - meta
@@ -5090,12 +5090,12 @@ components:
         createdAt:
           type: string
           description: Creation timestamp
-          example: '2023-12-11T00:00:00Z'
+          example: "2023-12-11T00:00:00Z"
           format: date-time
         updatedAt:
           type: string
           description: Last update timestamp
-          example: '2023-12-12T00:00:00Z'
+          example: "2023-12-12T00:00:00Z"
           format: date-time
       required:
         - id
@@ -5115,9 +5115,9 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/InspectionEntity'
+            $ref: "#/components/schemas/InspectionEntity"
         meta:
-          $ref: '#/components/schemas/MetaDateEntity'
+          $ref: "#/components/schemas/MetaDateEntity"
       required:
         - data
         - meta
@@ -5181,11 +5181,11 @@ components:
         startTime:
           type: string
           description: The date and time when the disease started.
-          example: '2024-12-01T08:30:00Z'
+          example: "2024-12-01T08:30:00Z"
         endTime:
           type: string
           description: The date and time when the disease ended or is expected to end.
-          example: '2024-12-14T18:00:00Z'
+          example: "2024-12-14T18:00:00Z"
         conclusion:
           type: string
           description: >-
@@ -5216,12 +5216,12 @@ components:
         startTime:
           type: string
           description: Start time of the disease
-          example: '2023-12-01T00:00:00Z'
+          example: "2023-12-01T00:00:00Z"
           format: date-time
         endTime:
           type: string
           description: End time of the disease
-          example: '2023-12-10T00:00:00Z'
+          example: "2023-12-10T00:00:00Z"
           format: date-time
         conclusion:
           type: string
@@ -5231,12 +5231,12 @@ components:
           format: date-time
           type: string
           description: The date and time when the disease was created.
-          example: '2024-12-14T09:15:30Z'
+          example: "2024-12-14T09:15:30Z"
         updatedAt:
           format: date-time
           type: string
           description: The date and time when the disease was last updated.
-          example: '2024-12-14T10:00:00Z'
+          example: "2024-12-14T10:00:00Z"
       required:
         - id
         - animalId
@@ -5252,9 +5252,9 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/DiseaseEntity'
+            $ref: "#/components/schemas/DiseaseEntity"
         meta:
-          $ref: '#/components/schemas/MetaDateEntity'
+          $ref: "#/components/schemas/MetaDateEntity"
       required:
         - data
         - meta
@@ -5272,11 +5272,11 @@ components:
         startTime:
           type: string
           description: The date and time when the disease started.
-          example: '2024-12-01T08:30:00Z'
+          example: "2024-12-01T08:30:00Z"
         endTime:
           type: string
           description: The date and time when the disease ended or is expected to end.
-          example: '2024-12-14T18:00:00Z'
+          example: "2024-12-14T18:00:00Z"
         conclusion:
           type: string
           description: >-
@@ -5290,7 +5290,7 @@ components:
           format: date-time
           type: string
           description: The date when the blood test was conducted.
-          example: '2024-12-14'
+          example: "2024-12-14"
         conclusion:
           type: string
           description: A summary or conclusion based on the test results.
@@ -5365,7 +5365,7 @@ components:
         date:
           type: string
           description: Date of the blood test
-          example: '2023-12-11T00:00:00Z'
+          example: "2023-12-11T00:00:00Z"
           format: date-time
         conclusion:
           type: string
@@ -5410,12 +5410,12 @@ components:
         createdAt:
           type: string
           description: Creation timestamp
-          example: '2023-12-11T00:00:00Z'
+          example: "2023-12-11T00:00:00Z"
           format: date-time
         updatedAt:
           type: string
           description: Last update timestamp
-          example: '2023-12-12T00:00:00Z'
+          example: "2023-12-12T00:00:00Z"
           format: date-time
       required:
         - id
@@ -5429,9 +5429,9 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/GeneralBloodTestEntity'
+            $ref: "#/components/schemas/GeneralBloodTestEntity"
         meta:
-          $ref: '#/components/schemas/MetaDateEntity'
+          $ref: "#/components/schemas/MetaDateEntity"
       required:
         - data
         - meta
@@ -5442,7 +5442,7 @@ components:
           format: date-time
           type: string
           description: The date when the blood test was conducted.
-          example: '2024-12-14'
+          example: "2024-12-14"
         conclusion:
           type: string
           description: A summary or conclusion based on the test results.
@@ -5699,12 +5699,12 @@ components:
           format: date-time
           type: string
           description: The date and time when the test was created.
-          example: '2024-12-14T09:15:30Z'
+          example: "2024-12-14T09:15:30Z"
         updatedAt:
           format: date-time
           type: string
           description: The date and time when the test was last updated.
-          example: '2024-12-14T10:00:00Z'
+          example: "2024-12-14T10:00:00Z"
       required:
         - id
         - totalProtein
@@ -5736,9 +5736,9 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/BloodSerumTestEntity'
+            $ref: "#/components/schemas/BloodSerumTestEntity"
         meta:
-          $ref: '#/components/schemas/MetaDateEntity'
+          $ref: "#/components/schemas/MetaDateEntity"
       required:
         - data
         - meta
@@ -5866,7 +5866,7 @@ components:
             - PUNGENT
             - WEAK
             - HAS
-            - 'NO'
+            - "NO"
           example: PUNGENT
       required:
         - animalId
@@ -5912,18 +5912,18 @@ components:
             - PUNGENT
             - WEAK
             - HAS
-            - 'NO'
+            - "NO"
           example: HAS
         createdAt:
           format: date-time
           type: string
           description: The date and time when the test was created.
-          example: '2024-12-14T09:15:30Z'
+          example: "2024-12-14T09:15:30Z"
         updatedAt:
           format: date-time
           type: string
           description: The date and time when the test was last updated.
-          example: '2024-12-14T10:00:00Z'
+          example: "2024-12-14T10:00:00Z"
       required:
         - id
         - animalId
@@ -5940,9 +5940,9 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/UrineTestEntity'
+            $ref: "#/components/schemas/UrineTestEntity"
         meta:
-          $ref: '#/components/schemas/MetaDateEntity'
+          $ref: "#/components/schemas/MetaDateEntity"
       required:
         - data
         - meta
@@ -5983,7 +5983,7 @@ components:
             - PUNGENT
             - WEAK
             - HAS
-            - 'NO'
+            - "NO"
           example: PUNGENT
     CreateDungTestDto:
       type: object
@@ -6014,7 +6014,7 @@ components:
             - PUNGENT
             - WEAK
             - HAS
-            - 'NO'
+            - "NO"
           example: HAS
         form:
           type: string
@@ -6075,7 +6075,7 @@ components:
             - PUNGENT
             - WEAK
             - HAS
-            - 'NO'
+            - "NO"
           example: HAS
         form:
           type: string
@@ -6098,12 +6098,12 @@ components:
           format: date-time
           type: string
           description: The date and time when the dung test was created.
-          example: '2024-12-14T09:15:30Z'
+          example: "2024-12-14T09:15:30Z"
         updatedAt:
           format: date-time
           type: string
           description: The date and time when the dung test was last updated.
-          example: '2024-12-14T10:00:00Z'
+          example: "2024-12-14T10:00:00Z"
       required:
         - id
         - animalId
@@ -6122,9 +6122,9 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/DungTestEntity'
+            $ref: "#/components/schemas/DungTestEntity"
         meta:
-          $ref: '#/components/schemas/MetaDateEntity'
+          $ref: "#/components/schemas/MetaDateEntity"
       required:
         - data
         - meta
@@ -6157,7 +6157,7 @@ components:
             - PUNGENT
             - WEAK
             - HAS
-            - 'NO'
+            - "NO"
           example: HAS
         form:
           type: string

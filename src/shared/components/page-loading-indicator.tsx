@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import Router from "next/router";
 import { useState, useEffect } from "react";
@@ -19,8 +19,5 @@ export const PageLoadingIndicator = () => {
     };
   }, []);
 
-  return (
-    <div
-      className={`fixed top-0 left-0 h-1 bg-primary z-[9999] transition-all duration-300 ${loading ? 'w-full' : 'w-0'}`}/>
-  )
-}
+  return <div className={`fixed top-0 left-0 h-1 bg-primary z-[9999] transition-all duration-300 ${loading ? "w-full" : "w-0"}`} />;
+};

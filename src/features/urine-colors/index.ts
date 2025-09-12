@@ -1,2 +1,2 @@
-export { UrineColorForm } from './form'
-export { urineColorValues, type UrineColorSchema } from './urine-color'
+export { UrineColorForm } from "./form";
+export { urineColorValues, type UrineColorSchema } from "./urine-color";

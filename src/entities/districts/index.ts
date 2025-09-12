@@ -1,1 +1,1 @@
-export { createDistrictColums } from './columns'
+export { createDistrictColums } from "./columns";

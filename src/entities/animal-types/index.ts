@@ -1,1 +1,1 @@
-export { createAnimalTypeColums } from './columns'
+export { createAnimalTypeColums } from "./columns";

@@ -1,11 +1,12 @@
-import { z } from "zod"
+import { z } from "zod";
 
 export const leatherCoverValues = {
-    name: "",
-}
+  name: "",
+};
 
-export const createLeatherCoverSchema = (t: any) => z.object({
+export const createLeatherCoverSchema = (t: any) =>
+  z.object({
     name: z.string().min(1, t("required.leatherCoverNameRequired")),
-})
+  });
 
-export type LeatherCoverSchema = z.infer<ReturnType<typeof createLeatherCoverSchema>>
+export type LeatherCoverSchema = z.infer<ReturnType<typeof createLeatherCoverSchema>>;

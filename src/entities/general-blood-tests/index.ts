@@ -1,1 +1,1 @@
-export { createGeneralBloodTestColums } from './columns'
+export { createGeneralBloodTestColums } from "./columns";

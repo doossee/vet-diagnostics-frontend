@@ -1,8 +1,9 @@
-import { useLocale, useTranslations } from "next-intl"
+import { LanguageLocales } from "../types";
+import { useLocale, useTranslations } from "next-intl";
 
 export function useI18n() {
-    const t = useTranslations()
-    const locale = useLocale() as 'uz' | 'ru'
+  const t = useTranslations();
+  const locale = useLocale() as LanguageLocales;
 
-    return { t, locale }
+  return { t, locale };
 }

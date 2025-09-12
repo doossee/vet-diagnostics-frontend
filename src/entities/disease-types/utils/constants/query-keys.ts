@@ -1,4 +1,4 @@
 export const DiseaseTypesQueryKeys = {
   DISEASE_TYPES: "DISEASE_TYPES",
   DISEASE_TYPES_SELECT: "DISEASE_TYPES_SELECT",
-}
+};

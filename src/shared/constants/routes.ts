@@ -7,7 +7,7 @@ export const routes = {
   ANIMAL_TYPES: "/animal-types",
   ANIMAL_COLORS: "/animal-colors",
   AUTH: {
-    LOGIN: "/login"
+    LOGIN: "/login",
   },
   BREEDS: "/breeds",
   DISEASE_TYPES: "/disease-types",
@@ -30,4 +30,4 @@ export const routes = {
   INSPECTIONS: "/inspections",
   URINE_TESTS: "/urine-tests",
   VACCINES: "/vaccines",
-}
+};

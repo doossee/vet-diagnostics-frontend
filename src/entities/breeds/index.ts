@@ -1,1 +1,1 @@
-export { createBreedColums } from './columns'
+export { createBreedColums } from "./columns";

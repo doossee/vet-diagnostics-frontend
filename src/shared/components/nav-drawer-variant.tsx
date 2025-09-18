@@ -111,7 +111,7 @@ export function AppSidebar() {
                         : "hover:bg-gray-200 dark:hover:bg-gray-500/40 dark:text-gray-300!",)}
                     onClick={() => isMobile && toggleSidebar()}>
                     <div>{item.icon && <item.icon className="size-[1.1rem]" />}</div>
-                    <span className="text-sm">{t(item.title)}</span>
+                    <span className="text-sm ml-1">{t(item.title)}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>

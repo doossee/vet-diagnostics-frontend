@@ -20,6 +20,7 @@ interface AutocompleteProps<T> {
   className?: string;
   hideSearch?: boolean;
   placeholder?: string;
+  minWidth?: boolean;
   defaultValue?: T | string | number;
   onSelect?: (value: T | null) => void;
   onRemove?: () => void
@@ -52,6 +53,7 @@ export function Autocomplete<T>({
   placeholder,
   defaultValue,
   hideSearch,
+  minWidth,
   onSelect,
   className,
   queryFn,
@@ -158,12 +160,12 @@ export function Autocomplete<T>({
       // }
     }
   };
-
+  // TODO: bg
   return (
-    <div className={cn("relative w-full", className)}>
+    <div className={cn("relative", minWidth ? "" : "w-full", className)}>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button variant="outline" role="combobox" type="button" disabled={disabled} aria-expanded={open} onClick={toggleDropdown} className="w-full justify-between bg-transparent p-3">
+          <Button variant="outline" role="combobox" type="button" disabled={disabled} aria-expanded={open} onClick={toggleDropdown} className="w-full justify-between p-3 bg-accent! border-input!">
             {value ? (
               <div className="flex items-center gap-2 truncate font-normal">
                 <span className="truncate">{getOptionLabel(value)}</span>

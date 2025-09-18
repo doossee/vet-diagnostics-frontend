@@ -5,15 +5,17 @@ import { Autocomplete } from "@/shared/components/ui/autocomplete";
 import { useGetRegionsInfinite } from "@/entities/regions/services/queries";
 
 interface Props {
+  min?: boolean
   value?: unknown
   placeholder?: string
   onRemove?: () => void
   onChange?: (value: unknown) => void
 }
 
-export function RegionSelect({ value, placeholder, onChange, onRemove }: Props) {
+export function RegionSelect({ value, placeholder, min, onChange, onRemove }: Props) {
   return (
     <Autocomplete
+      minWidth={min}
       onRemove={onRemove}
       defaultValue={value}
       placeholder={placeholder}

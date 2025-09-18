@@ -1,3 +1,6 @@
+TODO: animal/:id remove new params in create after close modals
+TODO: check refresh token and 
+
 [+] create animal-select component with type
 [+:-] fix editable item to form
 [+:] fix date element edit

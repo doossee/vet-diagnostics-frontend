@@ -24,7 +24,7 @@ export const inspectionValuesWithDisease = {
 export const createInspectionSchema = (t: any, type: "DISEASE" | "MORNING") =>
   z.object({
     conclusion: z.string().optional(),
-    type: z.string().default("DISEASE"),
+    type: z.string().default(type),
     diseaseId: z.number().nullable().optional(),
     animalId: z.number({
       required_error: t("required.animalRequired"),

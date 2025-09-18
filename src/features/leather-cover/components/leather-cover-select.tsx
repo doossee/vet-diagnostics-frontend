@@ -15,6 +15,7 @@ interface Props {
 export function LeatherCoverSelect({ value, placeholder, disabled, onChange, onRemove }: Props) {
   return (
     <Autocomplete
+      onRemove={onRemove}
       disabled={disabled}
       defaultValue={value}
       placeholder={placeholder}

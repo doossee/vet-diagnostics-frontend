@@ -18,9 +18,9 @@ export function UserFilters() {
 
   return (
     <FiltersWrapper>
-      <div className="flex items-center justify-start gap-2 mb-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mb-2">
         <Select value={gender} onValueChange={(e) => set(UsersQueryParamKeys.GENDER, e)}>
-          <SelectTrigger className="bg-card w-min">
+          <SelectTrigger className="bg-card">
             <SelectValue placeholder={t("filters.byGender")} />
           </SelectTrigger>
           <SelectContent>
@@ -33,9 +33,9 @@ export function UserFilters() {
           </SelectContent>
         </Select>
 
-        <RegionSelect placeholder={t("filters.byRegion")} onRemove={() => remove(UsersQueryParamKeys.REGION_ID)} value={regionId} onChange={(e) => set(UsersQueryParamKeys.REGION_ID, e)} />
+        <RegionSelect min placeholder={t("filters.byRegion")} onRemove={() => remove(UsersQueryParamKeys.REGION_ID)} value={regionId} onChange={(e) => set(UsersQueryParamKeys.REGION_ID, e)} />
         
-        <DistrictSelect placeholder={t("filters.byDistrict")} onRemove={() => remove(UsersQueryParamKeys.DISTRICT_ID)} value={districtId} onChange={e => set(UsersQueryParamKeys.DISTRICT_ID, e)} regionId={regionId as number} disabled={!regionId} />
+        <DistrictSelect min placeholder={t("filters.byDistrict")} onRemove={() => remove(UsersQueryParamKeys.DISTRICT_ID)} value={districtId} onChange={e => set(UsersQueryParamKeys.DISTRICT_ID, e)} regionId={regionId as number} disabled={!regionId} />
       </div>
     </FiltersWrapper>
   );

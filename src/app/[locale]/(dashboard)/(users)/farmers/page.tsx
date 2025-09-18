@@ -10,6 +10,7 @@ import { DataTable } from "@/shared/components/data-table";
 import { Modal } from "@/shared/components/elements/modal";
 import { createUserColums, UserFilters } from "@/entities/users";
 import { useGetFarmers } from "@/entities/users/services/queries";
+import { UsersQueryParamKeys } from "@/entities/users/utils/constants/users-query-param-keys";
 import { useCreateFarmer, useDeleteFarmer, useUpdateFarmer } from "@/entities/users/services/mutations";
 
 export default function Veterinarians() {
@@ -40,6 +41,7 @@ export default function Veterinarians() {
       <DataTable
         columns={columns}
         queryFunction={useGetFarmers}
+        filterQueryParamKeys={UsersQueryParamKeys}
         topSlot={createButton(t("users.createFarmer"))}
       />
 

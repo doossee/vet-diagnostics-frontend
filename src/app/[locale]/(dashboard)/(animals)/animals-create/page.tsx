@@ -12,7 +12,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/components/ui
 import { GeneralInspectionForm, GeneralInspectionSchema } from "@/features/general-inspections";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { animalsControllerCreate, generalInspectionControllerCreate, vaccinesControllerCreate } from "@/shared/api";
-import { useAnimalColors, useAnimalTypes, useBreeds, useEyelids, useFarmers, useLeatherCovers, useVaccineTypes } from "@/shared/hooks/queries";
 
 export default function Animals() {
   const router = useRouter();
@@ -23,14 +22,6 @@ export default function Animals() {
   const [openTabs, setOpenTabs] = useState(1);
   const [newAnimal, setNewAnimal] = useState<AnimalSchema | null>(null);
   const [newInspection, setNewInspection] = useState<GeneralInspectionSchema | null>(null);
-
-  const { breeds } = useBreeds();
-  const { eyeLids } = useEyelids();
-  const { animalTypes } = useAnimalTypes();
-  const { vaccineTypes } = useVaccineTypes();
-  const { animalColors } = useAnimalColors();
-  const { leatherCovers } = useLeatherCovers();
-  const { farmers } = useFarmers(userData?.userRole !== "FARMER");
 
   async function onSubmit(values: VaccineSchema | null = null) {
     try {
@@ -90,7 +81,10 @@ export default function Animals() {
               <CardDescription></CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-              <AnimalForm breeds={breeds} farmers={farmers} colors={animalColors} onSubmit={submitAnimal} animalTypes={animalTypes} showFarmer={userData?.userRole !== "FARMER"} submitRightContent={<span />} />
+              <AnimalForm
+                onSubmit={submitAnimal}
+                showFarmer={userData?.userRole !== "FARMER"}
+                submitRightContent={<span />} />
             </CardContent>
           </Card>
         </TabsContent>
@@ -101,7 +95,9 @@ export default function Animals() {
               <CardDescription></CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-              <GeneralInspectionForm hideAnimals eyeLids={eyeLids} animalColors={animalColors} onSubmit={submitInspection} leatherCovers={leatherCovers} />
+              <GeneralInspectionForm
+                hideAnimals
+                onSubmit={submitInspection} />
             </CardContent>
           </Card>
         </TabsContent>
@@ -112,7 +108,10 @@ export default function Animals() {
               <CardDescription></CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-              <VaccineForm hideAnimals onSubmit={onSubmit} vaccineTypes={vaccineTypes} onSkip={() => onSubmit(null)} />
+              <VaccineForm
+                hideAnimals
+                onSubmit={onSubmit}
+                onSkip={() => onSubmit(null)} />
             </CardContent>
           </Card>
         </TabsContent>

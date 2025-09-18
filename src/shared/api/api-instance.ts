@@ -12,7 +12,7 @@ const { accessToken, refreshToken, setAuthData } = useAuthData();
 let isRefreshing = false;
 let failedQueue: Array<(token: string) => void> = [];
 
-const processQueue = (token: string | null, error: any = null) => {
+const processQueue = (token: string | null, _: any = null) => {
   failedQueue.forEach((callback) => (token ? callback(token) : callback(null as any)));
   failedQueue = [];
 };
@@ -43,6 +43,8 @@ apiInstance.interceptors.response.use(
     }
     const originalRequest: any = error.config!;
     if (error.response?.status === 401 && !originalRequest?._retry) {
+      console.log(error.config?.url);
+      
       if (!refreshToken || error.config?.url === "/auth/login") {
         return Promise.reject(error);
       }
@@ -64,7 +66,7 @@ apiInstance.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const response = await Axios.post(baseURL + "/auth/refresh", {
+        const response = await apiInstance.post(baseURL + "/auth/refresh", {
           refreshToken,
         });
 

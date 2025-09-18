@@ -9,8 +9,8 @@ import { Modal } from "@/shared/components/elements/modal";
 import { VaccineForm, VaccineSchema } from "@/features/vaccines";
 import { useGetVaccines } from "@/entities/vaccines/services/queries";
 import { VaccineFilters, createVaccineColums } from "@/entities/vaccines";
-import { useCreateVaccine, useDeleteVaccine, useUpdateVaccine } from "@/entities/vaccines/services/mutations";
 import { VaccineQueryParamKeys } from "@/entities/vaccines/utils/constants/vaccine-query-param-keys";
+import { useCreateVaccine, useDeleteVaccine, useUpdateVaccine } from "@/entities/vaccines/services/mutations";
 
 export default function Vaccines() {
   const { t, locale } = useI18n();

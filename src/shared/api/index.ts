@@ -2877,7 +2877,7 @@ export const usersControllerFindOne = (id: number, options?: SecondParameter<typ
 };
 
 export const usersControllerUpdate = (id: number, updateUserDto: BodyType<any>, options?: SecondParameter<typeof createInstance>) => {
-  return createInstance<UserEntity>(
+  return createInstance<any>(
     {
       url: `/users/${id}`,
       method: "PATCH",

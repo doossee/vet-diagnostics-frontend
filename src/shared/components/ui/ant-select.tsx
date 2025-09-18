@@ -49,7 +49,7 @@ export interface AntSelectProps {
   open?: boolean;
   optionFilterProp?: string;
   optionLabelProp?: string;
-  options?: (AntSelectOption | AntSelectOptGroup)[];
+  options?: (AntSelectOption | AntSelectOptGroup | any)[];
   placeholder?: React.ReactNode;
   placement?: "bottomLeft" | "bottomRight" | "topLeft" | "topRight";
   removeIcon?: React.ReactNode;
@@ -83,7 +83,7 @@ export interface AntSelectProps {
 }
 
 // Основной компонент AntSelect
-const AntSelect = React.forwardRef<React.ElementRef<typeof SelectPrimitive.Root>, AntSelectProps>(
+const AntSelect = React.forwardRef<React.ComponentRef<typeof SelectPrimitive.Root>, AntSelectProps>(
   (
     {
       allowClear = false,
@@ -142,7 +142,7 @@ const AntSelect = React.forwardRef<React.ElementRef<typeof SelectPrimitive.Root>
     },
     ref,
   ) => {
-    const [internalValue, setInternalValue] = React.useState<string | string[]>(defaultValue || (mode === "multiple" || mode === "tags" ? [] : ""));
+    const [internalValue, setInternalValue] = React.useState<any | string | string[]>(defaultValue || (mode === "multiple" || mode === "tags" ? [] : ""));
     const [searchText, setSearchText] = React.useState("");
     const [isOpen, setIsOpen] = React.useState(defaultOpen || false);
 
@@ -187,7 +187,7 @@ const AntSelect = React.forwardRef<React.ElementRef<typeof SelectPrimitive.Root>
       return options.filter((option) => {
         if ("options" in option) {
           // Это группа опций
-          const filteredGroupOptions = option.options.filter((opt) => {
+          const filteredGroupOptions = option.options.filter((opt: any) => {
             const searchIn = optionFilterProp === "label" ? opt.label : opt.value;
             return String(searchIn).toLowerCase().includes(searchText.toLowerCase());
           });
@@ -245,8 +245,8 @@ const AntSelect = React.forwardRef<React.ElementRef<typeof SelectPrimitive.Root>
       return (
         <div className="flex flex-wrap gap-1">
           {currentValue.map((val, index) => {
-            const option = options.find((opt) => (opt?.value ? opt.value === val : opt.options?.some((o) => o.value === val)));
-            const optionData = option?.value ? option : option?.options?.find((o) => o.value === val);
+            const option = options.find((opt) => (opt?.value ? opt.value === val : opt.options?.some((o: any) => o.value === val)));
+            const optionData = option?.value ? option : option?.options?.find((o: any) => o.value === val);
 
             return (
               <span key={`${val}-${index}`} className="inline-flex items-center gap-1 px-2 py-0.5 bg-gray-100 text-gray-800 text-xs rounded border">
@@ -271,8 +271,8 @@ const AntSelect = React.forwardRef<React.ElementRef<typeof SelectPrimitive.Root>
     const renderSingleValue = () => {
       if (isMultiple) return null;
 
-      const option = options.find((opt) => (opt?.value ? opt.value === currentValue : opt.options?.some((o) => o.value === currentValue)));
-      const optionData = option?.value ? option : option?.options?.find((o) => o.value === currentValue);
+      const option = options.find((opt) => (opt?.value ? opt.value === currentValue : opt.options?.some((o: any) => o.value === currentValue)));
+      const optionData = option?.value ? option : option?.options?.find((o: any) => o.value === currentValue);
 
       return optionData?.label || currentValue || placeholder;
     };
@@ -359,7 +359,7 @@ const AntSelect = React.forwardRef<React.ElementRef<typeof SelectPrimitive.Root>
                     return (
                       <SelectPrimitive.Group key={option.key || index}>
                         <SelectPrimitive.Label className="px-2 py-1.5 text-xs font-semibold text-gray-500">{option.label}</SelectPrimitive.Label>
-                        {option.options.map((groupOption) => (
+                        {option.options.map((groupOption: any) => (
                           <SelectPrimitive.Item
                             key={groupOption.value}
                             value={String(groupOption.value)}

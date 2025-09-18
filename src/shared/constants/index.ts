@@ -654,3 +654,20 @@ export const TOAST_OPTIONS = {
   className: "bg-primary",
   actionButtonStyle: { background: "hsl(var(--primary))" },
 };
+
+export const SKELETON_TYPES = {
+  text: "h-4 w-32 rounded-md",
+  title: "h-6 w-48 rounded-md",
+  paragraph: "h-4 w-full rounded-md",
+  avatar: "h-10 w-10 rounded-full",
+  button: "h-10 w-24 rounded-lg",
+  card: "h-40 w-full rounded-xl",
+  input: "h-10 w-full rounded-md",
+  image: "h-48 w-full rounded-xl",
+}
+
+export const QUERY_PARAM_KEYS = {
+  ANIMAL_ID: "animalId",
+  NEW: "new",
+  ID: "id",
+}

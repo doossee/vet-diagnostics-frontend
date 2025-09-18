@@ -12,7 +12,7 @@ export default async function Index() {
   if (!user) return redirect({ href: routes.AUTH.LOGIN, locale });
 
   return redirect({
-    href: navLinksVariant[user.userRole]?.[0]?.items?.[0]?.url,
+    href: navLinksVariant[user.userRole]?.[0]?.items?.[0]?.url!,
     locale,
   });
 }

@@ -10,6 +10,7 @@ import { useGetLastVaccine } from "@/entities/vaccines/services/queries";
 import { useGetLastDisease } from "@/entities/diseases/services/queries";
 import { useGetAnimal } from '@/entities/animals/services/animal-queries';
 import { BLOOD_SERUM_TESTS, GENERAL_BLOOD_TESTS } from "@/shared/constants";
+import { SketeletonWrapper } from "@/shared/components/elements/skeleton-wrapper";
 import { Table, TableBody, TableCell, TableRow } from "@/shared/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { useGetLastBloodSerumTest } from "@/entities/blood-serum-tests/services/queries";
@@ -17,8 +18,7 @@ import { useGetLastGeneralBloodTest } from "@/entities/general-blood-tests/servi
 import { useGetLastGeneralInspection } from "@/entities/general-inspections/services/queries";
 import { ANIMAL_GENDERS, OBESITY_TYPES, BODY_TYPES, CUSTOMER_TYPES, POSITIONS, BODY_STRUCTURES } from "@/shared/constants";
 
-// TODO: fix
-// TODO: add skeletons
+// TODO: fix create links
 
 export function AnimalDashboard({ id }: { id: number }) {
   const { t, locale } = useI18n();
@@ -68,49 +68,84 @@ export function AnimalDashboard({ id }: { id: number }) {
                   <TableCell>
                     <b>{t("animals.name")}</b>
                   </TableCell>
-                  {animal?.nameOrCode && <TableCell>{animal?.nameOrCode}</TableCell>}
+                  
+                  <TableCell>
+                    <SketeletonWrapper loading={isAnimalLoading}>
+                      {animal?.nameOrCode}
+                    </SketeletonWrapper>
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>
                     <b>{t("animals.age")}</b>
                   </TableCell>
-                  {animal?.birthDate && <TableCell>{new Date().getFullYear() - new Date(animal.birthDate!).getFullYear()}</TableCell>}
+                  <TableCell>
+                    <SketeletonWrapper loading={isAnimalLoading}>
+                      {new Date().getFullYear() - new Date(animal?.birthDate!).getFullYear()}
+                    </SketeletonWrapper>
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>
                     <b>{t("form.type")}</b>
                   </TableCell>
-                  {(animal as any)?.type?.name && <TableCell>{(animal as any)?.type?.name}</TableCell>}
+                  
+                  <TableCell>
+                    <SketeletonWrapper loading={isAnimalLoading}>
+                      {(animal as any)?.type?.name}
+                    </SketeletonWrapper>
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>
                     <b>{t("animals.color")}</b>
                   </TableCell>
-                  {(animal as any)?.color?.name && <TableCell>{(animal as any)?.color?.name}</TableCell>}
+                  
+                  <TableCell>
+                    <SketeletonWrapper loading={isAnimalLoading}>
+                      {(animal as any)?.color?.name}
+                    </SketeletonWrapper>
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>
                     <b>{t("animals.weight")}</b>
                   </TableCell>
-                  {animal?.weight && <TableCell>{animal.weight}</TableCell>}
+                  <TableCell>
+                    <SketeletonWrapper loading={isAnimalLoading}>
+                      {animal?.weight}
+                    </SketeletonWrapper>
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>
                     <b>{t("form.gender")}</b>
                   </TableCell>
-                  {animal?.gender && <TableCell>{ANIMAL_GENDERS.find((g) => g.value === animal.gender)?.[locale]}</TableCell>}
+                  <TableCell>
+                    <SketeletonWrapper loading={isAnimalLoading}>
+                      {ANIMAL_GENDERS.find((g) => g.value === animal?.gender)?.[locale]}
+                    </SketeletonWrapper>
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>
                     <b>{t("animals.breed")}</b>
                   </TableCell>
-                  {(animal as any)?.breed?.name && <TableCell>{(animal as any).breed?.name}</TableCell>}
+                  <TableCell>
+                    <SketeletonWrapper loading={isAnimalLoading}>
+                      {(animal as any)?.breed?.name}
+                    </SketeletonWrapper>
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>
                     <b>{t("animals.arrivalDate")}</b>
                   </TableCell>
-                  {animal?.arrivalDate && <TableCell>{new Date(animal?.arrivalDate).toLocaleDateString()}</TableCell>}
+                  <TableCell>
+                    <SketeletonWrapper loading={isAnimalLoading}>
+                      {new Date(animal?.arrivalDate!).toLocaleDateString()}
+                    </SketeletonWrapper>
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </Table>
@@ -122,7 +157,7 @@ export function AnimalDashboard({ id }: { id: number }) {
             <div className="flex items-center justify-between">
               <CardTitle>{t("animals.generalInspection")}</CardTitle>
 
-              {generalInspection && (
+              {generalInspection?.id && (
                 <Button>
                   <Plus />
                   Добавить
@@ -131,68 +166,97 @@ export function AnimalDashboard({ id }: { id: number }) {
             </div>
           </CardHeader>
           <CardContent className="px-4">
-            {generalInspection && (
-              <Table>
-                <TableBody>
-                  <TableRow>
-                    <TableCell>
-                      <b>{t("inspections.obesity")}</b>
-                    </TableCell>
-                    <TableCell>{generalInspection?.bodyPosition ? OBESITY_TYPES[generalInspection.obesity][locale] : "-"}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <b>{t("inspections.bodyType")}</b>
-                    </TableCell>
-                    <TableCell>{generalInspection?.bodyType ? BODY_TYPES[generalInspection.bodyType][locale] : "-"}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <b>{t("inspections.bodyStructure")}</b>
-                    </TableCell>
-                    <TableCell>{generalInspection?.bodyStructure ? BODY_STRUCTURES[generalInspection.bodyStructure][locale] : "-"}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <b>{t("inspections.bodyPosition")}</b>
-                    </TableCell>
-                    <TableCell>{generalInspection?.bodyPosition ? POSITIONS[generalInspection.bodyPosition][locale] : "-"}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <b>{t("inspections.customerType")}</b>
-                    </TableCell>
-                    <TableCell>{generalInspection?.character ? CUSTOMER_TYPES[generalInspection.character][locale] : "-"}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <b>{t("form.color")}</b>
-                    </TableCell>
-                    <TableCell>{generalInspection?.color?.name ? generalInspection?.color?.name : "-"}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <b>{t("management.leatherCover")}</b>
-                    </TableCell>
-                    <TableCell>{generalInspection?.leatherCover?.name ? generalInspection.leatherCover.name : "-"}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <b>{t("management.eyeLid")}</b>
-                    </TableCell>
-                    <TableCell>{generalInspection?.eyelid?.name ? generalInspection.eyelid.name : "-"}</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            )}
-            {!generalInspection && (
+            {(!generalInspection?.id && !isGeneralInspectionLoading) ? (
               <EmptyState>
                 <Button>
                   <Plus />
                   Добавить
                 </Button>
               </EmptyState>
-            )}
+            ) : <Table>
+              <TableBody>
+                <TableRow>
+                  <TableCell>
+                    <b>{t("inspections.obesity")}</b>
+                  </TableCell>
+                  <TableCell>
+                    <SketeletonWrapper loading={isGeneralInspectionLoading}>
+                      {generalInspection?.bodyPosition ? OBESITY_TYPES[generalInspection.obesity][locale] : "-"}
+                    </SketeletonWrapper>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <b>{t("inspections.bodyType")}</b>
+                  </TableCell>
+                  <TableCell>
+                    <SketeletonWrapper loading={isGeneralInspectionLoading}>
+                      {generalInspection?.bodyType ? BODY_TYPES[generalInspection.bodyType][locale] : "-"}
+                    </SketeletonWrapper>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <b>{t("inspections.bodyStructure")}</b>
+                  </TableCell>
+                  <TableCell>
+                    <SketeletonWrapper loading={isGeneralInspectionLoading}>
+                      {generalInspection?.bodyStructure ? BODY_STRUCTURES[generalInspection.bodyStructure][locale] : "-"}
+                    </SketeletonWrapper>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <b>{t("inspections.bodyPosition")}</b>
+                  </TableCell>
+                  <TableCell>
+                    <SketeletonWrapper loading={isGeneralInspectionLoading}>
+                      {generalInspection?.bodyPosition ? POSITIONS[generalInspection.bodyPosition][locale] : "-"}
+                    </SketeletonWrapper>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <b>{t("inspections.customerType")}</b>
+                  </TableCell>
+                  <TableCell>
+                    <SketeletonWrapper loading={isGeneralInspectionLoading}>
+                      {generalInspection?.character ? CUSTOMER_TYPES[generalInspection.character][locale] : "-"}
+                    </SketeletonWrapper>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <b>{t("form.color")}</b>
+                  </TableCell>
+                  <TableCell>
+                    <SketeletonWrapper loading={isGeneralInspectionLoading}>
+                      {generalInspection?.color?.name ? generalInspection?.color?.name : "-"}
+                    </SketeletonWrapper>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <b>{t("management.leatherCover")}</b>
+                  </TableCell>
+                  <TableCell>
+                    <SketeletonWrapper loading={isGeneralInspectionLoading}>
+                      {generalInspection?.leatherCover?.name ? generalInspection.leatherCover.name : "-"}
+                    </SketeletonWrapper>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <b>{t("management.eyeLid")}</b>
+                  </TableCell>
+                  <TableCell>
+                    <SketeletonWrapper loading={isGeneralInspectionLoading}>
+                      {generalInspection?.eyelid?.name ? generalInspection.eyelid.name : "-"}
+                    </SketeletonWrapper>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>}
           </CardContent>
         </Card>
 
@@ -201,7 +265,7 @@ export function AnimalDashboard({ id }: { id: number }) {
             <div className="flex items-center justify-between">
               <CardTitle>{t("form.disease")}</CardTitle>
 
-              {disease && (
+              {disease?.id && (
                 <Button>
                   <Plus />
                   Добавить
@@ -210,32 +274,37 @@ export function AnimalDashboard({ id }: { id: number }) {
             </div>
           </CardHeader>
           <CardContent className="px-4">
-            {disease && (
-              <Table>
-                <TableBody>
-                  <TableRow>
-                    <TableCell>
-                      <b>{t("inspections.obesity")}</b>
-                    </TableCell>
-                    <TableCell>{disease?.startTime ? new Date(disease.startTime).toLocaleDateString() + "-" + new Date(disease.endTime).toLocaleDateString() : "-"}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <b>{t("inspections.bodyType")}</b>
-                    </TableCell>
-                    <TableCell>{disease?.type?.id ? disease.type.name : "-"}</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            )}
-            {!disease && (
+            {(!disease && !isDiseaseLoading) ? (
               <EmptyState>
                 <Button>
                   <Plus />
                   Добавить
                 </Button>
               </EmptyState>
-            )}
+            ) : <Table>
+              <TableBody>
+                <TableRow>
+                  <TableCell>
+                    <b>{t("inspections.obesity")}</b>
+                  </TableCell>
+                  <TableCell>
+                    <SketeletonWrapper loading={isDiseaseLoading}>
+                      {disease?.startTime ? new Date(disease.startTime).toLocaleDateString() + "-" + new Date(disease.endTime).toLocaleDateString() : "-"}
+                    </SketeletonWrapper>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <b>{t("inspections.bodyType")}</b>
+                  </TableCell>
+                  <TableCell>
+                    <SketeletonWrapper loading={isDiseaseLoading}>
+                      {disease?.type?.id ? disease.type?.name : "-"}
+                    </SketeletonWrapper>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>}
           </CardContent>
         </Card>
 
@@ -244,7 +313,7 @@ export function AnimalDashboard({ id }: { id: number }) {
             <div className="flex items-center justify-between">
               <CardTitle>{t("animals.vaccine")}</CardTitle>
 
-              {vaccine && (
+              {vaccine?.id && (
                 <Button>
                   <Plus />
                   Добавить
@@ -253,32 +322,37 @@ export function AnimalDashboard({ id }: { id: number }) {
             </div>
           </CardHeader>
           <CardContent className="px-4">
-            {vaccine && (
-              <Table>
-                <TableBody>
-                  <TableRow>
-                    <TableCell>
-                      <b>{t("inspections.obesity")}</b>
-                    </TableCell>
-                    <TableCell>{vaccine?.date ? new Date(vaccine.date).toLocaleDateString() : "-"}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <b>{t("inspections.bodyType")}</b>
-                    </TableCell>
-                    <TableCell>{vaccine?.type?.id ? vaccine.type.name : "-"}</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            )}
-            {!vaccine && (
+            {(!vaccine && !isVaccineLoading) ? (
               <EmptyState>
                 <Button>
                   <Plus />
                   Добавить
                 </Button>
               </EmptyState>
-            )}
+            ) : <Table>
+              <TableBody>
+                <TableRow>
+                  <TableCell>
+                    <b>{t("inspections.obesity")}</b>
+                  </TableCell>
+                  <TableCell>
+                    <SketeletonWrapper loading={isVaccineLoading}>
+                      {vaccine?.date ? new Date(vaccine.date).toLocaleDateString() : "-"}
+                    </SketeletonWrapper>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <b>{t("inspections.bodyType")}</b>
+                  </TableCell>
+                  <TableCell>
+                    <SketeletonWrapper loading={isVaccineLoading}>
+                      {vaccine?.type?.id ? vaccine.type.name : "-"}
+                    </SketeletonWrapper>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>}
           </CardContent>
         </Card>
 
@@ -287,7 +361,7 @@ export function AnimalDashboard({ id }: { id: number }) {
             <div className="flex items-center justify-between">
               <CardTitle>{t("nav.generalBloodTests")}</CardTitle>
 
-              {generalBloodTest && (
+              {generalBloodTest?.id && (
                 <Button onClick={handleCreateGeneralBloodTest}>
                   <Plus />
                   Добавить
@@ -296,34 +370,39 @@ export function AnimalDashboard({ id }: { id: number }) {
             </div>
           </CardHeader>
           <CardContent className="px-4">
-            {generalBloodTest?.id && (
-              <Table>
-                <TableBody>
-                  <TableRow>
-                    <TableCell>
-                      <b>{t("inspections.obesity")}</b>
-                    </TableCell>
-                    <TableCell>{new Date(generalBloodTest.createdAt).toLocaleDateString()}</TableCell>
-                  </TableRow>
-                  {...Object.keys(GENERAL_BLOOD_TESTS).map((key) => (
-                    <TableRow>
-                      <TableCell>
-                        <b>{GENERAL_BLOOD_TESTS[key as keyof typeof GENERAL_BLOOD_TESTS]?.[locale]}</b>
-                      </TableCell>
-                      <TableCell>{generalBloodTest?.[key as keyof typeof GENERAL_BLOOD_TESTS] + " " + GENERAL_BLOOD_TESTS[key as keyof typeof GENERAL_BLOOD_TESTS]?.[`unit_${locale}`]}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
-            {!generalBloodTest && !isGeneralBloodTestLoading && (
+            {(!generalBloodTest && !isGeneralBloodTestLoading) ? (
               <EmptyState>
                 <Button onClick={handleCreateGeneralBloodTest}>
                   <Plus />
                   Добавить
                 </Button>
               </EmptyState>
-            )}
+            ) : <Table>
+              <TableBody>
+                <TableRow>
+                  <TableCell>
+                    <b>{t("inspections.obesity")}</b>
+                  </TableCell>
+                  <TableCell>
+                    <SketeletonWrapper loading={isGeneralBloodTestLoading}>
+                      {new Date(generalBloodTest?.createdAt!).toLocaleDateString()}
+                    </SketeletonWrapper>
+                  </TableCell>
+                </TableRow>
+                {...Object.keys(GENERAL_BLOOD_TESTS).map((key) => (
+                  <TableRow>
+                    <TableCell>
+                      <b>{GENERAL_BLOOD_TESTS[key as keyof typeof GENERAL_BLOOD_TESTS]?.[locale]}</b>
+                    </TableCell>
+                    <TableCell>
+                      <SketeletonWrapper loading={isGeneralBloodTestLoading}>
+                        {generalBloodTest?.[key as keyof typeof GENERAL_BLOOD_TESTS] + " " + GENERAL_BLOOD_TESTS[key as keyof typeof GENERAL_BLOOD_TESTS]?.[`unit_${locale}`]}
+                      </SketeletonWrapper>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>}
           </CardContent>
         </Card>
 
@@ -332,7 +411,7 @@ export function AnimalDashboard({ id }: { id: number }) {
             <div className="flex items-center justify-between">
               <CardTitle>{t("nav.bloodSerumTests")}</CardTitle>
 
-              {bloodSerumTest && (
+              {bloodSerumTest?.id && (
                 <Button>
                   <Plus />
                   Добавить
@@ -341,34 +420,39 @@ export function AnimalDashboard({ id }: { id: number }) {
             </div>
           </CardHeader>
           <CardContent className="px-4">
-            {bloodSerumTest?.id && (
-              <Table>
-                <TableBody>
-                  <TableRow>
-                    <TableCell>
-                      <b>{t("inspections.obesity")}</b>
-                    </TableCell>
-                    <TableCell>{new Date(bloodSerumTest.createdAt).toLocaleDateString()}</TableCell>
-                  </TableRow>
-                  {...Object.keys(BLOOD_SERUM_TESTS).map((key) => (
-                    <TableRow>
-                      <TableCell>
-                        <b>{BLOOD_SERUM_TESTS[key as keyof typeof BLOOD_SERUM_TESTS]?.[locale]}</b>
-                      </TableCell>
-                      <TableCell>{bloodSerumTest[key as keyof typeof BLOOD_SERUM_TESTS] + " " + BLOOD_SERUM_TESTS[key as keyof typeof BLOOD_SERUM_TESTS][`unit_${locale}`]}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
-            {!bloodSerumTest && (
+            {(!bloodSerumTest?.id && !isBloodSerumTestLoading) ? (
               <EmptyState>
                 <Button>
                   <Plus />
                   Добавить
                 </Button>
               </EmptyState>
-            )}
+            ) : <Table>
+              <TableBody>
+                <TableRow>
+                  <TableCell>
+                    <b>{t("inspections.obesity")}</b>
+                  </TableCell>
+                  <TableCell>
+                    <SketeletonWrapper loading={isBloodSerumTestLoading}>
+                      {new Date(bloodSerumTest?.createdAt!).toLocaleDateString()}
+                    </SketeletonWrapper>
+                  </TableCell>
+                </TableRow>
+                {...Object.keys(BLOOD_SERUM_TESTS).map((key) => (
+                  <TableRow>
+                    <TableCell>
+                      <b>{BLOOD_SERUM_TESTS[key as keyof typeof BLOOD_SERUM_TESTS]?.[locale]}</b>
+                    </TableCell>
+                    <TableCell>
+                      <SketeletonWrapper loading={isBloodSerumTestLoading}>
+                        {bloodSerumTest?.[key as keyof typeof BLOOD_SERUM_TESTS] + " " + BLOOD_SERUM_TESTS[key as keyof typeof BLOOD_SERUM_TESTS][`unit_${locale}`]}
+                      </SketeletonWrapper>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>}
           </CardContent>
         </Card>
       </div>

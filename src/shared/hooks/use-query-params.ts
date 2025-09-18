@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter } from '@/shared/i18n/routing';
 import { isNullish } from "../helpers/is-nullish";
+import { useRouter } from '@/shared/i18n/routing';
 import { useSearchParams, usePathname } from "next/navigation";
 
 export function useSearchQueryParams() {
@@ -93,11 +93,12 @@ export function useSearchQueryParams() {
   };
 
   const replacePath = (query: string) => {
-    router.replace(`${pathname}?${query}`);
+    const newUrl = query ? `${pathname}?${query}` : pathname;
+    window.history.replaceState(null, "", newUrl);
   };
 
   const navigatePath = (path: string, query: string) => {
-    router.replace(`${path}?${query}`);
+    router.push(`${path}?${query}`);
   };
 
   return {

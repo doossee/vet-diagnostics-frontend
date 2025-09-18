@@ -6,15 +6,15 @@ import { Divider } from "@/shared/components/divider";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/shared/components/ui/button";
 import { Textarea } from "@/shared/components/ui/textarea";
-import { GeneralInspectionSchema, createGeneralInspectionSchema, generalInspectionValues } from "./general-inspection.model";
+import { AnimalSelect } from "../animals/components/animal-select";
+import { EyeLidSelect } from "../eye-lid/components/eye-lid-select";
+import { AnimalTypeSelect } from "../animal-types/components/animal-type-select";
+import { AnimalColorSelect } from "../animal-colors/components/animal-color-select";
+import { LeatherCoverSelect } from "../leather-cover/components/leather-cover-select";
+import { BODY_STRUCTURES, BODY_TYPES, CUSTOMER_TYPES, OBESITY_TYPES, POSITIONS } from "@/shared/constants";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
-import { BODY_STRUCTURES, BODY_TYPES, CUSTOMER_TYPES, OBESITY_TYPES, POSITIONS } from "@/shared/constants";
-import { LeatherCoverSelect } from "../leather-cover/components/leather-cover-select";
-import { AnimalTypeSelect } from "../animal-types/components/animal-type-select";
-import { AnimalSelect } from "../animals/components/animal-select";
-import { AnimalColorSelect } from "../animal-colors/components/animal-color-select";
-import { EyeLidSelect } from "../eye-lid/components/eye-lid-select";
+import { GeneralInspectionSchema, createGeneralInspectionSchema, generalInspectionValues } from "./general-inspection.model";
 
 interface GeneralInspectionFormProps {
   hideAnimals?: boolean;

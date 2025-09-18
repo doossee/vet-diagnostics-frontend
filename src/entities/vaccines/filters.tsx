@@ -31,8 +31,8 @@ export function VaccineFilters() {
           onChange={(e) => set(VaccineQueryParamKeys.ANIMAL_ID, e)}
         />
 
-        {/* TODO: Fix date pick and remove value feature */}
         <DatePicker
+          onRemove={() => {remove(VaccineQueryParamKeys.DATE);console.log(VaccineQueryParamKeys.DATE)}}
           buttonClass="bg-card border border-input dark:text-white hover:bg-card"
           field={{
             value: date,

@@ -4,21 +4,22 @@ import debounce from "lodash/debounce";
 import { cn } from "@/shared/lib/utils";
 import { createPortal } from "react-dom";
 import { useTranslations } from "next-intl";
+import { Spinner } from "./elements/spinner";
 import { PaginatedEntity } from "@/shared/types";
+import { TABLE_QUERY_PARAMS } from "../constants";
 import { Input } from "@/shared/components/ui/input";
 import { Button } from "@/shared/components/ui/button";
 import { UseQueryResult } from "@tanstack/react-query";
 import { useIsMobile } from "@/shared/hooks/use-mobile";
 import { useIsClient } from "@/shared/hooks/use-client";
-import { ReactNode, useCallback, useMemo, useState } from "react";
 import { Card, CardContent } from "@/shared/components/ui/card";
+import { SketeletonWrapper } from "./elements/skeleton-wrapper";
+import { useSearchQueryParams } from "../hooks/use-query-params";
+import { ReactNode, useCallback, useMemo, useState } from "react";
 import { ArrowLeft, ArrowRight, MoveUp, MoveDown, ListFilter } from "lucide-react";
 import { Popover, PopoverTrigger, PopoverContent } from "@/shared/components/ui/popover";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
-import { Spinner } from "./elements/spinner";
-import { useSearchQueryParams } from "../hooks/use-query-params";
-import { TABLE_QUERY_PARAMS } from "../constants";
 
 interface DataTableColumn<T> {
   title: string;
@@ -45,14 +46,16 @@ export function DataTable<T extends { id: any }>({ onRowClick, columns, topSlot,
   const isMobile = useIsMobile();
   const isClient = useIsClient();
   const { get, set, remove, getAll, getFirst } = useSearchQueryParams()
+  const searchInParam = get(TABLE_QUERY_PARAMS.SEARCH) as string ?? ""
 
   const filterQueries = getAll(Object.values(filterQueryParamKeys??{}))
   const sortingQuery = getFirst(columns.map(c => c.sorting!))
   const [initialParams, setInitialParams] = useState({
     page: get(TABLE_QUERY_PARAMS.PAGE, true) ?? 1,
     perPage: get(TABLE_QUERY_PARAMS.PER_PAGE, true) ?? 20,
-    search: get(TABLE_QUERY_PARAMS.SEARCH) as string ?? "",
+    search: searchInParam,
   });
+  const [serach, setSearch] = useState(searchInParam)
 
   const handleSetInitials = (key: keyof typeof initialParams, value: string | number) => {
     set(key, value)
@@ -111,16 +114,27 @@ export function DataTable<T extends { id: any }>({ onRowClick, columns, topSlot,
   const pageContent = useMemo(() => {
     return `${initialParams.page}/${Math.ceil(totalItems() / initialParams.perPage)}`;
   }, [initialParams, data, isLoading]);
-  // TODO: search initial value
+
   // TODO: badge in fiter and sorting buttons
+  // TODO: fix loader
+  // REFACTOR: 
+
   return (
     <div className="bg-transparent p-0 flex flex-col gap-2 w-full">
       <div className="flex flex-col sm:flex-row justify-between items-end gap-2">
-        {hideSearch ? <span /> : <Input className="sm:max-w-[200px] bg-card" onChange={(e) => handleSearch(e.target.value.trim())} placeholder={t("table.search")} />}
+        {hideSearch ? <span /> :
+          <Input
+            value={serach}
+            placeholder={t("table.search")}
+            className="sm:max-w-[200px] bg-card"
+            onChange={(e) => {
+              setSearch(e.target.value)
+              handleSearch(e.target.value.trim())
+            }}
+          />}
         {topSlot}
       </div>
-      {isMobile &&
-        isClient &&
+      {isMobile && isClient &&
         hasSorting() &&
         createPortal(
           <Popover>
@@ -163,7 +177,9 @@ export function DataTable<T extends { id: any }>({ onRowClick, columns, topSlot,
                     <div key={i} className="w-full p-2">
                       <div className="flex w-full gap-2 items-start justify-between">
                         {!col.hideTitleInMobile && <b className="text-sm">{col.title}:</b>}
-                        {col.render ? col.render(item) : <span className="text-right!">{(item as any)[col.key]}</span>}
+                        <SketeletonWrapper loading={isLoading}>
+                          {col.render ? col.render(item) : <span className="text-right!">{(item as any)[col.key]}</span>}
+                        </SketeletonWrapper>
                       </div>
                     </div>
                   ))}
@@ -217,7 +233,9 @@ export function DataTable<T extends { id: any }>({ onRowClick, columns, topSlot,
                     <TableRow key={i} onClick={() => !!onRowClick && onRowClick(item, i)}>
                       {columns.map((col, i) => (
                         <TableCell key={i} className={cn(col.sorting ? "pl-4!" : "", !!onRowClick ? "cursor-pointer" : "")}>
-                          {col.render ? col.render(item) : (item as any)[col.key]}
+                          <SketeletonWrapper loading={isLoading}>
+                            {(col.render ? col.render(item) : (item as any)[col.key])}
+                          </SketeletonWrapper>
                         </TableCell>
                       ))}
                     </TableRow>

@@ -1,13 +1,12 @@
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { ANIMAL_GENDERS } from "@/shared/constants";
-import { Gender, Breed, Color, AnimalType } from "@/shared/types";
 import { queryParamKeys } from './utils/constants/query-param-keys';
 import { FiltersWrapper } from "@/shared/components/filters-wrapper";
 import { useSearchQueryParams } from "@/shared/hooks/use-query-params";
+import { BreedSelect } from "@/features/breeds/components/breed-select";
+import { AnimalTypeSelect } from "@/features/animal-types/components/animal-type-select";
 import { AnimalColorSelect } from "@/features/animal-colors/components/animal-color-select";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
-import { AnimalTypeSelect } from "@/features/animal-types/components/animal-type-select";
-import { BreedSelect } from "@/features/breeds/components/breed-select";
 
 export function AnimalFilters() {
   const { get, set, remove } = useSearchQueryParams()
@@ -21,11 +20,11 @@ export function AnimalFilters() {
 
   return (
     <FiltersWrapper>
-      <div className="flex items-center justify-start gap-2 mb-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 mb-2">
         <AnimalTypeSelect onRemove={() => remove(queryParamKeys.TYPE_ID)} placeholder={t("filters.byType")} value={typeId} onChange={e => set(queryParamKeys.TYPE_ID, e)} />
 
         <Select value={gender ? gender : ""} onValueChange={(e) => set(queryParamKeys.GENDER, e)}>
-          <SelectTrigger className="bg-card w-min">
+          <SelectTrigger className="bg-card">
             <SelectValue placeholder={t("filters.byGender")} />
           </SelectTrigger>
           <SelectContent>

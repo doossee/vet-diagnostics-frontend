@@ -37,7 +37,19 @@ export function BreedForm({ onSubmit, defaultValues }: BreedFormProps) {
           )}
         />
 
-        <BreedSelect name="parentId" form={form} />
+        <FormField
+          name="name"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("management.breedParent")}</FormLabel>
+              <FormControl>
+                <BreedSelect value={field.value} onChange={field.onChange} placeholder={t("management.breedParent")} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <div className="flex-1 flex items-end">
           <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">

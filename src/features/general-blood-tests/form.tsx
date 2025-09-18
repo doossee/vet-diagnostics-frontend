@@ -8,10 +8,10 @@ import { Button } from "@/shared/components/ui/button";
 import { GENERAL_BLOOD_TESTS } from "@/shared/constants";
 import { Textarea } from "@/shared/components/ui/textarea";
 import { DatePicker } from "@/shared/components/date-picker";
+import { AnimalSelect } from "../animals/components/animal-select";
+import { AnimalTypeSelect } from "../animal-types/components/animal-type-select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 import { GeneralBloodTestSchema, createGeneralBloodTestSchema, generalBloodTestValues } from "./general-blood-test.model";
-import { AnimalTypeSelect } from "../animal-types/components/animal-type-select";
-import { AnimalSelect } from "../animals/components/animal-select";
 
 interface GeneralBloodTestFormProps {
   animalId: number | null;

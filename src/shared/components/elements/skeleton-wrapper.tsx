@@ -12,7 +12,7 @@ type Props = {
   type?: keyof typeof SKELETON_TYPES
 }
 
-export function SketeletonWrapper({ children, className, loading, type = "text" }: Props) {
+export function SkeletonWrapper({ children, className, loading, type = "text" }: Props) {
   if(loading) return <Skeleton className={cn(SKELETON_TYPES[type], className)} />
 
   return children

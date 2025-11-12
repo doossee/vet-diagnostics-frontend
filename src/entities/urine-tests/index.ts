@@ -1,1 +1,1 @@
-export { createUrineTestColums } from "./columns";
+export { createUrineTestColumns } from "./columns";

@@ -83,7 +83,7 @@ export function LoginForm() {
             />
 
             <Button disabled={isPending} type="submit" className="w-full">
-              {t(isPending ? "form.submiting" : "login.submit")}
+              {t(isPending ? "form.submitting" : "login.submit")}
             </Button>
           </form>
         </Form>

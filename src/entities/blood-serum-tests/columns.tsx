@@ -3,7 +3,7 @@ import { Button } from "@/shared/components/ui/button";
 import { BloodSerumTest, BLOOD_SERUM } from "@/shared/types";
 import { Edit, Trash } from "lucide-react";
 
-export const createBloodSerumTestColums = (handleEditItem: (item: BloodSerumTest) => void, handleDelete: (id: number) => void, t: any, locale: "uz" | "ru") => [
+export const createBloodSerumTestColumns = (handleEditItem: (item: BloodSerumTest) => void, handleDelete: (id: number) => void, t: any, locale: "uz" | "ru") => [
   {
     title: t("form.animal"),
     key: "animal",

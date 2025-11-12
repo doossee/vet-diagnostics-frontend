@@ -111,7 +111,7 @@ export function GeneralBloodTestForm({ onSubmit, defaultValues, animalId }: Gene
           )}
         />
         <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">
-          {t(form.formState.isSubmitting ? "form.submiting" : "form.submit")}
+          {t(form.formState.isSubmitting ? "form.submitting" : "form.submit")}
         </Button>
       </form>
     </Form>

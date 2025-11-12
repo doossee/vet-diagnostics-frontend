@@ -46,7 +46,7 @@ export function DistrictForm({ onSubmit, defaultValues }: DistrictFormProps) {
             <FormItem>
               <FormLabel>{t("form.regionName")}</FormLabel>
               <FormControl>
-                <RegionSelect value={field.value} onChange={field.onChange} />
+                <RegionSelect placeholder={t("form.regionName")} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -55,7 +55,7 @@ export function DistrictForm({ onSubmit, defaultValues }: DistrictFormProps) {
 
         <div className="flex-1">
           <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">
-            {t(form.formState.isSubmitting ? "form.submiting" : "form.submit")}
+            {t(form.formState.isSubmitting ? "form.submitting" : "form.submit")}
           </Button>
         </div>
       </form>

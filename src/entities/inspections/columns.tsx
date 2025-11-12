@@ -3,7 +3,7 @@ import { Inspection, LanguageLocales } from "@/shared/types";
 import { INSPECTION_TYPES } from "@/shared/constants";
 import { Button } from "@/shared/components/ui/button";
 
-export const createInspectionColums = (handleEditItem: (item: Inspection) => void, handleDelete: (id: number) => void, t: any, locale: LanguageLocales) => [
+export const createInspectionColumns = (handleEditItem: (item: Inspection) => void, handleDelete: (id: number) => void, t: any, locale: LanguageLocales) => [
   {
     title: t("form.animal"),
     key: "animal",

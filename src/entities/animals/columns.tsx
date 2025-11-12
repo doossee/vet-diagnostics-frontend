@@ -3,7 +3,7 @@ import { ANIMAL_GENDERS } from "@/shared/constants";
 import { Button } from "@/shared/components/ui/button";
 import { Animal, LanguageLocales } from "@/shared/types";
 
-export const createAnimalColums = (handleEditItem: (item: Animal) => void, handleDelete: (id: number) => void, t: any, locale: LanguageLocales) => [
+export const createAnimalColumns = (handleEditItem: (item: Animal) => void, handleDelete: (id: number) => void, t: any, locale: LanguageLocales) => [
   { title: t("animals.name"), key: "nameOrCode" },
   {
     title: t("animals.age"),

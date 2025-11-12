@@ -6,7 +6,7 @@ import { useI18n } from "@/shared/hooks/use-i18n";
 import { useCrud } from "@/shared/hooks/use-crud";
 import { DataTable } from "@/shared/components/data-table";
 import { Modal } from "@/shared/components/elements/modal";
-import { createInspectionColums } from "@/entities/inspections";
+import { createInspectionColumns } from "@/entities/inspections";
 import { InspectionForm, InspectionSchema } from "@/features/inspections";
 import { useGetInspections } from "@/entities/inspections/services/queries";
 import { useCreateInspection, useDeleteInspection, useUpdateInspection } from "@/entities/inspections/services/mutations";
@@ -20,7 +20,7 @@ export default function Inspections() {
     removeMutation: useDeleteInspection,
   });
 
-  const columns = useMemo(() => createInspectionColums(handleEditItem, handleDelete, t, locale), [handleEditItem, handleDelete]);
+  const columns = useMemo(() => createInspectionColumns(handleEditItem, handleDelete, t, locale), [handleEditItem, handleDelete]);
 
   return (
     <div>

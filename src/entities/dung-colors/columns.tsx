@@ -2,7 +2,7 @@ import { DungColor } from "@/shared/types";
 import { Edit, Trash } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 
-export const createDungColorColums = (handleEditItem: (item: DungColor) => void, handleDelete: (id: number) => void, t: any) => [
+export const createDungColorColumns = (handleEditItem: (item: DungColor) => void, handleDelete: (id: number) => void, t: any) => [
   { title: t("management.colorName"), key: "name" },
   {
     title: t("table.actions"),

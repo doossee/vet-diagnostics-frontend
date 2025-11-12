@@ -2,7 +2,7 @@ import { Edit, Trash } from "lucide-react";
 import { LeatherCover } from "@/shared/types";
 import { Button } from "@/shared/components/ui/button";
 
-export const createLeatherCoverColums = (handleEditItem: (item: LeatherCover) => void, handleDelete: (id: number) => void, t: any) => [
+export const createLeatherCoverColumns = (handleEditItem: (item: LeatherCover) => void, handleDelete: (id: number) => void, t: any) => [
   { title: t("management.leatherCoverName"), key: "name" },
   {
     title: t("table.actions"),

@@ -44,9 +44,10 @@
     "submit": "Kirish"
   },
   "form": {
+    "add": "Yaratish",
     "submit": "Saqlash",
     "animal": "Hayvon",
-    "submiting": "Yuborilmoqda",
+    "submitting": "Yuborilmoqda",
     "farmer": "Fermer",
     "veterinarian": "Veterinar",
     "type": "Turi",
@@ -273,5 +274,9 @@
     "obesityRequired": "Hayvon semizligi tanlanishi shart",
     "bodyStructureTypeRequired": "Hayvon tana tuzilishi tanlanishi shart",
     "inspectionTypeRequired": "Tekshiruv turi belgilanishi shart"
+  },
+  "noData": {
+    "title": "Maʼlumot topilmadi",
+    "description": "Ushbu sahifada hozircha maʼlumot yo‘q. Siz yangi yozuv qo‘shishingiz yoki sahifani yangilashingiz mumkin."
   }
 }

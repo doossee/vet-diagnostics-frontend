@@ -107,7 +107,7 @@ export function VaccineForm({ onSubmit, defaultValues, hideAnimals, onSkip }: Va
             </Button>
           )}
           <Button disabled={form.formState.isSubmitting} type="submit">
-            {t(form.formState.isSubmitting ? "form.submiting" : "form.submit")}
+            {t(form.formState.isSubmitting ? "form.submitting" : "form.submit")}
           </Button>
         </div>
       </form>

@@ -3,7 +3,7 @@ import { Button } from "@/shared/components/ui/button";
 import { LanguageLocales, UrineTest } from "@/shared/types";
 import { SMELL_TYPES, CLARITY_TYPES } from "@/shared/constants";
 
-export const createUrineTestColums = (handleEditItem: (item: UrineTest) => void, handleDelete: (id: number) => void, t: any, locale: LanguageLocales) => [
+export const createUrineTestColumns = (handleEditItem: (item: UrineTest) => void, handleDelete: (id: number) => void, t: any, locale: LanguageLocales) => [
   {
     title: t("form.animal"),
     key: "animal",

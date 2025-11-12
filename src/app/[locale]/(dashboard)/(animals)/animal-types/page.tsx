@@ -5,7 +5,7 @@ import type { AnimalType } from "@/shared/types";
 import { useCrud } from "@/shared/hooks/use-crud";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { DataTable } from "@/shared/components/data-table";
-import { createAnimalTypeColums } from "@/entities/animal-types";
+import { createAnimalTypeColumns } from "@/entities/animal-types";
 import { AnimalTypeSchema, AnimalTypeForm } from "@/features/animal-types";
 import { useGetAnimalTypes } from "@/entities/animal-types/services/animal-type-queries";
 import { useCreateAnimalType, useDeleteAnimalType, useUpdateAnimalType } from "@/entities/animal-types/services/animal-type-mutations";
@@ -20,7 +20,7 @@ export default function AnimalTypes() {
     removeMutation: useDeleteAnimalType,
   });
 
-  const columns = useMemo(() => createAnimalTypeColums(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
+  const columns = useMemo(() => createAnimalTypeColumns(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
 
   return (
     <div>

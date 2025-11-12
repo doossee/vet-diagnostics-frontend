@@ -2,7 +2,7 @@ import { AnimalType } from "@/shared/types";
 import { Trash, Edit } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 
-export const createAnimalTypeColums = (handleEditItem: (item: AnimalType) => void, handleDelete: (id: number) => void, t: any) => [
+export const createAnimalTypeColumns = (handleEditItem: (item: AnimalType) => void, handleDelete: (id: number) => void, t: any) => [
   { title: t("animalTypes.name"), key: "name" },
   {
     title: t("table.actions"),

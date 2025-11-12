@@ -24,8 +24,8 @@ export function DatePicker({ field, buttonClass, disabledToToday, onRemove }: Da
     onRemove?.()
   }
 
-  const handleChange = (e?: Date) => {
-    field.onChange(e?.toLocaleDateString())
+  const handleChange = (date?: Date) => {
+    field.onChange(date ?? null)
   }
 
   return (

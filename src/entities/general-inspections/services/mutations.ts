@@ -9,7 +9,7 @@ export function useCreateGeneralInspection() {
   const client = useQueryClient();
 
   return useMutation<any, any, GeneralInspectionSchema>({
-    mutationFn: generalInspectionControllerCreate,
+    mutationFn: generalInspectionControllerCreate as any,
     onSuccess: (data) => {
       createQueryData<GeneralInspection>(client, [GeneralInspectionQueryKeys.GENERAL_INSPECTION], data);
       client.invalidateQueries({

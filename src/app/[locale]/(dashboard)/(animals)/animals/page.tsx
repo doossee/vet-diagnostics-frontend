@@ -10,7 +10,7 @@ import { DataTable } from "@/shared/components/data-table";
 import { useAuthData } from "@/shared/hooks/use-auth-data";
 import { Modal } from "@/shared/components/elements/modal";
 import { AnimalForm, AnimalSchema } from "@/features/animals";
-import { AnimalFilters, createAnimalColums } from "@/entities/animals";
+import { AnimalFilters, createAnimalColumns } from "@/entities/animals";
 import { useGetAnimals } from "@/entities/animals/services/animal-queries";
 import { queryParamKeys } from "@/entities/animals/utils/constants/query-param-keys";
 import { useCreateAnimal, useDeleteAnimal, useUpdateAnimal } from "@/entities/animals/services/animal-mutations";
@@ -32,7 +32,7 @@ export default function Animals() {
     },
   });
 
-  const columns = useMemo(() => createAnimalColums(handleEditItem, handleDelete, t, locale), [handleEditItem, handleDelete]);
+  const columns = useMemo(() => createAnimalColumns(handleEditItem, handleDelete, t, locale), [handleEditItem, handleDelete]);
 
   const handleNavigate = (item: Animal) => {
     router.push(routes.ANIMALS.ID(item.id));

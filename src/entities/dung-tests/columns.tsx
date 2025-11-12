@@ -3,7 +3,7 @@ import { Button } from "@/shared/components/ui/button";
 import { DungTest, LanguageLocales } from "@/shared/types";
 import { SMELL_TYPES, CLARITY_TYPES, DUNG_FORMS } from "@/shared/constants";
 
-export const createDungTestColums = (handleEditItem: (item: DungTest) => void, handleDelete: (id: number) => void, t: any, locale: LanguageLocales) => [
+export const createDungTestColumns = (handleEditItem: (item: DungTest) => void, handleDelete: (id: number) => void, t: any, locale: LanguageLocales) => [
   {
     title: t("form.animal"),
     key: "animal",

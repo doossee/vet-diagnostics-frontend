@@ -77,6 +77,7 @@ export function AnimalForm({ onSubmit, defaultValues, showFarmer, submitRightCon
                 <FormControl>
                   <AnimalColorSelect placeholder={t("animals.color")} value={field.value} onChange={field.onChange} />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -179,7 +180,7 @@ export function AnimalForm({ onSubmit, defaultValues, showFarmer, submitRightCon
         <div className="flex-1 flex items-end w-full">
           <div className={clsx("grid place-items-end gap-4 w-full", submitRightContent ? "grid-cols-2" : "")}>
             <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">
-              {t(form.formState.isSubmitting ? "form.submiting" : "form.submit")}
+              {t(form.formState.isSubmitting ? "form.submitting" : "form.submit")}
             </Button>
             {submitRightContent}
           </div>

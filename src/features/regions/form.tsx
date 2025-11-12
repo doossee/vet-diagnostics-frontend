@@ -38,7 +38,7 @@ export function RegionForm({ onSubmit, defaultValues }: RegionFormProps) {
         />
         <div className="flex-1 flex items-end">
           <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">
-            {t(form.formState.isSubmitting ? "form.submiting" : "form.submit")}
+            {t(form.formState.isSubmitting ? "form.submitting" : "form.submit")}
           </Button>
         </div>
       </form>

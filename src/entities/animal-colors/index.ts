@@ -1,1 +1,1 @@
-export { createAnimalColorColums } from "./columns";
+export { createAnimalColorColumns } from "./columns";

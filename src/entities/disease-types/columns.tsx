@@ -2,7 +2,7 @@ import { Edit, Trash } from "lucide-react";
 import { DiseaseType } from "@/shared/types";
 import { Button } from "@/shared/components/ui/button";
 
-export const createDiseaseTypeColums = (handleEditItem: (item: DiseaseType) => void, handleDelete: (id: number) => void, t: any) => [
+export const createDiseaseTypeColumns = (handleEditItem: (item: DiseaseType) => void, handleDelete: (id: number) => void, t: any) => [
   { title: t("management.typeName"), key: "name", sorting: "name" },
   {
     title: t("table.actions"),

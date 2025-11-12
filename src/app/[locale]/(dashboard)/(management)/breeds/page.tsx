@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import type { Breed } from "@/shared/types";
 import { useCrud } from "@/shared/hooks/use-crud";
 import { useI18n } from "@/shared/hooks/use-i18n";
-import { createBreedColums } from "@/entities/breeds";
+import { createBreedColumns } from "@/entities/breeds";
 import { DataTable } from "@/shared/components/data-table";
 import { BreedForm, BreedSchema } from "@/features/breeds";
 import { Modal } from "@/shared/components/elements/modal";
@@ -20,7 +20,7 @@ export default function Breeds() {
     removeMutation: useDeleteBreed,
   });
 
-  const columns = useMemo(() => createBreedColums(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
+  const columns = useMemo(() => createBreedColumns(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
 
   return (
     <div>

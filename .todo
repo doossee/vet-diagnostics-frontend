@@ -1,6 +1,15 @@
-TODO: animal/:id remove new params in create after close modals
-TODO: check refresh token and 
+TODO: fix imports
+TODO: date pick value fix 1970
+TODO: check refresh token and
+TODO: check form messages
+TODO: remove autocomplete value from parent
+TODO: optimize code with default values date
+TODO: number to locale in number inputs
+TODO: password input show hide button
+TODO: min 0 inputs change 1 -> 0.000001
+TODO: filters date select limitable
 
+[+] animal/:id remove new params in create after close modals
 [+] create animal-select component with type
 [+:-] fix editable item to form
 [+:] fix date element edit

@@ -1,2 +1,2 @@
 export { UserFilters } from "./filters";
-export { createUserColums } from "./columns";
+export { createUserColumns } from "./columns";

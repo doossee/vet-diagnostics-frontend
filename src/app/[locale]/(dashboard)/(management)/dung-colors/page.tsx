@@ -6,7 +6,7 @@ import { useCrud } from "@/shared/hooks/use-crud";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { DataTable } from "@/shared/components/data-table";
 import { Modal } from "@/shared/components/elements/modal";
-import { createDungColorColums } from "@/entities/dung-colors";
+import { createDungColorColumns } from "@/entities/dung-colors";
 import { DungColorForm, DungColorSchema } from "@/features/dung-colors";
 import { useGetDungColors } from "@/entities/dung-colors/services/queries";
 import { useCreateDungColor, useDeleteDungColor, useUpdateDungColor } from "@/entities/dung-colors/services/mutations";
@@ -20,7 +20,7 @@ export default function DungColors() {
     removeMutation: useDeleteDungColor,
   });
 
-  const columns = useMemo(() => createDungColorColums(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
+  const columns = useMemo(() => createDungColorColumns(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
 
   return (
     <div>

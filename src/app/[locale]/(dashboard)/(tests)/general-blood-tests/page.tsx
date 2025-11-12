@@ -8,14 +8,15 @@ import type { GeneralBloodTest } from "@/shared/types";
 import { DataTable } from "@/shared/components/data-table";
 import { Modal } from "@/shared/components/elements/modal";
 import { useSearchQueryParams } from "@/shared/hooks/use-query-params";
-import { createGeneralBloodTestColums } from "@/entities/general-blood-tests";
+import { createGeneralBloodTestColumns } from "@/entities/general-blood-tests";
 import { useGetGeneralBloodTests } from "@/entities/general-blood-tests/services/queries";
+import { queryParamKeys } from '@/entities/general-blood-tests/utils/constants/query-param-keys';
 import { GeneralBloodTestForm, GeneralBloodTestSchema, generalBloodTestValues } from "@/features/general-blood-tests";
 import { useCreateGeneralBloodTest, useDeleteGeneralBloodTest, useUpdateGeneralBloodTest } from "@/entities/general-blood-tests/services/mutations";
 
 export default function GeneralBloodTests() {
   const { t, locale } = useI18n();
-  const { get, set, remove } = useSearchQueryParams();
+  const { get, setMany } = useSearchQueryParams();
 
   const newAnimal = get(QUERY_PARAM_KEYS.NEW);
   const animalId = get(QUERY_PARAM_KEYS.ANIMAL_ID, true);
@@ -27,23 +28,26 @@ export default function GeneralBloodTests() {
     removeMutation: useDeleteGeneralBloodTest,
     extraOnClose: () => {
       if(!newAnimal) return
-      // TODO: check
-      remove(QUERY_PARAM_KEYS.NEW)
 
-      if(animalId) set(QUERY_PARAM_KEYS.ANIMAL_ID, animalId)
-
-      else remove(QUERY_PARAM_KEYS.ANIMAL_ID)
+      setMany({
+        [QUERY_PARAM_KEYS.NEW]: null,
+        [QUERY_PARAM_KEYS.ANIMAL_ID]: animalId || null
+      })
     }
   });
 
-  const columns = useMemo(() => createGeneralBloodTestColums(handleEditItem, handleDelete, t, locale), [handleEditItem, handleDelete]);
+  const columns = useMemo(() => createGeneralBloodTestColumns(handleEditItem, handleDelete, t, locale), [handleEditItem, handleDelete]);
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetGeneralBloodTests} topSlot={createButton(t("inspections.createBloodTest"))} />
+      <DataTable
+        columns={columns}
+        filterQueryParamKeys={queryParamKeys}
+        queryFunction={useGetGeneralBloodTests}
+        topSlot={createButton(t("inspections.createBloodTest"))} />
 
       <Modal open={dialog} onClose={handleClose} widthClassName="max-w-[650px]!" title={t(editedItem ? "inspections.editBloodTest" : "inspections.createBloodTest")}>
-        <GeneralBloodTestForm onSubmit={onSubmit} animalId={animalId as number} defaultValues={editedItem ? editedItem : animalId ? generalBloodTestValues(animalId as number) : undefined} />
+        <GeneralBloodTestForm onSubmit={onSubmit} animalId={animalId as number} defaultValues={editedItem ? editedItem : animalId ? {...generalBloodTestValues(animalId as number), date: new Date()} : undefined} />
       </Modal>
     </div>
   );

@@ -1,1 +1,1 @@
-export { createVetStationColums } from "./columns";
+export { createVetStationColumns } from "./columns";

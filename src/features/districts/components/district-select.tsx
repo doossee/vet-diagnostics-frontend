@@ -24,6 +24,7 @@ export function DistrictSelect({ placeholder, value, disabled, regionId, min, on
       defaultValue={value as any}
       onRemove={onRemove}
       queryFn={useGetDistrictsInfinite}
+      dependsOn={regionId}
       onSelect={(e: any) => onChange?.(e?.id)}
       customFilter={(item) => (regionId ? item.regionId === regionId : true)}
       clientSearch={(search, item) => searchUtil(search, item, ["id", "name"])}

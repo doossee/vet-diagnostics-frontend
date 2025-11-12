@@ -6,7 +6,7 @@ import { useI18n } from "@/shared/hooks/use-i18n";
 import { useCrud } from "@/shared/hooks/use-crud";
 import { DataTable } from "@/shared/components/data-table";
 import { Modal } from "@/shared/components/elements/modal";
-import { createUrineTestColums } from "@/entities/urine-tests";
+import { createUrineTestColumns } from "@/entities/urine-tests";
 import { useSearchQueryParams } from "@/shared/hooks/use-query-params";
 import { useGetUrineTests } from "@/entities/urine-tests/services/queries";
 import { UrineTestForm, UrineTestSchema, urineTestValues } from "@/features/urine-tests";
@@ -27,7 +27,7 @@ export default function UrineTests() {
     extraOnClose: () => newAnimal && (animalId ? set("animalId", animalId) : remove("animalId")),
   });
 
-  const columns = useMemo(() => createUrineTestColums(handleEditItem, handleDelete, t, locale), [handleEditItem, handleDelete]);
+  const columns = useMemo(() => createUrineTestColumns(handleEditItem, handleDelete, t, locale), [handleEditItem, handleDelete]);
 
   return (
     <div>

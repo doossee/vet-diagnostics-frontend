@@ -2,7 +2,7 @@ import { Edit, Trash } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { LanguageLocales, Vaccine } from "@/shared/types";
 
-export const createVaccineColums = (handleEditItem: (item: Vaccine) => void, handleDelete: (id: number) => void, t: any, _: LanguageLocales) => [
+export const createVaccineColumns = (handleEditItem: (item: Vaccine) => void, handleDelete: (id: number) => void, t: any, _: LanguageLocales) => [
   {
     title: t("form.animal"),
     key: "animal",

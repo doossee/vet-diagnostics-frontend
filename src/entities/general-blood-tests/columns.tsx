@@ -4,7 +4,7 @@ import { Button } from "@/shared/components/ui/button";
 import { GENERAL_BLOOD_TESTS } from "@/shared/constants";
 import { GENERAL_BLOOD, LanguageLocales } from "@/shared/types";
 
-export const createGeneralBloodTestColums = (handleEditItem: (item: GeneralBloodTest) => void, handleDelete: (id: number) => void, t: any, locale: LanguageLocales) => [
+export const createGeneralBloodTestColumns = (handleEditItem: (item: GeneralBloodTest) => void, handleDelete: (id: number) => void, t: any, locale: LanguageLocales) => [
   {
     title: t("form.animal"),
     key: "animal",

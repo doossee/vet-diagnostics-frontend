@@ -1,1 +1,1 @@
-export { createDungColorColums } from "./columns";
+export { createDungColorColumns } from "./columns";

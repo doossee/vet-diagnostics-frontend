@@ -37,7 +37,7 @@ export function AnimalTypeForm({ onSubmit, defaultValues }: AnimalTypeFormProps)
         />
         <div className="flex-1 flex items-end">
           <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">
-            {form.formState.isSubmitting ? t("form.submiting") : t("form.submit")}
+            {form.formState.isSubmitting ? t("form.submitting") : t("form.submit")}
           </Button>
         </div>
       </form>

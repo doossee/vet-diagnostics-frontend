@@ -67,7 +67,7 @@ export function VetStationForm({ onSubmit, defaultValues }: VetStationFormProps)
             <FormItem>
               <FormLabel>{t("form.regionName")}</FormLabel>
               <FormControl>
-                <RegionSelect value={field.value} onChange={field.onChange} />
+                <RegionSelect placeholder={t("form.regionName")} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -81,7 +81,7 @@ export function VetStationForm({ onSubmit, defaultValues }: VetStationFormProps)
             <FormItem>
               <FormLabel>{t("form.districtName")}</FormLabel>
               <FormControl>
-                <DistrictSelect value={field.value} onChange={field.onChange} regionId={regionId} disabled={!regionId} />
+                <DistrictSelect placeholder={t("form.districtName")} value={field.value} onChange={field.onChange} regionId={regionId??null} disabled={!regionId} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -90,7 +90,7 @@ export function VetStationForm({ onSubmit, defaultValues }: VetStationFormProps)
 
         <div className="flex-1 flex items-end">
           <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">
-            {t(form.formState.isSubmitting ? "form.submiting" : "form.submit")}
+            {t(form.formState.isSubmitting ? "form.submitting" : "form.submit")}
           </Button>
         </div>
       </form>

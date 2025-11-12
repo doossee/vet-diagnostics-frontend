@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { Region } from "@/shared/types";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { useCrud } from "@/shared/hooks/use-crud";
-import { createRegionColums } from "@/entities/regions";
+import { createRegionColumns } from "@/entities/regions";
 import { DataTable } from "@/shared/components/data-table";
 import { Modal } from "@/shared/components/elements/modal";
 import { RegionForm, RegionSchema } from "@/features/regions";
@@ -19,7 +19,7 @@ export default function Regions() {
     removeMutation: useDeleteRegions,
   });
 
-  const columns = useMemo(() => createRegionColums(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
+  const columns = useMemo(() => createRegionColumns(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
 
   return (
     <div>

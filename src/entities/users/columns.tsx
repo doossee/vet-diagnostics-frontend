@@ -3,7 +3,7 @@ import { GENDERS } from "@/shared/constants";
 import { LanguageLocales, User } from "@/shared/types";
 import { Button } from "@/shared/components/ui/button";
 
-export const createUserColums = (handleEditItem: (item: User) => void, handleDelete: (id: number) => void, t: any, locale: LanguageLocales) => [
+export const createUserColumns = (handleEditItem: (item: User) => void, handleDelete: (id: number) => void, t: any, locale: LanguageLocales) => [
   {
     title: t("form.name"),
     key: "name",

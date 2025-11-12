@@ -5,8 +5,9 @@ import localFont from "next/font/local";
 import { getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { Toaster } from "@/shared/components/ui/sonner";
+import { ClientProvider } from "@/shared/components/query-client";
 import { ThemeProvider } from "@/shared/components/theme-provider";
-import { ClientProfider } from "@/shared/components/query-client";
+import { ErrorSender } from "@/shared/components/elements/error-boundary";
 import { PageLoadingIndicator } from "@/shared/components/page-loading-indicator";
 
 const geistSans = localFont({
@@ -41,7 +42,8 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             <PageLoadingIndicator />
-            <ClientProfider>{children}</ClientProfider>
+            <ErrorSender />
+            <ClientProvider>{children}</ClientProvider>
             <Toaster />
           </ThemeProvider>
         </NextIntlClientProvider>

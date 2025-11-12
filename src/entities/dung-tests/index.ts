@@ -1,1 +1,1 @@
-export { createDungTestColums } from "./columns";
+export { createDungTestColumns } from "./columns";

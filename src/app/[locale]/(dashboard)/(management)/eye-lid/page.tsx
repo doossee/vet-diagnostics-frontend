@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import type { Eyelid } from "@/shared/types";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { useCrud } from "@/shared/hooks/use-crud";
-import { createEyeLidColums } from "@/entities/eye-lid";
+import { createEyeLidColumns } from "@/entities/eye-lid";
 import { DataTable } from "@/shared/components/data-table";
 import { EyeLidForm, EyeLidSchema } from "@/features/eye-lid";
 import { useGetEyeLids } from "@/entities/eye-lid/services/queries";
@@ -20,7 +20,7 @@ export default function EyeLid() {
     removeMutation: useDeleteEyeLid,
   });
 
-  const columns = useMemo(() => createEyeLidColums(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
+  const columns = useMemo(() => createEyeLidColumns(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
 
   return (
     <div>

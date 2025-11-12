@@ -13,7 +13,7 @@ import { UseQueryResult } from "@tanstack/react-query";
 import { useIsMobile } from "@/shared/hooks/use-mobile";
 import { useIsClient } from "@/shared/hooks/use-client";
 import { Card, CardContent } from "@/shared/components/ui/card";
-import { SketeletonWrapper } from "./elements/skeleton-wrapper";
+import { SkeletonWrapper } from "./elements/skeleton-wrapper";
 import { useSearchQueryParams } from "../hooks/use-query-params";
 import { ReactNode, useCallback, useMemo, useState } from "react";
 import { ArrowLeft, ArrowRight, MoveUp, MoveDown, ListFilter } from "lucide-react";
@@ -177,9 +177,9 @@ export function DataTable<T extends { id: any }>({ onRowClick, columns, topSlot,
                     <div key={i} className="w-full p-2">
                       <div className="flex w-full gap-2 items-start justify-between">
                         {!col.hideTitleInMobile && <b className="text-sm">{col.title}:</b>}
-                        <SketeletonWrapper loading={isLoading}>
+                        <SkeletonWrapper loading={isLoading}>
                           {col.render ? col.render(item) : <span className="text-right!">{(item as any)[col.key]}</span>}
-                        </SketeletonWrapper>
+                        </SkeletonWrapper>
                       </div>
                     </div>
                   ))}
@@ -233,9 +233,9 @@ export function DataTable<T extends { id: any }>({ onRowClick, columns, topSlot,
                     <TableRow key={i} onClick={() => !!onRowClick && onRowClick(item, i)}>
                       {columns.map((col, i) => (
                         <TableCell key={i} className={cn(col.sorting ? "pl-4!" : "", !!onRowClick ? "cursor-pointer" : "")}>
-                          <SketeletonWrapper loading={isLoading}>
+                          <SkeletonWrapper loading={isLoading}>
                             {(col.render ? col.render(item) : (item as any)[col.key])}
-                          </SketeletonWrapper>
+                          </SkeletonWrapper>
                         </TableCell>
                       ))}
                     </TableRow>

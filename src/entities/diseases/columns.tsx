@@ -2,7 +2,7 @@ import { Disease } from "@/shared/types";
 import { Button } from "@/shared/components/ui/button";
 import { ClipboardPlus, Edit, Trash } from "lucide-react";
 
-export const createDiseaseColums = (handleEditItem: (item: Disease) => void, handleDelete: (id: number) => void, handleSetDisease: (id: number, animalId: number) => void, t: any) => [
+export const createDiseaseColumns = (handleEditItem: (item: Disease) => void, handleDelete: (id: number) => void, handleSetDisease: (id: number, animalId: number) => void, t: any) => [
   {
     title: t("form.animal"),
     key: "animal",

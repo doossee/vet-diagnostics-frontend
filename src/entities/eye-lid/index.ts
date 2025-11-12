@@ -1,1 +1,1 @@
-export { createEyeLidColums } from "./columns";
+export { createEyeLidColumns } from "./columns";

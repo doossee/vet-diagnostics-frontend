@@ -60,7 +60,7 @@ export const createGeneralInspectionSchema = (t: any) =>
     temperature: z.coerce.number().min(1, t("required.temperatureThan0")),
     rumination: z.coerce.number().min(1, t("required.ruminationGreetThan0")),
     respiratoryRate: z.coerce.number().min(1, t("required.respiratoryRateGreetThan0")),
-    conclusion: z.string(),
+    conclusion: z.string().optional(),
   });
 
 export type GeneralInspectionSchema = z.infer<ReturnType<typeof createGeneralInspectionSchema>>;

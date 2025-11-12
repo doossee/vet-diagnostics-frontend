@@ -7,27 +7,12 @@ import { ProfileForm, ProfileSchema } from "@/features/users";
 import { useGetProfile } from "@/entities/auth/services/queries";
 import { useUpdateProfile } from "@/entities/auth/services/mutations";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
-import { sendMessageToTelegram } from "@/shared/helpers/send-message-to-tg";
-import { Button } from "@/shared/components/ui/button";
 
 export default function Veterinarians() {
   const { t } = useI18n();
   const { userData } = useAuthData();
   const { mutateAsync } = useUpdateProfile()
   const { data: profile, isLoading } = useGetProfile(userData?.userId!);
-
-  const d = () => {
-    sendMessageToTelegram({
-      user: "Frontend",
-      message: "Неизвестная ошибка",
-      file: "users/profile",
-      page: window.location.href,
-      browser: navigator.userAgent,
-      os: navigator.platform,
-      screen: `${window.innerWidth}x${window.innerHeight}`,
-      lang: navigator.language,
-    })
-  }
 
   async function onSubmit(values: ProfileSchema) {
     try {
@@ -49,7 +34,6 @@ export default function Veterinarians() {
             {t("users.changeUserData")} {isLoading && <Loader className="animate-spin size-4" />}
           </CardTitle>
         </CardHeader>
-        <Button onClick={d}></Button>
         <CardContent>
           <ProfileForm onSubmit={onSubmit} defaultValues={profile as any} loading={isLoading || isLoading} />
         </CardContent>

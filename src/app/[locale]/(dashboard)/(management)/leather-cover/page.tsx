@@ -6,7 +6,7 @@ import { useCrud } from "@/shared/hooks/use-crud";
 import type { LeatherCover } from "@/shared/types";
 import { DataTable } from "@/shared/components/data-table";
 import { Modal } from "@/shared/components/elements/modal";
-import { createLeatherCoverColums } from "@/entities/leather-cover";
+import { createLeatherCoverColumns } from "@/entities/leather-cover";
 import { LeatherCoverForm, LeatherCoverSchema } from "@/features/leather-cover";
 import { useGetLeatherCover } from "@/entities/leather-cover/services/queries";
 import { useCreateLeatgerCover, useDeleteLeatgerCover, useUpdateLeatgerCover } from "@/entities/leather-cover/services/mutations";
@@ -20,7 +20,7 @@ export default function LeatherCovers() {
     removeMutation: useDeleteLeatgerCover,
   });
 
-  const columns = useMemo(() => createLeatherCoverColums(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
+  const columns = useMemo(() => createLeatherCoverColumns(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
 
   return (
     <div>

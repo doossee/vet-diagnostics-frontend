@@ -1,1 +1,1 @@
-export { createDiseaseColums } from "./columns";
+export { createDiseaseColumns } from "./columns";

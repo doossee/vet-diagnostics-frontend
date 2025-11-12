@@ -2,7 +2,7 @@ import { Breed } from "@/shared/types";
 import { Edit, Trash } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 
-export const createBreedColums = (handleEditItem: (item: Breed) => void, handleDelete: (id: number) => void, t: any) => [
+export const createBreedColumns = (handleEditItem: (item: Breed) => void, handleDelete: (id: number) => void, t: any) => [
   { title: t("management.breedName"), key: "name" },
   {
     title: t("table.actions"),

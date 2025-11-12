@@ -161,7 +161,7 @@ export function UserForm({ onSubmit, showVeterinarians, itemId, defaultValues }:
               <FormItem>
                 <FormLabel>{t("form.regionName")}</FormLabel>
                 <FormControl>
-                  <RegionSelect value={field.value} onChange={field.onChange} />
+                  <RegionSelect placeholder={t("form.regionName")} value={field.value} onChange={field.onChange} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -175,7 +175,7 @@ export function UserForm({ onSubmit, showVeterinarians, itemId, defaultValues }:
               <FormItem>
                 <FormLabel>{t("form.districtName")}</FormLabel>
                 <FormControl>
-                  <DistrictSelect value={field.value} onChange={field.onChange} regionId={regionId} disabled={!regionId} />
+                  <DistrictSelect placeholder={t("form.districtName")} value={field.value} onChange={field.onChange} regionId={regionId??null} disabled={!regionId} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -189,7 +189,7 @@ export function UserForm({ onSubmit, showVeterinarians, itemId, defaultValues }:
               <FormItem>
                 <FormLabel>{t("form.veterinarian")}</FormLabel>
                 <FormControl>
-                  <VeterinarianSelect value={field.value} onChange={field.onChange} placeholder={t("form.veterinarian")} districtId={districtId} disabled={!districtId} />
+                  <VeterinarianSelect value={field.value} onChange={field.onChange} placeholder={t("form.veterinarian")} districtId={districtId??null} disabled={!districtId} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -224,7 +224,7 @@ export function UserForm({ onSubmit, showVeterinarians, itemId, defaultValues }:
         </div>
         <div className="flex-1 flex items-end">
           <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">
-            {t(form.formState.isSubmitting ? "form.submiting" : "form.submit")}
+            {t(form.formState.isSubmitting ? "form.submitting" : "form.submit")}
           </Button>
         </div>
       </form>

@@ -1,1 +1,1 @@
-export { createUrineColorColums } from "./columns";
+export { createUrineColorColumns } from "./columns";

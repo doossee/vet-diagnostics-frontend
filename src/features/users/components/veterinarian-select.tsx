@@ -19,6 +19,7 @@ export function VeterinarianSelect({ value, placeholder, disabled, districtId, o
       onRemove={onRemove}
       disabled={disabled}
       placeholder={placeholder}
+      dependsOn={districtId}
       defaultValue={value as any}
       queryFn={useGetVeterinariansInfinite}
       onSelect={(e: any) => onChange?.(e?.id)}

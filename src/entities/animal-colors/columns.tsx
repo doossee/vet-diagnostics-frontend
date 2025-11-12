@@ -2,7 +2,7 @@ import { Color } from "@/shared/types";
 import { Button } from "@/shared/components/ui/button";
 import { Edit, Trash } from "lucide-react";
 
-export const createAnimalColorColums = (handleEditItem: (item: Color) => void, handleDelete: (id: number) => void, t: any) => [
+export const createAnimalColorColumns = (handleEditItem: (item: Color) => void, handleDelete: (id: number) => void, t: any) => [
   { title: t("management.colorName"), key: "name" },
   {
     title: t("management.colorPick"),

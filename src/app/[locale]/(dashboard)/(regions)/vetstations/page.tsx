@@ -6,7 +6,7 @@ import { useI18n } from "@/shared/hooks/use-i18n";
 import { useCrud } from "@/shared/hooks/use-crud";
 import { DataTable } from "@/shared/components/data-table";
 import { Modal } from "@/shared/components/elements/modal";
-import { createVetStationColums } from "@/entities/vetstations";
+import { createVetStationColumns } from "@/entities/vetstations";
 import { VetStationForm, VetStationSchema } from "@/features/vetstations";
 import { useGetVetStations } from "@/entities/vetstations/services/queries";
 import { useCreateVetStation, useDeleteVetStation, useUpdateVetStation } from "@/entities/vetstations/services/mutations";
@@ -20,7 +20,7 @@ export default function VetStations() {
     removeMutation: useDeleteVetStation,
   });
 
-  const columns = useMemo(() => createVetStationColums(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
+  const columns = useMemo(() => createVetStationColumns(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
 
   return (
     <div>

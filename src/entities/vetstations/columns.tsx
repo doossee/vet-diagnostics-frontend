@@ -2,7 +2,7 @@ import { Edit, Trash } from "lucide-react";
 import { VetStation } from "@/shared/types";
 import { Button } from "@/shared/components/ui/button";
 
-export const createVetStationColums = (handleEditItem: (item: VetStation) => void, handleDelete: (id: number) => void, t: any) => [
+export const createVetStationColumns = (handleEditItem: (item: VetStation) => void, handleDelete: (id: number) => void, t: any) => [
   { title: t("regions.vetStationName"), key: "name" },
   { title: t("regions.vetStationAddress"), key: "address" },
   {

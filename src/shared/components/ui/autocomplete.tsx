@@ -4,14 +4,14 @@ import type React from "react";
 import { useMemo } from "react";
 import debounce from "lodash/debounce";
 import { cn } from "@/shared/lib/utils";
+import { useState, useEffect, useRef } from "react";
 import type { PaginatedEntity } from "@/shared/types";
 import { Input } from "@/shared/components/ui/input";
 import { Button } from "@/shared/components/ui/button";
 import { useInView } from "react-intersection-observer";
 import { Spinner } from "@/shared/components/elements/spinner";
-import { useState, useEffect, useRef, useCallback } from "react";
 import { pageableToArray } from "@/shared/helpers/pageable-to-array";
-import { Check, ChevronDown, Search, Loader2, X } from "lucide-react";
+import { Check, ChevronDown, Search, Loader2, X, Inbox } from "lucide-react";
 import type { UseInfiniteQueryResult, InfiniteData } from "@tanstack/react-query";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/components/ui/popover";
 
@@ -30,6 +30,7 @@ interface AutocompleteProps<T> {
   getOptionId?: (option: T) => string;
   clientSearch?: (search: string, option: T) => boolean;
   customFilter?: (option: T) => boolean;
+  dependsOn?: unknown | null
 }
 
 interface OptionItemProps<T> {
@@ -56,6 +57,7 @@ export function Autocomplete<T>({
   minWidth,
   onSelect,
   className,
+  dependsOn,
   queryFn,
   onRemove,
   renderOption,
@@ -68,11 +70,13 @@ export function Autocomplete<T>({
   const [search, setSearch] = useState("");
   const { ref, inView } = useInView({ delay: 100 });
   const [value, setValue] = useState<T | null>(null);
-  // const [useClientSearch, setUseClientSearch] = useState(!!clientSearch)
-  // TODO: cleint search when not next page
-  // TODO: Text ellipse bug fix in select
+
   // TODO: server filters
-  const handleSearch = useCallback(clientSearch ? (text: string) => setSearch(text) : debounce((text: string) => setSearch(text), 500), [clientSearch]);
+  const handleSearch = useMemo(() => {
+    return clientSearch
+      ? (text: string) => setSearch(text)
+      : debounce((text: string) => setSearch(text), 500);
+  }, [clientSearch]);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -131,11 +135,32 @@ export function Autocomplete<T>({
     };
   }, [open]);
 
+  useEffect(() => {
+    return () => {
+      if ('cancel' in handleSearch) (handleSearch as any).cancel?.();
+    };
+  }, [handleSearch]);
+
+  useEffect(() => {
+    if (typeof dependsOn !== "undefined" && dependsOn === null) {
+      setValue(null);
+      onSelect?.(null);
+      onRemove?.();
+    }
+  }, [dependsOn]);
+
+
+  // TODO: client search
   // useEffect(() => {
-  //   if (clientSearch && !useClientSearch && search && options.length === 0 && !hasNextPage && !isLoading) {
-  //     setUseClientSearch(true)
+  //   if (
+  //     clientSearch &&
+  //     search &&
+  //     options.length === 0 &&
+  //     !hasNextPage &&
+  //     !isLoading) {
+  //     setSearch(search); 
   //   }
-  // }, [clientSearch, useClientSearch, search, options.length, hasNextPage, isLoading])
+  // }, [clientSearch, search, options.length, hasNextPage, isLoading]);
 
   const handleSelect = (option: T) => {
     setValue(option);
@@ -146,8 +171,9 @@ export function Autocomplete<T>({
 
   const handleRemove = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setValue(null);
+    setOpen(false);
     onSelect?.(null);
+    setValue(null);
     onRemove?.()
   };
 
@@ -165,10 +191,12 @@ export function Autocomplete<T>({
     <div className={cn("relative", minWidth ? "" : "w-full", className)}>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button variant="outline" role="combobox" type="button" disabled={disabled} aria-expanded={open} onClick={toggleDropdown} className="w-full justify-between p-3 bg-accent! border-input!">
+          <Button variant="outline" role="combobox" type="button" disabled={disabled} aria-expanded={open} onClick={toggleDropdown}
+            // className="w-full justify-between p-3 bg-input! border-input!"
+            className="border-input data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 dark:hover:bg-input/50 flex w-full items-center justify-between gap-2 rounded-md border bg-transparent px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4">
             {value ? (
-              <div className="flex items-center gap-2 truncate font-normal">
-                <span className="truncate">{getOptionLabel(value)}</span>
+              <div className="flex items-center justify-start gap-2 truncate font-normal w-full">
+                <div className="truncate block max-w-[calc(100%-20px)]">{getOptionLabel(value)}</div>
               </div>
             ) : (
               <span className="text-muted-foreground font-normal">{placeholder}</span>
@@ -201,7 +229,8 @@ export function Autocomplete<T>({
             tabIndex={-1}>
             {allOptions.length === 0 && !isLoading && (
               <div className="px-3 py-2 text-sm text-muted-foreground text-center">
-                <span>No Data.</span>
+                {/* <span>No Data.</span> */}
+                <Inbox className="mx-auto" />
               </div>
             )}
 

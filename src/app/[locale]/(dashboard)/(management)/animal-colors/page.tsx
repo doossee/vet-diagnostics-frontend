@@ -6,7 +6,7 @@ import { useI18n } from "@/shared/hooks/use-i18n";
 import { useCrud } from "@/shared/hooks/use-crud";
 import { DataTable } from "@/shared/components/data-table";
 import { Modal } from "@/shared/components/elements/modal";
-import { createAnimalColorColums } from "@/entities/animal-colors";
+import { createAnimalColorColumns } from "@/entities/animal-colors";
 import { AnimalColorForm, AnimalColorSchema } from "@/features/animal-colors";
 import { useGetAnimalColors } from "@/entities/animal-colors/services/animal-color-queries";
 import { useCreateAnimalColor, useDeleteAnimalColor, useUpdateAnimalColor } from "@/entities/animal-colors/services/animal-color-mutations";
@@ -20,7 +20,7 @@ export default function AnimalColors() {
     removeMutation: useDeleteAnimalColor,
   });
 
-  const columns = useMemo(() => createAnimalColorColums(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
+  const columns = useMemo(() => createAnimalColorColumns(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
 
   return (
     <div>

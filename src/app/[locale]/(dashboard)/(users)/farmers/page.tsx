@@ -8,7 +8,7 @@ import { UserForm, UserSchema } from "@/features/users";
 import { useAuthData } from "@/shared/hooks/use-auth-data";
 import { DataTable } from "@/shared/components/data-table";
 import { Modal } from "@/shared/components/elements/modal";
-import { createUserColums, UserFilters } from "@/entities/users";
+import { createUserColumns, UserFilters } from "@/entities/users";
 import { useGetFarmers } from "@/entities/users/services/queries";
 import { UsersQueryParamKeys } from "@/entities/users/utils/constants/users-query-param-keys";
 import { useCreateFarmer, useDeleteFarmer, useUpdateFarmer } from "@/entities/users/services/mutations";
@@ -32,7 +32,7 @@ export default function Veterinarians() {
     },
   });
 
-  const columns = useMemo(() => createUserColums(handleEditItem, handleDelete, t, locale), [handleEditItem, handleDelete]);
+  const columns = useMemo(() => createUserColumns(handleEditItem, handleDelete, t, locale), [handleEditItem, handleDelete]);
 
   return (
     <div>

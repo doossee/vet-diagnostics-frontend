@@ -6,7 +6,7 @@ import { useI18n } from "@/shared/hooks/use-i18n";
 import { useCrud } from "@/shared/hooks/use-crud";
 import { DataTable } from "@/shared/components/data-table";
 import { Modal } from "@/shared/components/elements/modal";
-import { createDungTestColums } from "@/entities/dung-tests";
+import { createDungTestColumns } from "@/entities/dung-tests";
 import { useSearchQueryParams } from "@/shared/hooks/use-query-params";
 import { useGetDungTests } from "@/entities/dung-tests/services/queries";
 import { DungTestForm, DungTestSchema, dungTestValues } from "@/features/dung-tests";
@@ -26,7 +26,7 @@ export default function DungTests() {
     extraOnClose: () => newAnimal && (animalId ? set("animalId", animalId) : remove("animalId")),
   });
 
-  const columns = useMemo(() => createDungTestColums(handleEditItem, handleDelete, t, locale), [handleEditItem, handleDelete]);
+  const columns = useMemo(() => createDungTestColumns(handleEditItem, handleDelete, t, locale), [handleEditItem, handleDelete]);
 
   return (
     <div>

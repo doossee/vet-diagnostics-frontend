@@ -6,7 +6,7 @@ import { useI18n } from "@/shared/hooks/use-i18n";
 import { useCrud } from "@/shared/hooks/use-crud";
 import { DataTable } from "@/shared/components/data-table";
 import { Drawer } from "@/shared/components/elements/drawer";
-import { createUrineColorColums } from "@/entities/urine-colors";
+import { createUrineColorColumns } from "@/entities/urine-colors";
 import { UrineColorForm, UrineColorSchema } from "@/features/urine-colors";
 import { useGetUrineColors } from "@/entities/urine-colors/services/queries";
 import { useCreateUrineColor, useDeleteUrineColor, useUpdateUrineColor } from "@/entities/urine-colors/services/mutations";
@@ -21,7 +21,7 @@ export default function UrineColors() {
     removeMutation: useDeleteUrineColor,
   });
 
-  const columns = useMemo(() => createUrineColorColums(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
+  const columns = useMemo(() => createUrineColorColumns(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
 
   return (
     <div>

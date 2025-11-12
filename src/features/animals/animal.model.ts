@@ -27,13 +27,19 @@ export const createAnimalSchema = (t: any) =>
       invalid_type_error: t("required.arrivalDateRequired"),
     }),
     farmerId: z.number().nullable(),
-    breedId: z.number().min(1, t("required.breedRequired")),
+    breedId: z.number({
+      required_error: t("required.breedRequired"),
+      invalid_type_error: t("required.breedRequired"),
+    }),
     gender: z.enum(["MALE", "FEMALE"], {
       required_error: t("required.genderRequired"),
       invalid_type_error: t("required.genderRequired"),
     }),
     nameOrCode: z.string().min(1, t("required.animalNameRequired")),
-    typeId: z.number().min(1, t("required.animalTypeRequired")),
+    typeId: z.number({
+      required_error: t("required.animalTypeRequired"),
+      invalid_type_error: t("required.animalTypeRequired"),
+    }),
     weight: z.number().min(1, t("required.weightRequired")),
   });
 

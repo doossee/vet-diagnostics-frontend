@@ -650,7 +650,7 @@ export const navLinksVariant: Record<UserRole, NavLink[]> = {
 
 export const TOAST_OPTIONS = {
   style: { background: "hsl(var(--card))" },
-  action: { label: "Yopish", onClick: () => {} },
+  action: { label: "Закрыть", onClick: () => {} },
   className: "bg-primary",
   actionButtonStyle: { background: "hsl(var(--primary))" },
 };

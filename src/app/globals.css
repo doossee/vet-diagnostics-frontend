@@ -65,11 +65,7 @@
   }
 }
 
-/* @layer utilities {
-  body {
-    font-family: "Roboto", sans-serif;
-  }
-} */
+/* TODO: input error message shake animation */
 
 @layer base {
   :root {

@@ -2,7 +2,7 @@ import { Eyelid } from "@/shared/types";
 import { Edit, Trash } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 
-export const createEyeLidColums = (handleEditItem: (item: Eyelid) => void, handleDelete: (id: number) => void, t: any) => [
+export const createEyeLidColumns = (handleEditItem: (item: Eyelid) => void, handleDelete: (id: number) => void, t: any) => [
   { title: t("management.eyeLidName"), key: "name" },
   {
     title: t("table.actions"),

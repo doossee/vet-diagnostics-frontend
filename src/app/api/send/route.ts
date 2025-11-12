@@ -11,20 +11,30 @@ function escapeMarkdown(text: string) {
 export async function POST(request: Request) {
   try {
     const body = await request.json()
+    // console.log(body);
+    
     const text = `
-🐾 Ветеринария – новый репорт о проблеме
-━━━━━━━━━━━━━━━━━━
-👤 Пользователь: ${escapeMarkdown(body.user)}
-💬 Сообщение: "${escapeMarkdown(body.message)}"
+🚨 *Новый отчёт об ошибке*
 
-📁 Файл: ${escapeMarkdown(body.file || "-")}
-🌐 Страница: ${escapeMarkdown(body.page || "-")}
-🖥️ Браузер: ${escapeMarkdown(body.browser || "-")}
-💻 ОС: ${escapeMarkdown(body.os || "-")}
-📱 Экран: ${escapeMarkdown(body.screen || "-")}
-🌎 Язык: ${escapeMarkdown(body.lang || "-")}
-📅 Дата: ${escapeMarkdown(new Date().toLocaleString("ru-RU"))}
-`;
+💼 *Пройект:* Ветеринария
+👤 *Пользователь:* ${escapeMarkdown(body.user)}
+💬 *Сообщение:* ${escapeMarkdown(body.message)}
+
+📁 *Файл:* ${escapeMarkdown(body.file)}
+📄 *Страница:* ${escapeMarkdown(body.page)}
+🧠 *Тип:* ${escapeMarkdown(body.type)}
+
+💻 *Браузер:* ${escapeMarkdown(body.browser)}
+🖥️ *ОС:* ${escapeMarkdown(body.os)}
+📱 *Экран:* ${escapeMarkdown(body.screen)}
+🌎 *Язык:* ${escapeMarkdown(body.lang)}
+
+🕓 *Дата:* ${escapeMarkdown(new Date().toLocaleString("ru-RU"))}`;
+// ━━━━━━━━━━━━━━━━━━
+// \`\`\`
+// ${escapeMarkdown(body.stack || "Без стека")}
+// \`\`\`
+
     await axios.post(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
       chat_id: BOT_USER,
       text,

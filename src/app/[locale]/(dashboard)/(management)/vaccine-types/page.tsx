@@ -6,7 +6,7 @@ import { useI18n } from "@/shared/hooks/use-i18n";
 import { useCrud } from "@/shared/hooks/use-crud";
 import { Modal } from "@/shared/components/elements/modal";
 import { DataTable } from "@/shared/components/data-table";
-import { createVaccineTypeColums } from "@/entities/vaccine-types";
+import { createVaccineTypeColumns } from "@/entities/vaccine-types";
 import { VaccineTypeForm, VaccineTypeSchema } from "@/features/vaccine-types";
 import { useGetVaccineTypes } from "@/entities/vaccine-types/services/vaccine-type-queries";
 import { useCreateVaccineType, useDeleteVaccineType, useUpdateVaccineType } from "@/entities/vaccine-types/services/vaccine-type-mutations";
@@ -20,7 +20,7 @@ export default function VaccineTypes() {
     removeMutation: useDeleteVaccineType,
   });
 
-  const columns = useMemo(() => createVaccineTypeColums(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
+  const columns = useMemo(() => createVaccineTypeColumns(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
 
   return (
     <div>

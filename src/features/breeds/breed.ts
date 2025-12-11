@@ -1,14 +1,14 @@
 import { z } from "zod";
 
 export const breedValues = {
-  parentId: null,
-  name: "",
+  name_uz: "",
+  name_ru: "",
 };
 
 export const createBreedSchema = (t: any) =>
   z.object({
-    name: z.string().min(1, t("required.breedNameRequired")),
-    parentId: z.coerce.number().nullable(),
+    name_uz: z.string().min(1, t("required.breedNameRequired")),
+    name_ru: z.string().min(1, t("required.breedNameRequired")),
   });
 
 export type BreedSchema = z.infer<ReturnType<typeof createBreedSchema>>;

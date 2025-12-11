@@ -1,11 +1,10 @@
 import { useForm } from "react-hook-form";
 import { useI18n } from "@/shared/hooks/use-i18n";
-import { Input } from "@/shared/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/shared/components/ui/button";
+import { Textarea } from "@/shared/components/ui/textarea";
 import { RegionSchema, createRegionSchema, regionValues } from "./regions";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
-import { Textarea } from "@/shared/components/ui/textarea";
 
 interface RegionFormProps {
   defaultValues?: RegionSchema;
@@ -24,11 +23,24 @@ export function RegionForm({ onSubmit, defaultValues }: RegionFormProps) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 h-full">
         <FormField
-          name="name"
+          name="name_ru"
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("form.regionName")}</FormLabel>
+              <FormLabel>{t("form.regionName")} RU</FormLabel>
+              <FormControl>
+                <Textarea placeholder={t("form.regionName")} {...field} rows={2} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="name_uz"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("form.regionName")} UZ</FormLabel>
               <FormControl>
                 <Textarea placeholder={t("form.regionName")} {...field} rows={2} />
               </FormControl>

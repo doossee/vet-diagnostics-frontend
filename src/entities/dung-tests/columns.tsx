@@ -1,57 +1,49 @@
 import { Edit, Trash } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
-import { DungTest, LanguageLocales } from "@/shared/types";
-import { SMELL_TYPES, CLARITY_TYPES, DUNG_FORMS } from "@/shared/constants";
+import { FecesExam, LanguageLocales } from "@/shared/types";
 
-export const createDungTestColumns = (handleEditItem: (item: DungTest) => void, handleDelete: (id: number) => void, t: any, locale: LanguageLocales) => [
+export const createDungTestColumns = (handleEditItem: (item: FecesExam) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
   {
     title: t("form.animal"),
     key: "animal",
-    render(item: DungTest) {
-      return item.animal?.nameOrCode;
+    render(item: FecesExam) {
+      return item.animal?.animalNameCode;
     },
   },
-  { title: t("inspections.consistency"), key: "consistency" },
-  { title: t("inspections.worms"), key: "worms" },
+  { title: "Количество", key: "amount" },
+  { title: "Количество непереваренной пищи", key: "undigestedFood" },
   {
     title: t("inspections.smell"),
     key: "smell",
-    render(item: DungTest) {
-      return SMELL_TYPES[item.smell][locale];
+    render(item: FecesExam) {
+      return item.fecesSmell?.[`name_${locale}`] ?? "-";
     },
   },
   {
     title: t("inspections.clarity"),
     key: "clarity",
-    render(item: DungTest) {
-      return CLARITY_TYPES[item.clarity][locale];
+    render(item: FecesExam) {
+      return item.fecesConsistency?.[`name_${locale}`] ?? "-";
     },
   },
   {
     title: t("form.color"),
     key: "color",
-    render(item: DungTest) {
-      return item.color?.name;
+    render(item: FecesExam) {
+      return item.fecesColor?.[`name_${locale}`] ?? "-";
     },
   },
   {
     title: t("inspections.form"),
     key: "form",
-    render(item: DungTest) {
-      return DUNG_FORMS[item.form]?.[locale];
-    },
-  },
-  {
-    title: t("form.disease"),
-    key: "disease",
-    render(item: DungTest) {
-      return `${new Date(item.disease?.startTime!).toLocaleDateString()}-${new Date(item.disease?.endTime!).toLocaleDateString()}`;
+    render(item: FecesExam) {
+      return item.fecesForm?.[`name_${locale}`] ?? "-";
     },
   },
   {
     title: t("table.actions"),
     key: "actions",
-    render(item: DungTest) {
+    render(item: FecesExam) {
       return (
         <div className="flex gap-2 items-center flex-wrap md:flex-nowrap justify-end md:justify-start">
           <Button onClick={() => handleEditItem(item)} size="sm" className="text-xs!">

@@ -2,20 +2,9 @@ import { Color } from "@/shared/types";
 import { Button } from "@/shared/components/ui/button";
 import { Edit, Trash } from "lucide-react";
 
-export const createAnimalColorColumns = (handleEditItem: (item: Color) => void, handleDelete: (id: number) => void, t: any) => [
-  { title: t("management.colorName"), key: "name" },
-  {
-    title: t("management.colorPick"),
-    key: "hex",
-    render(item: Color) {
-      return (
-        <div className="flex gap-2 items-center">
-          <div className="w-4 h-4 rounded-full border" style={{ background: item.hex ?? "#000" }}></div>
-          {item.hex}
-        </div>
-      );
-    },
-  },
+export const createAnimalColorColumns = (handleEditItem: (item: Color) => void, handleDelete: (id: string) => void, t: any) => [
+  { title: t("management.colorName")+" RU", key: "name_ru" },
+  { title: t("management.colorName")+" UZ", key: "name_uz" },
   {
     title: t("table.actions"),
     key: "actions",

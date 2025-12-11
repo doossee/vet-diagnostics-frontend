@@ -5,7 +5,6 @@ import type { UrineColor } from "@/shared/types";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { useCrud } from "@/shared/hooks/use-crud";
 import { DataTable } from "@/shared/components/data-table";
-import { Drawer } from "@/shared/components/elements/drawer";
 import { createUrineColorColumns } from "@/entities/urine-colors";
 import { UrineColorForm, UrineColorSchema } from "@/features/urine-colors";
 import { useGetUrineColors } from "@/entities/urine-colors/services/queries";

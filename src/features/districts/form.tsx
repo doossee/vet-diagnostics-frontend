@@ -1,7 +1,5 @@
-import { Region } from "@/shared/types";
 import { useForm } from "react-hook-form";
 import { useI18n } from "@/shared/hooks/use-i18n";
-import { Input } from "@/shared/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/shared/components/ui/button";
 import { DistrictSchema, createDistrictSchema, districtValues } from "./districts";
@@ -26,11 +24,25 @@ export function DistrictForm({ onSubmit, defaultValues }: DistrictFormProps) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 h-full">
         <FormField
-          name="name"
+          name="name_ru"
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("form.districtName")}</FormLabel>
+              <FormLabel>{t("form.districtName")} RU</FormLabel>
+              <FormControl>
+                <Textarea placeholder={t("form.districtName")} {...field} rows={2} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          name="name_uz"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("form.districtName")} UZ</FormLabel>
               <FormControl>
                 <Textarea placeholder={t("form.districtName")} {...field} rows={2} />
               </FormControl>

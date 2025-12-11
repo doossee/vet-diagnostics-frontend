@@ -1,13 +1,14 @@
-import { diseaseTypesControllerFindAll } from "@/shared/api";
-import { DiseaseType, PaginatedEntity } from "@/shared/types";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+
+import { DiseaseCategory, PaginatedEntity } from "@/shared/types";
 import { paramsToQueryKeys } from "@/shared/helpers/params-to-keys";
 import { DiseaseTypesQueryKeys } from "../utils/constants/query-keys";
+import { diseaseCategoryControllerFindAll } from "@/shared/api/api-new";
 
 export function useGetDiseaseTypes(params: Record<string, unknown>, enabled?: boolean) {
-  return useQuery<PaginatedEntity<DiseaseType>, Error>({
+  return useQuery<PaginatedEntity<DiseaseCategory>, Error>({
     queryKey: [DiseaseTypesQueryKeys.DISEASE_TYPES, ...paramsToQueryKeys(params)],
-    queryFn: async () => diseaseTypesControllerFindAll(params) as Promise<PaginatedEntity<DiseaseType>>,
+    queryFn: async () => diseaseCategoryControllerFindAll(params) as Promise<PaginatedEntity<DiseaseCategory>>,
     enabled,
   });
 }
@@ -15,7 +16,7 @@ export function useGetDiseaseTypes(params: Record<string, unknown>, enabled?: bo
 export function useGetDiseaseTypesInfinite(search?: string) {
   return useInfiniteQuery({
     queryKey: [DiseaseTypesQueryKeys.DISEASE_TYPES_SELECT, search],
-    queryFn: (params) => diseaseTypesControllerFindAll(params.pageParam) as Promise<PaginatedEntity<DiseaseType>>,
+    queryFn: (params) => diseaseCategoryControllerFindAll(params.pageParam) as Promise<PaginatedEntity<DiseaseCategory>>,
     initialPageParam: { page: 1, perPage: 20, ...(search && { search }) },
     getNextPageParam: (lastPage) => {
       const nextPage = (lastPage?.meta?.currentPage ?? 0) + 1;

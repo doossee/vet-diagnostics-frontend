@@ -3,12 +3,9 @@ import { useI18n } from "@/shared/hooks/use-i18n";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/shared/components/ui/button";
 import { Textarea } from "@/shared/components/ui/textarea";
-import { DatePicker } from "@/shared/components/date-picker";
 import { DiseaseSchema, createDiseaseSchema, diseaseValues } from "./disease.model";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 import { DiseaseTypeSelect } from "../disease-types/components/disease-type-select";
-import { AnimalTypeSelect } from "../animal-types/components/animal-type-select";
-import { AnimalSelect } from "../animals/components/animal-select";
 
 interface DiseaseFormProps {
   defaultValues?: DiseaseSchema;
@@ -20,97 +17,46 @@ export function DiseaseForm({ onSubmit, defaultValues }: DiseaseFormProps) {
 
   const form = useForm<DiseaseSchema>({
     resolver: zodResolver(createDiseaseSchema(t)),
-    defaultValues: defaultValues
-      ? {
-          ...defaultValues,
-          endTime: new Date(defaultValues.endTime),
-          startTime: new Date(defaultValues.startTime),
-        }
-      : (diseaseValues as any),
+    defaultValues: defaultValues ? defaultValues : diseaseValues,
   });
-
-  const animalTypeId = form.watch("animalTypeId" as any);
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 h-full">
         <FormField
-          name="startTime"
+          name="name_ru"
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("form.startDate")}</FormLabel>
+              <FormLabel>Name RU</FormLabel>
               <FormControl>
-                <DatePicker field={field} />
+                <Textarea rows={3} className="resize-none" placeholder={t("inspections.conclusion")} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
         <FormField
-          name="endTime"
+          name="name_uz"
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("form.endDate")}</FormLabel>
+              <FormLabel>Name Uz</FormLabel>
               <FormControl>
-                <DatePicker field={field} />
+                <Textarea rows={3} className="resize-none" placeholder={t("inspections.conclusion")} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-
         <FormField
-          name="typeId"
+          name="diseaseCategoryId"
           control={form.control}
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t("form.diseaseType")}</FormLabel>
               <FormControl>
                 <DiseaseTypeSelect placeholder={t("form.diseaseType")} value={field.value} onChange={field.onChange} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          name={"animalTypeId" as any}
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("animals.animalType")}</FormLabel>
-              <FormControl>
-                <AnimalTypeSelect placeholder={t("animals.animalType")} value={field.value} onChange={field.onChange} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          name="animalId"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("form.animal")}</FormLabel>
-              <FormControl>
-                <AnimalSelect placeholder={t("form.animal")} value={field.value} onChange={field.onChange} typeId={animalTypeId} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          name="conclusion"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("inspections.conclusion")}</FormLabel>
-              <FormControl>
-                <Textarea rows={6} className="resize-none" placeholder={t("inspections.conclusion")} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

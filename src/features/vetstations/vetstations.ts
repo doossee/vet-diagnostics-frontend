@@ -1,16 +1,18 @@
 import { z } from "zod";
 
 export const vetStationValues = {
-  name: "",
+  name_ru: "",
+  name_uz: "",
   address: "",
   districtId: null,
 };
 
 export const createVetStationSchema = (t: any) =>
   z.object({
-    name: z.string().min(1, t("required.vetStationNameRequired")),
+    name_ru: z.string().min(1, t("required.vetStationNameRequired")),
+    name_uz: z.string().min(1, t("required.vetStationNameRequired")),
     address: z.string().min(1, t("required.vetStationAddressRequired")),
-    districtId: z.number({
+    districtId: z.string({
       required_error: t("required.districtRequired"),
       invalid_type_error: t("required.districtRequired"),
     }),

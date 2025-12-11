@@ -19,7 +19,7 @@ export function AppBreadcrumb() {
   const rootLinks = useCallback(() => {
     if (!userData) return [];
 
-    return navLinksVariant[userData.userRole].map((i) => i.items ? i.items : i).flat(1);
+    return navLinksVariant[userData.role].map((i) => i.items ? i.items : i).flat(1);
   }, [userData]);
 
   const links = useCallback(() => {

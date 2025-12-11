@@ -4,16 +4,16 @@ import { useEffect } from "react";
 import { cn } from "@/shared/lib/utils";
 import { useForm } from "react-hook-form";
 import { userValues } from "../user.model";
-import { GENDERS } from "@/shared/constants";
+// import { GENDERS } from "@/shared/constants";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { Input } from "@/shared/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/shared/components/ui/button";
 import { Separator } from "@/shared/components/ui/separator";
-import { DatePicker } from "@/shared/components/date-picker";
+// import { DatePicker } from "@/shared/components/date-picker";
 import { ProfileSchema, createProfileSchema } from "./profile.model";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
+// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
 
 interface UserFormProps {
   loading: boolean;
@@ -24,18 +24,21 @@ interface UserFormProps {
 function mergeDefaultValues(profile: Partial<ProfileSchema> | undefined): ProfileSchema {
   return {
     phone: profile?.phone ?? userValues.phone,
-    gender: profile?.gender ?? userValues.gender,
-    address: profile?.address ?? userValues.address,
+    // gender: profile?.gender ?? userValues.gender,
+    // address: profile?.address ?? userValues.address,
+    email: profile?.email ?? userValues.email,
+    username: profile?.username ?? userValues.username,
     lastName: profile?.lastName ?? userValues.lastName,
-    password: profile?.password ?? userValues.password,
+    // password: profile?.password ?? userValues.password,
     firstName: profile?.firstName ?? userValues.firstName,
-    middleName: profile?.middleName ?? userValues.middleName,
-    birthDate: profile?.birthDate ? new Date(profile.birthDate) : (userValues.birthDate as any),
+    password: "",
+    // middleName: profile?.middleName ?? userValues.middleName,
+    // birthDate: profile?.birthDate ? new Date(profile.birthDate) : (userValues.birthDate as any),
   };
 }
 
 export function ProfileForm({ onSubmit, loading, defaultValues }: UserFormProps) {
-  const { t, locale } = useI18n();
+  const { t } = useI18n();
 
   const form = useForm<ProfileSchema>({
     resolver: zodResolver(createProfileSchema(t)),
@@ -77,7 +80,35 @@ export function ProfileForm({ onSubmit, loading, defaultValues }: UserFormProps)
             </FormItem>
           )}
         />
+
         <FormField
+          name="email"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{"Email"}</FormLabel>
+              <FormControl>
+                <Input placeholder={"Email"} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="username"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{"Username"}</FormLabel>
+              <FormControl>
+                <Input placeholder={"Username"} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* <FormField
           name="middleName"
           control={form.control}
           render={({ field }) => (
@@ -102,7 +133,8 @@ export function ProfileForm({ onSubmit, loading, defaultValues }: UserFormProps)
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
+
         <FormField
           name="phone"
           control={form.control}
@@ -115,7 +147,8 @@ export function ProfileForm({ onSubmit, loading, defaultValues }: UserFormProps)
             </FormItem>
           )}
         />
-        <FormField
+
+        {/* <FormField
           name="gender"
           control={form.control}
           render={({ field }) => (
@@ -151,7 +184,7 @@ export function ProfileForm({ onSubmit, loading, defaultValues }: UserFormProps)
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
 
         <Separator className="col-span-1 md:col-span-2" />
         <FormField

@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { usersControllerFindOne } from "@/shared/api";
+import { usersControllerGetMe } from "@/shared/api/api-new";
 import { AuthQueryKeys } from "../utls/constants/query-keys";
 
-export function useGetProfile(id: number) {
+export function useGetProfile() {
   return useQuery({
-    queryKey: [AuthQueryKeys.PROFILE, id],
-    queryFn: async () => usersControllerFindOne(id),
+    queryKey: [AuthQueryKeys.PROFILE],
+    queryFn: async () => usersControllerGetMe(),
   })
 }

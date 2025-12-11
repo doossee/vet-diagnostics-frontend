@@ -357,6 +357,149 @@ export type NavLink = {
 }
 
 export const navLinksVariant: Record<UserRole, NavLink[]> = {
+  SUPER_ADMIN: [
+    {
+      title: "nav.management",
+      icon: FolderCog,
+      items: [
+        {
+          title: "nav.animalTypes",
+          icon: PawPrint,
+          url: "/animal-types",
+        },
+        {
+          title: "nav.breeds",
+          icon: Ham,
+          url: "/breeds",
+        },
+        {
+          title: "nav.prophylaxis",
+          icon: Cross,
+          url: "/prophylaxis",
+        },
+        {
+          title: "nav.diseaseTypes",
+          icon: Activity,
+          url: "/disease-types",
+        },
+
+        {
+          title: "nav.animalColors",
+          icon: Palette,
+          url: "/animal-colors",
+        },
+        {
+          title: "nav.urineColors",
+          icon: Palette,
+          url: "/urine-colors",
+        },
+        {
+          title: "nav.dungColors",
+          icon: Palette,
+          url: "/dung-colors",
+        },
+
+        {
+          title: "nav.regions",
+          icon: Map,
+          url: "/regions",
+        },
+        {
+          title: "nav.districts",
+          icon: MapPinned,
+          url: "/districts",
+        },
+        {
+          title: "nav.vetstations",
+          icon: MapPin,
+          url: "/vetstations",
+        },
+
+        {
+          title: "nav.eyeLid",
+          icon: ScanEye,
+          url: "/eye-lid",
+        },
+        {
+          title: "nav.leatherCover",
+          icon: Disc,
+          url: "/leather-cover",
+        },
+      ],
+    },
+    {
+      title: "nav.users",
+      icon: Users,
+      items: [
+        {
+          title: "nav.veterinarians",
+          icon: Users,
+          url: "/veterinarians",
+        },
+        {
+          title: "nav.farmers",
+          icon: Users,
+          url: "/farmers",
+        },
+        {
+          title: "nav.profile",
+          icon: UserCog,
+          url: "/profile",
+        },
+      ],
+    },
+    {
+      title: "nav.animals",
+      icon: PawPrint,
+      url: "/animals",
+    },
+    {
+      title: "nav.inspections",
+      icon: HeartPulse,
+      items: [
+        {
+          title: "nav.diseases",
+          icon: ScanHeart,
+          url: "/diseases",
+        },
+        {
+          title: "nav.urineTests",
+          icon: FlaskConical,
+          url: "/urine-tests",
+        },
+        {
+          title: "nav.dungTests",
+          icon: Shovel,
+          url: "/dung-tests",
+        },
+        {
+          title: "nav.vaccines",
+          icon: PillBottle,
+          url: "/vaccines",
+        },
+        {
+          title: "nav.generalInspections",
+          icon: HeartPulse,
+          url: "/general-inspections",
+        },
+        {
+          title: "nav.inspections",
+          icon: Activity,
+          url: "/inspections",
+        },
+        {
+          title: "nav.generalBloodTests",
+          icon: Syringe,
+          url: "/general-blood-tests",
+        },
+        {
+          title: "nav.bloodSerumTests",
+          icon: FlaskRound,
+          url: "/blood-serum-tests",
+        },
+      ],
+    },
+  ],
   ADMIN: [
     {
       title: "nav.management",

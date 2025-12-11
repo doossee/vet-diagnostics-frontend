@@ -1,3 +1,4 @@
 export const AnimalTypesQueryKeys = {
   ANIMAL_TYPES: "ANIMAL_TYPES",
+  ANIMAL_TYPES_SELECT: "ANIMAL_TYPES_SELECT",
 };

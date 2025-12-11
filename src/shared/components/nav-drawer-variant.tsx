@@ -31,7 +31,7 @@ export function AppSidebar() {
   const { toggleSidebar, isMobile } = useSidebar();
 
   const links = useCallback(() => {
-    return navLinksVariant?.[userData?.userRole!] || []
+    return navLinksVariant?.[userData?.role!] || []
   }, [userData]);
 
   const isOpen = useCallback(

@@ -43,7 +43,7 @@ export function useCrud<T extends { id?: number | string }, CreateValues, Update
     }
   }
 
-  async function handleDelete(id: number) {
+  async function handleDelete(id: number | string) {
     try {
       if (!confirm(ALERT_MESSAGES.DELETE_CONFIRM[locale])) return;
       await remove.mutateAsync(id);

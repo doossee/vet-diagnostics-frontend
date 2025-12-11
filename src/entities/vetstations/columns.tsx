@@ -2,14 +2,15 @@ import { Edit, Trash } from "lucide-react";
 import { VetStation } from "@/shared/types";
 import { Button } from "@/shared/components/ui/button";
 
-export const createVetStationColumns = (handleEditItem: (item: VetStation) => void, handleDelete: (id: number) => void, t: any) => [
-  { title: t("regions.vetStationName"), key: "name" },
+export const createVetStationColumns = (handleEditItem: (item: VetStation) => void, handleDelete: (id: string) => void, t: any) => [
+  { title: t("regions.vetStationName")+" RU", key: "name_ru" },
+  { title: t("regions.vetStationName")+" UZ", key: "name_uz" },
   { title: t("regions.vetStationAddress"), key: "address" },
   {
     title: t("form.districtName"),
     key: "district",
     render(item: VetStation) {
-      return item?.district?.name;
+      return item?.district?.name_uz;
     },
   },
   {

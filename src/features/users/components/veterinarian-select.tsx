@@ -9,9 +9,10 @@ interface Props {
   disabled?: boolean;
   placeholder?: string;
   onRemove?: () => void;
-  districtId?: number | null;
+  districtId?: string | null;
   onChange?: (value: unknown) => void;
 }
+
 // TODO: fix custom server filter
 export function VeterinarianSelect({ value, placeholder, disabled, districtId, onChange, onRemove }: Props) {
   return (

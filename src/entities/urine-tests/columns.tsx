@@ -1,49 +1,81 @@
 import { Edit, Trash } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
-import { LanguageLocales, UrineTest } from "@/shared/types";
-import { SMELL_TYPES, CLARITY_TYPES } from "@/shared/constants";
+import { LanguageLocales, UrineExam } from "@/shared/types";
+import { URINE_ANALYSIS_TYPES } from "./utils/constants/urine-analysis-types";
 
-export const createUrineTestColumns = (handleEditItem: (item: UrineTest) => void, handleDelete: (id: number) => void, t: any, locale: LanguageLocales) => [
+export const createUrineTestColumns = (handleEditItem: (item: UrineExam) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
   {
-    title: t("form.animal"),
+    title: "Тип анализа",
+    key: "analysisType",
+    render(item: UrineExam) {
+      return URINE_ANALYSIS_TYPES?.[item.analysisType]?.[locale];
+    },
+  },
+  {
+    title: "Животное",
     key: "animal",
-    render(item: UrineTest) {
-      return item.animal?.nameOrCode;
-    },
-  },
-  { title: t("inspections.consistency"), key: "consistency" },
-  {
-    title: t("inspections.smell"),
-    key: "smell",
-    render(item: UrineTest) {
-      return SMELL_TYPES[item.smell][locale];
+    render(item: UrineExam) {
+      return item.animal?.animalNameCode;
     },
   },
   {
-    title: t("inspections.clarity"),
-    key: "clarity",
-    render(item: UrineTest) {
-      return CLARITY_TYPES[item.clarity][locale];
+    title: "Цвет мочи",
+    key: "urineColorId",
+    render(item: UrineExam) {
+      return item.urineColor?.name_ru ?? '-';
+    },
+  },
+  
+  // Макроскопическое исследование
+  { title: "Количество", key: "amount" },
+  {
+    title: "Прозрачность",
+    key: "urineClarityId",
+    render(item: UrineExam) {
+      return item.urineClarity?.name_ru ?? '-';
     },
   },
   {
-    title: t("form.color"),
-    key: "color",
-    render(item: UrineTest) {
-      return item.color?.name;
+    title: "Консистенция",
+    key: "urineConsistencyId",
+    render(item: UrineExam) {
+      return item.urineConsistency?.name_ru ?? '-';
     },
   },
   {
-    title: t("form.disease"),
-    key: "disease",
-    render(item: UrineTest) {
-      return `${new Date(item.disease?.startTime!).toLocaleDateString()}-${new Date(item.disease?.endTime!).toLocaleDateString()}`;
+    title: "Запах",
+    key: "urineSmellId",
+    render(item: UrineExam) {
+      return item.urineSmell?.name_ru ?? '-';
+    },
+  },
+
+  // Лабораторное исследование
+  { title: "Среда (pH)", key: "ph" },
+  { title: "Кетоновые тела (ацетон)", key: "acetone" },
+  { title: "Белок", key: "protein" },
+  { title: "Билирубин", key: "bilirubin" },
+  { title: "Уробилиноген", key: "urobilinogen" },
+  { title: "Сахар", key: "sugar" },
+
+  // Микроскопическое исследование
+  { title: "Лейкоциты", key: "leukocytes" },
+  { title: "Эпителий", key: "epithelium" },
+  { title: "Микробные тела", key: "microbialBodies" },
+  { title: "Эритроциты", key: "erythrocytes" },
+  { title: "Кристаллы солей", key: "saltCrystals" },
+
+  {
+    title: "Дата",
+    key: "createdAt",
+    render(item: UrineExam) {
+      return new Date(item.createdAt!).toLocaleDateString();
     },
   },
   {
     title: t("table.actions"),
     key: "actions",
-    render(item: UrineTest) {
+    render(item: UrineExam) {
       return (
         <div className="flex gap-2 items-center flex-wrap md:flex-nowrap justify-end md:justify-start">
           <Button onClick={() => handleEditItem(item)} size="sm" className="text-xs!">

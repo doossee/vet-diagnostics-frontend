@@ -23,11 +23,11 @@ export function AnimalColorForm({ onSubmit, defaultValues }: AnimalColorFormProp
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 h-full">
         <FormField
-          name="name"
+          name="name_ru"
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("management.colorName")}</FormLabel>
+              <FormLabel>{t("management.colorName")} RU</FormLabel>
               <FormControl>
                 <Input placeholder={t("management.colorName")} {...field} />
               </FormControl>
@@ -36,15 +36,13 @@ export function AnimalColorForm({ onSubmit, defaultValues }: AnimalColorFormProp
           )}
         />
         <FormField
-          name="hex"
+          name="name_uz"
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>
-                {t("management.colorPick")} {field.value}
-              </FormLabel>
+              <FormLabel>{t("management.colorName")} UZ</FormLabel>
               <FormControl>
-                <Input type="color" placeholder={t("management.colorPick")} {...field} />
+                <Input placeholder={t("management.colorName")} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

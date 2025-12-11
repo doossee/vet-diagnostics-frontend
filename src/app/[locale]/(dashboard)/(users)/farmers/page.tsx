@@ -13,7 +13,7 @@ import { useGetFarmers } from "@/entities/users/services/queries";
 import { UsersQueryParamKeys } from "@/entities/users/utils/constants/users-query-param-keys";
 import { useCreateFarmer, useDeleteFarmer, useUpdateFarmer } from "@/entities/users/services/mutations";
 
-export default function Veterinarians() {
+export default function Farmers() {
   const { t, locale } = useI18n();
   const { userData } = useAuthData();
 
@@ -21,12 +21,15 @@ export default function Veterinarians() {
     createMutation: useCreateFarmer,
     updateMutation: useUpdateFarmer,
     removeMutation: useDeleteFarmer,
-    extraOnCreate: (values) => {
-      if (userData?.userRole === "VETERINARIAN") values.veterinarianId = userData?.userId!;
-      return values;
+    // extraOnCreate: (values) => {
+    //   if (userData?.role === "VETERINARIAN") values.veterinarianId = userData?.userId!;
+    //   return values;
+    // },
+    extraOnCreate(values) {
+      return { ...values, role: "FARMER" }
     },
     extraOnUpdate: (values) => {
-      const { password, veterinarianId, ...others } = values;
+      const { password, ...others } = values;
       if (password?.trim()) Object.assign(others, { password });
       return others;
     },
@@ -53,7 +56,7 @@ export default function Veterinarians() {
         <UserForm
           onSubmit={onSubmit}
           itemId={editedItem?.id}
-          showVeterinarians={userData?.userRole === "ADMIN"}
+          showVeterinarians={userData?.role === "ADMIN"}
           defaultValues={editedItem ? editedItem : (undefined as any)} />
       </Modal>
     </div>

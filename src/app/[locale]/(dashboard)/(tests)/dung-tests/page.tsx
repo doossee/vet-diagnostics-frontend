@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import type { DungTest } from "@/shared/types";
+import type { FecesExam } from "@/shared/types";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { useCrud } from "@/shared/hooks/use-crud";
 import { DataTable } from "@/shared/components/data-table";
@@ -18,7 +18,7 @@ export default function DungTests() {
   const newAnimal = get("new");
   const animalId = get("animalId", true);
 
-  const { dialog, createButton, editedItem, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<DungTest, DungTestSchema, DungTestSchema>({
+  const { dialog, createButton, editedItem, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<FecesExam, DungTestSchema, DungTestSchema>({
     dialogValue: !!newAnimal,
     createMutation: useCreateDungTest,
     removeMutation: useDeleteDungTest,
@@ -30,10 +30,19 @@ export default function DungTests() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetDungTests} topSlot={createButton(t("inspections.createDungTest"))} />
+      <DataTable
+        columns={columns}
+        queryFunction={useGetDungTests}
+        topSlot={createButton(t("inspections.createDungTest"))} />
 
-      <Modal open={dialog} onClose={handleClose} title={t(editedItem ? "inspections.editDungTest" : "inspections.createDungTest")}>
-        <DungTestForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : ((animalId ? { ...dungTestValues, animalId } : undefined) as any)} />
+      <Modal
+        open={dialog}
+        onClose={handleClose}
+        title={t(editedItem ? "inspections.editDungTest" : "inspections.createDungTest")}>
+        <DungTestForm
+          onSubmit={onSubmit}
+          defaultValues={editedItem ?? ((animalId ? { ...dungTestValues, animalId } : undefined) as any)}
+        />
       </Modal>
     </div>
   );

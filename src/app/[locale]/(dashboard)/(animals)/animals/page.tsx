@@ -27,7 +27,7 @@ export default function Animals() {
 
     extraOnUpdate: ({ farmerId, ...others }) => others,
     extraOnCreate: (values) => {
-      if (userData?.userRole === "FARMER") Object.assign(values, { farmerId: userData?.userId! });
+      if (userData?.role === "FARMER") Object.assign(values, { farmerId: userData?.userId! });
       return values;
     },
   });
@@ -51,7 +51,7 @@ export default function Animals() {
       />
 
       <Modal open={dialog} onClose={handleClose} widthClassName="max-w-[650px]!" title={t(editedItem ? "animals.editAnimal" : "animals.createAnimal")}>
-        <AnimalForm onSubmit={onSubmit} showFarmer={userData?.userRole !== "FARMER"} defaultValues={editedItem ? editedItem : undefined} />
+        <AnimalForm onSubmit={onSubmit} showFarmer={userData?.role !== "FARMER"} defaultValues={editedItem ? editedItem : undefined} />
       </Modal>
     </div>
   );

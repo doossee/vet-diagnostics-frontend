@@ -3360,7 +3360,7 @@ export const eyelidsControllerRemove = (id: number | string, options?: SecondPar
   return createInstance<EyelidEntity>({ url: `/eyelids/${id}`, method: "DELETE" }, options);
 };
 
-export const vaccineTypesControllerCreate = (createVaccineTypeDto: BodyType<CreateVaccineTypeDto>, options?: SecondParameter<typeof createInstance>) => {
+export const vaccineTypesControllerCreate = (createVaccineTypeDto: BodyType<any>, options?: SecondParameter<typeof createInstance>) => {
   return createInstance<VaccineTypeEntity>(
     {
       url: `/vaccine-types`,
@@ -3380,7 +3380,7 @@ export const vaccineTypesControllerFindOne = (id: number, options?: SecondParame
   return createInstance<VaccineTypeEntity>({ url: `/vaccine-types/${id}`, method: "GET" }, options);
 };
 
-export const vaccineTypesControllerUpdate = (id: number, updateVaccineTypeDto: BodyType<UpdateVaccineTypeDto>, options?: SecondParameter<typeof createInstance>) => {
+export const vaccineTypesControllerUpdate = (id: number, updateVaccineTypeDto: BodyType<any>, options?: SecondParameter<typeof createInstance>) => {
   return createInstance<VaccineTypeEntity>(
     {
       url: `/vaccine-types/${id}`,

@@ -24,11 +24,11 @@ export function BreedForm({ onSubmit, defaultValues }: BreedFormProps) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 h-full">
         <FormField
-          name="name"
+          name="name_ru"
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("management.breedName")}</FormLabel>
+              <FormLabel>{t("management.breedName")} RU</FormLabel>
               <FormControl>
                 <Textarea placeholder={t("management.breedName")} {...field} rows={3} />
               </FormControl>
@@ -36,15 +36,14 @@ export function BreedForm({ onSubmit, defaultValues }: BreedFormProps) {
             </FormItem>
           )}
         />
-
         <FormField
-          name="parentId"
+          name="name_uz"
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("management.breedParent")}</FormLabel>
+              <FormLabel>{t("management.breedName")} UZ</FormLabel>
               <FormControl>
-                <BreedSelect value={field.value} onChange={field.onChange} placeholder={t("management.breedParent")} />
+                <Textarea placeholder={t("management.breedName")} {...field} rows={3} />
               </FormControl>
               <FormMessage />
             </FormItem>

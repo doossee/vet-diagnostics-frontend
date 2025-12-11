@@ -3,13 +3,13 @@ import { District, UpdateBody } from "@/shared/types";
 import { DistrictsQueryKeys } from "../utils/constants/query-keys";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createQueryData, removeQueryData, updateQueryData } from "@/shared/helpers/query-updater";
-import { districtsControllerCreate, districtsControllerRemove, districtsControllerUpdate } from "@/shared/api";
+import { districtControllerCreate, districtControllerDelete, districtControllerUpdate } from "@/shared/api/api-new";
 
 export function useCreateDistrict() {
   const client = useQueryClient();
 
   return useMutation<any, any, DistrictSchema>({
-    mutationFn: districtsControllerCreate,
+    mutationFn: districtControllerCreate,
     onSuccess: (data) => {
       createQueryData<District>(client, [DistrictsQueryKeys.DISTRICTS], data);
       client.invalidateQueries({
@@ -23,7 +23,7 @@ export function useUpdateDistrict() {
   const client = useQueryClient();
 
   return useMutation<any, any, UpdateBody<DistrictSchema>>({
-    mutationFn: async ({ id, body }) => districtsControllerUpdate(+id, body),
+    mutationFn: async ({ id, body }) => districtControllerUpdate(id as string, body),
     onSuccess: (data) => {
       updateQueryData<District>(client, [DistrictsQueryKeys.DISTRICTS], data);
       client.invalidateQueries({
@@ -37,7 +37,7 @@ export function useDeleteDistrict() {
   const client = useQueryClient();
 
   return useMutation<any, any, number | string>({
-    mutationFn: districtsControllerRemove,
+    mutationFn: id => districtControllerDelete(id as string),
     onSuccess: (data) => {
       removeQueryData<District>(client, [DistrictsQueryKeys.DISTRICTS], data.id);
       client.invalidateQueries({

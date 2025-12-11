@@ -27,7 +27,7 @@ export default function Animals() {
     try {
       const { id } = await animalsControllerCreate({
         ...newAnimal,
-        ...(userData?.userRole === "FARMER" ? { farmerId: userData?.userId } : {}),
+        ...(userData?.role === "FARMER" ? { farmerId: userData?.userId } : {}),
       } as any);
 
       await generalInspectionControllerCreate({
@@ -83,7 +83,7 @@ export default function Animals() {
             <CardContent className="space-y-2">
               <AnimalForm
                 onSubmit={submitAnimal}
-                showFarmer={userData?.userRole !== "FARMER"}
+                showFarmer={userData?.role !== "FARMER"}
                 submitRightContent={<span />} />
             </CardContent>
           </Card>

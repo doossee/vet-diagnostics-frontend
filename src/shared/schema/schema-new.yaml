@@ -1,0 +1,7235 @@
+openapi: 3.0.0
+paths:
+  /auth/login:
+    post:
+      description: >-
+        Authenticates users (SUPER_ADMIN, ADMIN, VETERINARIAN, FARMER) with
+        username and password. Returns JWT access and refresh tokens.
+      operationId: AuthController_login
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginDto'
+      responses:
+        '200':
+          description: Successfully authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthEntity'
+        '401':
+          description: Invalid credentials or account disabled
+      summary: User login
+      tags:
+        - auth
+  /auth/refresh:
+    post:
+      description: >-
+        Validates refresh token from Authorization header and issues new access
+        and refresh tokens with token rotation. Old refresh token is
+        automatically replaced. Send refresh token as Bearer token in
+        Authorization header.
+      operationId: AuthController_refresh
+      parameters:
+        - name: authorization
+          required: true
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            Successfully refreshed tokens. New tokens issued, old token
+            replaced.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthEntity'
+        '401':
+          description: Invalid, expired, or revoked refresh token
+      security:
+        - bearer: []
+      summary: Refresh access token
+      tags:
+        - auth
+  /auth/logout:
+    post:
+      description: >-
+        Revokes the current refresh token. Send refresh token as Bearer token in
+        Authorization header.
+      operationId: AuthController_logout
+      parameters:
+        - name: authorization
+          required: true
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully logged out
+      security:
+        - bearer: []
+      summary: Logout (revoke current refresh token)
+      tags:
+        - auth
+  /auth/logout-all:
+    post:
+      description: >-
+        Revokes all refresh tokens for the authenticated user. This logs out the
+        user from all devices. Requires valid access token.
+      operationId: AuthController_logoutAll
+      parameters: []
+      responses:
+        '200':
+          description: Successfully logged out from all devices
+        '401':
+          description: Invalid or expired access token
+      security:
+        - bearer: []
+      summary: Logout from all devices
+      tags:
+        - auth
+  /users:
+    post:
+      description: Creates a new staff user account (ADMIN role). Admin only.
+      operationId: UsersController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserDto'
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserEntity'
+        '400':
+          description: Invalid data or username already exists
+        '403':
+          description: Admin access required
+      security:
+        - bearer: []
+      summary: Create staff user
+      tags:
+        - users
+    get:
+      description: Retrieve paginated list of all users with optional filters. Admin only.
+      operationId: UsersController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        - name: role
+          required: false
+          in: query
+          description: Filter by user role (e.g., ADMIN, USER)
+          schema:
+            type: string
+            enum:
+              - SUPER_ADMIN
+              - ADMIN
+              - VETERINARIAN
+              - FARMER
+        - name: createdDate
+          required: false
+          in: query
+          description: Filter by user creation date in ISO format
+          schema:
+            format: date-time
+            example: '2024-01-01T00:00:00.000Z'
+            type: string
+        - name: byRole
+          required: false
+          in: query
+          description: Sort by role (ASC or DESC)
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        - name: byCreatedDate
+          required: false
+          in: query
+          description: Sort by creation date (ASC or DESC)
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      responses:
+        '200':
+          description: Users retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUsersEntity'
+        '403':
+          description: Admin access required
+      security:
+        - bearer: []
+      summary: List all users
+      tags:
+        - users
+  /users/me:
+    get:
+      description: Retrieve authenticated user profile information.
+      operationId: UsersController_getMe
+      parameters: []
+      responses:
+        '200':
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserEntity'
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      security:
+        - bearer: []
+      summary: Get current user profile
+      tags:
+        - users
+    patch:
+      description: Update authenticated user profile information.
+      operationId: UsersController_updateMe
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserDto'
+      responses:
+        '200':
+          description: Profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserEntity'
+        '400':
+          description: Invalid update data
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      security:
+        - bearer: []
+      summary: Update current user profile
+      tags:
+        - users
+  /users/me/change-password:
+    patch:
+      description: Change password for authenticated user.
+      operationId: UsersController_changeMyPassword
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordDto'
+      responses:
+        '200':
+          description: Password changed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserEntity'
+        '400':
+          description: Invalid old password or new password does not meet requirements
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      security:
+        - bearer: []
+      summary: Change current user password
+      tags:
+        - users
+  /users/{id}:
+    get:
+      description: Retrieve user details by ID. Admin only.
+      operationId: UsersController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserEntity'
+        '401':
+          description: >-
+            Access denied: User is not authenticated. Please log in to access
+            this resource.
+        '403':
+          description: Admin access required
+        '404':
+          description: User not found
+      security:
+        - bearer: []
+      summary: Get user by ID
+      tags:
+        - users
+    patch:
+      description: Update user information by ID. Admin only.
+      operationId: UsersController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserDto'
+      responses:
+        '200':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserEntity'
+        '400':
+          description: Invalid update data
+        '401':
+          description: >-
+            Access denied: User is not authenticated. Please log in to access
+            this resource.
+        '403':
+          description: Admin access required
+        '404':
+          description: User not found
+      security:
+        - bearer: []
+      summary: Update user
+      tags:
+        - users
+    delete:
+      description: Soft delete user by setting deletedAt timestamp. Admin only.
+      operationId: UsersController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserEntity'
+        '401':
+          description: >-
+            Access denied: User is not authenticated. Please log in to access
+            this resource.
+        '403':
+          description: Admin access required
+        '404':
+          description: User not found
+      security:
+        - bearer: []
+      summary: Delete user (soft delete)
+      tags:
+        - users
+  /users/{id}/change-password:
+    patch:
+      description: Change password for any user by ID. Admin only.
+      operationId: UsersController_changePassword
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordDto'
+      responses:
+        '200':
+          description: Password changed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserEntity'
+        '400':
+          description: Invalid password data
+        '401':
+          description: >-
+            Access denied: User is not authenticated. Please log in to access
+            this resource.
+        '403':
+          description: Admin access required
+        '404':
+          description: User not found
+      security:
+        - bearer: []
+      summary: Change user password
+      tags:
+        - users
+  /health:
+    get:
+      operationId: HealthController_check
+      parameters: []
+      responses:
+        '200':
+          description: Application is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  timestamp:
+                    type: string
+                    example: '2024-01-01T00:00:00.000Z'
+                  uptime:
+                    type: number
+                    example: 123.456
+      summary: Health check endpoint
+      tags:
+        - health
+  /blood-exams:
+    post:
+      description: Creates a new blood exam.
+      operationId: BloodExamController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBloodExamDto'
+      responses:
+        '201':
+          description: Blood exam created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BloodExamEntity'
+        '400':
+          description: Invalid data
+      summary: Create blood exam
+      tags:
+        - blood-exams
+    get:
+      description: Retrieve paginated list of blood exams.
+      operationId: BloodExamController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      responses:
+        '200':
+          description: Blood exams retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBloodExamEntity'
+      summary: List blood exams
+      tags:
+        - blood-exams
+  /blood-exams/{id}:
+    get:
+      description: Retrieve blood exam details.
+      operationId: BloodExamController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Blood exam retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BloodExamEntity'
+        '404':
+          description: Blood exam not found
+      summary: Get blood exam by ID
+      tags:
+        - blood-exams
+    patch:
+      description: Update blood exam information by ID.
+      operationId: BloodExamController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateBloodExamDto'
+      responses:
+        '200':
+          description: Blood exam updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BloodExamEntity'
+        '400':
+          description: Invalid update data
+        '404':
+          description: Blood exam not found
+      summary: Update blood exam
+      tags:
+        - blood-exams
+    delete:
+      description: Delete blood exam by ID.
+      operationId: BloodExamController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Blood exam deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BloodExamEntity'
+        '404':
+          description: Blood exam not found
+      summary: Delete blood exam
+      tags:
+        - blood-exams
+  /clinical-exams:
+    post:
+      description: Creates a new clinical exam.
+      operationId: ClinicalExamController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateClinicalExamDto'
+      responses:
+        '201':
+          description: Clinical exam created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClinicalExamEntity'
+        '400':
+          description: Invalid data
+      summary: Create clinical exam
+      tags:
+        - clinical-exams
+    get:
+      description: Retrieve paginated list of clinical exams.
+      operationId: ClinicalExamController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      responses:
+        '200':
+          description: Clinical exams retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedClinicalExamEntity'
+      summary: List clinical exams
+      tags:
+        - clinical-exams
+  /clinical-exams/{id}:
+    get:
+      description: Retrieve clinical exam details.
+      operationId: ClinicalExamController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Clinical exam retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClinicalExamEntity'
+        '404':
+          description: Clinical exam not found
+      summary: Get clinical exam by ID
+      tags:
+        - clinical-exams
+    patch:
+      description: Update clinical exam information by ID.
+      operationId: ClinicalExamController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateClinicalExamDto'
+      responses:
+        '200':
+          description: Clinical exam updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClinicalExamEntity'
+        '400':
+          description: Invalid update data
+        '404':
+          description: Clinical exam not found
+      summary: Update clinical exam
+      tags:
+        - clinical-exams
+    delete:
+      description: Delete clinical exam by ID.
+      operationId: ClinicalExamController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Clinical exam deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClinicalExamEntity'
+        '404':
+          description: Clinical exam not found
+      summary: Delete clinical exam
+      tags:
+        - clinical-exams
+  /feces-exams:
+    post:
+      description: Creates a new feces exam.
+      operationId: FecesExamController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFecesExamDto'
+      responses:
+        '201':
+          description: Feces exam created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FecesExamEntity'
+        '400':
+          description: Invalid data
+      summary: Create feces exam
+      tags:
+        - feces-exams
+    get:
+      description: Retrieve paginated list of feces exams.
+      operationId: FecesExamController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      responses:
+        '200':
+          description: Feces exams retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedFecesExamEntity'
+      summary: List feces exams
+      tags:
+        - feces-exams
+  /feces-exams/{id}:
+    get:
+      description: Retrieve feces exam details.
+      operationId: FecesExamController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Feces exam retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FecesExamEntity'
+        '404':
+          description: Feces exam not found
+      summary: Get feces exam by ID
+      tags:
+        - feces-exams
+    patch:
+      description: Update feces exam information by ID.
+      operationId: FecesExamController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFecesExamDto'
+      responses:
+        '200':
+          description: Feces exam updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FecesExamEntity'
+        '400':
+          description: Invalid update data
+        '404':
+          description: Feces exam not found
+      summary: Update feces exam
+      tags:
+        - feces-exams
+    delete:
+      description: Delete feces exam by ID.
+      operationId: FecesExamController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Feces exam deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FecesExamEntity'
+        '404':
+          description: Feces exam not found
+      summary: Delete feces exam
+      tags:
+        - feces-exams
+  /mucosa-exams:
+    post:
+      description: Creates a new mucosa exam.
+      operationId: MucosaExamController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMucosaExamDto'
+      responses:
+        '201':
+          description: Mucosa exam created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MucosaExamEntity'
+        '400':
+          description: Invalid data
+      summary: Create mucosa exam
+      tags:
+        - mucosa-exams
+    get:
+      description: Retrieve paginated list of mucosa exams.
+      operationId: MucosaExamController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      responses:
+        '200':
+          description: Mucosa exams retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMucosaExamEntity'
+      summary: List mucosa exams
+      tags:
+        - mucosa-exams
+  /mucosa-exams/{id}:
+    get:
+      description: Retrieve mucosa exam details.
+      operationId: MucosaExamController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Mucosa exam retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MucosaExamEntity'
+        '404':
+          description: Mucosa exam not found
+      summary: Get mucosa exam by ID
+      tags:
+        - mucosa-exams
+    patch:
+      description: Update mucosa exam information by ID.
+      operationId: MucosaExamController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateMucosaExamDto'
+      responses:
+        '200':
+          description: Mucosa exam updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MucosaExamEntity'
+        '400':
+          description: Invalid update data
+        '404':
+          description: Mucosa exam not found
+      summary: Update mucosa exam
+      tags:
+        - mucosa-exams
+    delete:
+      description: Delete mucosa exam by ID.
+      operationId: MucosaExamController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Mucosa exam deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MucosaExamEntity'
+        '404':
+          description: Mucosa exam not found
+      summary: Delete mucosa exam
+      tags:
+        - mucosa-exams
+  /urine-exams:
+    post:
+      description: Creates a new urine exam.
+      operationId: UrineExamController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUrineExamDto'
+      responses:
+        '201':
+          description: Urine exam created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrineExamEntity'
+        '400':
+          description: Invalid data
+      summary: Create urine exam
+      tags:
+        - urine-exams
+    get:
+      description: Retrieve paginated list of urine exams.
+      operationId: UrineExamController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      responses:
+        '200':
+          description: Urine exams retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUrineExamEntity'
+      summary: List urine exams
+      tags:
+        - urine-exams
+  /urine-exams/{id}:
+    get:
+      description: Retrieve urine exam details.
+      operationId: UrineExamController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Urine exam retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrineExamEntity'
+        '404':
+          description: Urine exam not found
+      summary: Get urine exam by ID
+      tags:
+        - urine-exams
+    patch:
+      description: Update urine exam information by ID.
+      operationId: UrineExamController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUrineExamDto'
+      responses:
+        '200':
+          description: Urine exam updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrineExamEntity'
+        '400':
+          description: Invalid update data
+        '404':
+          description: Urine exam not found
+      summary: Update urine exam
+      tags:
+        - urine-exams
+    delete:
+      description: Delete urine exam by ID.
+      operationId: UrineExamController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Urine exam deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrineExamEntity'
+        '404':
+          description: Urine exam not found
+      summary: Delete urine exam
+      tags:
+        - urine-exams
+  /urine-colors:
+    post:
+      description: Creates a new urine color.
+      operationId: UrineColorController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUrineColorDto'
+      responses:
+        '201':
+          description: Urine color created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrineColorEntity'
+        '400':
+          description: Invalid data
+      summary: Create urine color
+      tags:
+        - urine-colors
+    get:
+      description: Retrieve paginated list of urine colors.
+      operationId: UrineColorController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      responses:
+        '200':
+          description: Urine colors retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUrineColorEntity'
+      summary: List urine colors
+      tags:
+        - urine-colors
+  /urine-colors/{id}:
+    get:
+      description: Retrieve urine color details.
+      operationId: UrineColorController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Urine color retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrineColorEntity'
+        '404':
+          description: Urine color not found
+      summary: Get urine color by ID
+      tags:
+        - urine-colors
+    patch:
+      description: Update urine color information by ID.
+      operationId: UrineColorController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUrineColorDto'
+      responses:
+        '200':
+          description: Urine color updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrineColorEntity'
+        '400':
+          description: Invalid update data
+        '404':
+          description: Urine color not found
+      summary: Update urine color
+      tags:
+        - urine-colors
+    delete:
+      description: Delete urine color by ID.
+      operationId: UrineColorController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Urine color deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrineColorEntity'
+        '404':
+          description: Urine color not found
+      summary: Delete urine color
+      tags:
+        - urine-colors
+  /urine-smells:
+    post:
+      description: Creates a new urine smell.
+      operationId: UrineSmellController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUrineSmellDto'
+      responses:
+        '201':
+          description: Urine smell created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrineSmellEntity'
+        '400':
+          description: Invalid data
+      summary: Create urine smell
+      tags:
+        - urine-smells
+    get:
+      description: Retrieve paginated list of urine smells.
+      operationId: UrineSmellController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      responses:
+        '200':
+          description: Urine smells retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUrineSmellEntity'
+      summary: List urine smells
+      tags:
+        - urine-smells
+  /urine-smells/{id}:
+    get:
+      description: Retrieve urine smell details.
+      operationId: UrineSmellController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Urine smell retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrineSmellEntity'
+        '404':
+          description: Urine smell not found
+      summary: Get urine smell by ID
+      tags:
+        - urine-smells
+    patch:
+      description: Update urine smell information by ID.
+      operationId: UrineSmellController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUrineSmellDto'
+      responses:
+        '200':
+          description: Urine smell updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrineSmellEntity'
+        '400':
+          description: Invalid update data
+        '404':
+          description: Urine smell not found
+      summary: Update urine smell
+      tags:
+        - urine-smells
+    delete:
+      description: Delete urine smell by ID.
+      operationId: UrineSmellController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Urine smell deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrineSmellEntity'
+        '404':
+          description: Urine smell not found
+      summary: Delete urine smell
+      tags:
+        - urine-smells
+  /urine-clarities:
+    post:
+      description: Creates a new urine clarity.
+      operationId: UrineClarityController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUrineClarityDto'
+      responses:
+        '201':
+          description: Urine clarity created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrineClarityEntity'
+        '400':
+          description: Invalid data
+      summary: Create urine clarity
+      tags:
+        - urine-clarities
+    get:
+      description: Retrieve paginated list of urine clarities.
+      operationId: UrineClarityController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      responses:
+        '200':
+          description: Urine clarities retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUrineClarityEntity'
+      summary: List urine clarities
+      tags:
+        - urine-clarities
+  /urine-clarities/{id}:
+    get:
+      description: Retrieve urine clarity details.
+      operationId: UrineClarityController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Urine clarity retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrineClarityEntity'
+        '404':
+          description: Urine clarity not found
+      summary: Get urine clarity by ID
+      tags:
+        - urine-clarities
+    patch:
+      description: Update urine clarity information by ID.
+      operationId: UrineClarityController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUrineClarityDto'
+      responses:
+        '200':
+          description: Urine clarity updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrineClarityEntity'
+        '400':
+          description: Invalid update data
+        '404':
+          description: Urine clarity not found
+      summary: Update urine clarity
+      tags:
+        - urine-clarities
+    delete:
+      description: Delete urine clarity by ID.
+      operationId: UrineClarityController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Urine clarity deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrineClarityEntity'
+        '404':
+          description: Urine clarity not found
+      summary: Delete urine clarity
+      tags:
+        - urine-clarities
+  /urine-consistencies:
+    post:
+      description: Creates a new urine consistency.
+      operationId: UrineConsistencyController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUrineConsistencyDto'
+      responses:
+        '201':
+          description: Urine consistency created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrineConsistencyEntity'
+        '400':
+          description: Invalid data
+      summary: Create urine consistency
+      tags:
+        - urine-consistencies
+    get:
+      description: Retrieve paginated list of urine consistencies.
+      operationId: UrineConsistencyController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      responses:
+        '200':
+          description: Urine consistencies retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUrineConsistencyEntity'
+      summary: List urine consistencies
+      tags:
+        - urine-consistencies
+  /urine-consistencies/{id}:
+    get:
+      description: Retrieve urine consistency details.
+      operationId: UrineConsistencyController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Urine consistency retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrineConsistencyEntity'
+        '404':
+          description: Urine consistency not found
+      summary: Get urine consistency by ID
+      tags:
+        - urine-consistencies
+    patch:
+      description: Update urine consistency information by ID.
+      operationId: UrineConsistencyController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUrineConsistencyDto'
+      responses:
+        '200':
+          description: Urine consistency updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrineConsistencyEntity'
+        '400':
+          description: Invalid update data
+        '404':
+          description: Urine consistency not found
+      summary: Update urine consistency
+      tags:
+        - urine-consistencies
+    delete:
+      description: Delete urine consistency by ID.
+      operationId: UrineConsistencyController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Urine consistency deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrineConsistencyEntity'
+        '404':
+          description: Urine consistency not found
+      summary: Delete urine consistency
+      tags:
+        - urine-consistencies
+  /feces-colors:
+    post:
+      description: Creates a new feces color.
+      operationId: FecesColorController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFecesColorDto'
+      responses:
+        '201':
+          description: Feces color created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FecesColorEntity'
+        '400':
+          description: Invalid data
+      summary: Create feces color
+      tags:
+        - feces-colors
+    get:
+      description: Retrieve paginated list of feces colors.
+      operationId: FecesColorController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      responses:
+        '200':
+          description: Feces colors retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedFecesColorEntity'
+      summary: List feces colors
+      tags:
+        - feces-colors
+  /feces-colors/{id}:
+    get:
+      description: Retrieve feces color details.
+      operationId: FecesColorController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Feces color retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FecesColorEntity'
+        '404':
+          description: Feces color not found
+      summary: Get feces color by ID
+      tags:
+        - feces-colors
+    patch:
+      description: Update feces color information by ID.
+      operationId: FecesColorController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFecesColorDto'
+      responses:
+        '200':
+          description: Feces color updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FecesColorEntity'
+        '400':
+          description: Invalid update data
+        '404':
+          description: Feces color not found
+      summary: Update feces color
+      tags:
+        - feces-colors
+    delete:
+      description: Delete feces color by ID.
+      operationId: FecesColorController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Feces color deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FecesColorEntity'
+        '404':
+          description: Feces color not found
+      summary: Delete feces color
+      tags:
+        - feces-colors
+  /feces-smells:
+    post:
+      description: Creates a new feces smell.
+      operationId: FecesSmellController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFecesSmellDto'
+      responses:
+        '201':
+          description: Feces smell created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FecesSmellEntity'
+        '400':
+          description: Invalid data
+      summary: Create feces smell
+      tags:
+        - feces-smells
+    get:
+      description: Retrieve paginated list of feces smells.
+      operationId: FecesSmellController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      responses:
+        '200':
+          description: Feces smells retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedFecesSmellEntity'
+      summary: List feces smells
+      tags:
+        - feces-smells
+  /feces-smells/{id}:
+    get:
+      description: Retrieve feces smell details.
+      operationId: FecesSmellController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Feces smell retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FecesSmellEntity'
+        '404':
+          description: Feces smell not found
+      summary: Get feces smell by ID
+      tags:
+        - feces-smells
+    patch:
+      description: Update feces smell information by ID.
+      operationId: FecesSmellController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFecesSmellDto'
+      responses:
+        '200':
+          description: Feces smell updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FecesSmellEntity'
+        '400':
+          description: Invalid update data
+        '404':
+          description: Feces smell not found
+      summary: Update feces smell
+      tags:
+        - feces-smells
+    delete:
+      description: Delete feces smell by ID.
+      operationId: FecesSmellController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Feces smell deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FecesSmellEntity'
+        '404':
+          description: Feces smell not found
+      summary: Delete feces smell
+      tags:
+        - feces-smells
+  /feces-consistencies:
+    post:
+      description: Creates a new feces consistency.
+      operationId: FecesConsistencyController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFecesConsistencyDto'
+      responses:
+        '201':
+          description: Feces consistency created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FecesConsistencyEntity'
+        '400':
+          description: Invalid data
+      summary: Create feces consistency
+      tags:
+        - feces-consistencies
+    get:
+      description: Retrieve paginated list of feces consistencies.
+      operationId: FecesConsistencyController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      responses:
+        '200':
+          description: Feces consistencies retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedFecesConsistencyEntity'
+      summary: List feces consistencies
+      tags:
+        - feces-consistencies
+  /feces-consistencies/{id}:
+    get:
+      description: Retrieve feces consistency details.
+      operationId: FecesConsistencyController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Feces consistency retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FecesConsistencyEntity'
+        '404':
+          description: Feces consistency not found
+      summary: Get feces consistency by ID
+      tags:
+        - feces-consistencies
+    patch:
+      description: Update feces consistency information by ID.
+      operationId: FecesConsistencyController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFecesConsistencyDto'
+      responses:
+        '200':
+          description: Feces consistency updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FecesConsistencyEntity'
+        '400':
+          description: Invalid update data
+        '404':
+          description: Feces consistency not found
+      summary: Update feces consistency
+      tags:
+        - feces-consistencies
+    delete:
+      description: Delete feces consistency by ID.
+      operationId: FecesConsistencyController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Feces consistency deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FecesConsistencyEntity'
+        '404':
+          description: Feces consistency not found
+      summary: Delete feces consistency
+      tags:
+        - feces-consistencies
+  /feces-forms:
+    post:
+      description: Creates a new feces form.
+      operationId: FecesFormController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFecesFormDto'
+      responses:
+        '201':
+          description: Feces form created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FecesFormEntity'
+        '400':
+          description: Invalid data
+      summary: Create feces form
+      tags:
+        - feces-forms
+    get:
+      description: Retrieve paginated list of feces forms.
+      operationId: FecesFormController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      responses:
+        '200':
+          description: Feces forms retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedFecesFormEntity'
+      summary: List feces forms
+      tags:
+        - feces-forms
+  /feces-forms/{id}:
+    get:
+      description: Retrieve feces form details.
+      operationId: FecesFormController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Feces form retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FecesFormEntity'
+        '404':
+          description: Feces form not found
+      summary: Get feces form by ID
+      tags:
+        - feces-forms
+    patch:
+      description: Update feces form information by ID.
+      operationId: FecesFormController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFecesFormDto'
+      responses:
+        '200':
+          description: Feces form updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FecesFormEntity'
+        '400':
+          description: Invalid update data
+        '404':
+          description: Feces form not found
+      summary: Update feces form
+      tags:
+        - feces-forms
+    delete:
+      description: Delete feces form by ID.
+      operationId: FecesFormController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Feces form deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FecesFormEntity'
+        '404':
+          description: Feces form not found
+      summary: Delete feces form
+      tags:
+        - feces-forms
+  /mucosa-appearances:
+    post:
+      description: Creates a new mucosa appearance.
+      operationId: MucosaAppearanceController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMucosaAppearanceDto'
+      responses:
+        '201':
+          description: Mucosa appearance created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MucosaAppearanceEntity'
+        '400':
+          description: Invalid data
+      summary: Create mucosa appearance
+      tags:
+        - mucosa-appearances
+    get:
+      description: Retrieve paginated list of mucosa appearances.
+      operationId: MucosaAppearanceController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      responses:
+        '200':
+          description: Mucosa appearances retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMucosaAppearanceEntity'
+      summary: List mucosa appearances
+      tags:
+        - mucosa-appearances
+  /mucosa-appearances/{id}:
+    get:
+      description: Retrieve mucosa appearance details.
+      operationId: MucosaAppearanceController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Mucosa appearance retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MucosaAppearanceEntity'
+        '404':
+          description: Mucosa appearance not found
+      summary: Get mucosa appearance by ID
+      tags:
+        - mucosa-appearances
+    patch:
+      description: Update mucosa appearance information by ID.
+      operationId: MucosaAppearanceController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateMucosaAppearanceDto'
+      responses:
+        '200':
+          description: Mucosa appearance updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MucosaAppearanceEntity'
+        '400':
+          description: Invalid update data
+        '404':
+          description: Mucosa appearance not found
+      summary: Update mucosa appearance
+      tags:
+        - mucosa-appearances
+    delete:
+      description: Delete mucosa appearance by ID.
+      operationId: MucosaAppearanceController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Mucosa appearance deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MucosaAppearanceEntity'
+        '404':
+          description: Mucosa appearance not found
+      summary: Delete mucosa appearance
+      tags:
+        - mucosa-appearances
+  /diseases:
+    post:
+      operationId: DiseaseController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDiseaseDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiseaseEntity'
+      summary: Create disease
+      tags:
+        - diseases
+    get:
+      operationId: DiseaseController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        - name: diseaseCategoryId
+          required: false
+          in: query
+          schema:
+            example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDiseaseEntity'
+      summary: List diseases
+      tags:
+        - diseases
+  /diseases/{id}:
+    get:
+      operationId: DiseaseController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiseaseEntity'
+        '404':
+          description: ''
+      summary: Get disease by ID
+      tags:
+        - diseases
+    patch:
+      operationId: DiseaseController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDiseaseDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiseaseEntity'
+      summary: Update disease
+      tags:
+        - diseases
+    delete:
+      operationId: DiseaseController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiseaseEntity'
+      summary: Delete disease
+      tags:
+        - diseases
+  /disease-categories:
+    post:
+      operationId: DiseaseCategoryController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDiseaseCategoryDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiseaseCategoryEntity'
+      summary: Create disease category
+      tags:
+        - disease-categories
+    get:
+      operationId: DiseaseCategoryController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        - name: parentId
+          required: false
+          in: query
+          description: Filter by parent category ID
+          schema:
+            example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDiseaseCategoryEntity'
+      summary: List disease categories
+      tags:
+        - disease-categories
+  /disease-categories/{id}:
+    get:
+      operationId: DiseaseCategoryController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiseaseCategoryEntity'
+        '404':
+          description: ''
+      summary: Get disease category by ID
+      tags:
+        - disease-categories
+    patch:
+      operationId: DiseaseCategoryController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDiseaseCategoryDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiseaseCategoryEntity'
+      summary: Update disease category
+      tags:
+        - disease-categories
+    delete:
+      operationId: DiseaseCategoryController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiseaseCategoryEntity'
+      summary: Delete disease category
+      tags:
+        - disease-categories
+  /prophylaxis:
+    post:
+      operationId: ProphylaxisController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProphylaxisDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProphylaxisEntity'
+      summary: Create prophylaxis record
+      tags:
+        - prophylaxis
+    get:
+      operationId: ProphylaxisController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        - name: animalId
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: itemId
+          required: false
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProphylaxisEntity'
+      summary: List prophylaxis records
+      tags:
+        - prophylaxis
+  /prophylaxis/{id}:
+    get:
+      operationId: ProphylaxisController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProphylaxisEntity'
+        '404':
+          description: ''
+      summary: Get prophylaxis by ID
+      tags:
+        - prophylaxis
+    patch:
+      operationId: ProphylaxisController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProphylaxisDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProphylaxisEntity'
+      summary: Update prophylaxis
+      tags:
+        - prophylaxis
+    delete:
+      operationId: ProphylaxisController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProphylaxisEntity'
+      summary: Delete prophylaxis
+      tags:
+        - prophylaxis
+  /prophylaxis-items:
+    post:
+      operationId: ProphylaxisItemController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProphylaxisItemDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProphylaxisItemEntity'
+      summary: Create prophylaxis item
+      tags:
+        - prophylaxis-items
+    get:
+      operationId: ProphylaxisItemController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        - name: type
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - VACCINE
+              - IMMUNIZATION
+              - DEWORMING
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProphylaxisItemEntity'
+      summary: List prophylaxis items
+      tags:
+        - prophylaxis-items
+  /prophylaxis-items/{id}:
+    get:
+      operationId: ProphylaxisItemController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProphylaxisItemEntity'
+        '404':
+          description: ''
+      summary: Get prophylaxis item by ID
+      tags:
+        - prophylaxis-items
+    patch:
+      operationId: ProphylaxisItemController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProphylaxisItemDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProphylaxisItemEntity'
+      summary: Update prophylaxis item
+      tags:
+        - prophylaxis-items
+    delete:
+      operationId: ProphylaxisItemController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProphylaxisItemEntity'
+      summary: Delete prophylaxis item
+      tags:
+        - prophylaxis-items
+  /prophylaxis-details:
+    post:
+      operationId: ProphylaxisDetailController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProphylaxisDetailDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProphylaxisDetailEntity'
+      summary: Create prophylaxis detail
+      tags:
+        - prophylaxis-details
+    get:
+      operationId: ProphylaxisDetailController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        - name: itemId
+          required: false
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProphylaxisDetailEntity'
+      summary: List prophylaxis details
+      tags:
+        - prophylaxis-details
+  /prophylaxis-details/{id}:
+    get:
+      operationId: ProphylaxisDetailController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProphylaxisDetailEntity'
+        '404':
+          description: ''
+      summary: Get prophylaxis detail by ID
+      tags:
+        - prophylaxis-details
+    patch:
+      operationId: ProphylaxisDetailController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProphylaxisDetailDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProphylaxisDetailEntity'
+      summary: Update prophylaxis detail
+      tags:
+        - prophylaxis-details
+    delete:
+      operationId: ProphylaxisDetailController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProphylaxisDetailEntity'
+      summary: Delete prophylaxis detail
+      tags:
+        - prophylaxis-details
+  /animals:
+    post:
+      operationId: AnimalController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAnimalDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnimalEntity'
+      summary: Create animal
+      tags:
+        - animals
+    get:
+      operationId: AnimalController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        - name: farmerId
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: animalTypeId
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: sex
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - MALE
+              - FEMALE
+              - NEUTERED
+              - SPAYED
+              - UNKNOWN
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAnimalEntity'
+      summary: List animals
+      tags:
+        - animals
+  /animals/{id}:
+    get:
+      operationId: AnimalController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnimalEntity'
+        '404':
+          description: ''
+      summary: Get animal by ID
+      tags:
+        - animals
+    patch:
+      operationId: AnimalController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAnimalDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnimalEntity'
+      summary: Update animal
+      tags:
+        - animals
+    delete:
+      operationId: AnimalController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnimalEntity'
+      summary: Delete animal
+      tags:
+        - animals
+  /animal-types:
+    post:
+      operationId: AnimalTypeController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAnimalTypeDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnimalTypeEntity'
+      summary: Create animal type
+      tags:
+        - animal-types
+    get:
+      operationId: AnimalTypeController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        - name: parentId
+          required: false
+          in: query
+          schema:
+            example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAnimalTypeEntity'
+      summary: List animal types
+      tags:
+        - animal-types
+  /animal-types/{id}:
+    get:
+      operationId: AnimalTypeController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnimalTypeEntity'
+        '404':
+          description: ''
+      summary: Get animal type by ID
+      tags:
+        - animal-types
+    patch:
+      operationId: AnimalTypeController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAnimalTypeDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnimalTypeEntity'
+      summary: Update animal type
+      tags:
+        - animal-types
+    delete:
+      operationId: AnimalTypeController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnimalTypeEntity'
+      summary: Delete animal type
+      tags:
+        - animal-types
+  /breeds:
+    post:
+      operationId: AnimalBreedController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAnimalBreedDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnimalBreedEntity'
+      summary: Create breed
+      tags:
+        - breeds
+    get:
+      operationId: AnimalBreedController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAnimalBreedEntity'
+      summary: List breeds
+      tags:
+        - breeds
+  /breeds/{id}:
+    get:
+      operationId: AnimalBreedController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnimalBreedEntity'
+        '404':
+          description: ''
+      summary: Get breed by ID
+      tags:
+        - breeds
+    patch:
+      operationId: AnimalBreedController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAnimalBreedDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnimalBreedEntity'
+      summary: Update breed
+      tags:
+        - breeds
+    delete:
+      operationId: AnimalBreedController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnimalBreedEntity'
+      summary: Delete breed
+      tags:
+        - breeds
+  /colors:
+    post:
+      description: Creates a new color.
+      operationId: AnimalColorController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAnimalColorDto'
+      responses:
+        '201':
+          description: AnimalColor created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnimalColorEntity'
+        '400':
+          description: Invalid color data
+      summary: Create color
+      tags:
+        - colors
+    get:
+      description: Retrieve paginated list of colors.
+      operationId: AnimalColorController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      responses:
+        '200':
+          description: AnimalColors retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAnimalColorEntity'
+      summary: List colors
+      tags:
+        - colors
+  /colors/{id}:
+    get:
+      description: Retrieve color details.
+      operationId: AnimalColorController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: AnimalColor retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnimalColorEntity'
+        '404':
+          description: AnimalColor not found
+      summary: Get color by ID
+      tags:
+        - colors
+    patch:
+      description: Update color information by ID.
+      operationId: AnimalColorController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAnimalColorDto'
+      responses:
+        '200':
+          description: AnimalColor updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnimalColorEntity'
+        '400':
+          description: Invalid update data
+        '404':
+          description: AnimalColor not found
+      summary: Update color
+      tags:
+        - colors
+    delete:
+      description: Delete color by ID.
+      operationId: AnimalColorController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: AnimalColor deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnimalColorEntity'
+        '404':
+          description: AnimalColor not found
+      summary: Delete color
+      tags:
+        - colors
+  /regions:
+    post:
+      description: Creates a new region with Russian and Uzbek names.
+      operationId: RegionController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRegionDto'
+      responses:
+        '201':
+          description: Region created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegionEntity'
+        '400':
+          description: Invalid region data
+      summary: Create region
+      tags:
+        - regions
+    get:
+      description: Retrieve paginated list of regions with nested districts.
+      operationId: RegionController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      responses:
+        '200':
+          description: Regions retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRegionEntity'
+      summary: List regions
+      tags:
+        - regions
+  /regions/{id}:
+    get:
+      description: Retrieve region details with nested districts.
+      operationId: RegionController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Region retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegionEntity'
+        '404':
+          description: Region not found
+      summary: Get region by ID
+      tags:
+        - regions
+    patch:
+      description: Update region information by ID.
+      operationId: RegionController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRegionDto'
+      responses:
+        '200':
+          description: Region updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegionEntity'
+        '400':
+          description: Invalid update data
+        '404':
+          description: Region not found
+      summary: Update region
+      tags:
+        - regions
+    delete:
+      description: Delete region by ID.
+      operationId: RegionController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Region deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegionEntity'
+        '404':
+          description: Region not found
+      summary: Delete region
+      tags:
+        - regions
+  /districts:
+    post:
+      description: Creates a new district with Russian and Uzbek names.
+      operationId: DistrictController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDistrictDto'
+      responses:
+        '201':
+          description: District created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistrictEntity'
+        '400':
+          description: Invalid district data
+      summary: Create district
+      tags:
+        - districts
+    get:
+      description: Retrieve paginated list of districts with optional region filter.
+      operationId: DistrictController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        - name: regionId
+          required: false
+          in: query
+          description: Filter by region ID
+          schema:
+            example: 1
+            type: number
+      responses:
+        '200':
+          description: Districts retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDistrictEntity'
+      summary: List districts
+      tags:
+        - districts
+  /districts/{id}:
+    get:
+      description: Retrieve district details with nested region.
+      operationId: DistrictController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: District retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistrictEntity'
+        '404':
+          description: District not found
+      summary: Get district by ID
+      tags:
+        - districts
+    patch:
+      description: Update district information by ID.
+      operationId: DistrictController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDistrictDto'
+      responses:
+        '200':
+          description: District updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistrictEntity'
+        '400':
+          description: Invalid update data
+        '404':
+          description: District not found
+      summary: Update district
+      tags:
+        - districts
+    delete:
+      description: Delete district by ID.
+      operationId: DistrictController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: District deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistrictEntity'
+        '404':
+          description: District not found
+      summary: Delete district
+      tags:
+        - districts
+  /vet-stations:
+    post:
+      description: Creates a new vet station.
+      operationId: VetStationController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateVetStationDto'
+      responses:
+        '201':
+          description: Vet station created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VetStationEntity'
+        '400':
+          description: Invalid vet station data
+      summary: Create vet station
+      tags:
+        - vet-stations
+    get:
+      description: Retrieve paginated list of vet stations.
+      operationId: VetStationController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        - name: districtId
+          required: false
+          in: query
+          description: Filter by district ID
+          schema:
+            example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+            type: string
+      responses:
+        '200':
+          description: Vet stations retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedVetStationEntity'
+      summary: List vet stations
+      tags:
+        - vet-stations
+  /vet-stations/{id}:
+    get:
+      description: Retrieve vet station details.
+      operationId: VetStationController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Vet station retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VetStationEntity'
+        '404':
+          description: Vet station not found
+      summary: Get vet station by ID
+      tags:
+        - vet-stations
+    patch:
+      description: Update vet station information by ID.
+      operationId: VetStationController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateVetStationDto'
+      responses:
+        '200':
+          description: Vet station updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VetStationEntity'
+        '400':
+          description: Invalid update data
+        '404':
+          description: Vet station not found
+      summary: Update vet station
+      tags:
+        - vet-stations
+    delete:
+      description: Delete vet station by ID.
+      operationId: VetStationController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Vet station deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VetStationEntity'
+        '404':
+          description: Vet station not found
+      summary: Delete vet station
+      tags:
+        - vet-stations
+info:
+  title: TableTap Backend
+  description: TableTap Backend API
+  version: '1.0'
+  contact: {}
+tags:
+  - name: /
+    description: Development server
+servers: []
+components:
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+  schemas:
+    LoginDto:
+      type: object
+      properties:
+        username:
+          type: string
+          description: User login username
+          example: professor_xavier
+        password:
+          type: string
+          description: User password
+          example: 123qazwsx
+      required:
+        - username
+        - password
+    AuthEntity:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          readOnly: true
+        refreshToken:
+          type: string
+          readOnly: true
+        userId:
+          type: string
+          readOnly: true
+        role:
+          type: string
+          readOnly: true
+      required:
+        - accessToken
+        - refreshToken
+        - userId
+        - role
+    CreateUserDto:
+      type: object
+      properties:
+        username:
+          type: string
+          description: The user's username (required, unique)
+          example: dr_john_smith
+          minLength: 3
+          maxLength: 255
+        password:
+          type: string
+          description: The user's password
+          example: SecurePassword123!
+          minLength: 6
+        firstName:
+          type: string
+          description: The user's first name
+          example: John
+          minLength: 1
+          maxLength: 255
+        lastName:
+          type: object
+          description: The user's last name
+          example: Smith
+          minLength: 1
+          maxLength: 255
+        email:
+          type: object
+          description: The user's email address
+          example: john.smith@example.com
+        phone:
+          type: object
+          description: The user's phone number
+          example: '+998901234567'
+        districtId:
+          type: string
+          description: District ID where the user is located (required)
+          example: 550e8400-e29b-41d4-a716-446655440000
+        role:
+          type: string
+          description: The user's role in the system
+          enum:
+            - SUPER_ADMIN
+            - ADMIN
+            - VETERINARIAN
+            - FARMER
+          example: VETERINARIAN
+      required:
+        - username
+        - password
+        - firstName
+        - districtId
+    UserEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the user
+          example: 550e8400-e29b-41d4-a716-446655440000
+        username:
+          type: string
+          description: User login
+          example: dr_john_smith
+        firstName:
+          type: string
+          description: First name of the user
+          example: John
+        lastName:
+          type: object
+          description: Last name of the user
+          example: Smith
+        email:
+          type: object
+          description: Email address of the user
+          example: john.smith@example.com
+        phone:
+          type: object
+          description: User's phone number
+          example: '+998901234567'
+        avatar:
+          type: object
+          description: User's avatar URL
+          example: https://example.com/avatar.jpg
+        gender:
+          type: string
+          description: User's gender
+          enum:
+            - MALE
+            - FEMALE
+          example: MALE
+        birthDate:
+          type: string
+          description: User's birth date
+          example: '1990-01-01'
+        address:
+          type: object
+          description: User's address
+          example: Tashkent, Yunusabad district
+        role:
+          type: string
+          description: User's role in the system
+          enum:
+            - SUPER_ADMIN
+            - ADMIN
+            - VETERINARIAN
+            - FARMER
+          example: VETERINARIAN
+        districtId:
+          type: string
+          description: District ID where the user is located
+          example: 550e8400-e29b-41d4-a716-446655440001
+        isActive:
+          type: boolean
+          description: User is active
+          example: true
+        createdAt:
+          type: string
+          description: Record creation timestamp
+          example: '2024-01-01T00:00:00.000Z'
+        updatedAt:
+          type: string
+          description: Record last update timestamp
+          example: '2024-01-10T00:00:00.000Z'
+        deletedAt:
+          type: string
+          description: Soft delete timestamp
+          example: '2024-01-10T00:00:00.000Z'
+      required:
+        - id
+        - username
+        - firstName
+        - role
+        - districtId
+        - isActive
+        - createdAt
+        - updatedAt
+    MetaDataEntity:
+      type: object
+      properties:
+        total:
+          type: number
+          example: 50
+        lastPage:
+          type: number
+          example: 5
+        currentPage:
+          type: number
+          example: 1
+        perPage:
+          type: number
+          example: 10
+        prev:
+          type: object
+          example: null
+        next:
+          type: object
+          example: 2
+      required:
+        - total
+        - lastPage
+        - currentPage
+        - perPage
+        - prev
+        - next
+    PaginatedUsersEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserEntity'
+        meta:
+          $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateUserDto:
+      type: object
+      properties:
+        username:
+          type: string
+          description: The user's username (required, unique)
+          example: dr_john_smith
+          minLength: 3
+          maxLength: 255
+        firstName:
+          type: string
+          description: The user's first name
+          example: John
+          minLength: 1
+          maxLength: 255
+        lastName:
+          type: object
+          description: The user's last name
+          example: Smith
+          minLength: 1
+          maxLength: 255
+        email:
+          type: object
+          description: The user's email address
+          example: john.smith@example.com
+        phone:
+          type: object
+          description: The user's phone number
+          example: '+998901234567'
+        districtId:
+          type: string
+          description: District ID where the user is located (required)
+          example: 550e8400-e29b-41d4-a716-446655440000
+        role:
+          type: string
+          description: The user's role in the system
+          enum:
+            - SUPER_ADMIN
+            - ADMIN
+            - VETERINARIAN
+            - FARMER
+          example: VETERINARIAN
+    ChangePasswordDto:
+      type: object
+      properties:
+        currentPassword:
+          type: string
+          description: Current password
+          example: currentPassword123
+        newPassword:
+          type: string
+          description: New password
+          example: newPassword123
+          minLength: 6
+      required:
+        - currentPassword
+        - newPassword
+    CreateBloodExamDto:
+      type: object
+      properties:
+        animalId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        coe:
+          type: number
+          example: 5.5
+        erythrocyteCount:
+          type: number
+          example: 4.5
+        leukocyteCount:
+          type: number
+          example: 7.5
+        thrombocyteCount:
+          type: number
+          example: 250
+        hemoglobin:
+          type: number
+          example: 120
+        glutathione:
+          type: number
+          example: 2.5
+        waterPercentage:
+          type: number
+          example: 80
+        dryResidue:
+          type: number
+          example: 20
+        totalProtein:
+          type: number
+          example: 70
+        totalCalcium:
+          type: number
+          example: 2.5
+        organicPhosphorus:
+          type: number
+          example: 1.5
+        albumin:
+          type: number
+          example: 40
+        alphaGlobulin:
+          type: number
+          example: 10
+        betaGlobulin:
+          type: number
+          example: 10
+        gammaGlobulin:
+          type: number
+          example: 10
+        residualNitrogen:
+          type: number
+          example: 15
+        urea:
+          type: number
+          example: 5
+        uricAcid:
+          type: number
+          example: 0.3
+        creatine:
+          type: number
+          example: 0.1
+        creatinine:
+          type: number
+          example: 80
+        alkalineReserve:
+          type: number
+          example: 50
+        glucose:
+          type: number
+          example: 5.5
+        ketoneBodies:
+          type: number
+          example: 0.5
+        totalBilirubin:
+          type: number
+          example: 10
+        directBilirubin:
+          type: number
+          example: 2
+        totalCholesterol:
+          type: number
+          example: 4.5
+        totalLipids:
+          type: number
+          example: 3.5
+        phospholipids:
+          type: number
+          example: 2.5
+        lacticAcid:
+          type: number
+          example: 1.5
+        pyruvicAcid:
+          type: number
+          example: 0.5
+        citricAcid:
+          type: number
+          example: 0.2
+        carotene:
+          type: number
+          example: 0.1
+        vitaminA:
+          type: number
+          example: 0.5
+        vitaminB:
+          type: number
+          example: 0.5
+        vitaminC:
+          type: number
+          example: 0.5
+        conclusion:
+          type: string
+          example: Healthy
+      required:
+        - animalId
+    BloodExamEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        animalId:
+          type: object
+          description: Animal ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        coe:
+          type: object
+          description: COE
+          example: 5.5
+        erythrocyteCount:
+          type: object
+          description: Erythrocyte Count
+          example: 5.5
+        leukocyteCount:
+          type: object
+          description: Leukocyte Count
+          example: 8.5
+        thrombocyteCount:
+          type: object
+          description: Thrombocyte Count
+          example: 250
+        hemoglobin:
+          type: object
+          description: Hemoglobin
+          example: 120
+        glutathione:
+          type: object
+          description: Glutathione
+          example: 30
+        waterPercentage:
+          type: object
+          description: Water Percentage
+          example: 80
+        dryResidue:
+          type: object
+          description: Dry Residue
+          example: 20
+        totalProtein:
+          type: object
+          description: Total Protein
+          example: 70
+        totalCalcium:
+          type: object
+          description: Total Calcium
+          example: 2.5
+        organicPhosphorus:
+          type: object
+          description: Organic Phosphorus
+          example: 1.5
+        albumin:
+          type: object
+          description: Albumin
+          example: 40
+        alphaGlobulin:
+          type: object
+          description: Alpha Globulin
+          example: 10
+        betaGlobulin:
+          type: object
+          description: Beta Globulin
+          example: 10
+        gammaGlobulin:
+          type: object
+          description: Gamma Globulin
+          example: 10
+        residualNitrogen:
+          type: object
+          description: Residual Nitrogen
+          example: 20
+        urea:
+          type: object
+          description: Urea
+          example: 5
+        uricAcid:
+          type: object
+          description: Uric Acid
+          example: 0.3
+        creatine:
+          type: object
+          description: Creatine
+          example: 0.1
+        creatinine:
+          type: object
+          description: Creatinine
+          example: 80
+        alkalineReserve:
+          type: object
+          description: Alkaline Reserve
+          example: 50
+        glucose:
+          type: object
+          description: Glucose
+          example: 5.5
+        ketoneBodies:
+          type: object
+          description: Ketone Bodies
+          example: 0
+        totalBilirubin:
+          type: object
+          description: Total Bilirubin
+          example: 10
+        directBilirubin:
+          type: object
+          description: Direct Bilirubin
+          example: 2
+        totalCholesterol:
+          type: object
+          description: Total Cholesterol
+          example: 4
+        totalLipids:
+          type: object
+          description: Total Lipids
+          example: 5
+        phospholipids:
+          type: object
+          description: Phospholipids
+          example: 2
+        lacticAcid:
+          type: object
+          description: Lactic Acid
+          example: 1
+        pyruvicAcid:
+          type: object
+          description: Pyruvic Acid
+          example: 0.1
+        citricAcid:
+          type: object
+          description: Citric Acid
+          example: 0.1
+        carotene:
+          type: object
+          description: Carotene
+          example: 0.5
+        vitaminA:
+          type: object
+          description: Vitamin A
+          example: 1
+        vitaminB:
+          type: object
+          description: Vitamin B
+          example: 1
+        vitaminC:
+          type: object
+          description: Vitamin C
+          example: 1
+        conclusion:
+          type: object
+          description: Conclusion
+          example: Normal
+        createdAt:
+          format: date-time
+          type: string
+          description: Creation date
+          example: '2023-01-01T00:00:00.000Z'
+        updatedAt:
+          format: date-time
+          type: string
+          description: Last update date
+          example: '2023-01-01T00:00:00.000Z'
+      required:
+        - id
+        - animalId
+        - createdAt
+        - updatedAt
+    PaginatedBloodExamEntity:
+      type: object
+      properties:
+        data:
+          description: Array of blood exams
+          type: array
+          items:
+            $ref: '#/components/schemas/BloodExamEntity'
+        meta:
+          description: Pagination metadata
+          allOf:
+            - $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateBloodExamDto:
+      type: object
+      properties:
+        animalId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        coe:
+          type: number
+          example: 5.5
+        erythrocyteCount:
+          type: number
+          example: 4.5
+        leukocyteCount:
+          type: number
+          example: 7.5
+        thrombocyteCount:
+          type: number
+          example: 250
+        hemoglobin:
+          type: number
+          example: 120
+        glutathione:
+          type: number
+          example: 2.5
+        waterPercentage:
+          type: number
+          example: 80
+        dryResidue:
+          type: number
+          example: 20
+        totalProtein:
+          type: number
+          example: 70
+        totalCalcium:
+          type: number
+          example: 2.5
+        organicPhosphorus:
+          type: number
+          example: 1.5
+        albumin:
+          type: number
+          example: 40
+        alphaGlobulin:
+          type: number
+          example: 10
+        betaGlobulin:
+          type: number
+          example: 10
+        gammaGlobulin:
+          type: number
+          example: 10
+        residualNitrogen:
+          type: number
+          example: 15
+        urea:
+          type: number
+          example: 5
+        uricAcid:
+          type: number
+          example: 0.3
+        creatine:
+          type: number
+          example: 0.1
+        creatinine:
+          type: number
+          example: 80
+        alkalineReserve:
+          type: number
+          example: 50
+        glucose:
+          type: number
+          example: 5.5
+        ketoneBodies:
+          type: number
+          example: 0.5
+        totalBilirubin:
+          type: number
+          example: 10
+        directBilirubin:
+          type: number
+          example: 2
+        totalCholesterol:
+          type: number
+          example: 4.5
+        totalLipids:
+          type: number
+          example: 3.5
+        phospholipids:
+          type: number
+          example: 2.5
+        lacticAcid:
+          type: number
+          example: 1.5
+        pyruvicAcid:
+          type: number
+          example: 0.5
+        citricAcid:
+          type: number
+          example: 0.2
+        carotene:
+          type: number
+          example: 0.1
+        vitaminA:
+          type: number
+          example: 0.5
+        vitaminB:
+          type: number
+          example: 0.5
+        vitaminC:
+          type: number
+          example: 0.5
+        conclusion:
+          type: string
+          example: Healthy
+    CreateClinicalExamDto:
+      type: object
+      properties:
+        animalId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        pulse:
+          type: number
+          example: 80
+        rumination:
+          type: number
+          example: 5
+        temperature:
+          type: number
+          example: 38.5
+        respiratoryRate:
+          type: number
+          example: 20
+        bodyType:
+          type: string
+          enum:
+            - STRONG
+            - MEDIUM
+            - WEAK
+        obesity:
+          type: string
+          enum:
+            - HIGH
+            - MEDIUM
+            - LOW
+            - CACHEXIA
+        bodyPosition:
+          type: string
+          enum:
+            - NATURAL
+            - FORCED_STANDING
+            - FORCED_LYING
+            - FORCED_SITTING
+            - NON_THERAPEUTIC
+            - INVOLUNTARY
+            - MANEGE
+            - CIRCULAR
+            - FORWARD
+            - BACKWARD
+            - ROLLING
+        constitution:
+          type: string
+          enum:
+            - LOOSE
+            - DENSE
+            - HORSES
+            - BIRDS
+        temperament:
+          type: string
+          enum:
+            - MELANCHOLIC
+            - PHLEGMATIC
+        wool:
+          type: string
+          enum:
+            - EVEN
+            - UNEVEN
+            - LYING_FLAT
+            - SHINY
+            - MATTE
+            - NOT_FALLING
+            - DISHEVELED
+            - MATTED
+            - BALD_PATCHES
+            - THICK
+            - SPARSE
+            - PHYSIOLOGICAL_MOLT
+            - PATHOLOGICAL_MOLT
+            - FALLING
+            - NOT_FALLING_OUT
+        down:
+          type: string
+          enum:
+            - DENSE
+            - SPARSE
+            - NONE
+            - SOFT
+            - SMOOTH
+            - MATTE
+            - SHINY
+            - DRY
+            - DUSTY
+            - EVEN
+            - WHITE
+            - GRAY
+            - YELLOWISH
+            - DARK
+            - MOIST
+        hair:
+          type: string
+          enum:
+            - COARSE
+            - SPARSE
+        feathers:
+          type: string
+          enum:
+            - SHINY
+            - MATTE
+            - FULL
+            - FALLEN
+            - BROKEN
+        skinColor:
+          type: string
+          enum:
+            - PALE_VIOLET
+            - PALE
+            - RED
+            - BLUE
+            - YELLOW
+        skinHumidity:
+          type: string
+          enum:
+            - MODERATE
+            - HYPERHIDROSIS
+            - LOCAL_SWEAT
+            - DRY
+        skinSmell:
+          type: string
+          example: Normal
+        skinTemp:
+          type: string
+          enum:
+            - GENERAL_HIGH
+            - LOCAL_HIGH
+            - GENERAL_LOW
+            - LOCAL_LOW
+            - UNEVEN
+        skinSurface:
+          type: string
+          example: Smooth
+        skinElasticity:
+          type: string
+          enum:
+            - ELASTIC
+            - REDUCED
+            - NONE
+        skinSensitivity:
+          type: string
+          example: Normal
+        skinPain:
+          type: string
+          example: None
+        lymphSize:
+          type: string
+          enum:
+            - NORMAL
+            - ENLARGED
+        lymphShape:
+          type: string
+          enum:
+            - FLAT
+            - ROUND
+            - ENLARGED
+            - SWOLLEN
+        lymphSurface:
+          type: string
+          enum:
+            - SMOOTH
+            - ROUGH
+        lymphConsistency:
+          type: string
+          enum:
+            - DENSE
+            - SOFT
+            - SPECIFIC
+        lymphTemp:
+          type: string
+          enum:
+            - NORMAL
+            - ELEVATED
+        lymphPain:
+          type: string
+          enum:
+            - PAINLESS
+            - PAINFUL
+        lymphMobility:
+          type: string
+          enum:
+            - MOBILE
+            - LOW_MOBILITY
+      required:
+        - animalId
+    ClinicalExamEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        animalId:
+          type: string
+          description: Animal ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        pulse:
+          type: object
+          description: Pulse
+          example: 80
+        rumination:
+          type: object
+          description: Rumination
+          example: 5
+        temperature:
+          type: object
+          description: Temperature
+          example: 38.5
+        respiratoryRate:
+          type: object
+          description: Respiratory Rate
+          example: 20
+        bodyType:
+          type: string
+          description: Body Type
+          enum:
+            - STRONG
+            - MEDIUM
+            - WEAK
+        obesity:
+          type: string
+          description: Obesity
+          enum:
+            - HIGH
+            - MEDIUM
+            - LOW
+            - CACHEXIA
+        bodyPosition:
+          type: string
+          description: Body Position
+          enum:
+            - NATURAL
+            - FORCED_STANDING
+            - FORCED_LYING
+            - FORCED_SITTING
+            - NON_THERAPEUTIC
+            - INVOLUNTARY
+            - MANEGE
+            - CIRCULAR
+            - FORWARD
+            - BACKWARD
+            - ROLLING
+        constitution:
+          type: string
+          description: Constitution
+          enum:
+            - LOOSE
+            - DENSE
+            - HORSES
+            - BIRDS
+        temperament:
+          type: string
+          description: Temperament
+          enum:
+            - MELANCHOLIC
+            - PHLEGMATIC
+        wool:
+          type: string
+          description: Wool Type
+          enum:
+            - EVEN
+            - UNEVEN
+            - LYING_FLAT
+            - SHINY
+            - MATTE
+            - NOT_FALLING
+            - DISHEVELED
+            - MATTED
+            - BALD_PATCHES
+            - THICK
+            - SPARSE
+            - PHYSIOLOGICAL_MOLT
+            - PATHOLOGICAL_MOLT
+            - FALLING
+            - NOT_FALLING_OUT
+        down:
+          type: string
+          description: Down Type
+          enum:
+            - DENSE
+            - SPARSE
+            - NONE
+            - SOFT
+            - SMOOTH
+            - MATTE
+            - SHINY
+            - DRY
+            - DUSTY
+            - EVEN
+            - WHITE
+            - GRAY
+            - YELLOWISH
+            - DARK
+            - MOIST
+        hair:
+          type: string
+          description: Hair Type
+          enum:
+            - COARSE
+            - SPARSE
+        feathers:
+          type: string
+          description: Feather Type
+          enum:
+            - SHINY
+            - MATTE
+            - FULL
+            - FALLEN
+            - BROKEN
+        skinColor:
+          type: string
+          description: Skin Color
+          enum:
+            - PALE_VIOLET
+            - PALE
+            - RED
+            - BLUE
+            - YELLOW
+        skinHumidity:
+          type: string
+          description: Skin Humidity
+          enum:
+            - MODERATE
+            - HYPERHIDROSIS
+            - LOCAL_SWEAT
+            - DRY
+        skinSmell:
+          type: object
+          description: Skin Smell
+          example: Normal
+        skinTemp:
+          type: string
+          description: Skin Temperature
+          enum:
+            - GENERAL_HIGH
+            - LOCAL_HIGH
+            - GENERAL_LOW
+            - LOCAL_LOW
+            - UNEVEN
+        skinSurface:
+          type: object
+          description: Skin Surface
+          example: Smooth
+        skinElasticity:
+          type: string
+          description: Skin Elasticity
+          enum:
+            - ELASTIC
+            - REDUCED
+            - NONE
+        skinSensitivity:
+          type: object
+          description: Skin Sensitivity
+          example: Normal
+        skinPain:
+          type: object
+          description: Skin Pain
+          example: None
+        lymphSize:
+          type: string
+          description: Lymph Size
+          enum:
+            - NORMAL
+            - ENLARGED
+        lymphShape:
+          type: string
+          description: Lymph Shape
+          enum:
+            - FLAT
+            - ROUND
+            - ENLARGED
+            - SWOLLEN
+        lymphSurface:
+          type: string
+          description: Lymph Surface
+          enum:
+            - SMOOTH
+            - ROUGH
+        lymphConsistency:
+          type: string
+          description: Lymph Consistency
+          enum:
+            - DENSE
+            - SOFT
+            - SPECIFIC
+        lymphTemp:
+          type: string
+          description: Lymph Temperature
+          enum:
+            - NORMAL
+            - ELEVATED
+        lymphPain:
+          type: string
+          description: Lymph Pain
+          enum:
+            - PAINLESS
+            - PAINFUL
+        lymphMobility:
+          type: string
+          description: Lymph Mobility
+          enum:
+            - MOBILE
+            - LOW_MOBILITY
+        createdAt:
+          format: date-time
+          type: string
+          description: Creation date
+          example: '2023-01-01T00:00:00.000Z'
+        updatedAt:
+          format: date-time
+          type: string
+          description: Last update date
+          example: '2023-01-01T00:00:00.000Z'
+      required:
+        - id
+        - animalId
+        - createdAt
+        - updatedAt
+    PaginatedClinicalExamEntity:
+      type: object
+      properties:
+        data:
+          description: Array of clinical exams
+          type: array
+          items:
+            $ref: '#/components/schemas/ClinicalExamEntity'
+        meta:
+          description: Pagination metadata
+          allOf:
+            - $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateClinicalExamDto:
+      type: object
+      properties:
+        animalId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        pulse:
+          type: number
+          example: 80
+        rumination:
+          type: number
+          example: 5
+        temperature:
+          type: number
+          example: 38.5
+        respiratoryRate:
+          type: number
+          example: 20
+        bodyType:
+          type: string
+          enum:
+            - STRONG
+            - MEDIUM
+            - WEAK
+        obesity:
+          type: string
+          enum:
+            - HIGH
+            - MEDIUM
+            - LOW
+            - CACHEXIA
+        bodyPosition:
+          type: string
+          enum:
+            - NATURAL
+            - FORCED_STANDING
+            - FORCED_LYING
+            - FORCED_SITTING
+            - NON_THERAPEUTIC
+            - INVOLUNTARY
+            - MANEGE
+            - CIRCULAR
+            - FORWARD
+            - BACKWARD
+            - ROLLING
+        constitution:
+          type: string
+          enum:
+            - LOOSE
+            - DENSE
+            - HORSES
+            - BIRDS
+        temperament:
+          type: string
+          enum:
+            - MELANCHOLIC
+            - PHLEGMATIC
+        wool:
+          type: string
+          enum:
+            - EVEN
+            - UNEVEN
+            - LYING_FLAT
+            - SHINY
+            - MATTE
+            - NOT_FALLING
+            - DISHEVELED
+            - MATTED
+            - BALD_PATCHES
+            - THICK
+            - SPARSE
+            - PHYSIOLOGICAL_MOLT
+            - PATHOLOGICAL_MOLT
+            - FALLING
+            - NOT_FALLING_OUT
+        down:
+          type: string
+          enum:
+            - DENSE
+            - SPARSE
+            - NONE
+            - SOFT
+            - SMOOTH
+            - MATTE
+            - SHINY
+            - DRY
+            - DUSTY
+            - EVEN
+            - WHITE
+            - GRAY
+            - YELLOWISH
+            - DARK
+            - MOIST
+        hair:
+          type: string
+          enum:
+            - COARSE
+            - SPARSE
+        feathers:
+          type: string
+          enum:
+            - SHINY
+            - MATTE
+            - FULL
+            - FALLEN
+            - BROKEN
+        skinColor:
+          type: string
+          enum:
+            - PALE_VIOLET
+            - PALE
+            - RED
+            - BLUE
+            - YELLOW
+        skinHumidity:
+          type: string
+          enum:
+            - MODERATE
+            - HYPERHIDROSIS
+            - LOCAL_SWEAT
+            - DRY
+        skinSmell:
+          type: string
+          example: Normal
+        skinTemp:
+          type: string
+          enum:
+            - GENERAL_HIGH
+            - LOCAL_HIGH
+            - GENERAL_LOW
+            - LOCAL_LOW
+            - UNEVEN
+        skinSurface:
+          type: string
+          example: Smooth
+        skinElasticity:
+          type: string
+          enum:
+            - ELASTIC
+            - REDUCED
+            - NONE
+        skinSensitivity:
+          type: string
+          example: Normal
+        skinPain:
+          type: string
+          example: None
+        lymphSize:
+          type: string
+          enum:
+            - NORMAL
+            - ENLARGED
+        lymphShape:
+          type: string
+          enum:
+            - FLAT
+            - ROUND
+            - ENLARGED
+            - SWOLLEN
+        lymphSurface:
+          type: string
+          enum:
+            - SMOOTH
+            - ROUGH
+        lymphConsistency:
+          type: string
+          enum:
+            - DENSE
+            - SOFT
+            - SPECIFIC
+        lymphTemp:
+          type: string
+          enum:
+            - NORMAL
+            - ELEVATED
+        lymphPain:
+          type: string
+          enum:
+            - PAINLESS
+            - PAINFUL
+        lymphMobility:
+          type: string
+          enum:
+            - MOBILE
+            - LOW_MOBILITY
+    CreateFecesExamDto:
+      type: object
+      properties:
+        animalId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        fecesColorId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        fecesSmellId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        fecesConsistencyId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        fecesFormId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        amount:
+          type: number
+          example: 100
+        undigestedFood:
+          type: number
+          example: 5
+      required:
+        - animalId
+    FecesExamEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        animalId:
+          type: object
+          description: Animal ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        fecesColorId:
+          type: object
+          description: Feces Color ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        fecesSmellId:
+          type: object
+          description: Feces Smell ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        fecesConsistencyId:
+          type: object
+          description: Feces Consistency ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        fecesFormId:
+          type: object
+          description: Feces Form ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        amount:
+          type: object
+          description: Amount
+          example: 100
+        undigestedFood:
+          type: object
+          description: Undigested Food
+          example: 10
+        createdAt:
+          format: date-time
+          type: string
+          description: Creation date
+          example: '2023-01-01T00:00:00.000Z'
+        updatedAt:
+          format: date-time
+          type: string
+          description: Last update date
+          example: '2023-01-01T00:00:00.000Z'
+      required:
+        - id
+        - animalId
+        - fecesColorId
+        - fecesSmellId
+        - fecesConsistencyId
+        - fecesFormId
+        - createdAt
+        - updatedAt
+    PaginatedFecesExamEntity:
+      type: object
+      properties:
+        data:
+          description: Array of feces exams
+          type: array
+          items:
+            $ref: '#/components/schemas/FecesExamEntity'
+        meta:
+          description: Pagination metadata
+          allOf:
+            - $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateFecesExamDto:
+      type: object
+      properties:
+        animalId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        fecesColorId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        fecesSmellId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        fecesConsistencyId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        fecesFormId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        amount:
+          type: number
+          example: 100
+        undigestedFood:
+          type: number
+          example: 5
+    CreateMucosaExamDto:
+      type: object
+      properties:
+        mucosaType:
+          type: string
+          enum:
+            - ORAL
+            - NASAL
+            - OCULAR
+            - REPRODUCTIVE
+        animalId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        mucosaAppearanceId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+      required:
+        - mucosaType
+        - animalId
+    MucosaExamEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        mucosaType:
+          type: string
+          description: Mucosa Type
+          enum:
+            - ORAL
+            - NASAL
+            - OCULAR
+            - REPRODUCTIVE
+        animalId:
+          type: object
+          description: Animal ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        mucosaAppearanceId:
+          type: object
+          description: Mucosa Appearance ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        createdAt:
+          format: date-time
+          type: string
+          description: Creation date
+          example: '2023-01-01T00:00:00.000Z'
+        updatedAt:
+          format: date-time
+          type: string
+          description: Last update date
+          example: '2023-01-01T00:00:00.000Z'
+      required:
+        - id
+        - mucosaType
+        - animalId
+        - mucosaAppearanceId
+        - createdAt
+        - updatedAt
+    PaginatedMucosaExamEntity:
+      type: object
+      properties:
+        data:
+          description: Array of mucosa exams
+          type: array
+          items:
+            $ref: '#/components/schemas/MucosaExamEntity'
+        meta:
+          description: Pagination metadata
+          allOf:
+            - $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateMucosaExamDto:
+      type: object
+      properties:
+        mucosaType:
+          type: string
+          enum:
+            - ORAL
+            - NASAL
+            - OCULAR
+            - REPRODUCTIVE
+        animalId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        mucosaAppearanceId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+    CreateUrineExamDto:
+      type: object
+      properties:
+        analysisType:
+          type: string
+          enum:
+            - LABORATORY
+            - MACROSCOPIC
+            - MICROSCOPIC
+        animalId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        urineColorId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        amount:
+          type: number
+          example: 100
+        urineClarityId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        urineConsistencyId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        urineSmellId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        ph:
+          type: number
+          example: 6.5
+        acetone:
+          type: number
+          example: 0.5
+        protein:
+          type: number
+          example: 0.5
+        bilirubin:
+          type: number
+          example: 0.5
+        urobilinogen:
+          type: number
+          example: 0.5
+        sugar:
+          type: number
+          example: 0.5
+        leukocytes:
+          type: number
+          example: 5
+        epithelium:
+          type: number
+          example: 5
+        microbialBodies:
+          type: number
+          example: 5
+        erythrocytes:
+          type: number
+          example: 5
+        saltCrystals:
+          type: number
+          example: 5
+      required:
+        - analysisType
+        - animalId
+    UrineExamEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        analysisType:
+          type: string
+          description: Analysis Type
+          enum:
+            - LABORATORY
+            - MACROSCOPIC
+            - MICROSCOPIC
+        animalId:
+          type: object
+          description: Animal ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        urineColorId:
+          type: object
+          description: Urine Color ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        urineSmellId:
+          type: object
+          description: Urine Smell ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        urineClarityId:
+          type: object
+          description: Urine Clarity ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        urineConsistencyId:
+          type: object
+          description: Urine Consistency ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        amount:
+          type: object
+          description: Amount
+          example: 100
+        ph:
+          type: object
+          description: pH
+          example: 7
+        acetone:
+          type: object
+          description: Acetone
+          example: 0
+        protein:
+          type: object
+          description: Protein
+          example: 0
+        bilirubin:
+          type: object
+          description: Bilirubin
+          example: 0
+        urobilinogen:
+          type: object
+          description: Urobilinogen
+          example: 0
+        sugar:
+          type: object
+          description: Sugar
+          example: 0
+        leukocytes:
+          type: object
+          description: Leukocytes
+          example: 0
+        epithelium:
+          type: object
+          description: Epithelium
+          example: 0
+        microbialBodies:
+          type: object
+          description: Microbial Bodies
+          example: 0
+        erythrocytes:
+          type: object
+          description: Erythrocytes
+          example: 0
+        saltCrystals:
+          type: object
+          description: Salt Crystals
+          example: 0
+        createdAt:
+          format: date-time
+          type: string
+          description: Creation date
+          example: '2023-01-01T00:00:00.000Z'
+        updatedAt:
+          format: date-time
+          type: string
+          description: Last update date
+          example: '2023-01-01T00:00:00.000Z'
+      required:
+        - id
+        - analysisType
+        - animalId
+        - urineColorId
+        - urineSmellId
+        - urineClarityId
+        - urineConsistencyId
+        - createdAt
+        - updatedAt
+    PaginatedUrineExamEntity:
+      type: object
+      properties:
+        data:
+          description: Array of urine exams
+          type: array
+          items:
+            $ref: '#/components/schemas/UrineExamEntity'
+        meta:
+          description: Pagination metadata
+          allOf:
+            - $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateUrineExamDto:
+      type: object
+      properties:
+        analysisType:
+          type: string
+          enum:
+            - LABORATORY
+            - MACROSCOPIC
+            - MICROSCOPIC
+        animalId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        urineColorId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        amount:
+          type: number
+          example: 100
+        urineClarityId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        urineConsistencyId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        urineSmellId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        ph:
+          type: number
+          example: 6.5
+        acetone:
+          type: number
+          example: 0.5
+        protein:
+          type: number
+          example: 0.5
+        bilirubin:
+          type: number
+          example: 0.5
+        urobilinogen:
+          type: number
+          example: 0.5
+        sugar:
+          type: number
+          example: 0.5
+        leukocytes:
+          type: number
+          example: 5
+        epithelium:
+          type: number
+          example: 5
+        microbialBodies:
+          type: number
+          example: 5
+        erythrocytes:
+          type: number
+          example: 5
+        saltCrystals:
+          type: number
+          example: 5
+    CreateUrineColorDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          description: Name of the urine color in Russian
+          example: Желтый
+        name_uz:
+          type: string
+          description: Name of the urine color in Uzbek
+          example: Sariq
+        animalTypeId:
+          type: string
+          description: Animal type ID
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+          format: uuid
+      required:
+        - name_ru
+        - name_uz
+        - animalTypeId
+    UrineColorEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        name_ru:
+          type: string
+          description: Name in Russian
+          example: Красный
+        name_uz:
+          type: string
+          description: Name in Uzbek
+          example: Qizil
+        animalTypeId:
+          type: string
+          description: Animal Type ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+      required:
+        - id
+        - name_ru
+        - name_uz
+        - animalTypeId
+    PaginatedUrineColorEntity:
+      type: object
+      properties:
+        data:
+          description: Array of urine colors
+          type: array
+          items:
+            $ref: '#/components/schemas/UrineColorEntity'
+        meta:
+          description: Pagination metadata
+          allOf:
+            - $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateUrineColorDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          description: Name of the urine color in Russian
+          example: Желтый
+        name_uz:
+          type: string
+          description: Name of the urine color in Uzbek
+          example: Sariq
+        animalTypeId:
+          type: string
+          description: Animal type ID
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+          format: uuid
+    CreateUrineSmellDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          example: Аммиачный
+        name_uz:
+          type: string
+          example: Ammiakli
+        animalTypeId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+      required:
+        - name_ru
+        - name_uz
+        - animalTypeId
+    UrineSmellEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        name_ru:
+          type: string
+          description: Name in Russian
+          example: Аммиачный
+        name_uz:
+          type: string
+          description: Name in Uzbek
+          example: Ammiakli
+        animalTypeId:
+          type: string
+          description: Animal Type ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+      required:
+        - id
+        - name_ru
+        - name_uz
+        - animalTypeId
+    PaginatedUrineSmellEntity:
+      type: object
+      properties:
+        data:
+          description: Array of urine smells
+          type: array
+          items:
+            $ref: '#/components/schemas/UrineSmellEntity'
+        meta:
+          description: Pagination metadata
+          allOf:
+            - $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateUrineSmellDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          example: Аммиачный
+        name_uz:
+          type: string
+          example: Ammiakli
+        animalTypeId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+    CreateUrineClarityDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          example: Прозрачная
+        name_uz:
+          type: string
+          example: Tiniq
+        animalTypeId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+      required:
+        - name_ru
+        - name_uz
+        - animalTypeId
+    UrineClarityEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        name_ru:
+          type: string
+          description: Name in Russian
+          example: Прозрачная
+        name_uz:
+          type: string
+          description: Name in Uzbek
+          example: Tiniq
+        animalTypeId:
+          type: string
+          description: Animal Type ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+      required:
+        - id
+        - name_ru
+        - name_uz
+        - animalTypeId
+    PaginatedUrineClarityEntity:
+      type: object
+      properties:
+        data:
+          description: Array of urine clarities
+          type: array
+          items:
+            $ref: '#/components/schemas/UrineClarityEntity'
+        meta:
+          description: Pagination metadata
+          allOf:
+            - $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateUrineClarityDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          example: Прозрачная
+        name_uz:
+          type: string
+          example: Tiniq
+        animalTypeId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+    CreateUrineConsistencyDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          example: Жидкая
+        name_uz:
+          type: string
+          example: Suyuq
+        animalTypeId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+      required:
+        - name_ru
+        - name_uz
+        - animalTypeId
+    UrineConsistencyEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        name_ru:
+          type: string
+          description: Name in Russian
+          example: Водянистая
+        name_uz:
+          type: string
+          description: Name in Uzbek
+          example: Suvli
+        animalTypeId:
+          type: string
+          description: Animal Type ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+      required:
+        - id
+        - name_ru
+        - name_uz
+        - animalTypeId
+    PaginatedUrineConsistencyEntity:
+      type: object
+      properties:
+        data:
+          description: Array of urine consistencies
+          type: array
+          items:
+            $ref: '#/components/schemas/UrineConsistencyEntity'
+        meta:
+          description: Pagination metadata
+          allOf:
+            - $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateUrineConsistencyDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          example: Жидкая
+        name_uz:
+          type: string
+          example: Suyuq
+        animalTypeId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+    CreateFecesColorDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          example: Коричневый
+        name_uz:
+          type: string
+          example: Jigarrang
+        animalTypeId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+      required:
+        - name_ru
+        - name_uz
+        - animalTypeId
+    FecesColorEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        name_ru:
+          type: string
+          description: Name in Russian
+          example: Коричневый
+        name_uz:
+          type: string
+          description: Name in Uzbek
+          example: Jigarrang
+        animalTypeId:
+          type: string
+          description: Animal Type ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+      required:
+        - id
+        - name_ru
+        - name_uz
+        - animalTypeId
+    PaginatedFecesColorEntity:
+      type: object
+      properties:
+        data:
+          description: Array of feces colors
+          type: array
+          items:
+            $ref: '#/components/schemas/FecesColorEntity'
+        meta:
+          description: Pagination metadata
+          allOf:
+            - $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateFecesColorDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          example: Коричневый
+        name_uz:
+          type: string
+          example: Jigarrang
+        animalTypeId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+    CreateFecesSmellDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          example: Зловонный
+        name_uz:
+          type: string
+          example: Badbo'y
+        animalTypeId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+      required:
+        - name_ru
+        - name_uz
+        - animalTypeId
+    FecesSmellEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        name_ru:
+          type: string
+          description: Name in Russian
+          example: Зловонный
+        name_uz:
+          type: string
+          description: Name in Uzbek
+          example: Badbo'y
+        animalTypeId:
+          type: string
+          description: Animal Type ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+      required:
+        - id
+        - name_ru
+        - name_uz
+        - animalTypeId
+    PaginatedFecesSmellEntity:
+      type: object
+      properties:
+        data:
+          description: Array of feces smells
+          type: array
+          items:
+            $ref: '#/components/schemas/FecesSmellEntity'
+        meta:
+          description: Pagination metadata
+          allOf:
+            - $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateFecesSmellDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          example: Зловонный
+        name_uz:
+          type: string
+          example: Badbo'y
+        animalTypeId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+    CreateFecesConsistencyDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          example: Плотная
+        name_uz:
+          type: string
+          example: Qattiq
+        animalTypeId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+      required:
+        - name_ru
+        - name_uz
+        - animalTypeId
+    FecesConsistencyEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        name_ru:
+          type: string
+          description: Name in Russian
+          example: Плотная
+        name_uz:
+          type: string
+          description: Name in Uzbek
+          example: Qattiq
+        animalTypeId:
+          type: string
+          description: Animal Type ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+      required:
+        - id
+        - name_ru
+        - name_uz
+        - animalTypeId
+    PaginatedFecesConsistencyEntity:
+      type: object
+      properties:
+        data:
+          description: Array of feces consistencies
+          type: array
+          items:
+            $ref: '#/components/schemas/FecesConsistencyEntity'
+        meta:
+          description: Pagination metadata
+          allOf:
+            - $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateFecesConsistencyDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          example: Плотная
+        name_uz:
+          type: string
+          example: Qattiq
+        animalTypeId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+    CreateFecesFormDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          example: Оформленный
+        name_uz:
+          type: string
+          example: Shakllangan
+        animalTypeId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+      required:
+        - name_ru
+        - name_uz
+        - animalTypeId
+    FecesFormEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        name_ru:
+          type: string
+          description: Name in Russian
+          example: Оформленный
+        name_uz:
+          type: string
+          description: Name in Uzbek
+          example: Shakllangan
+        animalTypeId:
+          type: string
+          description: Animal Type ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+      required:
+        - id
+        - name_ru
+        - name_uz
+        - animalTypeId
+    PaginatedFecesFormEntity:
+      type: object
+      properties:
+        data:
+          description: Array of feces forms
+          type: array
+          items:
+            $ref: '#/components/schemas/FecesFormEntity'
+        meta:
+          description: Pagination metadata
+          allOf:
+            - $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateFecesFormDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          example: Оформленный
+        name_uz:
+          type: string
+          example: Shakllangan
+        animalTypeId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+    CreateMucosaAppearanceDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          description: Name of the mucosa appearance in Russian
+          example: Бледный
+        name_uz:
+          type: string
+          description: Name of the mucosa appearance in Uzbek
+          example: Oqargan
+        mucosaType:
+          type: string
+          enum:
+            - ORAL
+            - NASAL
+            - OCULAR
+            - REPRODUCTIVE
+          description: Type of mucosa
+          example: ORAL
+        animalTypeId:
+          type: string
+          description: Animal type ID
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+          format: uuid
+      required:
+        - name_ru
+        - name_uz
+        - mucosaType
+        - animalTypeId
+    MucosaAppearanceEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        name_ru:
+          type: string
+          description: Name in Russian
+          example: Бледная
+        name_uz:
+          type: string
+          description: Name in Uzbek
+          example: Oqargan
+        mucosaType:
+          type: string
+          description: Mucosa Type
+          enum:
+            - ORAL
+            - NASAL
+            - OCULAR
+            - REPRODUCTIVE
+        animalTypeId:
+          type: string
+          description: Animal Type ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+      required:
+        - id
+        - name_ru
+        - name_uz
+        - mucosaType
+        - animalTypeId
+    PaginatedMucosaAppearanceEntity:
+      type: object
+      properties:
+        data:
+          description: Array of mucosa appearances
+          type: array
+          items:
+            $ref: '#/components/schemas/MucosaAppearanceEntity'
+        meta:
+          description: Pagination metadata
+          allOf:
+            - $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateMucosaAppearanceDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          description: Name of the mucosa appearance in Russian
+          example: Бледный
+        name_uz:
+          type: string
+          description: Name of the mucosa appearance in Uzbek
+          example: Oqargan
+        mucosaType:
+          type: string
+          enum:
+            - ORAL
+            - NASAL
+            - OCULAR
+            - REPRODUCTIVE
+          description: Type of mucosa
+          example: ORAL
+        animalTypeId:
+          type: string
+          description: Animal type ID
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+          format: uuid
+    CreateDiseaseDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          example: Стоматит
+        name_uz:
+          type: string
+          example: Stomatit
+        diseaseCategoryId:
+          type: string
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+      required:
+        - name_ru
+        - name_uz
+        - diseaseCategoryId
+    DiseaseCategoryEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+          format: uuid
+        name_ru:
+          type: string
+          example: Болезни пищеварительной системы
+        name_uz:
+          type: string
+          example: Hazm qilish tizimi kasalliklari
+        parentId:
+          type: object
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+        parent:
+          $ref: '#/components/schemas/DiseaseCategoryEntity'
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/DiseaseCategoryEntity'
+      required:
+        - id
+        - name_ru
+        - name_uz
+    DiseaseEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name_ru:
+          type: string
+        name_uz:
+          type: string
+        diseaseCategoryId:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+        diseaseCategory:
+          $ref: '#/components/schemas/DiseaseCategoryEntity'
+      required:
+        - id
+        - name_ru
+        - name_uz
+        - diseaseCategoryId
+        - createdAt
+        - updatedAt
+    PaginatedDiseaseEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DiseaseEntity'
+        meta:
+          $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateDiseaseDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          example: Стоматит
+        name_uz:
+          type: string
+          example: Stomatit
+        diseaseCategoryId:
+          type: string
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+    CreateDiseaseCategoryDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          description: Name in Russian
+          example: Болезни пищеварительной системы
+        name_uz:
+          type: string
+          description: Name in Uzbek
+          example: Hazm qilish tizimi kasalliklari
+        parentId:
+          type: string
+          description: Parent category ID (for hierarchical structure)
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+      required:
+        - name_ru
+        - name_uz
+    PaginatedDiseaseCategoryEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DiseaseCategoryEntity'
+        meta:
+          $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateDiseaseCategoryDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          description: Name in Russian
+          example: Болезни пищеварительной системы
+        name_uz:
+          type: string
+          description: Name in Uzbek
+          example: Hazm qilish tizimi kasalliklari
+        parentId:
+          type: string
+          description: Parent category ID (for hierarchical structure)
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+    CreateProphylaxisDto:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - VACCINE
+            - IMMUNIZATION
+            - DEWORMING
+          example: VACCINE
+        animalId:
+          type: string
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+        itemId:
+          type: string
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+        detailId:
+          type: string
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+        date:
+          type: string
+          example: '2024-03-15T00:00:00Z'
+        notes:
+          type: string
+          example: Vaccination completed successfully
+      required:
+        - type
+        - animalId
+        - itemId
+        - date
+    ProphylaxisEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type: string
+          enum:
+            - VACCINE
+            - IMMUNIZATION
+            - DEWORMING
+        animalId:
+          type: string
+        itemId:
+          type: string
+        detailId:
+          type: object
+        date:
+          format: date-time
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      required:
+        - id
+        - type
+        - animalId
+        - itemId
+        - date
+        - createdAt
+        - updatedAt
+    PaginatedProphylaxisEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProphylaxisEntity'
+        meta:
+          $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateProphylaxisDto:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - VACCINE
+            - IMMUNIZATION
+            - DEWORMING
+          example: VACCINE
+        animalId:
+          type: string
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+        itemId:
+          type: string
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+        detailId:
+          type: string
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+        date:
+          type: string
+          example: '2024-03-15T00:00:00Z'
+        notes:
+          type: string
+          example: Vaccination completed successfully
+    CreateProphylaxisItemDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          example: Вакцина против бруцеллёза
+        name_uz:
+          type: string
+          example: Brucella vaksina
+        type:
+          type: string
+          enum:
+            - VACCINE
+            - IMMUNIZATION
+            - DEWORMING
+          example: VACCINE
+      required:
+        - name_ru
+        - name_uz
+        - type
+    ProphylaxisItemEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name_ru:
+          type: string
+        name_uz:
+          type: string
+        type:
+          type: string
+          enum:
+            - VACCINE
+            - IMMUNIZATION
+            - DEWORMING
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      required:
+        - id
+        - name_ru
+        - name_uz
+        - type
+        - createdAt
+        - updatedAt
+    PaginatedProphylaxisItemEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProphylaxisItemEntity'
+        meta:
+          $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateProphylaxisItemDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          example: Вакцина против бруцеллёза
+        name_uz:
+          type: string
+          example: Brucella vaksina
+        type:
+          type: string
+          enum:
+            - VACCINE
+            - IMMUNIZATION
+            - DEWORMING
+          example: VACCINE
+    CreateProphylaxisDetailDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          example: S19
+        name_uz:
+          type: string
+          example: S19
+        itemId:
+          type: string
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+      required:
+        - name_ru
+        - name_uz
+        - itemId
+    ProphylaxisDetailEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name_ru:
+          type: string
+        name_uz:
+          type: string
+        itemId:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      required:
+        - id
+        - name_ru
+        - name_uz
+        - itemId
+        - createdAt
+        - updatedAt
+    PaginatedProphylaxisDetailEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProphylaxisDetailEntity'
+        meta:
+          $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateProphylaxisDetailDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          example: S19
+        name_uz:
+          type: string
+          example: S19
+        itemId:
+          type: string
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+    CreateAnimalDto:
+      type: object
+      properties:
+        arrivalDate:
+          type: string
+          description: Date when the animal arrived
+          example: '2024-01-15T00:00:00Z'
+        age:
+          type: number
+          description: Age of the animal in months
+          example: 12
+        sex:
+          type: string
+          description: Sex of the animal
+          enum:
+            - MALE
+            - FEMALE
+            - NEUTERED
+            - SPAYED
+            - UNKNOWN
+          example: FEMALE
+        farmerId:
+          type: string
+          description: UUID of the farmer who owns the animal
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+        animalTypeId:
+          type: string
+          description: UUID of the animal type
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+        animalBreedId:
+          type: string
+          description: UUID of the animal breed
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+        animalColorId:
+          type: string
+          description: UUID of the animal color
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+      required:
+        - arrivalDate
+        - age
+        - sex
+        - farmerId
+        - animalTypeId
+        - animalBreedId
+        - animalColorId
+    AnimalEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the animal
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+          format: uuid
+        arrivalDate:
+          format: date-time
+          type: string
+          description: Date of arrival
+          example: '2024-01-15T00:00:00.000Z'
+        age:
+          type: number
+          description: Age of the animal (in months)
+          example: 12
+        sex:
+          type: string
+          description: Sex of the animal
+          enum:
+            - MALE
+            - FEMALE
+            - NEUTERED
+            - SPAYED
+            - UNKNOWN
+          example: FEMALE
+        farmerId:
+          type: string
+          description: ID of the farmer
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+        animalTypeId:
+          type: string
+          description: ID of the animal type
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+        animalBreedId:
+          type: string
+          description: ID of the animal breed
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+        animalColorId:
+          type: string
+          description: ID of the animal color
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+        createdAt:
+          format: date-time
+          type: string
+          description: Record creation timestamp
+          example: '2024-01-15T10:00:00.000Z'
+        updatedAt:
+          format: date-time
+          type: string
+          description: Record last update timestamp
+          example: '2024-01-15T10:00:00.000Z'
+      required:
+        - id
+        - arrivalDate
+        - age
+        - sex
+        - farmerId
+        - animalTypeId
+        - animalBreedId
+        - animalColorId
+        - createdAt
+        - updatedAt
+    PaginatedAnimalEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnimalEntity'
+        meta:
+          $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateAnimalDto:
+      type: object
+      properties:
+        arrivalDate:
+          type: string
+          description: Date when the animal arrived
+          example: '2024-01-15T00:00:00Z'
+        age:
+          type: number
+          description: Age of the animal in months
+          example: 12
+        sex:
+          type: string
+          description: Sex of the animal
+          enum:
+            - MALE
+            - FEMALE
+            - NEUTERED
+            - SPAYED
+            - UNKNOWN
+          example: FEMALE
+        farmerId:
+          type: string
+          description: UUID of the farmer who owns the animal
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+        animalTypeId:
+          type: string
+          description: UUID of the animal type
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+        animalBreedId:
+          type: string
+          description: UUID of the animal breed
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+        animalColorId:
+          type: string
+          description: UUID of the animal color
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+    CreateAnimalTypeDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          description: Name of the animal type in Russian
+          example: Крупный рогатый скот
+        name_uz:
+          type: string
+          description: Name of the animal type in Uzbek
+          example: Qoramol
+        parentId:
+          type: string
+          description: Parent animal type ID (for hierarchical types)
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+      required:
+        - name_ru
+        - name_uz
+    AnimalTypeEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the animal type
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+          format: uuid
+        name_ru:
+          type: string
+          description: Name of the animal type in Russian
+          example: Крупный рогатый скот
+        name_uz:
+          type: string
+          description: Name of the animal type in Uzbek
+          example: Qoramol
+        parentId:
+          type: object
+          description: Parent animal type ID (for hierarchical types)
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+        parent:
+          description: Parent animal type details
+          allOf:
+            - $ref: '#/components/schemas/AnimalTypeEntity'
+        children:
+          description: Child animal types
+          type: array
+          items:
+            $ref: '#/components/schemas/AnimalTypeEntity'
+      required:
+        - id
+        - name_ru
+        - name_uz
+    PaginatedAnimalTypeEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnimalTypeEntity'
+        meta:
+          $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateAnimalTypeDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          description: Name of the animal type in Russian
+          example: Крупный рогатый скот
+        name_uz:
+          type: string
+          description: Name of the animal type in Uzbek
+          example: Qoramol
+        parentId:
+          type: string
+          description: Parent animal type ID (for hierarchical types)
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+    CreateAnimalBreedDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          description: Name of the breed in Russian
+          example: Голштинская порода
+        name_uz:
+          type: string
+          description: Name of the breed in Uzbek
+          example: Holstein
+      required:
+        - name_ru
+        - name_uz
+    AnimalBreedEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+          format: uuid
+        name_ru:
+          type: string
+          description: Name in Russian
+          example: Голштинская порода
+        name_uz:
+          type: string
+          description: Name in Uzbek
+          example: Holstein
+      required:
+        - id
+        - name_ru
+        - name_uz
+    PaginatedAnimalBreedEntity:
+      type: object
+      properties:
+        data:
+          description: Array of breeds
+          type: array
+          items:
+            $ref: '#/components/schemas/AnimalBreedEntity'
+        meta:
+          description: Pagination metadata
+          allOf:
+            - $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateAnimalBreedDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          description: Name of the breed in Russian
+          example: Голштинская порода
+        name_uz:
+          type: string
+          description: Name of the breed in Uzbek
+          example: Holstein
+    CreateAnimalColorDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          description: Name of the color in Russian
+          example: Белый
+        name_uz:
+          type: string
+          description: Name of the color in Uzbek
+          example: Oq
+      required:
+        - name_ru
+        - name_uz
+    AnimalColorEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+          format: uuid
+        name_ru:
+          type: string
+          description: Name in Russian
+          example: Белый
+        name_uz:
+          type: string
+          description: Name in Uzbek
+          example: Oq
+      required:
+        - id
+        - name_ru
+        - name_uz
+    PaginatedAnimalColorEntity:
+      type: object
+      properties:
+        data:
+          description: Array of colors
+          type: array
+          items:
+            $ref: '#/components/schemas/AnimalColorEntity'
+        meta:
+          description: Pagination metadata
+          allOf:
+            - $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateAnimalColorDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          description: Name of the color in Russian
+          example: Белый
+        name_uz:
+          type: string
+          description: Name of the color in Uzbek
+          example: Oq
+    CreateRegionDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          description: Name of the region in Russian
+          example: Ташкент
+        name_uz:
+          type: string
+          description: Name of the region in Uzbek
+          example: Toshkent
+      required:
+        - name_ru
+        - name_uz
+    RegionEntity:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identifier for the region
+          example: 1
+        name_ru:
+          type: string
+          description: Name of the region in Russian
+          example: Ташкент
+        name_uz:
+          type: string
+          description: Name of the region in Uzbek
+          example: Toshkent
+        districts:
+          description: List of districts in this region
+          type: array
+          items:
+            $ref: '#/components/schemas/DistrictEntity'
+      required:
+        - id
+        - name_ru
+        - name_uz
+    DistrictEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the district
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+          format: uuid
+        name_ru:
+          type: string
+          description: Name of the district in Russian
+          example: Юнусабад
+        name_uz:
+          type: string
+          description: Name of the district in Uzbek
+          example: Yunusabad
+        regionId:
+          type: number
+          description: ID of the parent region
+          example: 1
+        region:
+          description: Parent region details
+          allOf:
+            - $ref: '#/components/schemas/RegionEntity'
+      required:
+        - id
+        - name_ru
+        - name_uz
+        - regionId
+    PaginatedRegionEntity:
+      type: object
+      properties:
+        data:
+          description: Array of regions
+          type: array
+          items:
+            $ref: '#/components/schemas/RegionEntity'
+        meta:
+          description: Pagination metadata
+          allOf:
+            - $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateRegionDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          description: Name of the region in Russian
+          example: Ташкент
+        name_uz:
+          type: string
+          description: Name of the region in Uzbek
+          example: Toshkent
+    CreateDistrictDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          description: Name of the district in Russian
+          example: Юнусабад
+        name_uz:
+          type: string
+          description: Name of the district in Uzbek
+          example: Yunusabad
+        regionId:
+          type: number
+          description: ID of the parent region
+          example: 1
+      required:
+        - name_ru
+        - name_uz
+        - regionId
+    PaginatedDistrictEntity:
+      type: object
+      properties:
+        data:
+          description: Array of districts
+          type: array
+          items:
+            $ref: '#/components/schemas/DistrictEntity'
+        meta:
+          description: Pagination metadata
+          allOf:
+            - $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateDistrictDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          description: Name of the district in Russian
+          example: Юнусабад
+        name_uz:
+          type: string
+          description: Name of the district in Uzbek
+          example: Yunusabad
+        regionId:
+          type: number
+          description: ID of the parent region
+          example: 1
+    CreateVetStationDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          description: Name of the vet station in Russian
+          example: Ветеринарная станция №1
+        name_uz:
+          type: string
+          description: Name of the vet station in Uzbek
+          example: Veterinariya stantsiyasi №1
+        address:
+          type: string
+          description: Address of the vet station
+          example: Улица Навои, 15
+        districtId:
+          type: string
+          description: ID of the district
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+          format: uuid
+      required:
+        - name_ru
+        - name_uz
+        - address
+        - districtId
+    VetStationEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the vet station
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+          format: uuid
+        name_ru:
+          type: string
+          description: Name of the vet station in Russian
+          example: Ветеринарная станция №1
+        name_uz:
+          type: string
+          description: Name of the vet station in Uzbek
+          example: Veterinariya stantsiyasi №1
+        address:
+          type: string
+          description: Address of the vet station
+          example: Улица Навои, 15
+        districtId:
+          type: string
+          description: ID of the district
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+        createdAt:
+          format: date-time
+          type: string
+          description: Created timestamp
+          example: '2023-08-15T12:34:56.789Z'
+        updatedAt:
+          format: date-time
+          type: string
+          description: Updated timestamp
+          example: '2023-08-15T12:34:56.789Z'
+        district:
+          description: District details
+          allOf:
+            - $ref: '#/components/schemas/DistrictEntity'
+      required:
+        - id
+        - name_ru
+        - name_uz
+        - address
+        - districtId
+        - createdAt
+        - updatedAt
+    PaginatedVetStationEntity:
+      type: object
+      properties:
+        data:
+          description: Array of vet stations
+          type: array
+          items:
+            $ref: '#/components/schemas/VetStationEntity'
+        meta:
+          description: Pagination metadata
+          allOf:
+            - $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateVetStationDto:
+      type: object
+      properties:
+        name_ru:
+          type: string
+          description: Name of the vet station in Russian
+          example: Ветеринарная станция №1
+        name_uz:
+          type: string
+          description: Name of the vet station in Uzbek
+          example: Veterinariya stantsiyasi №1
+        address:
+          type: string
+          description: Address of the vet station
+          example: Улица Навои, 15
+        districtId:
+          type: string
+          description: ID of the district
+          example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
+          format: uuid

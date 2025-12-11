@@ -35,215 +35,406 @@ export type GENERAL_BLOOD = keyof typeof GENERAL_BLOOD_TESTS;
 
 export type UserData = {
   userId: number;
-  userRole: UserRole;
+  role: UserRole;
 
   farmerId: number;
   veterinarianId: number;
 };
 
-export type UserRole = "ADMIN" | "VETERINARIAN" | "FARMER";
+export type UserRole = "SUPER_ADMIN" | "ADMIN" | "VETERINARIAN" | "FARMER";
 
-export type Gender = "MALE" | "FEMALE";
+export type UserGender = "MALE" | "FEMALE";
 
-export type BodyType = "WEAK" | "MEDIUM" | "STRONG";
+export type BodyType = "STRONG" | "MEDIUM" | "WEAK";
 
-export type ObesityType = "HIGH" | "MEDIUM" | "LOW" | "LEAN" | "CACHEXIA";
+export type ObesityType = "HIGH" | "MEDIUM" | "LOW" | "CACHEXIA";
 
-export type BodyStructure = "COARSE" | "SLIM" | "DENSE" | "WEAK";
+export type BodyPosition = "NATURAL" | "FORCED_STANDING" | "FORCED_LYING" | "FORCED_SITTING" | "NON_THERAPEUTIC" | "INVOLUNTARY" | "MANEGE" | "CIRCULAR" | "FORWARD" | "BACKWARD" | "ROLLING";
 
-export type BodyPosition = "NATURAL" | "FORCED" | "FORCED_STANDING" | "FORCED_LYING" | "FORCED_SITTING" | "NON_THERAPEUTIC";
+export type Constitution = "LOOSE" | "DENSE" | "HORSES" | "BIRDS";
 
-export type CharacterType = "MOBILE" | "CALM";
+export type Temperament = "MELANCHOLIC" | "PHLEGMATIC";
 
-export type InspectionType = "MORNING" | "EVENING" | "DISEASE" | "GENERAL";
+export type WoolType = "EVEN" | "UNEVEN" | "LYING_FLAT" | "SHINY" | "MATTE" | "NOT_FALLING" | "DISHEVELED" | "MATTED" | "BALD_PATCHES" | "THICK" | "SPARSE" | "PHYSIOLOGICAL_MOLT" | "PATHOLOGICAL_MOLT" | "FALLING" | "NOT_FALLING_OUT";
 
-export type SmellType = "PUNGENT" | "WEAK" | "HAS" | "NO";
+export type DownType = "DENSE" | "SPARSE" | "NONE" | "SOFT" | "SMOOTH" | "MATTE" | "SHINY" | "DRY" | "DUSTY" | "EVEN" | "WHITE" | "GRAY" | "YELLOWISH" | "DARK" | "MOIST";
 
-export type DungForm = "NORMAL" | "SOLID" | "LIQUID" | "MEDIUM";
+export type HairType = "COARSE" | "SPARSE";
 
-export type UrineClarity = "CLEAR" | "NOT_CLEAR";
+export type FeatherType = "SHINY" | "MATTE" | "FULL" | "FALLEN" | "BROKEN";
 
-export type DungClarity = "CLEAR" | "NOT_CLEAR";
+export type SkinColor = "PALE_VIOLET" | "PALE" | "RED" | "BLUE" | "YELLOW";
+
+export type SkinHumidity = "MODERATE" | "HYPERHIDROSIS" | "LOCAL_SWEAT" | "DRY";
+
+export type SkinTemp = "GENERAL_HIGH" | "LOCAL_HIGH" | "GENERAL_LOW" | "LOCAL_LOW" | "UNEVEN";
+
+export type SkinElasticity = "ELASTIC" | "REDUCED" | "NONE";
+
+export type LymphSize = "NORMAL" | "ENLARGED";
+
+export type LymphShape = "FLAT" | "ROUND" | "ENLARGED" | "SWOLLEN";
+
+export type LymphSurface = "SMOOTH" | "ROUGH";
+
+export type LymphConsistency = "DENSE" | "SOFT" | "SPECIFIC";
+
+export type LymphTemp = "NORMAL" | "ELEVATED";
+
+export type LymphPain = "PAINLESS" | "PAINFUL";
+
+export type LymphMobility = "MOBILE" | "LOW_MOBILITY";
+
+export type UrineAnalysisType = "LABORATORY" | "MACROSCOPIC" | "MICROSCOPIC";
+
+export type FecesAnalysisType = "MACROSCOPIC" | "MICROSCOPIC";
+
+export type MucosaType = "ORAL" | "NASAL" | "OCULAR" | "REPRODUCTIVE";
+
+export type AnimalSex = "MALE" | "FEMALE" | "NEUTERED" | "SPAYED" | "UNKNOWN";
+
+export type ProphylaxisType = "VACCINE" | "IMMUNIZATION" | "DEWORMING";
+
+export interface User {
+  id: string;
+  username: string;
+  password: string;
+  firstName: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
+  avatar?: string;
+  gender?: UserGender;
+  birthDate?: Date;
+  address?: string;
+  role: UserRole;
+  districtId: string;
+  district: District;
+  refreshTokenHash?: string;
+  tokenExpiresAt?: Date;
+  isActive: boolean;
+  deletedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  veterinarianProfile?: VetProfile;
+  farmerProfile?: FarmerProfile;
+}
+
+export interface VetProfile {
+  id: string;
+  user: User;
+  licenseNumber?: string;
+  specialization?: string;
+  experience?: number;
+  farmers: FarmerProfile[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface FarmerProfile {
+  id: string;
+  user: User;
+  veterinarianId: string;
+  veterinarian: VetProfile;
+  farmName?: string;
+  farmSize?: number;
+  animals: Animal[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface ClinicalExam {
+  id: string;
+  animalId: string;
+  animal: Animal;
+  pulse?: number;
+  rumination?: number;
+  temperature?: number;
+  respiratoryRate?: number;
+  bodyType?: BodyType;
+  obesity?: ObesityType;
+  bodyPosition?: BodyPosition;
+  constitution?: Constitution;
+  temperament?: Temperament;
+  wool?: WoolType;
+  down?: DownType;
+  hair?: HairType;
+  feathers?: FeatherType;
+  skinColor?: SkinColor;
+  skinHumidity?: SkinHumidity;
+  skinSmell?: string;
+  skinTemp?: SkinTemp;
+  skinSurface?: string;
+  skinElasticity?: SkinElasticity;
+  skinSensitivity?: string;
+  skinPain?: string;
+  lymphSize?: LymphSize;
+  lymphShape?: LymphShape;
+  lymphSurface?: LymphSurface;
+  lymphConsistency?: LymphConsistency;
+  lymphTemp?: LymphTemp;
+  lymphPain?: LymphPain;
+  lymphMobility?: LymphMobility;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface BloodExam {
+  id: string;
+  animalId?: string;
+  animal?: Animal;
+  coe?: number;
+  erythrocyteCount?: number;
+  leukocyteCount?: number;
+  thrombocyteCount?: number;
+  hemoglobin?: number;
+  glutathione?: number;
+  waterPercentage?: number;
+  dryResidue?: number;
+  totalProtein?: number;
+  totalCalcium?: number;
+  organicPhosphorus?: number;
+  albumin?: number;
+  alphaGlobulin?: number;
+  betaGlobulin?: number;
+  gammaGlobulin?: number;
+  residualNitrogen?: number;
+  urea?: number;
+  uricAcid?: number;
+  creatine?: number;
+  creatinine?: number;
+  alkalineReserve?: number;
+  glucose?: number;
+  ketoneBodies?: number;
+  totalBilirubin?: number;
+  directBilirubin?: number;
+  totalCholesterol?: number;
+  totalLipids?: number;
+  phospholipids?: number;
+  lacticAcid?: number;
+  pyruvicAcid?: number;
+  citricAcid?: number;
+  carotene?: number;
+  vitaminA?: number;
+  vitaminB?: number;
+  vitaminC?: number;
+  conclusion?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface UrineExam {
+  id: string;
+  analysisType: UrineAnalysisType;
+  animalId?: string;
+  animal?: Animal;
+  urineColorId?: string;
+  urineColor?: UrineColor;
+  amount?: number;
+  urineClarityId?: string;
+  urineClarity?: UrineClarity;
+  urineConsistencyId?: string;
+  urineConsistency?: UrineConsistency;
+  urineSmellId?: string;
+  urineSmell?: UrineSmell;
+  ph?: number;
+  acetone?: number;
+  protein?: number;
+  bilirubin?: number;
+  urobilinogen?: number;
+  sugar?: number;
+  leukocytes?: number;
+  epithelium?: number;
+  microbialBodies?: number;
+  erythrocytes?: number;
+  saltCrystals?: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface UrineColor {
+  id: string;
+  name_ru: string;
+  name_uz: string;
+  animalTypeId: string;
+  animalType: AnimalType;
+  urineTests: UrineExam[];
+}
+
+export interface UrineSmell {
+  id: string;
+  name_ru: string;
+  name_uz: string;
+  animalTypeId: string;
+  animalType: AnimalType;
+  urineAnalyses: UrineExam[];
+}
+
+export interface UrineClarity {
+  id: string;
+  name_ru: string;
+  name_uz: string;
+  animalTypeId: string;
+  animalType: AnimalType;
+  urineAnalyses: UrineExam[];
+}
+
+export interface UrineConsistency {
+  id: string;
+  name_ru: string;
+  name_uz: string;
+  animalTypeId: string;
+  animalType: AnimalType;
+  urineAnalyses: UrineExam[];
+}
+
+export interface FecesExam {
+  id: string;
+  animalId?: string;
+  animal?: Animal;
+  fecesColorId?: string;
+  fecesColor?: FecesColor;
+  fecesSmellId?: string;
+  fecesSmell?: FecesSmell;
+  fecesConsistencyId?: string;
+  fecesConsistency?: FecesConsistency;
+  fecesFormId?: string;
+  fecesForm?: FecesForm;
+  amount?: number;
+  undigestedFood?: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface FecesColor {
+  id: string;
+  name_ru: string;
+  name_uz: string;
+  animalTypeId: string;
+  animalType: AnimalType;
+  fecesAnalyses: FecesExam[];
+}
+
+export interface FecesSmell {
+  id: string;
+  name_ru: string;
+  name_uz: string;
+  animalTypeId: string;
+  animalType: AnimalType;
+  fecesAnalyses: FecesExam[];
+}
+
+export interface FecesConsistency {
+  id: string;
+  name_ru: string;
+  name_uz: string;
+  animalTypeId: string;
+  animalType: AnimalType;
+  fecesAnalyses: FecesExam[];
+}
+
+export interface FecesForm {
+  id: string;
+  name_ru: string;
+  name_uz: string;
+  animalTypeId: string;
+  animalType: AnimalType;
+  fecesAnalyses: FecesExam[];
+}
+
+export interface MucosaExam {
+  id: string;
+  mucosaType: MucosaType;
+  animalId?: string;
+  animal?: Animal;
+  mucosaAppearanceId?: string;
+  mucosaAppearance?: MucosaAppearance;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface MucosaAppearance {
+  id: string;
+  name_ru: string;
+  name_uz: string;
+  mucosaType: MucosaType;
+  animalTypeId: string;
+  animalType: AnimalType;
+  mucosaAnalyses: MucosaExam[];
+}
 
 export interface Animal {
-  id: number;
+  id: string;
   arrivalDate: Date;
-  farmerId: number;
-  farmer: Farmer;
-  typeId: number;
-  type: AnimalType;
-  nameOrCode: string;
-  gender: Gender;
-  birthDate: Date;
-  weight: number;
-  breedId: number;
-  breed: Breed;
-  colorId: number;
-  color: Color;
+  age: number;
+  sex: AnimalSex;
+  farmerId: string;
+  animalNameCode: string;
+  farmer: FarmerProfile;
+  animalTypeId: string;
+  animalType: AnimalType;
+  animalBreedId: string;
+  animalBreed: Breed;
+  animalColorId: string;
+  animalColor: Color;
   createdAt: Date;
   updatedAt: Date;
-  vaccines: Vaccine[];
+  vaccines: Prophylaxis[];
   diseases: Disease[];
-  generalInspection: GeneralInspection[];
-  generalBloodTests: GeneralBloodTest[];
-  bloodSerumTests: BloodSerumTest[];
-  inspection: Inspection[];
-  urineTests: UrineTest[];
-  dungTests: DungTest[];
+  urineAnalyses: UrineExam[];
+  fecesAnalyses: FecesExam[];
+  mucosaAnalyses: MucosaExam[];
+  bloodAnalyses: BloodExam[];
+  clinicalAnalyses: ClinicalExam[];
 }
 
-export interface Vaccine {
-  id: number;
-  date: Date;
-  typeId: number;
-  type: VaccineType;
-  animalId: number;
-  animal: Animal;
-  createdAt: Date;
-  updatedAt: Date;
+export interface AnimalType {
+  id: string;
+  name_ru: string;
+  name_uz: string;
+  parentId?: string;
+  parent?: AnimalType;
+  children: AnimalType[];
+  animals: Animal[];
+  urineColors: UrineColor[];
+  urineSmells: UrineSmell[];
+  urineClarities: UrineClarity[];
+  urineConsistencies: UrineConsistency[];
+  fecesColors: FecesColor[];
+  fecesSmells: FecesSmell[];
+  fecesConsistencies: FecesConsistency[];
+  fecesForms: FecesForm[];
+  mucosaAppearances: MucosaAppearance[];
+  _count: {
+    children: number
+  }
 }
 
-export interface GeneralInspection {
-  id: number;
-  animalId: number;
-  animal: Animal;
-  bodyType: BodyType;
-  bodyStructure: BodyStructure;
-  bodyPosition: BodyPosition;
-  obesity: ObesityType;
-  character: CharacterType;
-  leatherCoverId: number;
-  leatherCover: LeatherCover;
-  eyelidId: number;
-  eyelid: Eyelid;
-  colorId: number;
-  color: Color;
-  createdAt: Date;
-  updatedAt: Date;
-  inspection?: Inspection | null;
+export interface Breed {
+  id: string;
+  name_ru: string;
+  name_uz: string;
+  animals: Animal[];
 }
 
-export interface Inspection {
-  id: number;
-  animalId?: number | null;
-  animal?: Animal | null;
-  diseaseId?: number | null;
-  disease?: Disease | null;
-  generalInspectionId?: number | null;
-  generalInspection?: GeneralInspection | null;
-  temperature?: number | null;
-  pulse?: number | null;
-  respiratoryRate?: number | null;
-  rumination?: number | null;
-  type: InspectionType;
-  conclusion?: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface Disease {
-  id: number;
-  animalId: number;
-  animal: Animal;
-  typeId: number;
-  type: DiseaseType;
-  startTime: Date;
-  endTime: Date;
-  conclusion?: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-  inspections: Inspection[];
-  urineTests: UrineTest[];
-  dungTests: DungTest[];
-}
-
-export interface GeneralBloodTest {
-  id: number;
-  date: Date;
-  conclusion?: string | null;
-  erythrocyteCount?: number | null;
-  leukocyteCount?: number | null;
-  thrombocyteCount?: number | null;
-  coe?: number | null;
-  waterPercentage?: number | null;
-  dryResiduePercentage?: number | null;
-  hemoglobin?: number | null;
-  glutathione?: number | null;
-  animalId: number;
-  animal: Animal;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface BloodSerumTest {
-  id: number;
-  totalProtein?: number | null;
-  totalCalcium?: number | null;
-  organicPhosphorus?: number | null;
-  albumen?: number | null;
-  alphaGlobulin?: number | null;
-  betaGlobulin?: number | null;
-  gammaGlobulin?: number | null;
-  creatine?: number | null;
-  alkalineReserve?: number | null;
-  glucose?: number | null;
-  totalBilirubin?: number | null;
-  cholesterol?: number | null;
-  totalLipids?: number | null;
-  vitaminA?: number | null;
-  vitaminB?: number | null;
-  lacticAcid?: number | null;
-  pyruvicAcid?: number | null;
-  citricAcid?: number | null;
-  urea?: number | null;
-  ureaAcid?: number | null;
-  animalId: number;
-  animal: Animal;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface UrineTest {
-  id: number;
-  animalId?: number | null;
-  animal?: Animal | null;
-  diseaseId?: number | null;
-  disease?: Disease | null;
-  colorId: number;
-  color: UrineColor;
-  clarity: UrineClarity;
-  consistency: number;
-  smell: SmellType;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface DungTest {
-  id: number;
-  animalId?: number | null;
-  animal?: Animal | null;
-  diseaseId?: number | null;
-  disease?: Disease | null;
-  colorId: number;
-  color: DungColor;
-  clarity: DungClarity;
-  smell: SmellType;
-  form: DungForm;
-  consistency: number;
-  worms: number;
-  createdAt: Date;
-  updatedAt: Date;
+export interface Color {
+  id: string;
+  name_ru: string;
+  name_uz: string;
+  animals: Animal[];
 }
 
 export interface Region {
   id: number;
-  name: string;
+  name_ru: string;
+  name_uz: string;
   districts: District[];
 }
 
 export interface District {
-  id: number;
-  name: string;
+  id: string;
+  name_ru: string;
+  name_uz: string;
   regionId: number;
   region: Region;
   users: User[];
@@ -251,103 +442,70 @@ export interface District {
 }
 
 export interface VetStation {
-  id: number;
-  name: string;
+  id: string;
+  name_ru: string;
+  name_uz: string;
   address: string;
-  districtId: number;
+  districtId: string;
   district: District;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface AnimalType {
-  id: number;
-  name: string;
+export interface Disease {
+  id: string;
+  name_ru: string;
+  name_uz: string;
+  diseaseCategoryId: string;
+  diseaseCategory: DiseaseCategory;
+  createdAt: Date;
+  updatedAt: Date;
   animals: Animal[];
 }
 
-export interface Breed {
-  id: number;
-  name: string;
-  parentId?: number | null;
-  parent?: Breed | null;
-  children: Breed[];
-  animals: Animal[];
-}
-
-export interface Color {
-  id: number;
-  name: string;
-  hex?: string | null;
-  animals: Animal[];
-  generalInspections: GeneralInspection[];
-}
-
-export interface UrineColor {
-  id: number;
-  name: string;
-  urineTests: UrineTest[];
-}
-
-export interface DungColor {
-  id: number;
-  name: string;
-  dungTests: DungTest[];
-}
-
-export interface LeatherCover {
-  id: number;
-  name: string;
-  generalInspections: GeneralInspection[];
-}
-
-export interface Eyelid {
-  id: number;
-  name: string;
-  generalInspections: GeneralInspection[];
-}
-
-export interface VaccineType {
-  id: number;
-  name: string;
-  vaccines: Vaccine[];
-}
-
-export interface DiseaseType {
-  id: number;
-  name: string;
+export interface DiseaseCategory {
+  id: string;
+  name_ru: string;
+  name_uz: string;
+  parentId?: string;
+  parent?: DiseaseCategory;
   diseases: Disease[];
+  children: DiseaseCategory[];
 }
 
-export interface User {
-  id: number;
-  phone: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  middleName?: string | null;
-  gender?: Gender | null;
-  birthDate?: Date | null;
-  districtId: number;
-  district: District;
-  address?: string | null;
-  role: UserRole;
+export interface Prophylaxis {
+  id: string;
+  type: ProphylaxisType;
+  animalId: string;
+  animal: Animal;
+  itemId: string;
+  item: ProphylaxisItem;
+  detailId?: string;
+  detail?: ProphylaxisDetail;
+  date: Date;
   createdAt: Date;
   updatedAt: Date;
-  veterinarianData?: Veterinarian | null;
-  farmerData?: Farmer | null;
 }
 
-export interface Veterinarian {
-  userPtrId: number;
-  user: User;
-  farmers: Farmer[];
+export interface ProphylaxisItem {
+  id: string;
+  name_ru: string;
+  name_uz: string;
+  type: ProphylaxisType;
+  records: Prophylaxis[];
+  details: ProphylaxisDetail[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface Farmer {
-  userPtrId: number;
-  user: User;
-  veterinarianId: number;
-  veterinarian: Veterinarian;
-  animals: Animal[];
+export interface ProphylaxisDetail {
+  id: string;
+  name_ru: string;
+  name_uz: string;
+  itemId: string;
+  item: ProphylaxisItem;
+  records: Prophylaxis[];
+  createdAt: Date;
+  updatedAt: Date;
 }
+

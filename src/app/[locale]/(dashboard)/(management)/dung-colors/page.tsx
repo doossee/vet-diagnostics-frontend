@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import type { DungColor } from "@/shared/types";
+import type { FecesColor } from "@/shared/types";
 import { useCrud } from "@/shared/hooks/use-crud";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { DataTable } from "@/shared/components/data-table";
@@ -14,7 +14,7 @@ import { useCreateDungColor, useDeleteDungColor, useUpdateDungColor } from "@/en
 export default function DungColors() {
   const { t } = useI18n();
 
-  const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<DungColor, DungColorSchema, DungColorSchema>({
+  const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<FecesColor, DungColorSchema, DungColorSchema>({
     createMutation: useCreateDungColor,
     updateMutation: useUpdateDungColor,
     removeMutation: useDeleteDungColor,

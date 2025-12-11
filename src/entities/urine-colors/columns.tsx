@@ -2,8 +2,16 @@ import { Edit, Trash } from "lucide-react";
 import { UrineColor } from "@/shared/types";
 import { Button } from "@/shared/components/ui/button";
 
-export const createUrineColorColumns = (handleEditItem: (item: UrineColor) => void, handleDelete: (id: number) => void, t: any) => [
-  { title: t("management.colorName"), key: "name" },
+export const createUrineColorColumns = (handleEditItem: (item: UrineColor) => void, handleDelete: (id: string) => void, t: any) => [
+  { title: t("management.colorName")+" RU", key: "name_ru" },
+  { title: t("management.colorName")+" UZ", key: "name_uz" },
+  {
+    title: "Animal type",
+    key: "animalType",
+    render(item: UrineColor) {
+      return item?.animalType?.name_ru
+    }
+  },
   {
     title: t("table.actions"),
     key: "actions",

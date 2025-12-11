@@ -149,7 +149,6 @@ export function Autocomplete<T>({
     }
   }, [dependsOn]);
 
-
   // TODO: client search
   // useEffect(() => {
   //   if (

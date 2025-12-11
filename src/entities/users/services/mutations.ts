@@ -3,13 +3,13 @@ import { UpdateBody, User } from "@/shared/types";
 import { UserQueryKeys } from "../utils/constants/query-keys";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createQueryData, removeQueryData, updateQueryData } from "@/shared/helpers/query-updater";
-import { farmersControllerCreate, farmersControllerRemove, usersControllerUpdate, veterinariansControllerCreate, veterinariansControllerRemove } from "@/shared/api";
+import { usersControllerCreate, usersControllerUpdate, usersControllerRemove } from "@/shared/api/api-new";
 
 export function useCreateFarmer() {
   const client = useQueryClient();
 
   return useMutation<any, any, UserSchema>({
-    mutationFn: farmersControllerCreate,
+    mutationFn: usersControllerCreate,
     onSuccess: ({ user, veterinarianId }) => {
       createQueryData<User>(client, [UserQueryKeys.FARMERS], {
         ...user,
@@ -24,7 +24,7 @@ export function useUpdateFarmer() {
   const client = useQueryClient();
 
   return useMutation<any, any, UpdateBody<UserSchema>>({
-    mutationFn: async ({ id, body }) => usersControllerUpdate(+id, body),
+    mutationFn: async ({ id, body }) => usersControllerUpdate(String(id), body),
     onSuccess: (data) => {
       updateQueryData<User>(client, [UserQueryKeys.FARMERS], data);
       client.invalidateQueries({ queryKey: [UserQueryKeys.FARMERS_SELECT] });
@@ -36,7 +36,7 @@ export function useDeleteFarmer() {
   const client = useQueryClient();
 
   return useMutation<any, any, number | string>({
-    mutationFn: farmersControllerRemove,
+    mutationFn: id => usersControllerRemove(String(id)),
     onSuccess: (data) => {
       removeQueryData<User>(client, [UserQueryKeys.FARMERS], data.id);
       client.invalidateQueries({ queryKey: [UserQueryKeys.FARMERS_SELECT] });
@@ -48,7 +48,7 @@ export function useCreateVeterinarian() {
   const client = useQueryClient();
 
   return useMutation<any, any, UserSchema>({
-    mutationFn: veterinariansControllerCreate,
+    mutationFn: usersControllerCreate,
     onSuccess: ({ user }) => {
       createQueryData<User>(client, [UserQueryKeys.VETERINARIANS], user);
       client.invalidateQueries({
@@ -62,7 +62,7 @@ export function useUpdateVeterinarian() {
   const client = useQueryClient();
 
   return useMutation<any, any, UpdateBody<UserSchema>>({
-    mutationFn: async ({ id, body }) => usersControllerUpdate(+id, body),
+    mutationFn: async ({ id, body }) => usersControllerUpdate(String(id), body),
     onSuccess: (data) => {
       console.log(data);
       updateQueryData<User>(client, [UserQueryKeys.VETERINARIANS], data);
@@ -77,7 +77,7 @@ export function useDeleteVeterinarian() {
   const client = useQueryClient();
 
   return useMutation<any, any, number | string>({
-    mutationFn: veterinariansControllerRemove,
+    mutationFn: id => usersControllerRemove(String(id)),
     onSuccess: (data) => {
       removeQueryData<User>(client, [UserQueryKeys.VETERINARIANS], data.id);
       client.invalidateQueries({

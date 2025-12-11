@@ -9,9 +9,10 @@ interface Props {
   disabled?: boolean;
   placeholder?: string;
   onRemove?: () => void;
-  districtId?: number | null;
+  districtId?: string | null;
   onChange?: (value: unknown) => void;
 }
+
 // TODO: fix custom server filter
 export function FarmerSelect({ value, placeholder, disabled, districtId, onChange, onRemove }: Props) {
   return (
@@ -19,9 +20,9 @@ export function FarmerSelect({ value, placeholder, disabled, districtId, onChang
       onRemove={onRemove}
       disabled={disabled}
       placeholder={placeholder}
-      defaultValue={value as any}
+      defaultValue={value as User}
       queryFn={useGetFarmersInfinite}
-      onSelect={(e: any) => onChange?.(e?.id)}
+      onSelect={(e) => onChange?.(e?.id)}
       getOptionLabel={(item) => item.firstName + " " + item.lastName}
       customFilter={(item) => (districtId ? item.districtId === districtId : true)}
     />

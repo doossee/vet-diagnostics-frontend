@@ -4,6 +4,7 @@ import { District } from "@/shared/types";
 import { searchUtil } from "@/shared/helpers/search-util";
 import { Autocomplete } from "@/shared/components/ui/autocomplete";
 import { useGetDistrictsInfinite } from "@/entities/districts/services/queries";
+import { useI18n } from "@/shared/hooks/use-i18n";
 
 interface Props {
   min?: boolean
@@ -16,6 +17,8 @@ interface Props {
 }
 
 export function DistrictSelect({ placeholder, value, disabled, regionId, min, onChange, onRemove }: Props) {
+  const { locale } = useI18n()
+    
   return (
     <Autocomplete<District>
       minWidth={min}
@@ -26,8 +29,9 @@ export function DistrictSelect({ placeholder, value, disabled, regionId, min, on
       queryFn={useGetDistrictsInfinite}
       dependsOn={regionId}
       onSelect={(e: any) => onChange?.(e?.id)}
+      getOptionLabel={(option) => option[`name_${locale}`]}
       customFilter={(item) => (regionId ? item.regionId === regionId : true)}
-      clientSearch={(search, item) => searchUtil(search, item, ["id", "name"])}
+      clientSearch={(search, item) => searchUtil(search, item, ["id", "name_ru", "name_uz"])}
     />
   );
 }

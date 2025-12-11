@@ -1,49 +1,48 @@
 import { Edit, Trash } from "lucide-react";
-import { ANIMAL_GENDERS } from "@/shared/constants";
 import { Button } from "@/shared/components/ui/button";
 import { Animal, LanguageLocales } from "@/shared/types";
+import { ANIMAL_GENDERS } from "./utils/constants/animal-genders";
 
-export const createAnimalColumns = (handleEditItem: (item: Animal) => void, handleDelete: (id: number) => void, t: any, locale: LanguageLocales) => [
-  { title: t("animals.name"), key: "nameOrCode" },
+export const createAnimalColumns = (handleEditItem: (item: Animal) => void, handleDelete: (id: number | string) => void, t: any, locale: LanguageLocales) => [
+  { title: t("animals.name"), key: "animalNameCode" },
   {
     title: t("animals.age"),
     key: "age",
-    sorting: "byBirthDate",
+    // sorting: "byBirthDate",
     render(item: Animal) {
-      return new Date().getFullYear() - new Date(item.birthDate!).getFullYear();
+      return item.age;
     },
   },
   {
     title: t("form.type"),
     key: "type",
-    sorting: "byTypeId",
+    // sorting: "byTypeId",
     render(item: Animal) {
-      return item.type?.name;
+      return item.animalType?.name_ru;
     },
   },
   {
     title: t("animals.color"),
     key: "color",
-    sorting: "byColorId",
+    // sorting: "byColorId",
     render(item: Animal) {
-      return item.color?.name;
+      return item.animalColor?.name_ru;
     },
   },
-  { title: t("animals.weight"), key: "weight" },
   {
     title: t("form.gender"),
     key: "gender",
-    sorting: "byGender",
+    // sorting: "byGender",
     render(item: Animal) {
-      return ANIMAL_GENDERS.find((g) => g.value === item.gender)?.[locale];
+      return ANIMAL_GENDERS?.[item.sex]?.[locale];
     },
   },
   {
     title: t("animals.breed"),
     key: "breed",
-    sorting: "byBreed",
+    // sorting: "byBreed",
     render(item: Animal) {
-      return item.breed?.name;
+      return item.animalBreed?.name_ru;
     },
   },
   {

@@ -1,9 +1,9 @@
 "use client";
 
 import { useMemo } from "react";
-import type { DiseaseType } from "@/shared/types";
 import { useCrud } from "@/shared/hooks/use-crud";
 import { useI18n } from "@/shared/hooks/use-i18n";
+import type { DiseaseCategory } from "@/shared/types";
 import { DataTable } from "@/shared/components/data-table";
 import { Modal } from "@/shared/components/elements/modal";
 import { createDiseaseTypeColumns } from "@/entities/disease-types";
@@ -14,7 +14,7 @@ import { useCreateDiseaseType, useDeleteDiseaseType, useUpdateDiseaseType } from
 export default function DiseaseTypes() {
   const { t } = useI18n();
 
-  const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<DiseaseType, DiseaseTypeSchema, DiseaseTypeSchema>({
+  const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<DiseaseCategory, DiseaseTypeSchema, DiseaseTypeSchema>({
     createMutation: useCreateDiseaseType,
     updateMutation: useUpdateDiseaseType,
     removeMutation: useDeleteDiseaseType,

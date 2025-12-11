@@ -27,7 +27,7 @@ export function DungTestForm({ onSubmit, defaultValues }: DungTestFormProps) {
   });
 
   useEffect(() => {
-    if (defaultValues) form.setValue("animalTypeId" as any, (defaultValues as any)?.animal?.typeId);
+    if (defaultValues) form.setValue("animalTypeId" as any, (defaultValues as any)?.animal?.animalTypeId);
   }, [defaultValues]);
 
   const animalTypeId = form.watch("animalTypeId" as any);
@@ -35,117 +35,6 @@ export function DungTestForm({ onSubmit, defaultValues }: DungTestFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 h-full">
-        <FormField
-          name="consistency"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{t("inspections.consistency")}</FormLabel>
-              <FormControl>
-                <Input type="number" placeholder={t("inspections.consistency")} {...field} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        <FormField
-          name="clarity"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("inspections.clarity")}</FormLabel>
-              <FormControl>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <SelectTrigger>
-                    <SelectValue placeholder={t("inspections.clarity")} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.keys(CLARITY_TYPES).map((k) => (
-                      <SelectItem key={k} value={k}>
-                        {CLARITY_TYPES[k as keyof typeof CLARITY_TYPES][locale]}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          name="worms"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{t("inspections.worms")}</FormLabel>
-              <FormControl>
-                <Input type="number" placeholder={t("inspections.worms")} {...field} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        <FormField
-          name="smell"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("inspections.smell")}</FormLabel>
-              <FormControl>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <SelectTrigger>
-                    <SelectValue placeholder={t("inspections.smell")} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.keys(SMELL_TYPES).map((k, i) => (
-                      <SelectItem key={i} value={k}>
-                        {SMELL_TYPES[k as keyof typeof SMELL_TYPES][locale]}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          name="form"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("inspections.form")}</FormLabel>
-              <FormControl>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <SelectTrigger>
-                    <SelectValue placeholder={t("inspections.form")} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.keys(DUNG_FORMS).map((k, i) => (
-                      <SelectItem key={i} value={k}>
-                        {DUNG_FORMS[k as keyof typeof DUNG_FORMS][locale]}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          name="diseaseId"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("form.disease")}</FormLabel>
-              <FormControl>
-                <DiseaseSelect placeholder={t("form.disease")} value={field.value} onChange={field.onChange} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
         <FormField
           name={"animalTypeId" as any}
           control={form.control}
@@ -173,9 +62,9 @@ export function DungTestForm({ onSubmit, defaultValues }: DungTestFormProps) {
             </FormItem>
           )}
         />
-
+        
         <FormField
-          name="colorId"
+          name="fecesColorId"
           control={form.control}
           render={({ field }) => (
             <FormItem>
@@ -184,6 +73,74 @@ export function DungTestForm({ onSubmit, defaultValues }: DungTestFormProps) {
                 <DungColorSelect placeholder={t("form.color")} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        {/* <FormField
+          name="fecesSmellId"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("inspections.smell")}</FormLabel>
+              <FormControl>
+                <DungColorSelect placeholder={t("inspections.smell")} value={field.value} onChange={field.onChange} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        <FormField
+          name="fecesConsistencyId"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("inspections.clarity")}</FormLabel>
+              <FormControl>
+                <DungColorSelect placeholder={t("inspections.clarity")} value={field.value} onChange={field.onChange} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          name="fecesFormId"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("inspections.form")}</FormLabel>
+              <FormControl>
+                <DungColorSelect placeholder={t("inspections.form")} value={field.value} onChange={field.onChange} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        /> */}
+
+        <FormField
+          name="amount"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem className="flex flex-col gap-1 pt-1.5">
+              <FormLabel>{"Количество"}</FormLabel>
+              <FormControl>
+                <Input type="number" placeholder={"Количество"} {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        
+        <FormField
+          name="undigestedFood"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem className="flex flex-col gap-1 pt-1.5">
+              <FormLabel>{"Количество непереваренной пищи"}</FormLabel>
+              <FormControl>
+                <Input type="number" placeholder={"Количество непереваренной пищи"} {...field} />
+              </FormControl>
             </FormItem>
           )}
         />

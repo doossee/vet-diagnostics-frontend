@@ -1,13 +1,13 @@
 import { z } from "zod";
 
 export const loginValues = {
-  phone: "",
+  username: "",
   password: "",
 };
 
 export const createLoginSchema = (t: any) =>
   z.object({
-    phone: z.string().min(1, t("login.phoneRequired")),
+    username: z.string().min(1, t("login.phoneRequired")), // TODO: username
     password: z.string().min(6, t("login.passwordRequired")),
   });
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { UrineTest } from "@/shared/types";
+import { UrineExam } from "@/shared/types";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { useCrud } from "@/shared/hooks/use-crud";
 import { DataTable } from "@/shared/components/data-table";
@@ -19,7 +19,7 @@ export default function UrineTests() {
   const newAnimal = get("new");
   const animalId = get("animalId", true);
 
-  const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<UrineTest, UrineTestSchema, UrineTestSchema>({
+  const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<UrineExam, UrineTestSchema, UrineTestSchema>({
     dialogValue: !!newAnimal,
     createMutation: useCreateUrineTest,
     updateMutation: useUpdateUrineTest,
@@ -31,10 +31,21 @@ export default function UrineTests() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetUrineTests} topSlot={createButton(t("inspections.createUrineTest"))} />
+      <DataTable
+        columns={columns}
+        queryFunction={useGetUrineTests}
+        topSlot={createButton(t("inspections.createUrineTest"))}
+      />
 
-      <Modal open={dialog} onClose={handleClose} title={t(editedItem ? "inspections.editUrineTest" : "inspections.createUrineTest")}>
-        <UrineTestForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : ((animalId ? { ...urineTestValues, animalId } : undefined) as any)} />
+      <Modal
+        open={dialog}
+        onClose={handleClose}
+        widthClassName="max-w-[650px]!"
+        title={t(editedItem ? "inspections.editUrineTest" : "inspections.createUrineTest")}>
+        <UrineTestForm
+          onSubmit={onSubmit}
+          defaultValues={editedItem ?? ((animalId ? { ...urineTestValues, animalId } : undefined) as any)}
+        />
       </Modal>
     </div>
   );

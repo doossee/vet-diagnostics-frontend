@@ -1,6 +1,7 @@
 "use client";
 
 // import { searchUtil } from "@/shared/helpers/search-util";
+import { Breed } from '@/shared/types';
 import { Autocomplete } from "@/shared/components/ui/autocomplete";
 import { useGetBreedsInfinite } from "@/entities/breeds/services/breed-queries";
 
@@ -15,14 +16,15 @@ interface Props {
 
 export function BreedSelect({ placeholder, value, disabled, min, onChange, onRemove }: Props) {
   return (
-    <Autocomplete
+    <Autocomplete<Breed>
       minWidth={min}
       onRemove={onRemove}
       disabled={disabled}
-      defaultValue={value}
+      defaultValue={value as Breed}
       onSelect={(e: any) => onChange?.(e?.id)}
       placeholder={placeholder}
       queryFn={useGetBreedsInfinite}
+      getOptionLabel={item => item.name_ru}
       // clientSearch={(search, item) =>
       //   searchUtil(search, item, ["id", "name"])
       // }

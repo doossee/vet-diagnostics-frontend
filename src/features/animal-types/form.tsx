@@ -5,6 +5,7 @@ import { Button } from "@/shared/components/ui/button";
 import { AnimalTypeSchema, animalTypeValues, createAnimalTypeSchema } from "./animal-type.model";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 import { Textarea } from "@/shared/components/ui/textarea";
+import { AnimalTypeSelect } from "./components/animal-type-select";
 
 interface AnimalTypeFormProps {
   defaultValues: AnimalTypeSchema | undefined;
@@ -23,13 +24,39 @@ export function AnimalTypeForm({ onSubmit, defaultValues }: AnimalTypeFormProps)
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 h-full">
         <FormField
-          name="name"
+          name="name_ru"
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("animalTypes.name")}</FormLabel>
+              <FormLabel>{t("animalTypes.name")} RU</FormLabel>
               <FormControl>
                 <Textarea placeholder={t("animalTypes.name")} {...field} rows={3} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="name_uz"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("animalTypes.name")} UZ</FormLabel>
+              <FormControl>
+                <Textarea placeholder={t("animalTypes.name")} {...field} rows={3} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="parentId"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("animals.animalType")}</FormLabel>
+              <FormControl>
+                <AnimalTypeSelect placeholder={t("animals.animalType")} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>

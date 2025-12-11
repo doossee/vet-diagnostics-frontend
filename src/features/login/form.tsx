@@ -33,11 +33,11 @@ export function LoginForm() {
       setAuthData(refreshToken, "REFRESH_TOKEN");
       setAuthData(JSON.stringify(user), "USER_DATA");
 
-      if (user.userRole === "ADMIN") {
+      if (user.role === "SUPER_ADMIN") {
         router.push(routes.ANIMAL_TYPES);
-      } else if (user.userRole === "VETERINARIAN") {
+      } else if (user.role === "VETERINARIAN") {
         router.push(routes.FARMERS);
-      } else if (user.userRole === "FARMER") {
+      } else if (user.role === "FARMER") {
         router.push(routes.ANIMALS.INDEX);
       }
     } catch (error) {
@@ -55,13 +55,14 @@ export function LoginForm() {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleLogin)} className="space-y-4">
             <FormField
-              name="phone"
+              name="username"
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t("login.phone")}</FormLabel>
+                  <FormLabel>{t("login.phone")}</FormLabel> 
+                  {/* username */}
                   <FormControl>
-                    <Input placeholder="+998 XX XXX XX XX" {...field} />
+                    <Input placeholder="Login" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

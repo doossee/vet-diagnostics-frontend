@@ -19,12 +19,12 @@ export default function Veterinarians() {
     createMutation: useCreateVeterinarian,
     updateMutation: useUpdateVeterinarian,
     removeMutation: useDeleteVeterinarian,
-    extraOnCreate: ({ veterinarianId, ...values }) => ({
+    extraOnCreate: (values) => ({
       ...values,
       role: "VETERINARIAN",
     }),
     extraOnUpdate: (values) => {
-      const { password, veterinarianId, ...others } = values;
+      const { password, ...others } = values;
       if (password?.trim()) Object.assign(others, { password });
       return others;
     },

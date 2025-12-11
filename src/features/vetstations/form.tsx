@@ -34,11 +34,24 @@ export function VetStationForm({ onSubmit, defaultValues }: VetStationFormProps)
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 h-full">
         <FormField
-          name="name"
+          name="name_ru"
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("regions.vetStationName")}</FormLabel>
+              <FormLabel>{t("regions.vetStationName")} RU</FormLabel>
+              <FormControl>
+                <Textarea placeholder={t("regions.vetStationName")} {...field} rows={2} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="name_uz"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("regions.vetStationName")} UZ</FormLabel>
               <FormControl>
                 <Textarea placeholder={t("regions.vetStationName")} {...field} rows={2} />
               </FormControl>
@@ -87,6 +100,7 @@ export function VetStationForm({ onSubmit, defaultValues }: VetStationFormProps)
             </FormItem>
           )}
         />
+        {/* TODO: edit district id not selected */}
 
         <div className="flex-1 flex items-end">
           <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">

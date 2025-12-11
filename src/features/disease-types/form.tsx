@@ -2,9 +2,10 @@ import { useForm } from "react-hook-form";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/shared/components/ui/button";
+import { Textarea } from "@/shared/components/ui/textarea";
+import { DiseaseTypeSelect } from "./components/disease-type-select";
 import { DiseaseTypeSchema, createDiseaseTypeSchema, diseaseTypeValues } from "./disease-type.model";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
-import { Textarea } from "@/shared/components/ui/textarea";
 
 interface DiseaseTypeFormProps {
   defaultValues?: DiseaseTypeSchema;
@@ -23,13 +24,39 @@ export function DiseaseTypeForm({ onSubmit, defaultValues }: DiseaseTypeFormProp
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 h-full">
         <FormField
-          name="name"
+          name="name_ru"
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("management.typeName")}</FormLabel>
+              <FormLabel>{t("management.typeName")} RU</FormLabel>
               <FormControl>
                 <Textarea placeholder={t("management.typeName")} {...field} rows={3} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="name_uz"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("management.typeName")} UZ</FormLabel>
+              <FormControl>
+                <Textarea placeholder={t("management.typeName")} {...field} rows={3} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="parentId"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Parent</FormLabel>
+              <FormControl>
+                <DiseaseTypeSelect placeholder={t("animals.animalType")} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>

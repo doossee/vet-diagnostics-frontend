@@ -10,7 +10,7 @@ interface Props {
   disabled?: boolean;
   placeholder?: string;
   onRemove?: () => void;
-  typeId?: number | null;
+  typeId?: string | null;
   onChange?: (value: unknown) => void;
 }
 
@@ -23,8 +23,8 @@ export function AnimalSelect({ onChange, onRemove, placeholder, value, disabled,
       onSelect={(e: any) => onChange?.(e?.id)}
       placeholder={placeholder}
       queryFn={useGetAnimalsInfinite}
-      getOptionLabel={(item) => item?.nameOrCode}
-      customFilter={(item) => (typeId ? item.typeId === typeId : true)}
+      getOptionLabel={(item) => item?.id}
+      customFilter={(item) => (typeId ? item.animalTypeId === typeId : true)}
       // clientSearch={(search, item) =>
       //   searchUtil(search, item, ["id", "name"])
       // }

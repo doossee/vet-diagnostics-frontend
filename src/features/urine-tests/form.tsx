@@ -1,17 +1,19 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useI18n } from "@/shared/hooks/use-i18n";
-import { Input } from "@/shared/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+
+import { useI18n } from "@/shared/hooks/use-i18n";
+import { UrineAnalysisType } from "@/shared/types";
+import { Input } from "@/shared/components/ui/input";
+import { Divider } from "@/shared/components/divider";
 import { Button } from "@/shared/components/ui/button";
-import { CLARITY_TYPES, SMELL_TYPES } from "@/shared/constants";
 import { AnimalSelect } from "../animals/components/animal-select";
-import { DiseaseSelect } from "../diseases/components/disease-select";
-import { AnimalTypeSelect } from "../animal-types/components/animal-type-select";
+// import { AnimalTypeSelect } from "../animal-types/components/animal-type-select";
 import { UrineColorSelect } from "../urine-colors/components/urine-color-select";
 import { UrineTestSchema, createUrineTestSchema, urineTestValues } from "./urine-test.model";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
+import { URINE_ANALYSIS_TYPES } from "@/entities/urine-tests/utils/constants/urine-analysis-types";
 
 interface UrineTestFormProps {
   defaultValues?: UrineTestSchema;
@@ -26,91 +28,212 @@ export function UrineTestForm({ onSubmit, defaultValues }: UrineTestFormProps) {
     defaultValues: defaultValues || (urineTestValues as any),
   });
 
-  useEffect(() => {
-    if (defaultValues) form.setValue("animalTypeId" as any, (defaultValues as any)?.animal?.typeId);
-  }, [defaultValues]);
-
   const animalTypeId = form.watch("animalTypeId" as any);
+  const analysisType = form.watch("analysisType");
+
+  const typedFields: Record<UrineAnalysisType, React.ReactNode> = {
+    MACROSCOPIC: <>
+      <FormField
+        name="amount"
+        control={form.control}
+        render={({ field }) => (
+          <FormItem className="flex flex-col gap-1 pt-1.5">
+            <FormLabel>{"Количество"}</FormLabel>
+            <FormControl>
+              <Input type="number" placeholder={"Количество"} {...field} />
+            </FormControl>
+          </FormItem>
+        )}
+      />
+
+      {/* <FormField
+          name="urineColorId"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{"Прозрачность"}</FormLabel>
+              <FormControl>
+                <UrineColorSelect placeholder={"Прозрачность"} value={field.value} onChange={field.onChange} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          name="urineColorId"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{"Консистенция"}</FormLabel>
+              <FormControl>
+                <UrineColorSelect placeholder={"Консистенция"} value={field.value} onChange={field.onChange} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          name="urineColorId"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{"Запах"}</FormLabel>
+              <FormControl>
+                <UrineColorSelect placeholder={"Запах"} value={field.value} onChange={field.onChange} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        /> */}
+    </>,
+    LABORATORY: <>
+      <FormField
+        name="ph"
+        control={form.control}
+        render={({ field }) => (
+          <FormItem className="flex flex-col gap-1 pt-1.5">
+            <FormLabel>{"Среда (pH)"}</FormLabel>
+            <FormControl>
+              <Input type="number" placeholder={"Среда (pH)"} {...field} />
+            </FormControl>
+          </FormItem>
+        )}
+      />
+      <FormField
+        name="acetone"
+        control={form.control}
+        render={({ field }) => (
+          <FormItem className="flex flex-col gap-1 pt-1.5">
+            <FormLabel>{"Кетоновые тела (ацетон)"}</FormLabel>
+            <FormControl>
+              <Input type="number" placeholder={"Кетоновые тела (ацетон)"} {...field} />
+            </FormControl>
+          </FormItem>
+        )}
+      />
+      <FormField
+        name="protein"
+        control={form.control}
+        render={({ field }) => (
+          <FormItem className="flex flex-col gap-1 pt-1.5">
+            <FormLabel>{"Белок"}</FormLabel>
+            <FormControl>
+              <Input type="number" placeholder={"Белок"} {...field} />
+            </FormControl>
+          </FormItem>
+        )}
+      />
+      <FormField
+        name="bilirubin"
+        control={form.control}
+        render={({ field }) => (
+          <FormItem className="flex flex-col gap-1 pt-1.5">
+            <FormLabel>{"Билирубин"}</FormLabel>
+            <FormControl>
+              <Input type="number" placeholder={"Билирубин"} {...field} />
+            </FormControl>
+          </FormItem>
+        )}
+      />
+      <FormField
+        name="urobilinogen"
+        control={form.control}
+        render={({ field }) => (
+          <FormItem className="flex flex-col gap-1 pt-1.5">
+            <FormLabel>{"Уробилиноген"}</FormLabel>
+            <FormControl>
+              <Input type="number" placeholder={"Уробилиноген"} {...field} />
+            </FormControl>
+          </FormItem>
+        )}
+      />
+      <FormField
+        name="sugar"
+        control={form.control}
+        render={({ field }) => (
+          <FormItem className="flex flex-col gap-1 pt-1.5">
+            <FormLabel>{"Сахар"}</FormLabel>
+            <FormControl>
+              <Input type="number" placeholder={"Сахар"} {...field} />
+            </FormControl>
+          </FormItem>
+        )}
+      />
+    </>,
+    MICROSCOPIC: <>
+      <FormField
+        name="leukocytes"
+        control={form.control}
+        render={({ field }) => (
+          <FormItem className="flex flex-col gap-1 pt-1.5">
+            <FormLabel>{"Лейкоциты"}</FormLabel>
+            <FormControl>
+              <Input type="number" placeholder={"Лейкоциты"} {...field} />
+            </FormControl>
+          </FormItem>
+        )}
+      />
+      <FormField
+        name="epithelium"
+        control={form.control}
+        render={({ field }) => (
+          <FormItem className="flex flex-col gap-1 pt-1.5">
+            <FormLabel>{"Эпителий"}</FormLabel>
+            <FormControl>
+              <Input type="number" placeholder={"Эпителий"} {...field} />
+            </FormControl>
+          </FormItem>
+        )}
+      />
+      <FormField
+        name="microbialBodies"
+        control={form.control}
+        render={({ field }) => (
+          <FormItem className="flex flex-col gap-1 pt-1.5">
+            <FormLabel>{"Микробные тела"}</FormLabel>
+            <FormControl>
+              <Input type="number" placeholder={"Микробные тела"} {...field} />
+            </FormControl>
+          </FormItem>
+        )}
+      />
+      <FormField
+        name="erythrocytes"
+        control={form.control}
+        render={({ field }) => (
+          <FormItem className="flex flex-col gap-1 pt-1.5">
+            <FormLabel>{"Эритроциты"}</FormLabel>
+            <FormControl>
+              <Input type="number" placeholder={"Эритроциты"} {...field} />
+            </FormControl>
+          </FormItem>
+        )}
+      />
+      <FormField
+        name="saltCrystals"
+        control={form.control}
+        render={({ field }) => (
+          <FormItem className="flex flex-col gap-1 pt-1.5">
+            <FormLabel>{"Кристаллы солей"}</FormLabel>
+            <FormControl>
+              <Input type="number" placeholder={"Кристаллы солей"} {...field} />
+            </FormControl>
+          </FormItem>
+        )}
+      />
+    </>
+  }
+
+  useEffect(() => {
+    if (defaultValues) form.setValue("animalTypeId" as any, (defaultValues as any)?.animal?.animalTypeId);
+  }, [defaultValues]);
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 h-full">
-        <FormField
-          name="consistency"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{t("inspections.consistency")}</FormLabel>
-              <FormControl>
-                <Input type="number" placeholder={t("inspections.consistency")} {...field} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        <FormField
-          name="smell"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("inspections.smell")}</FormLabel>
-              <FormControl>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <SelectTrigger>
-                    <SelectValue placeholder={t("inspections.smell")} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.keys(SMELL_TYPES).map((k) => (
-                      <SelectItem key={k} value={k}>
-                        {SMELL_TYPES[k as keyof typeof SMELL_TYPES][locale]}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          name="clarity"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("inspections.clarity")}</FormLabel>
-              <FormControl>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <SelectTrigger>
-                    <SelectValue placeholder={t("inspections.clarity")} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.keys(CLARITY_TYPES).map((k) => (
-                      <SelectItem key={k} value={k}>
-                        {CLARITY_TYPES[k as keyof typeof CLARITY_TYPES][locale]}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          name="diseaseId"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("form.disease")}</FormLabel>
-              <FormControl>
-                <DiseaseSelect placeholder={t("form.disease")} value={field.value} onChange={field.onChange} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
+      <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
+        {/* <FormField
           name={"animalTypeId" as any}
           control={form.control}
           render={({ field }) => (
@@ -122,7 +245,7 @@ export function UrineTestForm({ onSubmit, defaultValues }: UrineTestFormProps) {
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
 
         <FormField
           name="animalId"
@@ -139,7 +262,32 @@ export function UrineTestForm({ onSubmit, defaultValues }: UrineTestFormProps) {
         />
 
         <FormField
-          name="colorId"
+          name="analysisType"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Тип анализа</FormLabel>
+              <FormControl>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <SelectTrigger>
+                    <SelectValue placeholder={"Тип анализа"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(URINE_ANALYSIS_TYPES).map(([key, value]) => (
+                      <SelectItem key={key} value={key}>
+                        {value[locale]}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          name="urineColorId"
           control={form.control}
           render={({ field }) => (
             <FormItem>
@@ -152,7 +300,11 @@ export function UrineTestForm({ onSubmit, defaultValues }: UrineTestFormProps) {
           )}
         />
 
-        <div className="flex-1 flex items-end">
+        {analysisType && <Divider label="" className="col-span-1 md:col-span-2" />}
+
+        {typedFields[analysisType]}
+
+        <div className="col-span-1 md:col-span-2">
           <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">
             {t(form.formState.isSubmitting ? "form.submitting" : "form.submit")}
           </Button>

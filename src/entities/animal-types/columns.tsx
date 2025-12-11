@@ -3,7 +3,15 @@ import { Trash, Edit } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 
 export const createAnimalTypeColumns = (handleEditItem: (item: AnimalType) => void, handleDelete: (id: number) => void, t: any) => [
-  { title: t("animalTypes.name"), key: "name" },
+  { title: t("animalTypes.name")+" UZ", key: "name_uz" },
+  { title: t("animalTypes.name")+" RU", key: "name_ru" },
+  {
+    title: t("animalTypes.name"),
+    key: "parent",
+    render(item: AnimalType) {
+      return item.parent ? item.parent.name_uz : '-'
+    }
+  },
   {
     title: t("table.actions"),
     key: "actions",

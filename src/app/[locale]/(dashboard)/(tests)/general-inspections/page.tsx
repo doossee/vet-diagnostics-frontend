@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { useCrud } from "@/shared/hooks/use-crud";
-import { GeneralInspection } from "@/shared/types";
+import { ClinicalExam } from "@/shared/types";
 import { QUERY_PARAM_KEYS } from "@/shared/constants";
 import { DataTable } from "@/shared/components/data-table";
 import { Modal } from "@/shared/components/elements/modal";
@@ -21,7 +21,7 @@ export default function GeneralInspections() {
   const newAnimal = get(QUERY_PARAM_KEYS.NEW);
   const animalId = get(QUERY_PARAM_KEYS.ANIMAL_ID, true);
 
-  const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<GeneralInspection, GeneralInspectionSchema, GeneralInspectionSchema>({
+  const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<ClinicalExam, GeneralInspectionSchema, GeneralInspectionSchema>({
     dialogValue: !!newAnimal,
     createMutation: useCreateGeneralInspection,
     updateMutation: useUpdateGeneralInspection,
@@ -46,7 +46,7 @@ export default function GeneralInspections() {
         queryFunction={useGetGeneralInspections}
         topSlot={createButton(t("inspections.createGeneralInspections"))} />
 
-      <Modal open={dialog} onClose={handleClose} widthClassName="bg-card max-w-[700px]!" title={t(editedItem ? "inspections.editGeneralInspections" : "inspections.createGeneralInspections")}>
+      <Modal open={dialog} onClose={handleClose} widthClassName="bg-card max-w-[900px]!" title={t(editedItem ? "inspections.editGeneralInspections" : "inspections.createGeneralInspections")}>
         <GeneralInspectionForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : animalId ? { ...generalInspectionValues, animalId } as any : undefined} />
       </Modal>
     </div>

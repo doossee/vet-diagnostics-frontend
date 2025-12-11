@@ -31,8 +31,6 @@ export type QueryParams = {
 
 export type BLOOD_SERUM = keyof typeof BLOOD_SERUM_TESTS;
 
-export type GENERAL_BLOOD = keyof typeof GENERAL_BLOOD_TESTS;
-
 export type UserData = {
   userId: number;
   role: UserRole;

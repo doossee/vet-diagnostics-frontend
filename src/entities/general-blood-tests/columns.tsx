@@ -1,36 +1,36 @@
 import { Edit, Trash } from "lucide-react";
-import { GeneralBloodTest } from "@/shared/types";
+import { BloodExam } from "@/shared/types";
 import { Button } from "@/shared/components/ui/button";
-import { GENERAL_BLOOD_TESTS } from "@/shared/constants";
-import { GENERAL_BLOOD, LanguageLocales } from "@/shared/types";
+import { LanguageLocales } from "@/shared/types";
+import { BLOOD_TEST_FIELDS } from "@/entities/general-blood-tests/utils/constants/blood-test-fields";
 
-export const createGeneralBloodTestColumns = (handleEditItem: (item: GeneralBloodTest) => void, handleDelete: (id: number) => void, t: any, locale: LanguageLocales) => [
+export const createGeneralBloodTestColumns = (handleEditItem: (item: BloodExam) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
   {
     title: t("form.animal"),
     key: "animal",
-    render(item: GeneralBloodTest) {
-      return item.animal?.nameOrCode;
+    render(item: BloodExam) {
+      return item.animal?.animalNameCode;
     },
   },
   {
     title: t("form.date"),
     key: "date",
-    render(item: GeneralBloodTest) {
-      return new Date(item.date).toLocaleDateString();
+    render(item: BloodExam) {
+      return new Date(item.createdAt).toLocaleDateString();
     },
   },
-  ...Object.keys(GENERAL_BLOOD_TESTS).map((key) => ({
+  ...Object.entries(BLOOD_TEST_FIELDS).map(([key, value]) => ({
     key,
-    title: GENERAL_BLOOD_TESTS[key as GENERAL_BLOOD][locale],
-    render: (item: GeneralBloodTest) => {
-      return <span className="text-right">{item[key as GENERAL_BLOOD] + " " + GENERAL_BLOOD_TESTS[key as GENERAL_BLOOD][`unit_${locale}`]}</span>;
+    title: value[locale],
+    render: (item: BloodExam) => {
+      return <span className="text-right">{item[key as keyof BloodExam] + " " + value[`unit_${locale}`]}</span>;
     },
   })),
   { title: t("inspections.conclusion"), key: "conclusion" },
   {
     title: t("table.actions"),
     key: "actions",
-    render(item: GeneralBloodTest) {
+    render(item: BloodExam) {
       return (
         <div className="flex gap-2 items-center flex-wrap md:flex-nowrap justify-end md:justify-start">
           <Button onClick={() => handleEditItem(item)} size="sm" className="text-xs!">

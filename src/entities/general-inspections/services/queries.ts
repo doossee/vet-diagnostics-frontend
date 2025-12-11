@@ -1,13 +1,13 @@
-import { generalInspectionControllerFindAll } from "@/shared/api";
+import { ClinicalExam, PaginatedEntity } from "@/shared/types";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { paramsToQueryKeys } from "@/shared/helpers/params-to-keys";
-import { GeneralInspection, PaginatedEntity } from "@/shared/types";
+import { clinicalExamControllerFindAll } from "@/shared/api/api-new";
 import { GeneralInspectionQueryKeys } from "../utils/constants/query-keys";
 
 export function useGetGeneralInspections(params: Record<string, unknown>, enabled?: boolean) {
-  return useQuery<PaginatedEntity<GeneralInspection>, Error>({
+  return useQuery<PaginatedEntity<ClinicalExam>, Error>({
     queryKey: [GeneralInspectionQueryKeys.GENERAL_INSPECTION, ...paramsToQueryKeys(params)],
-    queryFn: async () => generalInspectionControllerFindAll(params) as Promise<PaginatedEntity<GeneralInspection>>,
+    queryFn: async () => clinicalExamControllerFindAll(params) as Promise<PaginatedEntity<ClinicalExam>>,
     enabled,
   });
 }
@@ -15,7 +15,7 @@ export function useGetGeneralInspections(params: Record<string, unknown>, enable
 export function useGetGeneralInspectionsInfinite(search?: string) {
   return useInfiniteQuery({
     queryKey: [GeneralInspectionQueryKeys.GENERAL_INSPECTION_SELECT, search],
-    queryFn: (params) => generalInspectionControllerFindAll(params.pageParam) as Promise<PaginatedEntity<GeneralInspection>>,
+    queryFn: (params) => clinicalExamControllerFindAll(params.pageParam) as Promise<PaginatedEntity<ClinicalExam>>,
     initialPageParam: { page: 1, perPage: 20, ...(search && { search }) },
     getNextPageParam: (lastPage) => {
       const nextPage = (lastPage?.meta?.currentPage ?? 0) + 1;
@@ -33,14 +33,12 @@ export function useGetGeneralInspectionsInfinite(search?: string) {
 }
 
 export function useGetLastGeneralInspection(animalId: number | string, enabled?: boolean) {
-  return useQuery<GeneralInspection|null>({
+  return useQuery<ClinicalExam|null>({
     queryKey: [GeneralInspectionQueryKeys.LAST_GENERAL_INSPECTION, animalId],
     queryFn: async () => {
-      const { data } = await generalInspectionControllerFindAll({
+      const { data } = await clinicalExamControllerFindAll({
         page: 1,
         perPage: 1,
-        byCreatedDate: "desc",
-        animalId
       })
 
       return data?.[0] ?? null

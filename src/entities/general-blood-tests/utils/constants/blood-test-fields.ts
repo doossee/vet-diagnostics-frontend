@@ -1,0 +1,207 @@
+import { BloodExam, LanguageLocales } from "@/shared/types";
+
+export const BLOOD_TEST_FIELDS: Partial<Record<keyof BloodExam, Record<LanguageLocales, string> & { unit_ru: string, unit_uz: string }>> = {
+  // Морфологическое исследование крови
+  coe: { ru: "СОЭ", uz: "COE", unit_ru: "Мм/ч", unit_uz: "mm/soat" },
+  erythrocyteCount: {
+    ru: "Количество эритроцитов",
+    uz: "Eritrotsitlar soni",
+    unit_ru: "млн/мкл",
+    unit_uz: "mln/mkL",
+  },
+  leukocyteCount: {
+    ru: "Количество лейкоцитов",
+    uz: "Leykotsitlar soni",
+    unit_ru: "тыс./мкл",
+    unit_uz: "ming/mkL",
+  },
+  thrombocyteCount: {
+    ru: "Количество тромбоцитов",
+    uz: "Trombotsitlar soni",
+    unit_ru: "тыс./мкл",
+    unit_uz: "ming/mkL",
+  },
+  hemoglobin: {
+    ru: "Гемоглобин",
+    uz: "Gemoglobin",
+    unit_ru: "г/л",
+    unit_uz: "g/L",
+  },
+  glutathione: {
+    ru: "Глутатион",
+    uz: "Glutation",
+    unit_ru: "ммоль/л",
+    unit_uz: "mmol/L",
+  },
+  waterPercentage: {
+    ru: "Процент воды",
+    uz: "Suv foizi",
+    unit_ru: "%",
+    unit_uz: "%",
+  },
+  dryResidue: {
+    ru: "Процент сухого остатка",
+    uz: "Quruq qoldiq foizi",
+    unit_ru: "%",
+    unit_uz: "%",
+  },
+  
+  // Исследование сыворотки крови
+  totalProtein: {
+    ru: "Общий белок сыворотки",
+    uz: "Umumiy oqsil",
+    unit_ru: "г/л",
+    unit_uz: "g/L",
+  },
+  totalCalcium: {
+    ru: "Общий кальций",
+    uz: "Umumiy kalsiy",
+    unit_ru: "ммоль/л",
+    unit_uz: "mmol/L",
+  },
+  organicPhosphorus: {
+    ru: "Органический фосфор",
+    uz: "Organik fosfor",
+    unit_ru: "ммоль/л",
+    unit_uz: "mmol/L",
+  },
+  albumin: { ru: "Альбумин", uz: "Albumin", unit_ru: "%", unit_uz: "%" },
+  alphaGlobulin: {
+    ru: "Альфа-глобулин",
+    uz: "Alfa globulin",
+    unit_ru: "%",
+    unit_uz: "%",
+  },
+  betaGlobulin: {
+    ru: "Бета-глобулин",
+    uz: "Beta globulin",
+    unit_ru: "%",
+    unit_uz: "%",
+  },
+  gammaGlobulin: {
+    ru: "Гамма-глобулин",
+    uz: "Gamma globulin",
+    unit_ru: "%",
+    unit_uz: "%",
+  },
+  residualNitrogen: {
+    ru: "Остаточный азот",
+    uz: "Qoldiq azot",
+    unit_ru: "ммоль/л",
+    unit_uz: "mmol/L",
+  },
+  urea: {
+    ru: "Мочевина",
+    uz: "Karbamid",
+    unit_ru: "ммоль/л",
+    unit_uz: "mmol/L",
+  },
+  uricAcid: {
+    ru: "Мочевая кислота",
+    uz: "Karbamid kislotasi",
+    unit_ru: "ммоль/л",
+    unit_uz: "mmol/L",
+  },
+  creatine: {
+    ru: "Креатин",
+    uz: "Kreatin",
+    unit_ru: "мкмоль/л",
+    unit_uz: "µmol/L",
+  },
+  creatinine: {
+    ru: "Креатинин",
+    uz: "Kreatinin",
+    unit_ru: "мкмоль/л",
+    unit_uz: "µmol/L",
+  },
+  alkalineReserve: {
+    ru: "Щелочной резерв",
+    uz: "Ishqoriy zahira",
+    unit_ru: "Об%CO²",
+    unit_uz: "Ob%CO²",
+  },
+  glucose: {
+    ru: "Глюкоза",
+    uz: "Glyukoza",
+    unit_ru: "ммоль/л",
+    unit_uz: "mmol/L",
+  },
+  ketoneBodies: {
+    ru: "Кетоновые тела",
+    uz: "Keton tanachalari",
+    unit_ru: "г/л",
+    unit_uz: "g/l",
+  },
+  totalBilirubin: {
+    ru: "Общий билирубин",
+    uz: "Umumiy Bilirubin",
+    unit_ru: "мкмоль/л",
+    unit_uz: "µmol/L",
+  },
+  directBilirubin: {
+    ru: "Прямой билирубин",
+    uz: "To'g'ri bilirubin",
+    unit_ru: "мкмоль/л",
+    unit_uz: "µmol/L",
+  },
+  totalCholesterol: {
+    ru: "Общий холестерин",
+    uz: "Umumiy Xolestrin",
+    unit_ru: "ммоль/л",
+    unit_uz: "mmol/L",
+  },
+  totalLipids: {
+    ru: "Общие липиды",
+    uz: "Umumiy lipidlar",
+    unit_ru: "г/л",
+    unit_uz: "g/L",
+  },
+  phospholipids: {
+    ru: "Фосфолипиды",
+    uz: "Fosfolipidlar",
+    unit_ru: "г/л",
+    unit_uz: "g/l",
+  },
+  lacticAcid: {
+    ru: "Молочная кислота",
+    uz: "Sut kislotasi",
+    unit_ru: "ммоль/л",
+    unit_uz: "mmol/L",
+  },
+  pyruvicAcid: {
+    ru: "Пировиноградная кислота",
+    uz: "Pirouzum kislotasi",
+    unit_ru: "ммоль/л",
+    unit_uz: "mmol/L",
+  },
+  citricAcid: {
+    ru: "Лимонная кислота",
+    uz: "Limon kislotasi",
+    unit_ru: "ммоль/л",
+    unit_uz: "mmol/L",
+  },
+  carotene: {
+    ru: "Каротин",
+    uz: "Karotin",
+    unit_ru: "мкмоль/л",
+    unit_uz: "µmol/L",
+  },
+  vitaminA: {
+    ru: "Витамин А",
+    uz: "A vitamin",
+    unit_ru: "мкмоль/л",
+    unit_uz: "µmol/L",
+  },
+  vitaminB: {
+    ru: "Витамин Б",
+    uz: "B vitamin",
+    unit_ru: "мкмоль/л",
+    unit_uz: "µmol/L",
+  },
+  vitaminC: {
+    ru: "Витамин С",
+    uz: "C vitamin",
+    unit_ru: "мкмоль/л",
+    unit_uz: "µmol/L",
+  },
+};

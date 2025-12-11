@@ -1,17 +1,17 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useI18n } from "@/shared/hooks/use-i18n";
-import { Input } from "@/shared/components/ui/input";
+import { Microscope, ScanSearch } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
+
+import { useI18n } from "@/shared/hooks/use-i18n";
+import { Divider } from "@/shared/components/divider";
+import { Input } from "@/shared/components/ui/input";
 import { Button } from "@/shared/components/ui/button";
 import { AnimalSelect } from "../animals/components/animal-select";
-import { DiseaseSelect } from "../diseases/components/disease-select";
-import { CLARITY_TYPES, DUNG_FORMS, SMELL_TYPES } from "@/shared/constants";
 import { DungColorSelect } from "../dung-colors/components/dung-color-select";
 import { AnimalTypeSelect } from "../animal-types/components/animal-type-select";
 import { DungTestSchema, createDungTestSchema, dungTestValues } from "./dung-test.model";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
 
 interface DungTestFormProps {
   defaultValues?: DungTestSchema;
@@ -19,7 +19,7 @@ interface DungTestFormProps {
 }
 
 export function DungTestForm({ onSubmit, defaultValues }: DungTestFormProps) {
-  const { t, locale } = useI18n();
+  const { t } = useI18n();
 
   const form = useForm<DungTestSchema>({
     resolver: zodResolver(createDungTestSchema(t)),
@@ -34,7 +34,7 @@ export function DungTestForm({ onSubmit, defaultValues }: DungTestFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 h-full">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
         <FormField
           name={"animalTypeId" as any}
           control={form.control}
@@ -62,6 +62,8 @@ export function DungTestForm({ onSubmit, defaultValues }: DungTestFormProps) {
             </FormItem>
           )}
         />
+
+        <Divider label="Макроскопическое исследование" icon={<ScanSearch />} className="col-span-1 md:col-span-2" />
         
         <FormField
           name="fecesColorId"
@@ -118,6 +120,8 @@ export function DungTestForm({ onSubmit, defaultValues }: DungTestFormProps) {
             </FormItem>
           )}
         /> */}
+        
+        <Divider label="Микроскопическое исследование" icon={<Microscope />} className="col-span-1 md:col-span-2" />
 
         <FormField
           name="amount"
@@ -145,7 +149,7 @@ export function DungTestForm({ onSubmit, defaultValues }: DungTestFormProps) {
           )}
         />
 
-        <div className="flex-1 flex items-end">
+        <div className="col-span-1 md:col-span-2">
           <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">
             {t(form.formState.isSubmitting ? "form.submitting" : "form.submit")}
           </Button>

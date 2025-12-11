@@ -1,17 +1,17 @@
-import { UpdateBody, GeneralInspection } from "@/shared/types";
+import { UpdateBody, ClinicalExam } from "@/shared/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { GeneralInspectionSchema } from "@/features/general-inspections";
 import { GeneralInspectionQueryKeys } from "../utils/constants/query-keys";
 import { createQueryData, removeQueryData, updateQueryData } from "@/shared/helpers/query-updater";
-import { generalInspectionControllerCreate, generalInspectionControllerRemove, generalInspectionControllerUpdate } from "@/shared/api";
+import { clinicalExamControllerCreate, clinicalExamControllerDelete, clinicalExamControllerUpdate } from "@/shared/api/api-new";
 
 export function useCreateGeneralInspection() {
   const client = useQueryClient();
 
   return useMutation<any, any, GeneralInspectionSchema>({
-    mutationFn: generalInspectionControllerCreate as any,
+    mutationFn: clinicalExamControllerCreate,
     onSuccess: (data) => {
-      createQueryData<GeneralInspection>(client, [GeneralInspectionQueryKeys.GENERAL_INSPECTION], data);
+      createQueryData<ClinicalExam>(client, [GeneralInspectionQueryKeys.GENERAL_INSPECTION], data);
       client.invalidateQueries({
         queryKey: [GeneralInspectionQueryKeys.GENERAL_INSPECTION_SELECT],
       });
@@ -23,9 +23,9 @@ export function useUpdateGeneralInspection() {
   const client = useQueryClient();
 
   return useMutation<any, any, UpdateBody<GeneralInspectionSchema>>({
-    mutationFn: async ({ id, body }) => generalInspectionControllerUpdate(+id, body),
+    mutationFn: async ({ id, body }) => clinicalExamControllerUpdate(id as string, body),
     onSuccess: (data) => {
-      updateQueryData<GeneralInspection>(client, [GeneralInspectionQueryKeys.GENERAL_INSPECTION], data);
+      updateQueryData<ClinicalExam>(client, [GeneralInspectionQueryKeys.GENERAL_INSPECTION], data);
       client.invalidateQueries({
         queryKey: [GeneralInspectionQueryKeys.GENERAL_INSPECTION_SELECT],
       });
@@ -37,9 +37,9 @@ export function useDeleteGeneralInspection() {
   const client = useQueryClient();
 
   return useMutation<any, any, number | string>({
-    mutationFn: generalInspectionControllerRemove,
+    mutationFn: id => clinicalExamControllerDelete(id as string),
     onSuccess: (data) => {
-      removeQueryData<GeneralInspection>(client, [GeneralInspectionQueryKeys.GENERAL_INSPECTION], data.id);
+      removeQueryData<ClinicalExam>(client, [GeneralInspectionQueryKeys.GENERAL_INSPECTION], data.id);
       client.invalidateQueries({
         queryKey: [GeneralInspectionQueryKeys.GENERAL_INSPECTION_SELECT],
       });

@@ -38,6 +38,7 @@ export default function DungTests() {
       <Modal
         open={dialog}
         onClose={handleClose}
+        widthClassName="max-w-[650px]!"
         title={t(editedItem ? "inspections.editDungTest" : "inspections.createDungTest")}>
         <DungTestForm
           onSubmit={onSubmit}

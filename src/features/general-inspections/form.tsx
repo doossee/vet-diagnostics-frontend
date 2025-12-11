@@ -1,20 +1,21 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useI18n } from "@/shared/hooks/use-i18n";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CircleDot, Droplet, Layers, ListChecks, PersonStanding } from "lucide-react";
+
 import { Input } from "@/shared/components/ui/input";
 import { Divider } from "@/shared/components/divider";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/shared/components/ui/button";
-import { Textarea } from "@/shared/components/ui/textarea";
 import { AnimalSelect } from "../animals/components/animal-select";
-import { EyeLidSelect } from "../eye-lid/components/eye-lid-select";
+import { ObjectEntriesSelect } from "@/shared/components/object-entries-select";
 import { AnimalTypeSelect } from "../animal-types/components/animal-type-select";
-import { AnimalColorSelect } from "../animal-colors/components/animal-color-select";
-import { LeatherCoverSelect } from "../leather-cover/components/leather-cover-select";
-import { BODY_STRUCTURES, BODY_TYPES, CUSTOMER_TYPES, OBESITY_TYPES, POSITIONS } from "@/shared/constants";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
+import { DOWN_TYPE, FEATHER_TYPE, HAIR_TYPE, WOOL_TYPE } from "@/entities/general-inspections/utils/constants/skin-cover";
+import { SKIN_COLOR, SKIN_ELASTICITY, SKIN_HUMIDITY, SKIN_TEMP } from "@/entities/general-inspections/utils/constants/skin";
 import { GeneralInspectionSchema, createGeneralInspectionSchema, generalInspectionValues } from "./general-inspection.model";
+import { BODY_POSITION, BODY_TYPE, CONSTITUTION, OBESITY_TYPE, TEMPERAMENT } from "@/entities/general-inspections/utils/constants/habitus";
+import { LYMPH_CONSISTENCY, LYMPH_MOBILITY, LYMPH_PAIN, LYMPH_SHAPE, LYMPH_SIZE, LYMPH_SURFACE, LYMPH_TEMP } from "@/entities/general-inspections/utils/constants/lymph";
 
 interface GeneralInspectionFormProps {
   hideAnimals?: boolean;
@@ -31,7 +32,7 @@ export function GeneralInspectionForm({ onSubmit, defaultValues, hideAnimals }: 
   });
 
   useEffect(() => {
-    if (hideAnimals) form.setValue("animalId", 0);
+    if (hideAnimals) form.setValue("animalId", 0 as any);
   }, [hideAnimals]);
 
   useEffect(() => {
@@ -42,7 +43,7 @@ export function GeneralInspectionForm({ onSubmit, defaultValues, hideAnimals }: 
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {!hideAnimals && (
           <>
             <FormField
@@ -75,170 +76,7 @@ export function GeneralInspectionForm({ onSubmit, defaultValues, hideAnimals }: 
           </>
         )}
 
-        <FormField
-          name="colorId"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("animals.color")}</FormLabel>
-              <FormControl>
-                <AnimalColorSelect placeholder={t("animals.color")} value={field.value} onChange={field.onChange} />
-              </FormControl>
-            </FormItem>
-        )} />
-        
-        <FormField
-          name="leatherCoverId"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("management.leatherCover")}</FormLabel>
-              <FormControl>
-                <LeatherCoverSelect placeholder={t("management.leatherCover")} value={field.value} onChange={field.onChange} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-            
-        <FormField
-          name="eyelidId"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("management.eyeLid")}</FormLabel>
-              <FormControl>
-                <EyeLidSelect placeholder={t("management.eyeLid")} value={field.value} onChange={field.onChange} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <Divider label={t("inspections.habitus")} className="col-span-1 md:col-span-2" />
-
-        <FormField
-          name="obesity"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("inspections.obesity")}</FormLabel>
-              <FormControl>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <SelectTrigger>
-                    <SelectValue placeholder={t("inspections.obesity")} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.keys(OBESITY_TYPES).map((k) => (
-                      <SelectItem key={k} value={k}>
-                        {OBESITY_TYPES[k as keyof typeof OBESITY_TYPES][locale]}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          name="bodyType"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("inspections.bodyType")}</FormLabel>
-              <FormControl>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <SelectTrigger>
-                    <SelectValue placeholder={t("inspections.bodyType")} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.keys(BODY_TYPES).map((k) => (
-                      <SelectItem key={k} value={k}>
-                        {BODY_TYPES[k as keyof typeof BODY_TYPES][locale]}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          name="bodyPosition"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("inspections.bodyPosition")}</FormLabel>
-              <FormControl>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <SelectTrigger>
-                    <SelectValue placeholder={t("inspections.bodyPosition")} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.keys(POSITIONS).map((k) => (
-                      <SelectItem key={k} value={k}>
-                        {POSITIONS[k as keyof typeof POSITIONS][locale]}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          name="bodyStructure"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("inspections.bodyStructure")}</FormLabel>
-              <FormControl>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <SelectTrigger>
-                    <SelectValue placeholder={t("inspections.bodyStructure")} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.keys(BODY_STRUCTURES).map((k) => (
-                      <SelectItem key={k} value={k}>
-                        {BODY_STRUCTURES[k as keyof typeof BODY_STRUCTURES][locale]}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          name="character"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("inspections.customerType")}</FormLabel>
-              <FormControl>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <SelectTrigger>
-                    <SelectValue placeholder={t("inspections.customerType")} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.keys(CUSTOMER_TYPES).map((k) => (
-                      <SelectItem key={k} value={k}>
-                        {CUSTOMER_TYPES[k as keyof typeof CUSTOMER_TYPES][locale]}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <Divider label={t("inspections.inspection")} className="col-span-1 md:col-span-2" />
+        <Divider label={"Общее состояние"} icon={<ListChecks />} className="col-span-1 md:col-span-2 lg:col-span-3" />
 
         <FormField
           name="pulse"
@@ -288,18 +126,249 @@ export function GeneralInspectionForm({ onSubmit, defaultValues, hideAnimals }: 
             </FormItem>
           )}
         />
+
+        <Divider label={"Габитус (телосложение)"} icon={<PersonStanding />} className="col-span-1 md:col-span-2 lg:col-span-3" />
+
+        <ObjectEntriesSelect
+          form={form}
+          name="bodyType"
+          locale={locale}
+          object={BODY_TYPE as any}
+          label={t("inspections.bodyType")}
+          placeholder={t("inspections.bodyType")}
+        />
+
+        <ObjectEntriesSelect
+          form={form}
+          name="obesity"
+          locale={locale}
+          object={OBESITY_TYPE as any}
+          label={t("inspections.obesity")}
+          placeholder={t("inspections.obesity")}
+        />
+
+        <ObjectEntriesSelect
+          form={form}
+          name="bodyPosition"
+          locale={locale}
+          object={BODY_POSITION as any}
+          label={t("inspections.bodyPosition")}
+          placeholder={t("inspections.bodyPosition")}
+        />
+
+        <ObjectEntriesSelect
+          form={form}
+          name="constitution"
+          locale={locale}
+          object={CONSTITUTION as any}
+          label={"CONSTITUTION"}
+          placeholder={"CONSTITUTION"}
+        />
+
+        <ObjectEntriesSelect
+          form={form}
+          name="temperament"
+          locale={locale}
+          object={TEMPERAMENT as any}
+          label={"TEMPERAMENT"}
+          placeholder={"TEMPERAMENT"}
+        />
+
+        <Divider label={"Кожный покров"} icon={<Layers />} className="col-span-1 md:col-span-2 lg:col-span-3" />
+
+        <ObjectEntriesSelect
+          form={form}
+          name="wool"
+          locale={locale}
+          object={WOOL_TYPE as any}
+          label={"WOOL_TYPE"}
+          placeholder={"WOOL_TYPE"}
+        />
+        
+        <ObjectEntriesSelect
+          form={form}
+          name="down"
+          locale={locale}
+          object={DOWN_TYPE as any}
+          label={"DOWN_TYPE"}
+          placeholder={"DOWN_TYPE"}
+        />
+        
+        <ObjectEntriesSelect
+          form={form}
+          name="hair"
+          locale={locale}
+          object={HAIR_TYPE as any}
+          label={"HAIR_TYPE"}
+          placeholder={"HAIR_TYPE"}
+        />
+        
+        <ObjectEntriesSelect
+          form={form}
+          name="feathers"
+          locale={locale}
+          object={FEATHER_TYPE as any}
+          label={"FEATHER_TYPE"}
+          placeholder={"FEATHER_TYPE"}
+        />
+
+        <Divider label={"Кожа"} icon={<Droplet />} className="col-span-1 md:col-span-2 lg:col-span-3" />
+
+        <ObjectEntriesSelect
+          form={form}
+          name="skinColor"
+          locale={locale}
+          object={SKIN_COLOR as any}
+          label={"SKIN_COLOR"}
+          placeholder={"SKIN_COLOR"}
+        />
+
+        <ObjectEntriesSelect
+          form={form}
+          name="skinHumidity"
+          locale={locale}
+          object={SKIN_HUMIDITY as any}
+          label={"SKIN_HUMIDITY"}
+          placeholder={"SKIN_HUMIDITY"}
+        />
+
         <FormField
-          name="conclusion"
+          name="skinSmell"
           control={form.control}
           render={({ field }) => (
-            <FormItem className="flex flex-col gap-1 pt-1.5 md:col-span-2">
-              <FormLabel>{t("inspections.conclusion")}</FormLabel>
+            <FormItem className="flex flex-col gap-1 pt-1.5">
+              <FormLabel>{"Skin Smell"}</FormLabel>
               <FormControl>
-                <Textarea className="resize-none" rows={6} placeholder={t("inspections.conclusion")} {...field} />
+                <Input placeholder={"Skin Smell"} {...field} />
               </FormControl>
             </FormItem>
           )}
         />
+
+        <ObjectEntriesSelect
+          form={form}
+          name="skinTemp"
+          locale={locale}
+          object={SKIN_TEMP as any}
+          label={"SKIN_TEMP"}
+          placeholder={"SKIN_TEMP"}
+        />
+
+        <FormField
+          name="skinSurface"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem className="flex flex-col gap-1 pt-1.5">
+              <FormLabel>{"Skin Surface"}</FormLabel>
+              <FormControl>
+                <Input placeholder={"Skin Surface"} {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
+        <ObjectEntriesSelect
+          form={form}
+          name="skinElasticity"
+          locale={locale}
+          object={SKIN_ELASTICITY as any}
+          label={"SKIN_ELASTICITY"}
+          placeholder={"SKIN_ELASTICITY"}
+        />
+
+        <FormField
+          name="skinSensitivity"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem className="flex flex-col gap-1 pt-1.5">
+              <FormLabel>{"Skin Sensitivity"}</FormLabel>
+              <FormControl>
+                <Input placeholder={"Skin Sensitivity"} {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          name="skinPain"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem className="flex flex-col gap-1 pt-1.5">
+              <FormLabel>{"Skin Pain"}</FormLabel>
+              <FormControl>
+                <Input placeholder={"Skin Pain"} {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
+        <Divider label={"Лимфатические узлы"} icon={<CircleDot />} className="col-span-1 md:col-span-2 lg:col-span-3" />
+
+        <ObjectEntriesSelect
+          form={form}
+          name="lymphSize"
+          locale={locale}
+          object={LYMPH_SIZE as any}
+          label={"LYMPH_SIZE"}
+          placeholder={"LYMPH_SIZE"}
+        />
+        
+        <ObjectEntriesSelect
+          form={form}
+          name="lymphShape"
+          locale={locale}
+          object={LYMPH_SHAPE as any}
+          label={"LYMPH_SHAPE"}
+          placeholder={"LYMPH_SHAPE"}
+        />
+
+        <ObjectEntriesSelect
+          form={form}
+          name="lymphSurface"
+          locale={locale}
+          object={LYMPH_SURFACE as any}
+          label={"LYMPH_SURFACE"}
+          placeholder={"LYMPH_SURFACE"}
+        />
+        
+        <ObjectEntriesSelect
+          form={form}
+          name="lymphConsistency"
+          locale={locale}
+          object={LYMPH_CONSISTENCY as any}
+          label={"LYMPH_CONSISTENCY"}
+          placeholder={"LYMPH_CONSISTENCY"}
+        />
+
+        <ObjectEntriesSelect
+          form={form}
+          name="lymphTemp"
+          locale={locale}
+          object={LYMPH_TEMP as any}
+          label={"LYMPH_TEMP"}
+          placeholder={"LYMPH_TEMP"}
+        />
+
+        <ObjectEntriesSelect
+          form={form}
+          name="lymphPain"
+          locale={locale}
+          object={LYMPH_PAIN as any}
+          label={"LYMPH_PAIN"}
+          placeholder={"LYMPH_PAIN"}
+        />
+
+        <ObjectEntriesSelect
+          form={form}
+          name="lymphMobility"
+          locale={locale}
+          object={LYMPH_MOBILITY as any}
+          label={"LYMPH_MOBILITY"}
+          placeholder={"LYMPH_MOBILITY"}
+        />
+
+        <div className="col-span-1 md:col-span-2 lg:col-span-3" />
+
         <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">
           {t(form.formState.isSubmitting ? "form.submitting" : "form.submit")}
         </Button>

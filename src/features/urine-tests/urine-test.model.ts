@@ -1,9 +1,7 @@
 import { z } from "zod";
-import { URINE_ANALYSIS_TYPES_ARRAY } from "@/entities/urine-tests/utils/constants/urine-analysis-types";
 
 export const urineTestValues = {
   animalId: undefined,
-  analysisType: undefined,
   urineColorId: undefined,
 
   urineSmellId: undefined,
@@ -29,7 +27,6 @@ export const createUrineTestSchema = (_: any) =>
   z.object({
     animalId: z.string({}),
     urineColorId: z.string({}).optional(),
-    analysisType: z.enum(URINE_ANALYSIS_TYPES_ARRAY),
 
     urineSmellId: z.string({}).optional(),
     urineClarityId: z.string({}).optional(),

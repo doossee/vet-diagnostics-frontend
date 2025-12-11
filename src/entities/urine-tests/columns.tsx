@@ -1,16 +1,8 @@
 import { Edit, Trash } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { LanguageLocales, UrineExam } from "@/shared/types";
-import { URINE_ANALYSIS_TYPES } from "./utils/constants/urine-analysis-types";
 
-export const createUrineTestColumns = (handleEditItem: (item: UrineExam) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
-  {
-    title: "Тип анализа",
-    key: "analysisType",
-    render(item: UrineExam) {
-      return URINE_ANALYSIS_TYPES?.[item.analysisType]?.[locale];
-    },
-  },
+export const createUrineTestColumns = (handleEditItem: (item: UrineExam) => void, handleDelete: (id: string) => void, t: any, _: LanguageLocales) => [
   {
     title: "Животное",
     key: "animal",

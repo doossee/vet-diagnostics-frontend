@@ -24,6 +24,14 @@ import {
   Sun,
   Moon,
   Laptop,
+  Stethoscope,
+  TestTube,
+  Beaker,
+  UserCheck,
+  UserPlus,
+  Box,
+  ClipboardList,
+  Network,
 } from "lucide-react";
 
 export const TABLE_QUERY_PARAMS = {
@@ -51,11 +59,6 @@ export const GENDERS = [
 export const ANIMAL_GENDERS = [
   { uz: "Erkak", ru: "Самец", value: "MALE" },
   { uz: "Urgochi", ru: "Самка", value: "FEMALE" },
-];
-
-export const BREED = [
-  { uz: "Sut", ru: "Молоко", value: "MILK" },
-  { uz: "Go'sht", ru: "Мясо", value: "MEAT" },
 ];
 
 export const BLOOD_SERUM_TESTS = {
@@ -222,11 +225,6 @@ export const GENERAL_BLOOD_TESTS = {
   },
 };
 
-export const CLARITY_TYPES = {
-  CLEAR: { ru: "Прозрачный", uz: "Tiniq" },
-  NOT_CLEAR: { ru: "Мутный", uz: "Rasvo" },
-};
-
 export const POSITIONS = {
   NATURAL: {
     ru: "Естественное",
@@ -254,19 +252,6 @@ export const POSITIONS = {
   },
 };
 
-export const SMELL_TYPES = {
-  PUNGENT: { ru: "Резкий запах", uz: "Hidi o'tkir" },
-  WEAK: { ru: "Слабый запах", uz: "Hidi kuchsiz" },
-  HAS: { ru: "Есть запах", uz: "Hidi bor" },
-  NO: { ru: "Без запаха", uz: "Hidsiz" },
-};
-
-export const DUNG_FORMS = {
-  NORMAL: { ru: "Норма", uz: "Norma" },
-  SOLID: { ru: "Твёрдый", uz: "Qattiq" },
-  LIQUID: { ru: "Жидкий", uz: "Suyuq" },
-  MEDIUM: { ru: "Средний", uz: "O'rtacha" },
-};
 
 export const CUSTOMER_TYPES = {
   MOBILE: { ru: "Активный", uz: "Harakatchan" },
@@ -364,22 +349,22 @@ export const navLinksVariant: Record<UserRole, NavLink[]> = {
       items: [
         {
           title: "nav.animalTypes",
-          icon: PawPrint,
+          icon: Box,
           url: "/animal-types",
         },
         {
           title: "nav.breeds",
-          icon: Ham,
+          icon: Network,
           url: "/breeds",
         },
         {
           title: "nav.prophylaxis",
-          icon: Cross,
+          icon: Activity,
           url: "/prophylaxis",
         },
         {
           title: "nav.diseaseTypes",
-          icon: Activity,
+          icon: ClipboardList,
           url: "/disease-types",
         },
 
@@ -420,11 +405,6 @@ export const navLinksVariant: Record<UserRole, NavLink[]> = {
           icon: ScanEye,
           url: "/eye-lid",
         },
-        {
-          title: "nav.leatherCover",
-          icon: Disc,
-          url: "/leather-cover",
-        },
       ],
     },
     {
@@ -433,12 +413,12 @@ export const navLinksVariant: Record<UserRole, NavLink[]> = {
       items: [
         {
           title: "nav.veterinarians",
-          icon: Users,
+          icon: UserCheck,
           url: "/veterinarians",
         },
         {
           title: "nav.farmers",
-          icon: Users,
+          icon: UserPlus,
           url: "/farmers",
         },
         {
@@ -464,7 +444,7 @@ export const navLinksVariant: Record<UserRole, NavLink[]> = {
         },
         {
           title: "nav.urineTests",
-          icon: FlaskConical,
+          icon: Beaker,
           url: "/urine-tests",
         },
         {
@@ -473,30 +453,20 @@ export const navLinksVariant: Record<UserRole, NavLink[]> = {
           url: "/dung-tests",
         },
         {
-          title: "nav.vaccines",
-          icon: PillBottle,
-          url: "/vaccines",
-        },
-        {
           title: "nav.generalInspections",
-          icon: HeartPulse,
+          icon: Stethoscope,
           url: "/general-inspections",
-        },
-        {
-          title: "nav.inspections",
-          icon: Activity,
-          url: "/inspections",
         },
         {
           title: "nav.generalBloodTests",
           icon: Syringe,
           url: "/general-blood-tests",
         },
-        {
-          title: "nav.bloodSerumTests",
-          icon: FlaskRound,
-          url: "/blood-serum-tests",
-        },
+        // {
+        //   title: "nav.mucosaExams",
+        //   icon: FlaskRound,
+        //   url: "/blood-serum-tests",
+        // },
       ],
     },
   ],

@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { useCrud } from "@/shared/hooks/use-crud";
-import type { BloodSerumTest } from "@/shared/types";
+import type { BloodExam } from "@/shared/types";
 import { QUERY_PARAM_KEYS } from "@/shared/constants";
 import { DataTable } from "@/shared/components/data-table";
 import { Modal } from "@/shared/components/elements/modal";
@@ -19,7 +19,7 @@ export default function BloodSerumTests() {
   const newAnimal = get("new");
   const animalId = get("animalId", true);
 
-  const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<BloodSerumTest, BloodSerumTestSchema, BloodSerumTestSchema>({
+  const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<BloodExam, BloodSerumTestSchema, BloodSerumTestSchema>({
     dialogValue: !!newAnimal,
     createMutation: useCreateBloodSerumTest,
     updateMutation: useUpdateBloodSerumTest,

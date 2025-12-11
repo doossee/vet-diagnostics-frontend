@@ -3331,7 +3331,7 @@ export const healthControllerCheck = (options?: SecondParameter<typeof createIns
  * Creates a new blood exam.
  * @summary Create blood exam
  */
-export const bloodExamControllerCreate = (createBloodExamDto: BodyType<CreateBloodExamDto>, options?: SecondParameter<typeof createInstance<BloodExamEntity>>) => {
+export const bloodExamControllerCreate = (createBloodExamDto: BodyType<any>, options?: SecondParameter<typeof createInstance<BloodExamEntity>>) => {
   return createInstance<BloodExamEntity>({ url: `/blood-exams`, method: "POST", headers: { "Content-Type": "application/json" }, data: createBloodExamDto }, options);
 };
 
@@ -3340,7 +3340,7 @@ export const bloodExamControllerCreate = (createBloodExamDto: BodyType<CreateBlo
  * @summary List blood exams
  */
 export const bloodExamControllerFindAll = (params?: BloodExamControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedBloodExamEntity>>) => {
-  return createInstance<PaginatedBloodExamEntity>({ url: `/blood-exams`, method: "GET", params }, options);
+  return createInstance<any>({ url: `/blood-exams`, method: "GET", params }, options);
 };
 
 /**
@@ -3380,7 +3380,7 @@ export const clinicalExamControllerCreate = (createClinicalExamDto: BodyType<Cre
  * @summary List clinical exams
  */
 export const clinicalExamControllerFindAll = (params?: ClinicalExamControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedClinicalExamEntity>>) => {
-  return createInstance<PaginatedClinicalExamEntity>({ url: `/clinical-exams`, method: "GET", params }, options);
+  return createInstance<any>({ url: `/clinical-exams`, method: "GET", params }, options);
 };
 
 /**

@@ -1,15 +1,16 @@
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { GENERAL_BLOOD } from "@/shared/types";
+import { Droplet, FlaskRound } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { Input } from "@/shared/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Divider } from "@/shared/components/divider";
 import { Button } from "@/shared/components/ui/button";
-import { GENERAL_BLOOD_TESTS } from "@/shared/constants";
 import { Textarea } from "@/shared/components/ui/textarea";
-import { DatePicker } from "@/shared/components/date-picker";
 import { AnimalSelect } from "../animals/components/animal-select";
 import { AnimalTypeSelect } from "../animal-types/components/animal-type-select";
+import { BLOOD_TEST_FIELDS } from "@/entities/general-blood-tests/utils/constants/blood-test-fields";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 import { GeneralBloodTestSchema, createGeneralBloodTestSchema, generalBloodTestValues } from "./general-blood-test.model";
 
@@ -24,7 +25,7 @@ export function GeneralBloodTestForm({ onSubmit, defaultValues, animalId }: Gene
 
   const form = useForm<GeneralBloodTestSchema>({
     resolver: zodResolver(createGeneralBloodTestSchema(t, locale)),
-    defaultValues: defaultValues ? { ...defaultValues, date: new Date(defaultValues.date) } : generalBloodTestValues(animalId),
+    defaultValues: defaultValues ?? generalBloodTestValues(animalId),
   });
 
   useEffect(() => {
@@ -35,7 +36,7 @@ export function GeneralBloodTestForm({ onSubmit, defaultValues, animalId }: Gene
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 w-full">
         <FormField
           name={"animalTypeId" as any}
           control={form.control}
@@ -63,45 +64,33 @@ export function GeneralBloodTestForm({ onSubmit, defaultValues, animalId }: Gene
             </FormItem>
           )}
         />
-        
-        <FormField
-          name="date"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className="flex flex-col gap-2 pt-1 justify-between">
-              <FormLabel>{t("form.date")}</FormLabel>
-              <FormControl>
-                <DatePicker field={field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        {Object.keys(GENERAL_BLOOD_TESTS).map((key) => {
-          return (
+
+        {Object.entries(BLOOD_TEST_FIELDS).map(([key, value], index) =>
+          <Fragment key={key}>
+            {index === 0 && <Divider label="Морфологическое исследование крови" icon={<Droplet />} className="col-span-1 md:col-span-2 lg:col-span-3" />}
+            {index === 8 && <Divider label="Исследование сыворотки крови" icon={<FlaskRound />} className="col-span-1 md:col-span-2 lg:col-span-3" />}
             <FormField
-              key={key}
+              name={key}
               control={form.control}
-              name={key as GENERAL_BLOOD}
               render={({ field }) => (
                 <FormItem className="flex flex-col gap-2 pt-1 justify-between">
                   <FormLabel>
-                    {GENERAL_BLOOD_TESTS[key as GENERAL_BLOOD][locale]} ({GENERAL_BLOOD_TESTS[key as GENERAL_BLOOD][`unit_${locale}`]})
+                    {value[locale]} ({value[`unit_${locale}`]})
                   </FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder={GENERAL_BLOOD_TESTS[key as GENERAL_BLOOD][locale]} {...field} />
+                    <Input type="number" placeholder={value[locale]} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-          );
-        })}
+          </Fragment>)}
+
         <FormField
           name="conclusion"
           control={form.control}
           render={({ field }) => (
-            <FormItem className="col-span-1 sm:col-span-2">
+            <FormItem className="col-span-1 md:col-span-2 lg:col-span-3">
               <FormLabel>{t("inspections.conclusion")}</FormLabel>
               <FormControl>
                 <Textarea rows={6} className="resize-none" placeholder={t("inspections.conclusion")} {...field} />

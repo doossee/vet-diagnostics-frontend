@@ -15,6 +15,11 @@ export function useCreateGeneralBloodTest() {
       client.invalidateQueries({
         queryKey: [GeneralBloodTestQueryKeys.GENERAL_BLOOD_TESTS_SELECT],
       });
+      if (data?.animalId) {
+        client.invalidateQueries({
+          queryKey: [GeneralBloodTestQueryKeys.LAST_GENERAL_BLOOD_TEST, data.animalId],
+        });
+      }
     },
   });
 }
@@ -29,6 +34,11 @@ export function useUpdateGeneralBloodTest() {
       client.invalidateQueries({
         queryKey: [GeneralBloodTestQueryKeys.GENERAL_BLOOD_TESTS_SELECT],
       });
+      if (data?.animalId) {
+        client.invalidateQueries({
+          queryKey: [GeneralBloodTestQueryKeys.LAST_GENERAL_BLOOD_TEST, data.animalId],
+        });
+      }
     },
   });
 }
@@ -43,6 +53,11 @@ export function useDeleteGeneralBloodTest() {
       client.invalidateQueries({
         queryKey: [GeneralBloodTestQueryKeys.GENERAL_BLOOD_TESTS_SELECT],
       });
+      if (data?.animalId) {
+        client.invalidateQueries({
+          queryKey: [GeneralBloodTestQueryKeys.LAST_GENERAL_BLOOD_TEST, data.animalId],
+        });
+      }
     },
   });
 }

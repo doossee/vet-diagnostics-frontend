@@ -13,6 +13,11 @@ export function useCreateMucosaExam() {
     onSuccess: (data) => {
       createQueryData<MucosaExam>(client, [MUCOSA_EXAMS_QUERY_KEYS.MUCOSA_EXAMS], data);
       client.invalidateQueries({ queryKey: [MUCOSA_EXAMS_QUERY_KEYS.MUCOSA_EXAMS_SELECT] });
+      if (data?.animalId) {
+        client.invalidateQueries({
+          queryKey: [MUCOSA_EXAMS_QUERY_KEYS.MUCOSA_EXAMS_LAST_BY_ANIMAL, data.animalId],
+        });
+      }
     },
   });
 }
@@ -25,6 +30,11 @@ export function useUpdateMucosaExam() {
     onSuccess: (data) => {
       updateQueryData<MucosaExam>(client, [MUCOSA_EXAMS_QUERY_KEYS.MUCOSA_EXAMS], data);
       client.invalidateQueries({ queryKey: [MUCOSA_EXAMS_QUERY_KEYS.MUCOSA_EXAMS_SELECT] });
+      if (data?.animalId) {
+        client.invalidateQueries({
+          queryKey: [MUCOSA_EXAMS_QUERY_KEYS.MUCOSA_EXAMS_LAST_BY_ANIMAL, data.animalId],
+        });
+      }
     },
   });
 }
@@ -37,6 +47,11 @@ export function useDeleteMucosaExam() {
     onSuccess: (data) => {
       removeQueryData<MucosaExam>(client, [MUCOSA_EXAMS_QUERY_KEYS.MUCOSA_EXAMS], data.id);
       client.invalidateQueries({ queryKey: [MUCOSA_EXAMS_QUERY_KEYS.MUCOSA_EXAMS_SELECT] });
+      if (data?.animalId) {
+        client.invalidateQueries({
+          queryKey: [MUCOSA_EXAMS_QUERY_KEYS.MUCOSA_EXAMS_LAST_BY_ANIMAL, data.animalId],
+        });
+      }
     },
   });
 }

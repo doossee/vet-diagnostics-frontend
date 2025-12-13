@@ -37,5 +37,6 @@ export function useGetAnimalsInfinite(search?: string) {
           }
         : null;
     },
+    staleTime: 20 * 60 * 1000, // 20 minutes
   });
 }

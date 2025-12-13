@@ -15,6 +15,11 @@ export function useCreateProphylaxis() {
       client.invalidateQueries({
         queryKey: [ProphylaxisQueryKeys.PROPHYLAXIS_SELECT],
       });
+      if (data?.animalId) {
+        client.invalidateQueries({
+          queryKey: [ProphylaxisQueryKeys.PROPHYLAXIS_LAST_BY_ANIMAL, data.animalId],
+        });
+      }
     },
   });
 }
@@ -29,6 +34,11 @@ export function useUpdateProphylaxis() {
       client.invalidateQueries({
         queryKey: [ProphylaxisQueryKeys.PROPHYLAXIS_SELECT],
       });
+      if (data?.animalId) {
+        client.invalidateQueries({
+          queryKey: [ProphylaxisQueryKeys.PROPHYLAXIS_LAST_BY_ANIMAL, data.animalId],
+        });
+      }
     },
   });
 }
@@ -43,6 +53,11 @@ export function useDeleteProphylaxis() {
       client.invalidateQueries({
         queryKey: [ProphylaxisQueryKeys.PROPHYLAXIS_SELECT],
       });
+      if (data?.animalId) {
+        client.invalidateQueries({
+          queryKey: [ProphylaxisQueryKeys.PROPHYLAXIS_LAST_BY_ANIMAL, data.animalId],
+        });
+      }
     },
   });
 }

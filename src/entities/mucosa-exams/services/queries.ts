@@ -41,5 +41,6 @@ export function useGetMucosaExamsInfinite(search?: string) {
           }
         : null;
     },
+    staleTime: 20 * 60 * 1000, // 20 minutes
   });
 }

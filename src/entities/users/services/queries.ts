@@ -49,6 +49,7 @@ export function useGetFarmersInfinite(search?: string) {
           }
         : null;
     },
+    staleTime: 20 * 60 * 1000, // 20 minutes
   });
 }
 
@@ -88,5 +89,6 @@ export function useGetVeterinariansInfinite(search?: string) {
           }
         : null;
     },
+    staleTime: 20 * 60 * 1000, // 20 minutes
   });
 }

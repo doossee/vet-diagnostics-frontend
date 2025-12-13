@@ -15,6 +15,11 @@ export function useCreateGeneralInspection() {
       client.invalidateQueries({
         queryKey: [GeneralInspectionQueryKeys.GENERAL_INSPECTION_SELECT],
       });
+      if (data?.animalId) {
+        client.invalidateQueries({
+          queryKey: [GeneralInspectionQueryKeys.LAST_GENERAL_INSPECTION, data.animalId],
+        });
+      }
     },
   });
 }
@@ -29,6 +34,11 @@ export function useUpdateGeneralInspection() {
       client.invalidateQueries({
         queryKey: [GeneralInspectionQueryKeys.GENERAL_INSPECTION_SELECT],
       });
+      if (data?.animalId) {
+        client.invalidateQueries({
+          queryKey: [GeneralInspectionQueryKeys.LAST_GENERAL_INSPECTION, data.animalId],
+        });
+      }
     },
   });
 }
@@ -43,6 +53,11 @@ export function useDeleteGeneralInspection() {
       client.invalidateQueries({
         queryKey: [GeneralInspectionQueryKeys.GENERAL_INSPECTION_SELECT],
       });
+      if (data?.animalId) {
+        client.invalidateQueries({
+          queryKey: [GeneralInspectionQueryKeys.LAST_GENERAL_INSPECTION, data.animalId],
+        });
+      }
     },
   });
 }

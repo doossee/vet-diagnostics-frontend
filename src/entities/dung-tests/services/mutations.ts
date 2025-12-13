@@ -15,6 +15,11 @@ export function useCreateDungTest() {
       client.invalidateQueries({
         queryKey: [DungTestQueryKeys.DUNG_TESTS_SELECT],
       });
+      if (data?.animalId) {
+        client.invalidateQueries({
+          queryKey: [DungTestQueryKeys.DUNG_TESTS_LAST_BY_ANIMAL, data.animalId],
+        });
+      }
     },
   });
 }
@@ -29,6 +34,11 @@ export function useUpdateDungTest() {
       client.invalidateQueries({
         queryKey: [DungTestQueryKeys.DUNG_TESTS_SELECT],
       });
+      if (data?.animalId) {
+        client.invalidateQueries({
+          queryKey: [DungTestQueryKeys.DUNG_TESTS_LAST_BY_ANIMAL, data.animalId],
+        });
+      }
     },
   });
 }
@@ -43,6 +53,11 @@ export function useDeleteDungTest() {
       client.invalidateQueries({
         queryKey: [DungTestQueryKeys.DUNG_TESTS_SELECT],
       });
+      if (data?.animalId) {
+        client.invalidateQueries({
+          queryKey: [DungTestQueryKeys.DUNG_TESTS_LAST_BY_ANIMAL, data.animalId],
+        });
+      }
     },
   });
 }

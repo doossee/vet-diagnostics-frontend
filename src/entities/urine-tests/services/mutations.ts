@@ -15,6 +15,11 @@ export function useCreateUrineTest() {
       client.invalidateQueries({
         queryKey: [UrineTestQueryKeys.URINE_TESTS_SELECT],
       });
+      if (data?.animalId) {
+        client.invalidateQueries({
+          queryKey: [UrineTestQueryKeys.URINE_TESTS_LAST_BY_ANIMAL, data.animalId],
+        });
+      }
     },
   });
 }
@@ -29,6 +34,11 @@ export function useUpdateUrineTest() {
       client.invalidateQueries({
         queryKey: [UrineTestQueryKeys.URINE_TESTS_SELECT],
       });
+      if (data?.animalId) {
+        client.invalidateQueries({
+          queryKey: [UrineTestQueryKeys.URINE_TESTS_LAST_BY_ANIMAL, data.animalId],
+        });
+      }
     },
   });
 }
@@ -43,6 +53,11 @@ export function useDeleteUrineTest() {
       client.invalidateQueries({
         queryKey: [UrineTestQueryKeys.URINE_TESTS_SELECT],
       });
+      if (data?.animalId) {
+        client.invalidateQueries({
+          queryKey: [UrineTestQueryKeys.URINE_TESTS_LAST_BY_ANIMAL, data.animalId],
+        });
+      }
     },
   });
 }

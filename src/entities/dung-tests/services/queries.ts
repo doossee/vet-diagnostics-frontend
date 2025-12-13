@@ -41,5 +41,6 @@ export function useGetDungTestsInfinite(search?: string) {
           }
         : null;
     },
+    staleTime: 20 * 60 * 1000, // 20 minutes
   });
 }

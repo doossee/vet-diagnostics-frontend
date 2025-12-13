@@ -6,28 +6,28 @@ import { MUCOSA_TYPES } from "../eye-lid/utils/constants/mucosa-types";
 export const createMucosaExamColumns = (handleEditItem: (item: MucosaExam) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
   {
     hideInInfoTable: true,
-    title: "Animal",
+    title: t("form.animal"),
     key: "animal",
     render(item: MucosaExam) {
       return item.animal?.animalNameCode
     }
   },
   {
-    title: "Mucosa Appearance",
+    title: t("inspections.mucosaAppearance"),
     key: "mucosaAppearance",
     render(item: MucosaExam) {
       return item.mucosaAppearance?.[`name_${locale}`]
     }
   },
   {
-    title: "Mucosa Type",
+    title: t("inspections.mucosaType"),
     key: "mucosaType",
     render(item: MucosaExam) {
       return MUCOSA_TYPES?.[item.mucosaType]?.[locale]
     }
   },
   {
-    title: "Date",
+    title: t("form.date"),
     key: "date",
     render(item: MucosaExam) {
       return new Date(item.createdAt).toLocaleString()

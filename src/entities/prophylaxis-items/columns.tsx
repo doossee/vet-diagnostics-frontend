@@ -7,17 +7,17 @@ import { PROPHYLAXIS_TYPES, PROPHYLAXIS_BADGE_COLORS } from "../prophylaxis/util
 
 export const createProphylaxisItemsColumns = (handleEditItem: (item: ProphylaxisItem) => void, handleDelete: (id: number | string) => void, t: any, locale: LanguageLocales) => [
   {
-    title: "Называние", key: `name_${locale}`
+    title: t("inspections.name"), key: `name_${locale}`
   },
   {
-    title: "Специфическая профилактика", key: "type", render(item: ProphylaxisItem) {
+    title: t("inspections.specificProphylaxis"), key: "type", render(item: ProphylaxisItem) {
       return <Badge className="text-sm" variant={PROPHYLAXIS_BADGE_COLORS[item.type] as any}>
         {PROPHYLAXIS_TYPES[item.type]}
       </Badge>
     }
   },
   {
-    title: "Дата", key: "date", render(item: ProphylaxisItem) {
+    title: t("form.date"), key: "date", render(item: ProphylaxisItem) {
       return new Date(item.createdAt).toLocaleDateString()
     }
   },

@@ -7,24 +7,24 @@ import { PROPHYLAXIS_BADGE_COLORS, PROPHYLAXIS_TYPES } from "./utils/constants/p
 
 export const createProphylaxisColumns = (handleEditItem: (item: Prophylaxis) => void, handleDelete: (id: number | string) => void, t: any, locale: LanguageLocales) => [
   {
-    title: "Специфическая профилактика", key: "type", render(item: Prophylaxis) {
+    title: t("inspections.specificProphylaxis"), key: "type", render(item: Prophylaxis) {
       return <Badge className="text-sm" variant={PROPHYLAXIS_BADGE_COLORS[item.type] as any}>
         {PROPHYLAXIS_TYPES[item.type]}
       </Badge>
     }
   },
   {
-    title: "Тип", key: "item", render(item: Prophylaxis) {
+    title: t("form.type"), key: "item", render(item: Prophylaxis) {
       return item?.item?.[`name_${locale}`]
     }
   },
   {
-    title: "Дочерные", key: "detail", render(item: Prophylaxis) {
+    title: t("inspections.child"), key: "detail", render(item: Prophylaxis) {
       return item?.detail?.[`name_${locale}`]
     }
   },
   {
-    title: "Дата", key: "date", render(item: Prophylaxis) {
+    title: t("form.date"), key: "date", render(item: Prophylaxis) {
       return new Date(item.date).toLocaleDateString()
     }
   },

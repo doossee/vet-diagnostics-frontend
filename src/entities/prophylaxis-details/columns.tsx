@@ -5,15 +5,15 @@ import { Button } from "@/shared/components/ui/button";
 
 export const createProphylaxisDetailsColumns = (handleEditItem: (item: ProphylaxisDetail) => void, handleDelete: (id: number | string) => void, t: any, locale: LanguageLocales) => [
   {
-    title: "Называние", key: `name_${locale}`
+    title: t("inspections.name"), key: `name_${locale}`
   },
   {
-    title: "Тип", key: "item", render(item: ProphylaxisDetail) {
+    title: t("form.type"), key: "item", render(item: ProphylaxisDetail) {
       return item?.item?.[`name_${locale}`]
     }
   },
   {
-    title: "Дата", key: "date", render(item: ProphylaxisDetail) {
+    title: t("form.date"), key: "date", render(item: ProphylaxisDetail) {
       return new Date(item.createdAt).toLocaleDateString()
     }
   },

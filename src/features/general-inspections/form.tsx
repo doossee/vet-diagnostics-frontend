@@ -67,7 +67,7 @@ export function GeneralInspectionForm({ onSubmit, defaultValues }: GeneralInspec
           )}
         /> */}
 
-        <Divider label={"Общее состояние"} icon={<ListChecks />} className="col-span-1 md:col-span-2 lg:col-span-3" />
+        <Divider label={t("inspections.generalCondition")} icon={<ListChecks />} className="col-span-1 md:col-span-2 lg:col-span-3" />
 
         <FormField
           name="pulse"
@@ -118,7 +118,7 @@ export function GeneralInspectionForm({ onSubmit, defaultValues }: GeneralInspec
           )}
         />
 
-        <Divider label={"Габитус (телосложение)"} icon={<PersonStanding />} className="col-span-1 md:col-span-2 lg:col-span-3" />
+        <Divider label={t("inspections.habitus")} icon={<PersonStanding />} className="col-span-1 md:col-span-2 lg:col-span-3" />
 
         <ObjectEntriesSelect
           form={form}
@@ -152,8 +152,8 @@ export function GeneralInspectionForm({ onSubmit, defaultValues }: GeneralInspec
           name="constitution"
           locale={locale}
           object={CONSTITUTION as any}
-          label={"CONSTITUTION"}
-          placeholder={"CONSTITUTION"}
+          label={t("inspections.constitution")}
+          placeholder={t("inspections.constitution")}
         />
 
         <ObjectEntriesSelect
@@ -161,19 +161,19 @@ export function GeneralInspectionForm({ onSubmit, defaultValues }: GeneralInspec
           name="temperament"
           locale={locale}
           object={TEMPERAMENT as any}
-          label={"TEMPERAMENT"}
-          placeholder={"TEMPERAMENT"}
+          label={t("inspections.temperament")}
+          placeholder={t("inspections.temperament")}
         />
 
-        <Divider label={"Кожный покров"} icon={<Layers />} className="col-span-1 md:col-span-2 lg:col-span-3" />
+        <Divider label={t("inspections.skinCover")} icon={<Layers />} className="col-span-1 md:col-span-2 lg:col-span-3" />
 
         <ObjectEntriesSelect
           form={form}
           name="wool"
           locale={locale}
           object={WOOL_TYPE as any}
-          label={"WOOL_TYPE"}
-          placeholder={"WOOL_TYPE"}
+          label={t("inspections.wool")}
+          placeholder={t("inspections.wool")}
         />
         
         <ObjectEntriesSelect
@@ -181,8 +181,8 @@ export function GeneralInspectionForm({ onSubmit, defaultValues }: GeneralInspec
           name="down"
           locale={locale}
           object={DOWN_TYPE as any}
-          label={"DOWN_TYPE"}
-          placeholder={"DOWN_TYPE"}
+          label={t("inspections.down")}
+          placeholder={t("inspections.down")}
         />
         
         <ObjectEntriesSelect
@@ -190,8 +190,8 @@ export function GeneralInspectionForm({ onSubmit, defaultValues }: GeneralInspec
           name="hair"
           locale={locale}
           object={HAIR_TYPE as any}
-          label={"HAIR_TYPE"}
-          placeholder={"HAIR_TYPE"}
+          label={t("inspections.hair")}
+          placeholder={t("inspections.hair")}
         />
         
         <ObjectEntriesSelect
@@ -199,19 +199,19 @@ export function GeneralInspectionForm({ onSubmit, defaultValues }: GeneralInspec
           name="feathers"
           locale={locale}
           object={FEATHER_TYPE as any}
-          label={"FEATHER_TYPE"}
-          placeholder={"FEATHER_TYPE"}
+          label={t("inspections.feathers")}
+          placeholder={t("inspections.feathers")}
         />
 
-        <Divider label={"Кожа"} icon={<Droplet />} className="col-span-1 md:col-span-2 lg:col-span-3" />
+        <Divider label={t("inspections.skin")} icon={<Droplet />} className="col-span-1 md:col-span-2 lg:col-span-3" />
 
         <ObjectEntriesSelect
           form={form}
           name="skinColor"
           locale={locale}
           object={SKIN_COLOR as any}
-          label={"SKIN_COLOR"}
-          placeholder={"SKIN_COLOR"}
+          label={t("inspections.skinColor")}
+          placeholder={t("inspections.skinColor")}
         />
 
         <ObjectEntriesSelect
@@ -219,8 +219,8 @@ export function GeneralInspectionForm({ onSubmit, defaultValues }: GeneralInspec
           name="skinHumidity"
           locale={locale}
           object={SKIN_HUMIDITY as any}
-          label={"SKIN_HUMIDITY"}
-          placeholder={"SKIN_HUMIDITY"}
+          label={t("inspections.skinHumidity")}
+          placeholder={t("inspections.skinHumidity")}
         />
 
         <FormField
@@ -228,9 +228,9 @@ export function GeneralInspectionForm({ onSubmit, defaultValues }: GeneralInspec
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{"Skin Smell"}</FormLabel>
+              <FormLabel>{t("inspections.skinSmell")}</FormLabel>
               <FormControl>
-                <Input placeholder={"Skin Smell"} {...field} />
+                <Input placeholder={t("inspections.skinSmell")} {...field} />
               </FormControl>
             </FormItem>
           )}
@@ -241,8 +241,8 @@ export function GeneralInspectionForm({ onSubmit, defaultValues }: GeneralInspec
           name="skinTemp"
           locale={locale}
           object={SKIN_TEMP as any}
-          label={"SKIN_TEMP"}
-          placeholder={"SKIN_TEMP"}
+          label={t("inspections.skinTemp")}
+          placeholder={t("inspections.skinTemp")}
         />
 
         <FormField
@@ -250,9 +250,9 @@ export function GeneralInspectionForm({ onSubmit, defaultValues }: GeneralInspec
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{"Skin Surface"}</FormLabel>
+              <FormLabel>{t("inspections.skinSurface")}</FormLabel>
               <FormControl>
-                <Input placeholder={"Skin Surface"} {...field} />
+                <Input placeholder={t("inspections.skinSurface")} {...field} />
               </FormControl>
             </FormItem>
           )}
@@ -263,8 +263,8 @@ export function GeneralInspectionForm({ onSubmit, defaultValues }: GeneralInspec
           name="skinElasticity"
           locale={locale}
           object={SKIN_ELASTICITY as any}
-          label={"SKIN_ELASTICITY"}
-          placeholder={"SKIN_ELASTICITY"}
+          label={t("inspections.skinElasticity")}
+          placeholder={t("inspections.skinElasticity")}
         />
 
         <FormField
@@ -272,9 +272,9 @@ export function GeneralInspectionForm({ onSubmit, defaultValues }: GeneralInspec
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{"Skin Sensitivity"}</FormLabel>
+              <FormLabel>{t("inspections.skinSensitivity")}</FormLabel>
               <FormControl>
-                <Input placeholder={"Skin Sensitivity"} {...field} />
+                <Input placeholder={t("inspections.skinSensitivity")} {...field} />
               </FormControl>
             </FormItem>
           )}
@@ -285,23 +285,23 @@ export function GeneralInspectionForm({ onSubmit, defaultValues }: GeneralInspec
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{"Skin Pain"}</FormLabel>
+              <FormLabel>{t("inspections.skinPain")}</FormLabel>
               <FormControl>
-                <Input placeholder={"Skin Pain"} {...field} />
+                <Input placeholder={t("inspections.skinPain")} {...field} />
               </FormControl>
             </FormItem>
           )}
         />
 
-        <Divider label={"Лимфатические узлы"} icon={<CircleDot />} className="col-span-1 md:col-span-2 lg:col-span-3" />
+        <Divider label={t("inspections.lymphNodes")} icon={<CircleDot />} className="col-span-1 md:col-span-2 lg:col-span-3" />
 
         <ObjectEntriesSelect
           form={form}
           name="lymphSize"
           locale={locale}
           object={LYMPH_SIZE as any}
-          label={"LYMPH_SIZE"}
-          placeholder={"LYMPH_SIZE"}
+          label={t("inspections.lymphSize")}
+          placeholder={t("inspections.lymphSize")}
         />
         
         <ObjectEntriesSelect
@@ -309,17 +309,17 @@ export function GeneralInspectionForm({ onSubmit, defaultValues }: GeneralInspec
           name="lymphShape"
           locale={locale}
           object={LYMPH_SHAPE as any}
-          label={"LYMPH_SHAPE"}
-          placeholder={"LYMPH_SHAPE"}
+          label={t("inspections.lymphShape")}
+          placeholder={t("inspections.lymphShape")}
         />
-
+        
         <ObjectEntriesSelect
           form={form}
           name="lymphSurface"
           locale={locale}
           object={LYMPH_SURFACE as any}
-          label={"LYMPH_SURFACE"}
-          placeholder={"LYMPH_SURFACE"}
+          label={t("inspections.lymphSurface")}
+          placeholder={t("inspections.lymphSurface")}
         />
         
         <ObjectEntriesSelect
@@ -327,8 +327,8 @@ export function GeneralInspectionForm({ onSubmit, defaultValues }: GeneralInspec
           name="lymphConsistency"
           locale={locale}
           object={LYMPH_CONSISTENCY as any}
-          label={"LYMPH_CONSISTENCY"}
-          placeholder={"LYMPH_CONSISTENCY"}
+          label={t("inspections.lymphConsistency")}
+          placeholder={t("inspections.lymphConsistency")}
         />
 
         <ObjectEntriesSelect
@@ -336,8 +336,8 @@ export function GeneralInspectionForm({ onSubmit, defaultValues }: GeneralInspec
           name="lymphTemp"
           locale={locale}
           object={LYMPH_TEMP as any}
-          label={"LYMPH_TEMP"}
-          placeholder={"LYMPH_TEMP"}
+          label={t("inspections.lymphTemp")}
+          placeholder={t("inspections.lymphTemp")}
         />
 
         <ObjectEntriesSelect
@@ -345,8 +345,8 @@ export function GeneralInspectionForm({ onSubmit, defaultValues }: GeneralInspec
           name="lymphPain"
           locale={locale}
           object={LYMPH_PAIN as any}
-          label={"LYMPH_PAIN"}
-          placeholder={"LYMPH_PAIN"}
+          label={t("inspections.lymphPain")}
+          placeholder={t("inspections.lymphPain")}
         />
 
         <ObjectEntriesSelect
@@ -354,8 +354,8 @@ export function GeneralInspectionForm({ onSubmit, defaultValues }: GeneralInspec
           name="lymphMobility"
           locale={locale}
           object={LYMPH_MOBILITY as any}
-          label={"LYMPH_MOBILITY"}
-          placeholder={"LYMPH_MOBILITY"}
+          label={t("inspections.lymphMobility")}
+          placeholder={t("inspections.lymphMobility")}
         />
 
         <div className="col-span-1 md:col-span-2 lg:col-span-3" />

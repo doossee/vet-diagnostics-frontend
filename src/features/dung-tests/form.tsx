@@ -66,7 +66,7 @@ export function DungTestForm({ onSubmit, defaultValues }: DungTestFormProps) {
           )}
         /> */}
 
-        <Divider label="Макроскопическое исследование" icon={<ScanSearch />} className="col-span-1 md:col-span-2" />
+        <Divider label={t("inspections.macroscopicExamination")} icon={<ScanSearch />} className="col-span-1 md:col-span-2" />
         
         <FormField
           name="fecesColorId"
@@ -101,9 +101,9 @@ export function DungTestForm({ onSubmit, defaultValues }: DungTestFormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("inspections.clarity")}</FormLabel>
+              <FormLabel>{t("inspections.consistency")}</FormLabel>
               <FormControl>
-                <DungConsistenciesSelect placeholder={t("inspections.clarity")} value={field.value} onChange={field.onChange} />
+                <DungConsistenciesSelect placeholder={t("inspections.consistency")} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -124,16 +124,16 @@ export function DungTestForm({ onSubmit, defaultValues }: DungTestFormProps) {
           )}
         />
         
-        <Divider label="Микроскопическое исследование" icon={<Microscope />} className="col-span-1 md:col-span-2" />
+        <Divider label={t("inspections.microscopicExamination")} icon={<Microscope />} className="col-span-1 md:col-span-2" />
 
         <FormField
           name="amount"
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{"Количество"}</FormLabel>
+              <FormLabel>{t("inspections.amount")}</FormLabel>
               <FormControl>
-                <Input type="number" placeholder={"Количество"} {...field} />
+                <Input type="number" placeholder={t("inspections.amount")} {...field} />
               </FormControl>
             </FormItem>
           )}
@@ -144,9 +144,9 @@ export function DungTestForm({ onSubmit, defaultValues }: DungTestFormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{"Количество непереваренной пищи"}</FormLabel>
+              <FormLabel>{t("inspections.undigestedFood")}</FormLabel>
               <FormControl>
-                <Input type="number" placeholder={"Количество непереваренной пищи"} {...field} />
+                <Input type="number" placeholder={t("inspections.undigestedFood")} {...field} />
               </FormControl>
             </FormItem>
           )}

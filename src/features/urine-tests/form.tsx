@@ -65,16 +65,16 @@ export function UrineTestForm({ onSubmit, defaultValues }: UrineTestFormProps) {
           )}
         />
 
-        <Divider label="Макроскопическое исследование" icon={<ScanSearch />} className="col-span-1 md:col-span-2" />
+        <Divider label={t("inspections.macroscopicExamination")} icon={<ScanSearch />} className="col-span-1 md:col-span-2" />
 
         <FormField
           name="amount"
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{"Количество"}</FormLabel>
+              <FormLabel>{t("inspections.amount")}</FormLabel>
               <FormControl>
-                <Input type="number" placeholder={"Количество"} {...field} />
+                <Input type="number" placeholder={t("inspections.amount")} {...field} />
               </FormControl>
             </FormItem>
           )}
@@ -85,9 +85,9 @@ export function UrineTestForm({ onSubmit, defaultValues }: UrineTestFormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{"Прозрачность"}</FormLabel>
+              <FormLabel>{t("inspections.clarity")}</FormLabel>
               <FormControl>
-                <UrineClaritiesSelect placeholder={"Прозрачность"} value={field.value} onChange={field.onChange} />
+                <UrineClaritiesSelect placeholder={t("inspections.clarity")} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -99,9 +99,9 @@ export function UrineTestForm({ onSubmit, defaultValues }: UrineTestFormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{"Консистенция"}</FormLabel>
+              <FormLabel>{t("inspections.consistency")}</FormLabel>
               <FormControl>
-                <UrineConsistenciesSelect placeholder={"Консистенция"} value={field.value} onChange={field.onChange} />
+                <UrineConsistenciesSelect placeholder={t("inspections.consistency")} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -113,25 +113,25 @@ export function UrineTestForm({ onSubmit, defaultValues }: UrineTestFormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{"Запах"}</FormLabel>
+              <FormLabel>{t("inspections.smell")}</FormLabel>
               <FormControl>
-                <UrineSmellsSelect placeholder={"Запах"} value={field.value} onChange={field.onChange} />
+                <UrineSmellsSelect placeholder={t("inspections.smell")} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <Divider label="Микроскопическое исследование" icon={<Microscope />} className="col-span-1 md:col-span-2" />
+        <Divider label={t("inspections.microscopicExamination")} icon={<Microscope />} className="col-span-1 md:col-span-2" />
 
         <FormField
           name="leukocytes"
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{"Лейкоциты"}</FormLabel>
+              <FormLabel>{t("inspections.leukocytes")}</FormLabel>
               <FormControl>
-                <Input type="number" placeholder={"Лейкоциты"} {...field} />
+                <Input type="number" placeholder={t("inspections.leukocytes")} {...field} />
               </FormControl>
             </FormItem>
           )}
@@ -141,9 +141,9 @@ export function UrineTestForm({ onSubmit, defaultValues }: UrineTestFormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{"Эпителий"}</FormLabel>
+              <FormLabel>{t("inspections.epithelium")}</FormLabel>
               <FormControl>
-                <Input type="number" placeholder={"Эпителий"} {...field} />
+                <Input type="number" placeholder={t("inspections.epithelium")} {...field} />
               </FormControl>
             </FormItem>
           )}
@@ -153,9 +153,9 @@ export function UrineTestForm({ onSubmit, defaultValues }: UrineTestFormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{"Микробные тела"}</FormLabel>
+              <FormLabel>{t("inspections.microbialBodies")}</FormLabel>
               <FormControl>
-                <Input type="number" placeholder={"Микробные тела"} {...field} />
+                <Input type="number" placeholder={t("inspections.microbialBodies")} {...field} />
               </FormControl>
             </FormItem>
           )}
@@ -165,9 +165,9 @@ export function UrineTestForm({ onSubmit, defaultValues }: UrineTestFormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{"Эритроциты"}</FormLabel>
+              <FormLabel>{t("inspections.erythrocytes")}</FormLabel>
               <FormControl>
-                <Input type="number" placeholder={"Эритроциты"} {...field} />
+                <Input type="number" placeholder={t("inspections.erythrocytes")} {...field} />
               </FormControl>
             </FormItem>
           )}
@@ -177,24 +177,24 @@ export function UrineTestForm({ onSubmit, defaultValues }: UrineTestFormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{"Кристаллы солей"}</FormLabel>
+              <FormLabel>{t("inspections.saltCrystals")}</FormLabel>
               <FormControl>
-                <Input type="number" placeholder={"Кристаллы солей"} {...field} />
+                <Input type="number" placeholder={t("inspections.saltCrystals")} {...field} />
               </FormControl>
             </FormItem>
           )}
         />
 
-        <Divider label="Лабораторное исследование" icon={<FlaskConical />} className="col-span-1 md:col-span-2" />
+        <Divider label={t("inspections.laboratoryExamination")} icon={<FlaskConical />} className="col-span-1 md:col-span-2" />
 
         <FormField
           name="ph"
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{"Среда (pH)"}</FormLabel>
+              <FormLabel>{t("inspections.ph")}</FormLabel>
               <FormControl>
-                <Input type="number" placeholder={"Среда (pH)"} {...field} />
+                <Input type="number" placeholder={t("inspections.ph")} {...field} />
               </FormControl>
             </FormItem>
           )}
@@ -204,9 +204,9 @@ export function UrineTestForm({ onSubmit, defaultValues }: UrineTestFormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{"Кетоновые тела (ацетон)"}</FormLabel>
+              <FormLabel>{t("inspections.acetone")}</FormLabel>
               <FormControl>
-                <Input type="number" placeholder={"Кетоновые тела (ацетон)"} {...field} />
+                <Input type="number" placeholder={t("inspections.acetone")} {...field} />
               </FormControl>
             </FormItem>
           )}
@@ -216,9 +216,9 @@ export function UrineTestForm({ onSubmit, defaultValues }: UrineTestFormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{"Белок"}</FormLabel>
+              <FormLabel>{t("inspections.protein")}</FormLabel>
               <FormControl>
-                <Input type="number" placeholder={"Белок"} {...field} />
+                <Input type="number" placeholder={t("inspections.protein")} {...field} />
               </FormControl>
             </FormItem>
           )}
@@ -228,9 +228,9 @@ export function UrineTestForm({ onSubmit, defaultValues }: UrineTestFormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{"Билирубин"}</FormLabel>
+              <FormLabel>{t("inspections.bilirubin")}</FormLabel>
               <FormControl>
-                <Input type="number" placeholder={"Билирубин"} {...field} />
+                <Input type="number" placeholder={t("inspections.bilirubin")} {...field} />
               </FormControl>
             </FormItem>
           )}
@@ -240,9 +240,9 @@ export function UrineTestForm({ onSubmit, defaultValues }: UrineTestFormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{"Уробилиноген"}</FormLabel>
+              <FormLabel>{t("inspections.urobilinogen")}</FormLabel>
               <FormControl>
-                <Input type="number" placeholder={"Уробилиноген"} {...field} />
+                <Input type="number" placeholder={t("inspections.urobilinogen")} {...field} />
               </FormControl>
             </FormItem>
           )}
@@ -252,9 +252,9 @@ export function UrineTestForm({ onSubmit, defaultValues }: UrineTestFormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{"Сахар"}</FormLabel>
+              <FormLabel>{t("inspections.sugar")}</FormLabel>
               <FormControl>
-                <Input type="number" placeholder={"Сахар"} {...field} />
+                <Input type="number" placeholder={t("inspections.sugar")} {...field} />
               </FormControl>
             </FormItem>
           )}

@@ -47,17 +47,17 @@ export function MucosaExamForm({ onSubmit, defaultValues }: MucosaExamFormProps)
           locale={locale}
           name="mucosaType"
           object={MUCOSA_TYPES}
-          label={"Mucosa Type"}
-          placeholder={"Mucosa Type"}
+          label={t("inspections.mucosaType")}
+          placeholder={t("inspections.mucosaType")}
         />
         {type && <FormField
           name="mucosaAppearanceId"
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Mucosa Appearance</FormLabel>
+              <FormLabel>{t("inspections.mucosaAppearance")}</FormLabel>
               <FormControl>
-                <EyeLidSelect placeholder={"Mucosa Appearance"} type={type} value={field.value} onChange={field.onChange} />
+                <EyeLidSelect placeholder={t("inspections.mucosaAppearance")} type={type} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>

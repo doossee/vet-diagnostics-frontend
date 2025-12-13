@@ -5,61 +5,58 @@ import { LanguageLocales, UrineExam } from "@/shared/types";
 export const createUrineTestColumns = (handleEditItem: (item: UrineExam) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
   {
     hideInInfoTable: true,
-    title: "Животное",
+    title: t("form.animal"),
     key: "animal",
     render(item: UrineExam) {
       return item.animal?.animalNameCode;
     },
   },
   {
-    title: "Цвет мочи",
+    title: t("inspections.urineColor"),
     key: "urineColorId",
     render(item: UrineExam) {
       return item.urineColor?.[`name_${locale}`] ?? '-';
     },
   },
   
-  // Макроскопическое исследование
-  { title: "Количество", key: "amount" },
+  { title: t("inspections.amount"), key: "amount" },
   {
-    title: "Прозрачность",
+    title: t("inspections.clarity"),
     key: "urineClarityId",
     render(item: UrineExam) {
       return item.urineClarity?.[`name_${locale}`] ?? '-';
     },
   },
   {
-    title: "Консистенция",
+    title: t("inspections.consistency"),
     key: "urineConsistencyId",
     render(item: UrineExam) {
       return item.urineConsistency?.[`name_${locale}`] ?? '-';
     },
   },
   {
-    title: "Запах",
+    title: t("inspections.smell"),
     key: "urineSmellId",
     render(item: UrineExam) {
       return item.urineSmell?.[`name_${locale}`] ?? '-';
     },
   },
 
-  // Лабораторное исследование
-  { title: "Среда (pH)", key: "ph" },
-  { title: "Кетоновые тела (ацетон)", key: "acetone" },
-  { title: "Белок", key: "protein" },
-  { title: "Билирубин", key: "bilirubin" },
-  { title: "Уробилиноген", key: "urobilinogen" },
-  { title: "Сахар", key: "sugar" },
+  { title: t("inspections.ph"), key: "ph" },
+  { title: t("inspections.acetone"), key: "acetone" },
+  { title: t("inspections.protein"), key: "protein" },
+  { title: t("inspections.bilirubin"), key: "bilirubin" },
+  { title: t("inspections.urobilinogen"), key: "urobilinogen" },
+  { title: t("inspections.sugar"), key: "sugar" },
 
-  // Микроскопическое исследование
-  { title: "Лейкоциты", key: "leukocytes" },
-  { title: "Эпителий", key: "epithelium" },
-  { title: "Микробные тела", key: "microbialBodies" },
-  { title: "Эритроциты", key: "erythrocytes" },
-  { title: "Кристаллы солей", key: "saltCrystals" },
+  { title: t("inspections.leukocytes"), key: "leukocytes" },
+  { title: t("inspections.epithelium"), key: "epithelium" },
+  { title: t("inspections.microbialBodies"), key: "microbialBodies" },
+  { title: t("inspections.erythrocytes"), key: "erythrocytes" },
+  { title: t("inspections.saltCrystals"), key: "saltCrystals" },
 
   {
-    title: "Дата",
+    title: t("form.date"),
     key: "createdAt",
     render(item: UrineExam) {
       return new Date(item.createdAt!).toLocaleDateString();

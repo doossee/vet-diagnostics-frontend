@@ -11,8 +11,8 @@ export const createDungTestColumns = (handleEditItem: (item: FecesExam) => void,
       return item.animal?.animalNameCode;
     },
   },
-  { title: "Количество", key: "amount" },
-  { title: "Количество непереваренной пищи", key: "undigestedFood" },
+  { title: t("inspections.amount"), key: "amount" },
+  { title: t("inspections.undigestedFood"), key: "undigestedFood" },
   {
     title: t("inspections.smell"),
     key: "smell",
@@ -21,7 +21,7 @@ export const createDungTestColumns = (handleEditItem: (item: FecesExam) => void,
     },
   },
   {
-    title: t("inspections.clarity"),
+    title: t("inspections.consistency"),
     key: "clarity",
     render(item: FecesExam) {
       return item.fecesConsistency?.[`name_${locale}`] ?? "-";

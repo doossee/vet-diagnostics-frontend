@@ -67,8 +67,8 @@ export function GeneralBloodTestForm({ onSubmit, defaultValues, animalId }: Gene
 
         {Object.entries(BLOOD_TEST_FIELDS).map(([key, value], index) =>
           <Fragment key={key}>
-            {index === 0 && <Divider label="Морфологическое исследование крови" icon={<Droplet />} className="col-span-1 md:col-span-2 lg:col-span-3" />}
-            {index === 8 && <Divider label="Исследование сыворотки крови" icon={<FlaskRound />} className="col-span-1 md:col-span-2 lg:col-span-3" />}
+            {index === 0 && <Divider label={t("inspections.morphologicalBloodExamination")} icon={<Droplet />} className="col-span-1 md:col-span-2 lg:col-span-3" />}
+            {index === 8 && <Divider label={t("inspections.bloodSerumExamination")} icon={<FlaskRound />} className="col-span-1 md:col-span-2 lg:col-span-3" />}
             <FormField
               name={key}
               control={form.control}

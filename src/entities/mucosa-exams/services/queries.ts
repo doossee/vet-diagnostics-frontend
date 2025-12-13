@@ -2,7 +2,7 @@ import { MUCOSA_EXAMS_QUERY_KEYS } from "../utils/constants/query-keys";
 import { MucosaExam, PaginatedEntity } from "@/shared/types";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { paramsToQueryKeys } from "@/shared/helpers/params-to-keys";
-import { mucosaExamControllerFindAll } from "@/shared/api/api-new";
+import { mucosaExamControllerFindAll, mucosaExamControllerFindLastByAnimalId } from "@/shared/api/api-new";
 
 export function useGetMucosaExams(params: Record<string, unknown>, enabled?: boolean) {
   return useQuery<PaginatedEntity<MucosaExam>, Error>({
@@ -16,12 +16,9 @@ export function useGetLastMucosaExamByAnimal(animalId: number | string, enabled?
   return useQuery<MucosaExam|null>({
     queryKey: [MUCOSA_EXAMS_QUERY_KEYS.MUCOSA_EXAMS_LAST_BY_ANIMAL, animalId],
     queryFn: async () => {
-      const { data } = await mucosaExamControllerFindAll({
-        page: 1,
-        perPage: 1
-      })
+      const data = await mucosaExamControllerFindLastByAnimalId(String(animalId))
       
-      return data?.[0] ?? null
+      return (data ?? null) as unknown as MucosaExam | null
     },
     enabled,
   });

@@ -1,6 +1,6 @@
 import { FecesExam, PaginatedEntity } from "@/shared/types";
 import { DungTestQueryKeys } from "../utils/constants/query-keys";
-import { fecesColorControllerFindAll } from "@/shared/api/api-new";
+import { fecesColorControllerFindAll, fecesExamControllerFindLastByAnimalId } from "@/shared/api/api-new";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { paramsToQueryKeys } from "@/shared/helpers/params-to-keys";
 
@@ -16,12 +16,9 @@ export function useGetLastDungTestByAnimal(animalId: number | string, enabled?: 
   return useQuery<FecesExam|null>({
     queryKey: [DungTestQueryKeys.DUNG_TESTS_LAST_BY_ANIMAL, animalId],
     queryFn: async () => {
-      const { data } = await fecesColorControllerFindAll({
-        page: 1,
-        perPage: 1
-      })
+      const data = await fecesExamControllerFindLastByAnimalId(String(animalId))
       
-      return data?.[0] ?? null
+      return (data ?? null) as unknown as FecesExam | null
     },
     enabled,
   });

@@ -1,7 +1,7 @@
 import { ClinicalExam, PaginatedEntity } from "@/shared/types";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { paramsToQueryKeys } from "@/shared/helpers/params-to-keys";
-import { clinicalExamControllerFindAll } from "@/shared/api/api-new";
+import { clinicalExamControllerFindAll, clinicalExamControllerFindLastByAnimalId } from "@/shared/api/api-new";
 import { GeneralInspectionQueryKeys } from "../utils/constants/query-keys";
 
 export function useGetGeneralInspections(params: Record<string, unknown>, enabled?: boolean) {
@@ -36,12 +36,9 @@ export function useGetLastGeneralInspection(animalId: number | string, enabled?:
   return useQuery<ClinicalExam|null>({
     queryKey: [GeneralInspectionQueryKeys.LAST_GENERAL_INSPECTION, animalId],
     queryFn: async () => {
-      const { data } = await clinicalExamControllerFindAll({
-        page: 1,
-        perPage: 1,
-      })
+      const data = await clinicalExamControllerFindLastByAnimalId(String(animalId))
 
-      return data?.[0] ?? null
+      return (data ?? null) as unknown as ClinicalExam | null
     },
     enabled,
   });

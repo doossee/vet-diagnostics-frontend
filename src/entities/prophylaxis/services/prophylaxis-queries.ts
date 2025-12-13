@@ -1,7 +1,7 @@
 import { Prophylaxis, PaginatedEntity } from "@/shared/types";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { paramsToQueryKeys } from "@/shared/helpers/params-to-keys";
-import { prophylaxisControllerFindAll } from "@/shared/api/api-new";
+import { prophylaxisControllerFindAll, prophylaxisControllerFindLastByAnimalId } from "@/shared/api/api-new";
 import { ProphylaxisQueryKeys } from "../utils/constants/query-keys";
 
 export function useGetProphylaxis(params: Record<string, unknown>, enabled?: boolean) {
@@ -16,12 +16,9 @@ export function useGetLastProphylaxisByAnimal(animalId: string, enabled?: boolea
   return useQuery<Prophylaxis|null>({
     queryKey: [ProphylaxisQueryKeys.PROPHYLAXIS_LAST_BY_ANIMAL, animalId],
     queryFn: async () => {
-      const { data } = await prophylaxisControllerFindAll({
-        page: 1,
-        perPage: 1
-      })
+      const data = await prophylaxisControllerFindLastByAnimalId(animalId)
       
-      return data?.[0] ?? null
+      return (data ?? null) as unknown as Prophylaxis | null
     },
     enabled,
   });

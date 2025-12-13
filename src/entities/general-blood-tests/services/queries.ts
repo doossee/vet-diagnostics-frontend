@@ -1,7 +1,7 @@
 import { BloodExam, PaginatedEntity } from "@/shared/types";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { paramsToQueryKeys } from "@/shared/helpers/params-to-keys";
-import { bloodExamControllerFindAll } from "@/shared/api/api-new";
+import { bloodExamControllerFindAll, bloodExamControllerFindLastByAnimalId } from "@/shared/api/api-new";
 import { GeneralBloodTestQueryKeys } from "../utils/constants/query-keys";
 
 export function useGetGeneralBloodTests(params: Record<string, unknown>, enabled?: boolean) {
@@ -16,14 +16,9 @@ export function useGetLastGeneralBloodTest(animalId: number | string, enabled?: 
   return useQuery<BloodExam|null>({
     queryKey: [GeneralBloodTestQueryKeys.LAST_GENERAL_BLOOD_TEST, animalId],
     queryFn: async () => {
-      const { data } = await bloodExamControllerFindAll({
-        page: 1,
-        perPage: 1,
-        // byCreatedDate: "desc",
-        // animalId
-      })
+      const data = await bloodExamControllerFindLastByAnimalId(String(animalId))
 
-      return data?.[0] ?? null
+      return (data ?? null) as unknown as BloodExam | null
     },
     enabled,
   });

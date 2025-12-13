@@ -1,5 +1,3 @@
-import { BLOOD_SERUM_TESTS, GENERAL_BLOOD_TESTS } from "../constants";
-
 export interface MetaDateEntity {
   currentPage: number;
   lastPage: number;
@@ -29,8 +27,6 @@ export type QueryParams = {
   enabled?: boolean;
 };
 
-export type BLOOD_SERUM = keyof typeof BLOOD_SERUM_TESTS;
-
 export type UserData = {
   userId: number;
   role: UserRole;
@@ -38,6 +34,14 @@ export type UserData = {
   farmerId: number;
   veterinarianId: number;
 };
+
+export interface AdditionalCrudModel {
+  id: string;
+  name_ru: string;
+  name_uz: string;
+  animalTypeId: string;
+  animalType: AnimalType;
+}
 
 export type UserRole = "SUPER_ADMIN" | "ADMIN" | "VETERINARIAN" | "FARMER";
 
@@ -84,8 +88,6 @@ export type LymphPain = "PAINLESS" | "PAINFUL";
 export type LymphMobility = "MOBILE" | "LOW_MOBILITY";
 
 export type UrineAnalysisType = "LABORATORY" | "MACROSCOPIC" | "MICROSCOPIC";
-
-export type FecesAnalysisType = "MACROSCOPIC" | "MICROSCOPIC";
 
 export type MucosaType = "ORAL" | "NASAL" | "OCULAR" | "REPRODUCTIVE";
 
@@ -468,6 +470,7 @@ export interface DiseaseCategory {
   parentId?: string;
   parent?: DiseaseCategory;
   diseases: Disease[];
+  hasChildren: boolean
   children: DiseaseCategory[];
 }
 

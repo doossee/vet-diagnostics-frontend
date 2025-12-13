@@ -24,7 +24,7 @@ export function DiseaseTypeSelect({ placeholder, value, disabled, onChange, onRe
       disabled={disabled}
       defaultValue={value as DiseaseCategory}
       placeholder={placeholder}
-      queryFn={useGetDiseaseTypesInfinite}
+      queryFn={search => useGetDiseaseTypesInfinite(undefined, search)}
       onSelect={(e: any) => onChange?.(e?.id)}
       getOptionLabel={item => item?.[`name_${locale}`]}
       // clientSearch={(search, item) =>

@@ -12,6 +12,21 @@ export function useGetUrineTests(params: Record<string, unknown>, enabled?: bool
   });
 }
 
+export function useGetLastUrineTestByAnimal(animalId: number | string, enabled?: boolean) {
+  return useQuery<UrineExam|null>({
+    queryKey: [UrineTestQueryKeys.URINE_TESTS_LAST_BY_ANIMAL, animalId],
+    queryFn: async () => {
+      const { data } = await urineExamControllerFindAll({
+        page: 1,
+        perPage: 1
+      })
+      
+      return data?.[0] ?? null
+    },
+    enabled,
+  });
+}
+
 export function useGetUrineTestsInfinite(search?: string) {
   return useInfiniteQuery({
     queryKey: [UrineTestQueryKeys.URINE_TESTS_SELECT, search],

@@ -12,6 +12,21 @@ export function useGetDungTests(params: Record<string, unknown>, enabled?: boole
   });
 }
 
+export function useGetLastDungTestByAnimal(animalId: number | string, enabled?: boolean) {
+  return useQuery<FecesExam|null>({
+    queryKey: [DungTestQueryKeys.DUNG_TESTS_LAST_BY_ANIMAL, animalId],
+    queryFn: async () => {
+      const { data } = await fecesColorControllerFindAll({
+        page: 1,
+        perPage: 1
+      })
+      
+      return data?.[0] ?? null
+    },
+    enabled,
+  });
+}
+
 export function useGetDungTestsInfinite(search?: string) {
   return useInfiniteQuery({
     queryKey: [DungTestQueryKeys.DUNG_TESTS_SELECT, search],

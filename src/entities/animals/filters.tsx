@@ -1,5 +1,5 @@
 import { useI18n } from "@/shared/hooks/use-i18n";
-import { ANIMAL_GENDERS } from "@/shared/constants";
+import { ANIMAL_GENDERS } from "./utils/constants/animal-genders";
 import { queryParamKeys } from './utils/constants/query-param-keys';
 import { FiltersWrapper } from "@/shared/components/filters-wrapper";
 import { useSearchQueryParams } from "@/shared/hooks/use-query-params";
@@ -14,9 +14,9 @@ export function AnimalFilters() {
   const { t, locale } = useI18n();
 
   const gender = get(queryParamKeys.GENDER) as string
-  const typeId = get(queryParamKeys.TYPE_ID, true)
-  const breedId = get(queryParamKeys.BREED_ID, true)
-  const colorId = get(queryParamKeys.COLOR_ID, true)
+  const typeId = get(queryParamKeys.TYPE_ID)
+  const breedId = get(queryParamKeys.BREED_ID)
+  const colorId = get(queryParamKeys.COLOR_ID)
 
   return (
     <FiltersWrapper>
@@ -29,9 +29,9 @@ export function AnimalFilters() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value={null as any}>{t("filters.all")}</SelectItem>
-            {ANIMAL_GENDERS.map((g) => (
-              <SelectItem key={g.value} value={g.value}>
-                {g[locale]}
+            {Object.entries(ANIMAL_GENDERS).map(([key, value]) => (
+              <SelectItem key={key} value={key}>
+                {value[locale]}
               </SelectItem>
             ))}
           </SelectContent>

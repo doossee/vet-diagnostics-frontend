@@ -13,8 +13,8 @@ export function UserFilters() {
 
   const gender = get(UsersQueryParamKeys.GENDER) as string ?? ""
   // const birthDate = get(UsersQueryParamKeys.BIRTH_DATE)
-  const regionId = get(UsersQueryParamKeys.REGION_ID, true)
-  const districtId = get(UsersQueryParamKeys.DISTRICT_ID, true)
+  const regionId = get(UsersQueryParamKeys.REGION_ID)
+  const districtId = get(UsersQueryParamKeys.DISTRICT_ID)
 
   return (
     <FiltersWrapper>

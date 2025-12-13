@@ -53,6 +53,7 @@ export const createAnimalColumns = (handleEditItem: (item: Animal) => void, hand
     },
   },
   {
+    hideInInfoTable: true,
     title: t("table.actions"),
     key: "actions",
     render(item: Animal) {

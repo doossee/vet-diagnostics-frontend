@@ -8,6 +8,7 @@ export const createGeneralBloodTestColumns = (handleEditItem: (item: BloodExam) 
   {
     title: t("form.animal"),
     key: "animal",
+    hideInInfoTable: true,
     render(item: BloodExam) {
       return item.animal?.animalNameCode;
     },
@@ -21,6 +22,7 @@ export const createGeneralBloodTestColumns = (handleEditItem: (item: BloodExam) 
   },
   ...Object.entries(BLOOD_TEST_FIELDS).map(([key, value]) => ({
     key,
+    hideInInfoTable: false,
     title: value[locale],
     render: (item: BloodExam) => {
       return <span className="text-right">{item[key as keyof BloodExam] + " " + value[`unit_${locale}`]}</span>;
@@ -29,6 +31,7 @@ export const createGeneralBloodTestColumns = (handleEditItem: (item: BloodExam) 
   { title: t("inspections.conclusion"), key: "conclusion" },
   {
     title: t("table.actions"),
+    hideInInfoTable: true,
     key: "actions",
     render(item: BloodExam) {
       return (

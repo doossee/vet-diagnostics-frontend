@@ -2,8 +2,9 @@ import { Edit, Trash } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { LanguageLocales, UrineExam } from "@/shared/types";
 
-export const createUrineTestColumns = (handleEditItem: (item: UrineExam) => void, handleDelete: (id: string) => void, t: any, _: LanguageLocales) => [
+export const createUrineTestColumns = (handleEditItem: (item: UrineExam) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
   {
+    hideInInfoTable: true,
     title: "Животное",
     key: "animal",
     render(item: UrineExam) {
@@ -14,7 +15,7 @@ export const createUrineTestColumns = (handleEditItem: (item: UrineExam) => void
     title: "Цвет мочи",
     key: "urineColorId",
     render(item: UrineExam) {
-      return item.urineColor?.name_ru ?? '-';
+      return item.urineColor?.[`name_${locale}`] ?? '-';
     },
   },
   
@@ -24,21 +25,21 @@ export const createUrineTestColumns = (handleEditItem: (item: UrineExam) => void
     title: "Прозрачность",
     key: "urineClarityId",
     render(item: UrineExam) {
-      return item.urineClarity?.name_ru ?? '-';
+      return item.urineClarity?.[`name_${locale}`] ?? '-';
     },
   },
   {
     title: "Консистенция",
     key: "urineConsistencyId",
     render(item: UrineExam) {
-      return item.urineConsistency?.name_ru ?? '-';
+      return item.urineConsistency?.[`name_${locale}`] ?? '-';
     },
   },
   {
     title: "Запах",
     key: "urineSmellId",
     render(item: UrineExam) {
-      return item.urineSmell?.name_ru ?? '-';
+      return item.urineSmell?.[`name_${locale}`] ?? '-';
     },
   },
 
@@ -65,6 +66,7 @@ export const createUrineTestColumns = (handleEditItem: (item: UrineExam) => void
     },
   },
   {
+    hideInInfoTable: true,
     title: t("table.actions"),
     key: "actions",
     render(item: UrineExam) {

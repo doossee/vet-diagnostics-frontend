@@ -1,20 +1,19 @@
+PRIORY HIGH:
+TODO: folder select
+TODO: folder table ui
+TODO: translations | content text
+TODO: settings crud
+TODO: animal id ui
+TODO: animal id last and exams filter
+TODO: fix breadcrumb
+
 NEW:
-TODO: Animal form change
 TODO: Animal breed check data
-TODO: Vaccine Types change to prophylaxis
-TODO: Disease Types to category
-TODO: CRUD: all new settings models:
-TODO: New Urine and Dung models change
-TODO: Eye lid to Mucosa Model with category
-TODO: new leather cover
-TODO: new translation content text
-TODO: clinic tests add new 5 fields from inspection
-TODO: folders table ui component create
 TODO: Group table columns
+TODO: Change breadcrumb id item insert some data
 
 OLD:
 TODO: fix imports
-TODO: date pick value fix 1970
 TODO: check refresh token and
 TODO: check form messages
 TODO: remove autocomplete value from parent

@@ -12,6 +12,9 @@ import { DungColorSelect } from "../dung-colors/components/dung-color-select";
 import { AnimalTypeSelect } from "../animal-types/components/animal-type-select";
 import { DungTestSchema, createDungTestSchema, dungTestValues } from "./dung-test.model";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
+import { DungFormsSelect } from "../additional-crud/components/dung-forms-select";
+import { DungConsistenciesSelect } from "../additional-crud/components/dung-consistencies-select copy 3";
+import { DungSmellsSelect } from "../additional-crud/components/dung-smells-select";
 
 interface DungTestFormProps {
   defaultValues?: DungTestSchema;
@@ -79,14 +82,14 @@ export function DungTestForm({ onSubmit, defaultValues }: DungTestFormProps) {
           )}
         />
         
-        {/* <FormField
+        <FormField
           name="fecesSmellId"
           control={form.control}
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t("inspections.smell")}</FormLabel>
               <FormControl>
-                <DungColorSelect placeholder={t("inspections.smell")} value={field.value} onChange={field.onChange} />
+                <DungSmellsSelect placeholder={t("inspections.smell")} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -100,7 +103,7 @@ export function DungTestForm({ onSubmit, defaultValues }: DungTestFormProps) {
             <FormItem>
               <FormLabel>{t("inspections.clarity")}</FormLabel>
               <FormControl>
-                <DungColorSelect placeholder={t("inspections.clarity")} value={field.value} onChange={field.onChange} />
+                <DungConsistenciesSelect placeholder={t("inspections.clarity")} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -114,12 +117,12 @@ export function DungTestForm({ onSubmit, defaultValues }: DungTestFormProps) {
             <FormItem>
               <FormLabel>{t("inspections.form")}</FormLabel>
               <FormControl>
-                <DungColorSelect placeholder={t("inspections.form")} value={field.value} onChange={field.onChange} />
+                <DungFormsSelect placeholder={t("inspections.form")} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
-        /> */}
+        />
         
         <Divider label="Микроскопическое исследование" icon={<Microscope />} className="col-span-1 md:col-span-2" />
 

@@ -9,7 +9,7 @@ export function EmptyState({ children }: PropsWithChildren) {
  
   return (
     <div className="flex items-center justify-center p-4">
-      <div className="flex w-full flex-col items-center gap-4 text-center">
+      <div className="flex w-full flex-col items-center gap-4 text-center h-full">
         <div className="bg-muted flex items-center justify-center rounded-full p-4">
           <LucideFile className="size-6" />
         </div>

@@ -1,12 +1,11 @@
 import { Edit, Trash } from "lucide-react";
 
-import { Prophylaxis } from "@/shared/types";
+import { LanguageLocales, Prophylaxis } from "@/shared/types";
 import { Button } from "@/shared/components/ui/button";
 import { Badge } from "@/shared/components/ui/badge";
 import { PROPHYLAXIS_BADGE_COLORS, PROPHYLAXIS_TYPES } from "./utils/constants/prophylaxis-types";
 
-export const createProphylaxisColumns = (handleEditItem: (item: Prophylaxis) => void, handleDelete: (id: number | string) => void, t: any) => [
-  { title: "Животный", key: "animalId" },
+export const createProphylaxisColumns = (handleEditItem: (item: Prophylaxis) => void, handleDelete: (id: number | string) => void, t: any, locale: LanguageLocales) => [
   {
     title: "Специфическая профилактика", key: "type", render(item: Prophylaxis) {
       return <Badge className="text-sm" variant={PROPHYLAXIS_BADGE_COLORS[item.type] as any}>
@@ -16,12 +15,12 @@ export const createProphylaxisColumns = (handleEditItem: (item: Prophylaxis) => 
   },
   {
     title: "Тип", key: "item", render(item: Prophylaxis) {
-      return item?.item?.name_ru
+      return item?.item?.[`name_${locale}`]
     }
   },
   {
     title: "Дочерные", key: "detail", render(item: Prophylaxis) {
-      return item?.detail?.name_ru
+      return item?.detail?.[`name_${locale}`]
     }
   },
   {
@@ -30,6 +29,7 @@ export const createProphylaxisColumns = (handleEditItem: (item: Prophylaxis) => 
     }
   },
   {
+    hideInInfoTable: true,
     title: t("table.actions"),
     key: "actions",
     render(item: Prophylaxis) {

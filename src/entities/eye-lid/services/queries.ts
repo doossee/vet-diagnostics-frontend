@@ -1,22 +1,22 @@
-import { eyelidsControllerFindAll } from "@/shared/api";
-import { Eyelid, PaginatedEntity } from "@/shared/types";
 import { EyeLidQueryKeys } from "../utils/constants/query-keys";
+import { MucosaAppearance, MucosaType, PaginatedEntity } from "@/shared/types";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { paramsToQueryKeys } from "@/shared/helpers/params-to-keys";
+import { mucosaAppearanceControllerFindAll } from "@/shared/api/api-new";
 
 export function useGetEyeLids(params: Record<string, unknown>, enabled?: boolean) {
-  return useQuery<PaginatedEntity<Eyelid>, Error>({
+  return useQuery<PaginatedEntity<MucosaAppearance>, Error>({
     queryKey: [EyeLidQueryKeys.EYE_LIDS, ...paramsToQueryKeys(params)],
-    queryFn: async () => eyelidsControllerFindAll(params) as Promise<PaginatedEntity<Eyelid>>,
+    queryFn: async () => mucosaAppearanceControllerFindAll(params) as Promise<PaginatedEntity<MucosaAppearance>>,
     enabled,
   });
 }
 
-export function useGetEyeLidsInfinite(search?: string) {
+export function useGetEyeLidsInfinite(type?: MucosaType, search?: string) {
   return useInfiniteQuery({
-    queryKey: [EyeLidQueryKeys.EYE_LIDS_SELECT, search],
-    queryFn: (params) => eyelidsControllerFindAll(params.pageParam) as Promise<PaginatedEntity<Eyelid>>,
-    initialPageParam: { page: 1, perPage: 20, ...(search && { search }) },
+    queryKey: [EyeLidQueryKeys.EYE_LIDS_SELECT, type, search],
+    queryFn: (params) => mucosaAppearanceControllerFindAll(params.pageParam) as Promise<PaginatedEntity<MucosaAppearance>>,
+    initialPageParam: { page: 1, perPage: 20, ...(search && { search }) }, // type
     getNextPageParam: (lastPage) => {
       const nextPage = (lastPage?.meta?.currentPage ?? 0) + 1;
       const isLast = lastPage?.meta?.currentPage === lastPage?.meta?.lastPage;
@@ -25,6 +25,7 @@ export function useGetEyeLidsInfinite(search?: string) {
         ? {
             page: nextPage,
             perPage: 20,
+            // type, TODO: backednd
             ...(search && { search }),
           }
         : null;

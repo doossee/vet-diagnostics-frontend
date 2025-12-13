@@ -9,7 +9,10 @@ import { Divider } from "@/shared/components/divider";
 import { Button } from "@/shared/components/ui/button";
 import { AnimalSelect } from "../animals/components/animal-select";
 import { UrineColorSelect } from "../urine-colors/components/urine-color-select";
+import { UrineSmellsSelect } from "../additional-crud/components/urine-smells-select";
+import { UrineClaritiesSelect } from "../additional-crud/components/urine-clarities-select";
 import { UrineTestSchema, createUrineTestSchema, urineTestValues } from "./urine-test.model";
+import { UrineConsistenciesSelect } from "../additional-crud/components/urine-consistencies-select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 
 interface UrineTestFormProps {
@@ -91,14 +94,14 @@ export function UrineTestForm({ onSubmit, defaultValues }: UrineTestFormProps) {
           )}
         />
 
-        {/* <FormField
-          name="urineColorId"
+        <FormField
+          name="urineClarityId"
           control={form.control}
           render={({ field }) => (
             <FormItem>
               <FormLabel>{"Прозрачность"}</FormLabel>
               <FormControl>
-                <UrineColorSelect placeholder={"Прозрачность"} value={field.value} onChange={field.onChange} />
+                <UrineClaritiesSelect placeholder={"Прозрачность"} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -106,13 +109,13 @@ export function UrineTestForm({ onSubmit, defaultValues }: UrineTestFormProps) {
         />
 
         <FormField
-          name="urineColorId"
+          name="urineConsistencyId"
           control={form.control}
           render={({ field }) => (
             <FormItem>
               <FormLabel>{"Консистенция"}</FormLabel>
               <FormControl>
-                <UrineColorSelect placeholder={"Консистенция"} value={field.value} onChange={field.onChange} />
+                <UrineConsistenciesSelect placeholder={"Консистенция"} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -120,18 +123,18 @@ export function UrineTestForm({ onSubmit, defaultValues }: UrineTestFormProps) {
         />
 
         <FormField
-          name="urineColorId"
+          name="urineSmellId"
           control={form.control}
           render={({ field }) => (
             <FormItem>
               <FormLabel>{"Запах"}</FormLabel>
               <FormControl>
-                <UrineColorSelect placeholder={"Запах"} value={field.value} onChange={field.onChange} />
+                <UrineSmellsSelect placeholder={"Запах"} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
-        /> */}
+        />
 
         <Divider label="Микроскопическое исследование" icon={<Microscope />} className="col-span-1 md:col-span-2" />
 

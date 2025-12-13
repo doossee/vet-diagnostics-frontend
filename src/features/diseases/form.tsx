@@ -6,6 +6,7 @@ import { Textarea } from "@/shared/components/ui/textarea";
 import { DiseaseSchema, createDiseaseSchema, diseaseValues } from "./disease.model";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 import { DiseaseTypeSelect } from "../disease-types/components/disease-type-select";
+// import { DiseaseTypeTreeSelect } from "../disease-types/components/disease-type-tree-select";
 
 interface DiseaseFormProps {
   defaultValues?: DiseaseSchema;
@@ -62,6 +63,20 @@ export function DiseaseForm({ onSubmit, defaultValues }: DiseaseFormProps) {
             </FormItem>
           )}
         />
+        
+        {/* <FormField
+          name="diseaseCategoryId"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Parent</FormLabel>
+              <FormControl>
+                <DiseaseTypeTreeSelect placeholder={t("animals.animalType")} value={field.value} onChange={field.onChange} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        /> */}
 
         <div className="flex-1 flex items-end">
           <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">

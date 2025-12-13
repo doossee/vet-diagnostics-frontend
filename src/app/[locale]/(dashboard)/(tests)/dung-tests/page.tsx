@@ -16,7 +16,7 @@ export default function DungTests() {
   const { t, locale } = useI18n();
   const { get, set, remove } = useSearchQueryParams();
   const newAnimal = get("new");
-  const animalId = get("animalId", true);
+  const animalId = get("animalId");
 
   const { dialog, createButton, editedItem, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<FecesExam, DungTestSchema, DungTestSchema>({
     dialogValue: !!newAnimal,

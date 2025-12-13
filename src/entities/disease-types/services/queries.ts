@@ -13,11 +13,11 @@ export function useGetDiseaseTypes(params: Record<string, unknown>, enabled?: bo
   });
 }
 
-export function useGetDiseaseTypesInfinite(search?: string) {
+export function useGetDiseaseTypesInfinite(parentId?: string | null, search?: string, enabled = true) {
   return useInfiniteQuery({
-    queryKey: [DiseaseTypesQueryKeys.DISEASE_TYPES_SELECT, search],
+    queryKey: [DiseaseTypesQueryKeys.DISEASE_TYPES_SELECT, parentId, search],
     queryFn: (params) => diseaseCategoryControllerFindAll(params.pageParam) as Promise<PaginatedEntity<DiseaseCategory>>,
-    initialPageParam: { page: 1, perPage: 20, ...(search && { search }) },
+    initialPageParam: { page: 1, perPage: 20, ...(parentId !== undefined && {parentId}), ...(search && { search }) },
     getNextPageParam: (lastPage) => {
       const nextPage = (lastPage?.meta?.currentPage ?? 0) + 1;
       const isLast = lastPage?.meta?.currentPage === lastPage?.meta?.lastPage;
@@ -27,8 +27,11 @@ export function useGetDiseaseTypesInfinite(search?: string) {
             page: nextPage,
             perPage: 20,
             ...(search && { search }),
+            ...(parentId !== undefined && {parentId}),
           }
         : null;
     },
+    enabled,
+    staleTime: Infinity
   });
 }

@@ -17,7 +17,7 @@ export default function UrineTests() {
   const { get, set, remove } = useSearchQueryParams();
 
   const newAnimal = get("new");
-  const animalId = get("animalId", true);
+  const animalId = get("animalId");
 
   const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<UrineExam, UrineTestSchema, UrineTestSchema>({
     dialogValue: !!newAnimal,

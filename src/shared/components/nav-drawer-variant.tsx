@@ -22,6 +22,7 @@ import {
   useSidebar,
 } from "@/shared/components/ui/sidebar";
 import { useIsClient } from "../hooks/use-client";
+import { Divider } from "./divider";
 
 export function AppSidebar() {
   const t = useTranslations();
@@ -82,6 +83,7 @@ export function AppSidebar() {
                   <CollapsibleContent>
                     <SidebarMenuSub>
                       {item.items?.map((subItem: any, i: number) => (
+                        subItem.groupTitle ? <Divider label={subItem.groupTitle} key={`divider-${i}`} /> :
                         <SidebarMenuSubItem key={`${subItem.url}-${i}-${j}`}>
                           <SidebarMenuSubButton asChild>
                             <Link

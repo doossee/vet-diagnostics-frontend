@@ -13,13 +13,14 @@ import { useGetGeneralInspections } from "@/entities/general-inspections/service
 // import { queryParamKeys } from "@/entities/general-inspections/utils/constants/query-param-keys";
 import { GeneralInspectionForm, GeneralInspectionSchema, generalInspectionValues } from "@/features/general-inspections";
 import { useCreateGeneralInspection, useDeleteGeneralInspection, useUpdateGeneralInspection } from "@/entities/general-inspections/services/mutations";
+import { queryParamKeys } from "@/entities/general-inspections/utils/constants/query-param-keys";
 
 export default function GeneralInspections() {
   const { t, locale } = useI18n();
   const { get, setMany } = useSearchQueryParams();
 
   const newAnimal = get(QUERY_PARAM_KEYS.NEW);
-  const animalId = get(QUERY_PARAM_KEYS.ANIMAL_ID, true);
+  const animalId = get(QUERY_PARAM_KEYS.ANIMAL_ID);
 
   const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<ClinicalExam, GeneralInspectionSchema, GeneralInspectionSchema>({
     dialogValue: !!newAnimal,
@@ -31,7 +32,7 @@ export default function GeneralInspections() {
 
       setMany({
         [QUERY_PARAM_KEYS.NEW]: null,
-        [QUERY_PARAM_KEYS.ANIMAL_ID]: animalId || null
+        // [QUERY_PARAM_KEYS.ANIMAL_ID]: animalId || null
       })
     }
   });
@@ -42,7 +43,7 @@ export default function GeneralInspections() {
     <div>
       <DataTable
         columns={columns}
-        // filterQueryParamKeys={queryParamKeys} // TODO: backend api add filter animalId, ... field
+        filterQueryParamKeys={queryParamKeys} // TODO: backend api add filter animalId, ... field
         queryFunction={useGetGeneralInspections}
         topSlot={createButton(t("inspections.createGeneralInspections"))} />
 

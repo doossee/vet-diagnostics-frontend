@@ -487,6 +487,28 @@ paths:
       summary: List blood exams
       tags:
         - blood-exams
+  /blood-exams/animal/{animalId}/last:
+    get:
+      description: Retrieve the last blood exam for a specific animal.
+      operationId: BloodExamController_findLastByAnimalId
+      parameters:
+        - name: animalId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Last blood exam retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BloodExamEntity'
+        '404':
+          description: Blood exam not found
+      summary: Get last blood exam by animal ID
+      tags:
+        - blood-exams
   /blood-exams/{id}:
     get:
       description: Retrieve blood exam details.
@@ -617,6 +639,28 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedClinicalExamEntity'
       summary: List clinical exams
+      tags:
+        - clinical-exams
+  /clinical-exams/animal/{animalId}/last:
+    get:
+      description: Retrieve the last clinical exam for a specific animal.
+      operationId: ClinicalExamController_findLastByAnimalId
+      parameters:
+        - name: animalId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Last clinical exam retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClinicalExamEntity'
+        '404':
+          description: Clinical exam not found
+      summary: Get last clinical exam by animal ID
       tags:
         - clinical-exams
   /clinical-exams/{id}:
@@ -751,6 +795,28 @@ paths:
       summary: List feces exams
       tags:
         - feces-exams
+  /feces-exams/animal/{animalId}/last:
+    get:
+      description: Retrieve the last feces exam for a specific animal.
+      operationId: FecesExamController_findLastByAnimalId
+      parameters:
+        - name: animalId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Last feces exam retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FecesExamEntity'
+        '404':
+          description: Feces exam not found
+      summary: Get last feces exam by animal ID
+      tags:
+        - feces-exams
   /feces-exams/{id}:
     get:
       description: Retrieve feces exam details.
@@ -883,6 +949,28 @@ paths:
       summary: List mucosa exams
       tags:
         - mucosa-exams
+  /mucosa-exams/animal/{animalId}/last:
+    get:
+      description: Retrieve the last mucosa exam for a specific animal.
+      operationId: MucosaExamController_findLastByAnimalId
+      parameters:
+        - name: animalId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Last mucosa exam retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MucosaExamEntity'
+        '404':
+          description: Mucosa exam not found
+      summary: Get last mucosa exam by animal ID
+      tags:
+        - mucosa-exams
   /mucosa-exams/{id}:
     get:
       description: Retrieve mucosa exam details.
@@ -1013,6 +1101,28 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedUrineExamEntity'
       summary: List urine exams
+      tags:
+        - urine-exams
+  /urine-exams/animal/{animalId}/last:
+    get:
+      description: Retrieve the last urine exam for a specific animal.
+      operationId: UrineExamController_findLastByAnimalId
+      parameters:
+        - name: animalId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Last urine exam retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrineExamEntity'
+        '404':
+          description: Urine exam not found
+      summary: Get last urine exam by animal ID
       tags:
         - urine-exams
   /urine-exams/{id}:
@@ -2582,6 +2692,11 @@ paths:
           in: query
           schema:
             type: string
+        - name: type
+          required: false
+          in: query
+          schema:
+            type: string
       responses:
         '200':
           description: ''
@@ -2590,6 +2705,28 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedProphylaxisEntity'
       summary: List prophylaxis records
+      tags:
+        - prophylaxis
+  /prophylaxis/animal/{animalId}/last:
+    get:
+      description: Retrieve the last prophylaxis record for a specific animal.
+      operationId: ProphylaxisController_findLastByAnimalId
+      parameters:
+        - name: animalId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Last prophylaxis record retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProphylaxisEntity'
+        '404':
+          description: Prophylaxis record not found
+      summary: Get last prophylaxis by animal ID
       tags:
         - prophylaxis
   /prophylaxis/{id}:
@@ -6636,6 +6773,10 @@ components:
           type: string
           description: Date when the animal arrived
           example: '2024-01-15T00:00:00Z'
+        animalNameCode:
+          type: string
+          description: Name or Code of the animal
+          example: Example
         age:
           type: number
           description: Age of the animal in months
@@ -6668,6 +6809,7 @@ components:
           example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
       required:
         - arrivalDate
+        - animalNameCode
         - age
         - sex
         - farmerId
@@ -6682,6 +6824,10 @@ components:
           description: Unique identifier for the animal
           example: e3a49f9c-70be-45d3-8d4c-1c6f8a29fcd9
           format: uuid
+        animalNameCode:
+          type: string
+          description: Name of the animal (in months)
+          example: Example
         arrivalDate:
           format: date-time
           type: string
@@ -6729,6 +6875,7 @@ components:
           example: '2024-01-15T10:00:00.000Z'
       required:
         - id
+        - animalNameCode
         - arrivalDate
         - age
         - sex
@@ -6757,6 +6904,10 @@ components:
           type: string
           description: Date when the animal arrived
           example: '2024-01-15T00:00:00Z'
+        animalNameCode:
+          type: string
+          description: Name or Code of the animal
+          example: Example
         age:
           type: number
           description: Age of the animal in months

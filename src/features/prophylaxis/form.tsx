@@ -7,9 +7,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
 import { PROPHYLAXIS_TYPES } from "@/entities/prophylaxis/utils/constants/prophylaxis-types";
 import { DatePicker } from "@/shared/components/date-picker";
-import { ProphylaxisDetailSelect } from "./components/prophylaxis-detail-select";
-import { ProphylaxisItemSelect } from "./components/prophylaxis-item-select";
 import { AnimalSelect } from "../animals/components/animal-select";
+import { ProphylaxisItemSelect } from "../prophylaxis-items/components/prophylaxis-item-select";
+import { ProphylaxisDetailSelect } from "../prophylaxis-details/components/prophylaxis-detail-select";
 
 interface ProphylaxisFormProps {
   defaultValues?: ProphylaxisSchema;

@@ -19,7 +19,7 @@ export default function GeneralBloodTests() {
   const { get, setMany } = useSearchQueryParams();
 
   const newAnimal = get(QUERY_PARAM_KEYS.NEW);
-  const animalId = get(QUERY_PARAM_KEYS.ANIMAL_ID, true);
+  const animalId = get(QUERY_PARAM_KEYS.ANIMAL_ID);
 
   const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<BloodExam, GeneralBloodTestSchema, GeneralBloodTestSchema>({
     dialogValue: !!newAnimal,

@@ -1,0 +1,1 @@
+export { createProphylaxisItemsColumns } from "./columns";

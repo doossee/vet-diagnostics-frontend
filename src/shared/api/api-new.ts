@@ -2412,6 +2412,8 @@ export const CreateAnimalDtoSex = {
 export interface CreateAnimalDto {
   /** Date when the animal arrived */
   arrivalDate: string;
+  /** Name or Code of the animal */
+  animalNameCode: string;
   /** Age of the animal in months */
   age: number;
   /** Sex of the animal */
@@ -2443,6 +2445,8 @@ export const AnimalEntitySex = {
 export interface AnimalEntity {
   /** Unique identifier for the animal */
   id: string;
+  /** Name of the animal (in months) */
+  animalNameCode: string;
   /** Date of arrival */
   arrivalDate: string;
   /** Age of the animal (in months) */
@@ -2485,6 +2489,8 @@ export const UpdateAnimalDtoSex = {
 export interface UpdateAnimalDto {
   /** Date when the animal arrived */
   arrivalDate?: string;
+  /** Name or Code of the animal */
+  animalNameCode?: string;
   /** Age of the animal in months */
   age?: number;
   /** Sex of the animal */
@@ -3035,6 +3041,7 @@ export type ProphylaxisControllerFindAllParams = {
   byId?: ProphylaxisControllerFindAllById;
   animalId?: string;
   itemId?: string;
+  type?: string;
 };
 
 export type ProphylaxisControllerFindAllById = (typeof ProphylaxisControllerFindAllById)[keyof typeof ProphylaxisControllerFindAllById];
@@ -3252,7 +3259,7 @@ export const authControllerLogoutAll = (options?: SecondParameter<typeof createI
  * Creates a new staff user account (ADMIN role). Admin only.
  * @summary Create staff user
  */
-export const usersControllerCreate = (createUserDto: BodyType<any>, options?: SecondParameter<typeof createInstance<UserEntity>>) => {
+export const usersControllerCreate = (createUserDto: BodyType<CreateUserDto>, options?: SecondParameter<typeof createInstance<UserEntity>>) => {
   return createInstance<UserEntity>({ url: `/users`, method: "POST", headers: { "Content-Type": "application/json" }, data: createUserDto }, options);
 };
 
@@ -3260,8 +3267,8 @@ export const usersControllerCreate = (createUserDto: BodyType<any>, options?: Se
  * Retrieve paginated list of all users with optional filters. Admin only.
  * @summary List all users
  */
-export const usersControllerFindAll = (params?: any/*UsersControllerFindAllParams*/, options?: SecondParameter<typeof createInstance<PaginatedUsersEntity>>) => {
-  return createInstance<any>({ url: `/users`, method: "GET", params }, options);
+export const usersControllerFindAll = (params?: UsersControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedUsersEntity>>) => {
+  return createInstance<PaginatedUsersEntity>({ url: `/users`, method: "GET", params }, options);
 };
 
 /**
@@ -3276,7 +3283,7 @@ export const usersControllerGetMe = (options?: SecondParameter<typeof createInst
  * Update authenticated user profile information.
  * @summary Update current user profile
  */
-export const usersControllerUpdateMe = (updateUserDto: BodyType<any>, options?: SecondParameter<typeof createInstance<UserEntity>>) => {
+export const usersControllerUpdateMe = (updateUserDto: BodyType<UpdateUserDto>, options?: SecondParameter<typeof createInstance<UserEntity>>) => {
   return createInstance<UserEntity>({ url: `/users/me`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateUserDto }, options);
 };
 
@@ -3300,7 +3307,7 @@ export const usersControllerFindOne = (id: string, options?: SecondParameter<typ
  * Update user information by ID. Admin only.
  * @summary Update user
  */
-export const usersControllerUpdate = (id: string, updateUserDto: BodyType<any>, options?: SecondParameter<typeof createInstance<UserEntity>>) => {
+export const usersControllerUpdate = (id: string, updateUserDto: BodyType<UpdateUserDto>, options?: SecondParameter<typeof createInstance<UserEntity>>) => {
   return createInstance<UserEntity>({ url: `/users/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateUserDto }, options);
 };
 
@@ -3331,7 +3338,7 @@ export const healthControllerCheck = (options?: SecondParameter<typeof createIns
  * Creates a new blood exam.
  * @summary Create blood exam
  */
-export const bloodExamControllerCreate = (createBloodExamDto: BodyType<any>, options?: SecondParameter<typeof createInstance<BloodExamEntity>>) => {
+export const bloodExamControllerCreate = (createBloodExamDto: BodyType<CreateBloodExamDto>, options?: SecondParameter<typeof createInstance<BloodExamEntity>>) => {
   return createInstance<BloodExamEntity>({ url: `/blood-exams`, method: "POST", headers: { "Content-Type": "application/json" }, data: createBloodExamDto }, options);
 };
 
@@ -3340,7 +3347,15 @@ export const bloodExamControllerCreate = (createBloodExamDto: BodyType<any>, opt
  * @summary List blood exams
  */
 export const bloodExamControllerFindAll = (params?: BloodExamControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedBloodExamEntity>>) => {
-  return createInstance<any>({ url: `/blood-exams`, method: "GET", params }, options);
+  return createInstance<PaginatedBloodExamEntity>({ url: `/blood-exams`, method: "GET", params }, options);
+};
+
+/**
+ * Retrieve the last blood exam for a specific animal.
+ * @summary Get last blood exam by animal ID
+ */
+export const bloodExamControllerFindLastByAnimalId = (animalId: string, options?: SecondParameter<typeof createInstance<BloodExamEntity>>) => {
+  return createInstance<BloodExamEntity>({ url: `/blood-exams/animal/${animalId}/last`, method: "GET" }, options);
 };
 
 /**
@@ -3380,7 +3395,15 @@ export const clinicalExamControllerCreate = (createClinicalExamDto: BodyType<Cre
  * @summary List clinical exams
  */
 export const clinicalExamControllerFindAll = (params?: ClinicalExamControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedClinicalExamEntity>>) => {
-  return createInstance<any>({ url: `/clinical-exams`, method: "GET", params }, options);
+  return createInstance<PaginatedClinicalExamEntity>({ url: `/clinical-exams`, method: "GET", params }, options);
+};
+
+/**
+ * Retrieve the last clinical exam for a specific animal.
+ * @summary Get last clinical exam by animal ID
+ */
+export const clinicalExamControllerFindLastByAnimalId = (animalId: string, options?: SecondParameter<typeof createInstance<ClinicalExamEntity>>) => {
+  return createInstance<ClinicalExamEntity>({ url: `/clinical-exams/animal/${animalId}/last`, method: "GET" }, options);
 };
 
 /**
@@ -3424,6 +3447,14 @@ export const fecesExamControllerFindAll = (params?: FecesExamControllerFindAllPa
 };
 
 /**
+ * Retrieve the last feces exam for a specific animal.
+ * @summary Get last feces exam by animal ID
+ */
+export const fecesExamControllerFindLastByAnimalId = (animalId: string, options?: SecondParameter<typeof createInstance<FecesExamEntity>>) => {
+  return createInstance<FecesExamEntity>({ url: `/feces-exams/animal/${animalId}/last`, method: "GET" }, options);
+};
+
+/**
  * Retrieve feces exam details.
  * @summary Get feces exam by ID
  */
@@ -3464,6 +3495,14 @@ export const mucosaExamControllerFindAll = (params?: MucosaExamControllerFindAll
 };
 
 /**
+ * Retrieve the last mucosa exam for a specific animal.
+ * @summary Get last mucosa exam by animal ID
+ */
+export const mucosaExamControllerFindLastByAnimalId = (animalId: string, options?: SecondParameter<typeof createInstance<MucosaExamEntity>>) => {
+  return createInstance<MucosaExamEntity>({ url: `/mucosa-exams/animal/${animalId}/last`, method: "GET" }, options);
+};
+
+/**
  * Retrieve mucosa exam details.
  * @summary Get mucosa exam by ID
  */
@@ -3500,7 +3539,15 @@ export const urineExamControllerCreate = (createUrineExamDto: BodyType<CreateUri
  * @summary List urine exams
  */
 export const urineExamControllerFindAll = (params?: UrineExamControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedUrineExamEntity>>) => {
-  return createInstance<any>({ url: `/urine-exams`, method: "GET", params }, options);
+  return createInstance<PaginatedUrineExamEntity>({ url: `/urine-exams`, method: "GET", params }, options);
+};
+
+/**
+ * Retrieve the last urine exam for a specific animal.
+ * @summary Get last urine exam by animal ID
+ */
+export const urineExamControllerFindLastByAnimalId = (animalId: string, options?: SecondParameter<typeof createInstance<UrineExamEntity>>) => {
+  return createInstance<UrineExamEntity>({ url: `/urine-exams/animal/${animalId}/last`, method: "GET" }, options);
 };
 
 /**
@@ -3531,7 +3578,7 @@ export const urineExamControllerDelete = (id: string, options?: SecondParameter<
  * Creates a new urine color.
  * @summary Create urine color
  */
-export const urineColorControllerCreate = (createUrineColorDto: BodyType<any>, options?: SecondParameter<typeof createInstance<UrineColorEntity>>) => {
+export const urineColorControllerCreate = (createUrineColorDto: BodyType<CreateUrineColorDto>, options?: SecondParameter<typeof createInstance<UrineColorEntity>>) => {
   return createInstance<UrineColorEntity>({ url: `/urine-colors`, method: "POST", headers: { "Content-Type": "application/json" }, data: createUrineColorDto }, options);
 };
 
@@ -3540,7 +3587,7 @@ export const urineColorControllerCreate = (createUrineColorDto: BodyType<any>, o
  * @summary List urine colors
  */
 export const urineColorControllerFindAll = (params?: UrineColorControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedUrineColorEntity>>) => {
-  return createInstance<any>({ url: `/urine-colors`, method: "GET", params }, options);
+  return createInstance<PaginatedUrineColorEntity>({ url: `/urine-colors`, method: "GET", params }, options);
 };
 
 /**
@@ -3555,7 +3602,7 @@ export const urineColorControllerFindOne = (id: string, options?: SecondParamete
  * Update urine color information by ID.
  * @summary Update urine color
  */
-export const urineColorControllerUpdate = (id: string, updateUrineColorDto: BodyType<any>, options?: SecondParameter<typeof createInstance<UrineColorEntity>>) => {
+export const urineColorControllerUpdate = (id: string, updateUrineColorDto: BodyType<UpdateUrineColorDto>, options?: SecondParameter<typeof createInstance<UrineColorEntity>>) => {
   return createInstance<UrineColorEntity>({ url: `/urine-colors/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateUrineColorDto }, options);
 };
 
@@ -3700,7 +3747,7 @@ export const fecesColorControllerCreate = (createFecesColorDto: BodyType<CreateF
  * @summary List feces colors
  */
 export const fecesColorControllerFindAll = (params?: FecesColorControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedFecesColorEntity>>) => {
-  return createInstance<any>({ url: `/feces-colors`, method: "GET", params }, options);
+  return createInstance<PaginatedFecesColorEntity>({ url: `/feces-colors`, method: "GET", params }, options);
 };
 
 /**
@@ -3898,7 +3945,7 @@ export const diseaseControllerCreate = (createDiseaseDto: BodyType<CreateDisease
  * @summary List diseases
  */
 export const diseaseControllerFindAll = (params?: DiseaseControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedDiseaseEntity>>) => {
-  return createInstance<any>({ url: `/diseases`, method: "GET", params }, options);
+  return createInstance<PaginatedDiseaseEntity>({ url: `/diseases`, method: "GET", params }, options);
 };
 
 /**
@@ -3925,7 +3972,7 @@ export const diseaseControllerDelete = (id: string, options?: SecondParameter<ty
 /**
  * @summary Create disease category
  */
-export const diseaseCategoryControllerCreate = (createDiseaseCategoryDto: BodyType<any>, options?: SecondParameter<typeof createInstance<DiseaseCategoryEntity>>) => {
+export const diseaseCategoryControllerCreate = (createDiseaseCategoryDto: BodyType<CreateDiseaseCategoryDto>, options?: SecondParameter<typeof createInstance<DiseaseCategoryEntity>>) => {
   return createInstance<DiseaseCategoryEntity>({ url: `/disease-categories`, method: "POST", headers: { "Content-Type": "application/json" }, data: createDiseaseCategoryDto }, options);
 };
 
@@ -3933,7 +3980,7 @@ export const diseaseCategoryControllerCreate = (createDiseaseCategoryDto: BodyTy
  * @summary List disease categories
  */
 export const diseaseCategoryControllerFindAll = (params?: DiseaseCategoryControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedDiseaseCategoryEntity>>) => {
-  return createInstance<any>({ url: `/disease-categories`, method: "GET", params }, options);
+  return createInstance<PaginatedDiseaseCategoryEntity>({ url: `/disease-categories`, method: "GET", params }, options);
 };
 
 /**
@@ -3946,7 +3993,7 @@ export const diseaseCategoryControllerFindOne = (id: string, options?: SecondPar
 /**
  * @summary Update disease category
  */
-export const diseaseCategoryControllerUpdate = (id: string, updateDiseaseCategoryDto: BodyType<any>, options?: SecondParameter<typeof createInstance<DiseaseCategoryEntity>>) => {
+export const diseaseCategoryControllerUpdate = (id: string, updateDiseaseCategoryDto: BodyType<UpdateDiseaseCategoryDto>, options?: SecondParameter<typeof createInstance<DiseaseCategoryEntity>>) => {
   return createInstance<DiseaseCategoryEntity>({ url: `/disease-categories/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateDiseaseCategoryDto }, options);
 };
 
@@ -3960,7 +4007,7 @@ export const diseaseCategoryControllerDelete = (id: string, options?: SecondPara
 /**
  * @summary Create prophylaxis record
  */
-export const prophylaxisControllerCreate = (createProphylaxisDto: BodyType<any>, options?: SecondParameter<typeof createInstance<ProphylaxisEntity>>) => {
+export const prophylaxisControllerCreate = (createProphylaxisDto: BodyType<CreateProphylaxisDto>, options?: SecondParameter<typeof createInstance<ProphylaxisEntity>>) => {
   return createInstance<ProphylaxisEntity>({ url: `/prophylaxis`, method: "POST", headers: { "Content-Type": "application/json" }, data: createProphylaxisDto }, options);
 };
 
@@ -3968,7 +4015,15 @@ export const prophylaxisControllerCreate = (createProphylaxisDto: BodyType<any>,
  * @summary List prophylaxis records
  */
 export const prophylaxisControllerFindAll = (params?: ProphylaxisControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedProphylaxisEntity>>) => {
-  return createInstance<any>({ url: `/prophylaxis`, method: "GET", params }, options);
+  return createInstance<PaginatedProphylaxisEntity>({ url: `/prophylaxis`, method: "GET", params }, options);
+};
+
+/**
+ * Retrieve the last prophylaxis record for a specific animal.
+ * @summary Get last prophylaxis by animal ID
+ */
+export const prophylaxisControllerFindLastByAnimalId = (animalId: string, options?: SecondParameter<typeof createInstance<ProphylaxisEntity>>) => {
+  return createInstance<ProphylaxisEntity>({ url: `/prophylaxis/animal/${animalId}/last`, method: "GET" }, options);
 };
 
 /**
@@ -3981,7 +4036,7 @@ export const prophylaxisControllerFindOne = (id: string, options?: SecondParamet
 /**
  * @summary Update prophylaxis
  */
-export const prophylaxisControllerUpdate = (id: string, updateProphylaxisDto: BodyType<any>, options?: SecondParameter<typeof createInstance<ProphylaxisEntity>>) => {
+export const prophylaxisControllerUpdate = (id: string, updateProphylaxisDto: BodyType<UpdateProphylaxisDto>, options?: SecondParameter<typeof createInstance<ProphylaxisEntity>>) => {
   return createInstance<ProphylaxisEntity>({ url: `/prophylaxis/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateProphylaxisDto }, options);
 };
 
@@ -4003,7 +4058,7 @@ export const prophylaxisItemControllerCreate = (createProphylaxisItemDto: BodyTy
  * @summary List prophylaxis items
  */
 export const prophylaxisItemControllerFindAll = (params?: ProphylaxisItemControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedProphylaxisItemEntity>>) => {
-  return createInstance<any>({ url: `/prophylaxis-items`, method: "GET", params }, options);
+  return createInstance<PaginatedProphylaxisItemEntity>({ url: `/prophylaxis-items`, method: "GET", params }, options);
 };
 
 /**
@@ -4038,7 +4093,7 @@ export const prophylaxisDetailControllerCreate = (createProphylaxisDetailDto: Bo
  * @summary List prophylaxis details
  */
 export const prophylaxisDetailControllerFindAll = (params?: ProphylaxisDetailControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedProphylaxisDetailEntity>>) => {
-  return createInstance<any>({ url: `/prophylaxis-details`, method: "GET", params }, options);
+  return createInstance<PaginatedProphylaxisDetailEntity>({ url: `/prophylaxis-details`, method: "GET", params }, options);
 };
 
 /**
@@ -4107,8 +4162,8 @@ export const animalTypeControllerCreate = (createAnimalTypeDto: BodyType<CreateA
 /**
  * @summary List animal types
  */
-export const animalTypeControllerFindAll = (params?: AnimalTypeControllerFindAllParams, options?: SecondParameter<typeof createInstance<any>>) => {
-  return createInstance<any>({ url: `/animal-types`, method: "GET", params }, options);
+export const animalTypeControllerFindAll = (params?: AnimalTypeControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedAnimalTypeEntity>>) => {
+  return createInstance<PaginatedAnimalTypeEntity>({ url: `/animal-types`, method: "GET", params }, options);
 };
 
 /**
@@ -4143,7 +4198,7 @@ export const animalBreedControllerCreate = (createAnimalBreedDto: BodyType<Creat
  * @summary List breeds
  */
 export const animalBreedControllerFindAll = (params?: AnimalBreedControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedAnimalBreedEntity>>) => {
-  return createInstance<any>({ url: `/breeds`, method: "GET", params }, options);
+  return createInstance<PaginatedAnimalBreedEntity>({ url: `/breeds`, method: "GET", params }, options);
 };
 
 /**
@@ -4180,7 +4235,7 @@ export const animalColorControllerCreate = (createAnimalColorDto: BodyType<Creat
  * @summary List colors
  */
 export const animalColorControllerFindAll = (params?: AnimalColorControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedAnimalColorEntity>>) => {
-  return createInstance<any>({ url: `/colors`, method: "GET", params }, options);
+  return createInstance<PaginatedAnimalColorEntity>({ url: `/colors`, method: "GET", params }, options);
 };
 
 /**
@@ -4220,7 +4275,7 @@ export const regionControllerCreate = (createRegionDto: BodyType<CreateRegionDto
  * @summary List regions
  */
 export const regionControllerFindAll = (params?: RegionControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedRegionEntity>>) => {
-  return createInstance<any>({ url: `/regions`, method: "GET", params }, options);
+  return createInstance<PaginatedRegionEntity>({ url: `/regions`, method: "GET", params }, options);
 };
 
 /**
@@ -4300,7 +4355,7 @@ export const vetStationControllerCreate = (createVetStationDto: BodyType<CreateV
  * @summary List vet stations
  */
 export const vetStationControllerFindAll = (params?: VetStationControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedVetStationEntity>>) => {
-  return createInstance<any>({ url: `/vet-stations`, method: "GET", params }, options);
+  return createInstance<PaginatedVetStationEntity>({ url: `/vet-stations`, method: "GET", params }, options);
 };
 
 /**
@@ -4343,26 +4398,31 @@ export type UsersControllerChangePasswordResult = NonNullable<Awaited<ReturnType
 export type HealthControllerCheckResult = NonNullable<Awaited<ReturnType<typeof healthControllerCheck>>>;
 export type BloodExamControllerCreateResult = NonNullable<Awaited<ReturnType<typeof bloodExamControllerCreate>>>;
 export type BloodExamControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof bloodExamControllerFindAll>>>;
+export type BloodExamControllerFindLastByAnimalIdResult = NonNullable<Awaited<ReturnType<typeof bloodExamControllerFindLastByAnimalId>>>;
 export type BloodExamControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof bloodExamControllerFindOne>>>;
 export type BloodExamControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof bloodExamControllerUpdate>>>;
 export type BloodExamControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof bloodExamControllerDelete>>>;
 export type ClinicalExamControllerCreateResult = NonNullable<Awaited<ReturnType<typeof clinicalExamControllerCreate>>>;
 export type ClinicalExamControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof clinicalExamControllerFindAll>>>;
+export type ClinicalExamControllerFindLastByAnimalIdResult = NonNullable<Awaited<ReturnType<typeof clinicalExamControllerFindLastByAnimalId>>>;
 export type ClinicalExamControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof clinicalExamControllerFindOne>>>;
 export type ClinicalExamControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof clinicalExamControllerUpdate>>>;
 export type ClinicalExamControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof clinicalExamControllerDelete>>>;
 export type FecesExamControllerCreateResult = NonNullable<Awaited<ReturnType<typeof fecesExamControllerCreate>>>;
 export type FecesExamControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof fecesExamControllerFindAll>>>;
+export type FecesExamControllerFindLastByAnimalIdResult = NonNullable<Awaited<ReturnType<typeof fecesExamControllerFindLastByAnimalId>>>;
 export type FecesExamControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof fecesExamControllerFindOne>>>;
 export type FecesExamControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof fecesExamControllerUpdate>>>;
 export type FecesExamControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof fecesExamControllerDelete>>>;
 export type MucosaExamControllerCreateResult = NonNullable<Awaited<ReturnType<typeof mucosaExamControllerCreate>>>;
 export type MucosaExamControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof mucosaExamControllerFindAll>>>;
+export type MucosaExamControllerFindLastByAnimalIdResult = NonNullable<Awaited<ReturnType<typeof mucosaExamControllerFindLastByAnimalId>>>;
 export type MucosaExamControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof mucosaExamControllerFindOne>>>;
 export type MucosaExamControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof mucosaExamControllerUpdate>>>;
 export type MucosaExamControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof mucosaExamControllerDelete>>>;
 export type UrineExamControllerCreateResult = NonNullable<Awaited<ReturnType<typeof urineExamControllerCreate>>>;
 export type UrineExamControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof urineExamControllerFindAll>>>;
+export type UrineExamControllerFindLastByAnimalIdResult = NonNullable<Awaited<ReturnType<typeof urineExamControllerFindLastByAnimalId>>>;
 export type UrineExamControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof urineExamControllerFindOne>>>;
 export type UrineExamControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof urineExamControllerUpdate>>>;
 export type UrineExamControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof urineExamControllerDelete>>>;
@@ -4423,6 +4483,7 @@ export type DiseaseCategoryControllerUpdateResult = NonNullable<Awaited<ReturnTy
 export type DiseaseCategoryControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof diseaseCategoryControllerDelete>>>;
 export type ProphylaxisControllerCreateResult = NonNullable<Awaited<ReturnType<typeof prophylaxisControllerCreate>>>;
 export type ProphylaxisControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof prophylaxisControllerFindAll>>>;
+export type ProphylaxisControllerFindLastByAnimalIdResult = NonNullable<Awaited<ReturnType<typeof prophylaxisControllerFindLastByAnimalId>>>;
 export type ProphylaxisControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof prophylaxisControllerFindOne>>>;
 export type ProphylaxisControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof prophylaxisControllerUpdate>>>;
 export type ProphylaxisControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof prophylaxisControllerDelete>>>;

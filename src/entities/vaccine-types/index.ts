@@ -1,1 +1,0 @@
-export { createVaccineTypeColumns } from "./columns";

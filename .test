@@ -2,10 +2,10 @@
 [-] TEST: district create with region
 [-] TEST: vet station update form hidden district
 [-] TEST: user update form hidden district vet
-[-] remove if other value from autocomplete depens
+[-] remove if other value from autocomplete depends
 [-] TEST: update password check
 [-] animal update form disable select farmer
-[-] password lenght 8
+[-] password length 8
 [-] disease update form hide animal type
 [-] disease inspection auto select animal type and animal
 [-] animal type select remove animal select

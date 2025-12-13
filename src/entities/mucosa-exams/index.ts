@@ -1,0 +1,1 @@
+export { createMucosaExamColumns } from "./columns";

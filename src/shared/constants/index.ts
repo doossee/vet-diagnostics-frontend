@@ -25,13 +25,20 @@ import {
   Moon,
   Laptop,
   Stethoscope,
-  TestTube,
   Beaker,
   UserCheck,
   UserPlus,
   Box,
   ClipboardList,
   Network,
+  Waves,
+  ListChecks,
+  Wind,
+  Shapes,
+  Gauge,
+  Droplet,
+  Droplets,
+  Sparkles,
 } from "lucide-react";
 
 export const TABLE_QUERY_PARAMS = {
@@ -55,236 +62,6 @@ export const GENDERS = [
   { uz: "Erkak", ru: "Мужской", value: "MALE" },
   { uz: "Urgochi", ru: "Женский", value: "FEMALE" },
 ];
-
-export const ANIMAL_GENDERS = [
-  { uz: "Erkak", ru: "Самец", value: "MALE" },
-  { uz: "Urgochi", ru: "Самка", value: "FEMALE" },
-];
-
-export const BLOOD_SERUM_TESTS = {
-  totalProtein: {
-    ru: "Общий белок сыворотки",
-    uz: "Umumiy oqsil",
-    unit_ru: "г/л",
-    unit_uz: "g/L",
-  },
-  totalCalcium: {
-    ru: "Общий кальций",
-    uz: "Umumiy kalsiy",
-    unit_ru: "ммоль/л",
-    unit_uz: "mmol/L",
-  },
-  organicPhosphorus: {
-    ru: "Органический фосфор",
-    uz: "Organik fosfor",
-    unit_ru: "ммоль/л",
-    unit_uz: "mmol/L",
-  },
-  albumen: { ru: "Альбумин", uz: "Albumin", unit_ru: "%", unit_uz: "%" },
-  alphaGlobulin: {
-    ru: "Альфа-глобулин",
-    uz: "Alfa globulin",
-    unit_ru: "%",
-    unit_uz: "%",
-  },
-  betaGlobulin: {
-    ru: "Бета-глобулин",
-    uz: "Beta globulin",
-    unit_ru: "%",
-    unit_uz: "%",
-  },
-  gammaGlobulin: {
-    ru: "Гамма-глобулин",
-    uz: "Gamma globulin",
-    unit_ru: "%",
-    unit_uz: "%",
-  },
-  creatine: {
-    ru: "Креатин",
-    uz: "Kreatin",
-    unit_ru: "мкмоль/л",
-    unit_uz: "µmol/L",
-  },
-  alkalineReserve: {
-    ru: "Щелочной резерв",
-    uz: "Ishqoriy zahira",
-    unit_ru: "Об%CO²",
-    unit_uz: "Ob%CO²",
-  },
-  glucose: {
-    ru: "Глюкоза",
-    uz: "Glyukoza",
-    unit_ru: "ммоль/л",
-    unit_uz: "mmol/L",
-  },
-  totalBilirubin: {
-    ru: "Общий билирубин",
-    uz: "Umumiy Bilirubin",
-    unit_ru: "мкмоль/л",
-    unit_uz: "µmol/L",
-  },
-  cholesterol: {
-    ru: "Холестерин",
-    uz: "Xolestrin",
-    unit_ru: "ммоль/л",
-    unit_uz: "mmol/L",
-  },
-  totalLipids: {
-    ru: "Общие липиды",
-    uz: "Umumiy lipidlar",
-    unit_ru: "г/л",
-    unit_uz: "g/L",
-  },
-  vitaminA: {
-    ru: "Витамин A",
-    uz: "A vitamin",
-    unit_ru: "мкмоль/л",
-    unit_uz: "µmol/L",
-  },
-  vitaminB: {
-    ru: "Витамин B",
-    uz: "B vitamin",
-    unit_ru: "мкмоль/л",
-    unit_uz: "µmol/L",
-  },
-  lacticAcid: {
-    ru: "Молочная кислота",
-    uz: "Sut kislotasi",
-    unit_ru: "ммоль/л",
-    unit_uz: "mmol/L",
-  },
-  pyruvicAcid: {
-    ru: "Пировиноградная кислота",
-    uz: "Pirouzum kislotasi",
-    unit_ru: "ммоль/л",
-    unit_uz: "mmol/L",
-  },
-  urea: {
-    ru: "Мочевина",
-    uz: "Karbamid",
-    unit_ru: "ммоль/л",
-    unit_uz: "mmol/L",
-  },
-  citricAcid: {
-    ru: "Лимонная кислота",
-    uz: "Limon kislotasi",
-    unit_ru: "ммоль/л",
-    unit_uz: "mmol/L",
-  },
-  ureaAcid: {
-    ru: "Мочевая кислота",
-    uz: "Karbamid kislotasi",
-    unit_ru: "ммоль/л",
-    unit_uz: "mmol/L",
-  },
-};
-
-export const GENERAL_BLOOD_TESTS = {
-  coe: { ru: "СОЭ", uz: "COE", unit_ru: "Мм/ч", unit_uz: "mm/soat" },
-  leukocyteCount: {
-    ru: "Количество лейкоцитов",
-    uz: "Leykotsitlar soni",
-    unit_ru: "тыс./мкл",
-    unit_uz: "ming/mkL",
-  },
-  erythrocyteCount: {
-    ru: "Количество эритроцитов",
-    uz: "Eritrotsitlar soni",
-    unit_ru: "млн/мкл",
-    unit_uz: "mln/mkL",
-  },
-  thrombocyteCount: {
-    ru: "Количество тромбоцитов",
-    uz: "Trombotsitlar soni",
-    unit_ru: "тыс./мкл",
-    unit_uz: "ming/mkL",
-  },
-  hemoglobin: {
-    ru: "Гемоглобин",
-    uz: "Gemoglobin",
-    unit_ru: "г/л",
-    unit_uz: "g/L",
-  },
-  glutathione: {
-    ru: "Глутатион",
-    uz: "Glutation",
-    unit_ru: "ммоль/л",
-    unit_uz: "mmol/L",
-  },
-  waterPercentage: {
-    ru: "Процент воды",
-    uz: "Suv foizi",
-    unit_ru: "%",
-    unit_uz: "%",
-  },
-  dryResiduePercentage: {
-    ru: "Процент сухого остатка",
-    uz: "Quruq qoldiq foizi",
-    unit_ru: "%",
-    unit_uz: "%",
-  },
-};
-
-export const POSITIONS = {
-  NATURAL: {
-    ru: "Естественное",
-    uz: "Tabiiy",
-  },
-  FORCED: {
-    ru: "Принудительное",
-    uz: "Majbiriy",
-  },
-  FORCED_STANDING: {
-    ru: "Принудительное стоя",
-    uz: "Majbiriy tik turgan",
-  },
-  FORCED_LYING: {
-    ru: "Принудительное лежа",
-    uz: "Majbiriy yotgan",
-  },
-  FORCED_SITTING: {
-    ru: "Принудительное сидя",
-    uz: "Majbiriy o’tirgan",
-  },
-  NON_THERAPEUTIC: {
-    ru: "Не терапевтическое",
-    uz: "Tabiy bo’lmagan",
-  },
-};
-
-
-export const CUSTOMER_TYPES = {
-  MOBILE: { ru: "Активный", uz: "Harakatchan" },
-  CALM: { ru: "Спокойный", uz: "Tinch" },
-};
-
-export const OBESITY_TYPES = {
-  HIGH: { ru: "Высокий", uz: "Yuqori" },
-  MEDIUM: { ru: "Средний", uz: "O'rtacha" },
-  LEAN: { ru: "Ниже среднего", uz: "O'rtachadan past" },
-  LOW: { ru: "Худой", uz: "Ozg'in" },
-  CACHEXIA: { ru: "Кахексия", uz: "Koxeksiya" },
-};
-
-export const BODY_TYPES = {
-  WEAK: { ru: "Слабое", uz: "Kuchsiz" },
-  MEDIUM: { ru: "Сильное", uz: "O'rtacha" },
-  STRONG: { ru: "Сильное", uz: "Kuchli" },
-};
-
-export const BODY_STRUCTURES = {
-  COARSE: { ru: "Грубое", uz: "Qo'pol" },
-  SLIM: { ru: "Пустое", uz: "Bo'sh" },
-  DENSE: { ru: "Плотное", uz: "Zich" },
-  WEAK: { ru: "Грубое", uz: "Nozik" },
-};
-
-export const INSPECTION_TYPES = {
-  MORNING: { ru: "Утренний", uz: "Ertalabki" },
-  EVENING: { ru: "Вечерний", uz: "Kechki" },
-  DISEASE: { ru: "Заболевание", uz: "Kasallik" },
-  GENERAL: { ru: "Общий", uz: "Umumiy" },
-};
 
 export const ALERT_MESSAGES = {
   DATA_CREATED: {
@@ -334,78 +111,19 @@ export const ALERT_MESSAGES = {
 };
 
 export type NavLink = {
-  title: string
   icon: any
-  isActive?: boolean
   url?: string
+  title: string
   items?: NavLink[]
+  isActive?: boolean
 }
 
 export const navLinksVariant: Record<UserRole, NavLink[]> = {
   SUPER_ADMIN: [
     {
-      title: "nav.management",
-      icon: FolderCog,
-      items: [
-        {
-          title: "nav.animalTypes",
-          icon: Box,
-          url: "/animal-types",
-        },
-        {
-          title: "nav.breeds",
-          icon: Network,
-          url: "/breeds",
-        },
-        {
-          title: "nav.prophylaxis",
-          icon: Activity,
-          url: "/prophylaxis",
-        },
-        {
-          title: "nav.diseaseTypes",
-          icon: ClipboardList,
-          url: "/disease-types",
-        },
-
-        {
-          title: "nav.animalColors",
-          icon: Palette,
-          url: "/animal-colors",
-        },
-        {
-          title: "nav.urineColors",
-          icon: Palette,
-          url: "/urine-colors",
-        },
-        {
-          title: "nav.dungColors",
-          icon: Palette,
-          url: "/dung-colors",
-        },
-
-        {
-          title: "nav.regions",
-          icon: Map,
-          url: "/regions",
-        },
-        {
-          title: "nav.districts",
-          icon: MapPinned,
-          url: "/districts",
-        },
-        {
-          title: "nav.vetstations",
-          icon: MapPin,
-          url: "/vetstations",
-        },
-
-        {
-          title: "nav.eyeLid",
-          icon: ScanEye,
-          url: "/eye-lid",
-        },
-      ],
+      title: "nav.animals",
+      icon: PawPrint,
+      url: "/animals",
     },
     {
       title: "nav.users",
@@ -429,46 +147,147 @@ export const navLinksVariant: Record<UserRole, NavLink[]> = {
       ],
     },
     {
-      title: "nav.animals",
-      icon: PawPrint,
-      url: "/animals",
-    },
-    {
-      title: "nav.inspections",
-      icon: HeartPulse,
+      title: "nav.management",
+      icon: FolderCog,
       items: [
+        { groupTitle: 'Настройки животных' } as any,
         {
-          title: "nav.diseases",
-          icon: ScanHeart,
-          url: "/diseases",
+          title: "nav.animalTypes",
+          icon: Box,
+          url: "/animal-types",
         },
         {
-          title: "nav.urineTests",
-          icon: Beaker,
-          url: "/urine-tests",
+          title: "nav.breeds",
+          icon: Network,
+          url: "/breeds",
         },
         {
-          title: "nav.dungTests",
-          icon: Shovel,
-          url: "/dung-tests",
+          title: "nav.animalColors",
+          icon: Palette,
+          url: "/animal-colors",
+        },
+        { groupTitle: 'Настройки мочи' } as any,
+        {
+          title: "nav.urineColors",
+          icon: Palette,
+          url: "/urine-colors",
         },
         {
-          title: "nav.generalInspections",
+          title: "nav.urineClarities",
+          icon: Sparkles,
+          url: "/urine-clarities",
+        },
+        {
+          title: "nav.urineColors",
+          icon: Droplets,
+          url: "/urine-consistencies",
+        },
+        {
+          title: "nav.urineSmells",
+          icon: Wind,
+          url: "/urine-smells",
+        },
+        { groupTitle: 'Настройки кала' },
+        {
+          title: "nav.dungColors",
+          icon: Palette,
+          url: "/dung-colors",
+        },
+        {
+          title: "nav.dungForms",
+          icon: Shapes,
+          url: "/dung-forms",
+        },
+        {
+          title: "nav.dungConsistencies",
+          icon: Gauge,
+          url: "/dung-consistencies",
+        },
+        {
+          title: "nav.dungSmells",
+          icon: Wind,
+          url: "/dung-smells",
+        },
+        { groupTitle: 'Настройки карту' },
+        {
+          title: "nav.regions",
+          icon: Map,
+          url: "/regions",
+        },
+        {
+          title: "nav.districts",
+          icon: MapPinned,
+          url: "/districts",
+        },
+        {
+          title: "nav.vetstations",
+          icon: MapPin,
+          url: "/vetstations",
+        },
+        { groupTitle: 'Настройки медицину' },
+        {
+          title: "nav.diseaseTypes",
+          icon: ClipboardList,
+          url: "/disease-types",
+        },
+        {
+          title: "nav.eyeLid",
+          icon: Waves,
+          url: "/eye-lid",
+        },
+        {
+          title: "nav.prophylaxisItems",
+          icon: ListChecks,
+          url: "/prophylaxis-items",
+        },
+        {
+          title: "nav.prophylaxisDetails",
           icon: Stethoscope,
-          url: "/general-inspections",
+          url: "/prophylaxis-details",
         },
-        {
-          title: "nav.generalBloodTests",
-          icon: Syringe,
-          url: "/general-blood-tests",
-        },
-        // {
-        //   title: "nav.mucosaExams",
-        //   icon: FlaskRound,
-        //   url: "/blood-serum-tests",
-        // },
       ],
     },
+    // {
+    //   title: "nav.inspections",
+    //   icon: HeartPulse,
+    //   items: [
+    //     {
+    //       title: "nav.diseases",
+    //       icon: ScanHeart,
+    //       url: "/diseases",
+    //     },
+    //     {
+    //       title: "nav.prophylaxis",
+    //       icon: Activity,
+    //       url: "/prophylaxis",
+    //     },
+    //     {
+    //       title: "nav.urineTests",
+    //       icon: Beaker,
+    //       url: "/urine-tests",
+    //     },
+    //     {
+    //       title: "nav.dungTests",
+    //       icon: Shovel,
+    //       url: "/dung-tests",
+    //     },
+    //     {
+    //       title: "nav.generalInspections",
+    //       icon: Stethoscope,
+    //       url: "/general-inspections",
+    //     },
+    //     {
+    //       title: "nav.generalBloodTests",
+    //       icon: Syringe,
+    //       url: "/general-blood-tests",
+    //     },
+    //     {
+    //       title: "nav.mucosaExams",
+    //       icon: ScanEye,
+    //       url: "/mucosa-exams",
+    //     },
+    //   ],
+    // },
   ],
   ADMIN: [
     {

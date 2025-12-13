@@ -10,6 +10,7 @@ export const createGeneralInspectionColumns = (handleEditItem: (item: ClinicalEx
   {
     title: t("form.animal"),
     key: "animal",
+    hideInInfoTable: true,
     render(item: ClinicalExam) {
       return <span className="text-right">{item.animal?.animalNameCode}</span>;
     },
@@ -173,10 +174,10 @@ export const createGeneralInspectionColumns = (handleEditItem: (item: ClinicalEx
     },
   },
 
-
   {
     title: t("table.actions"),
     key: "actions",
+    hideInInfoTable: true,
     render(item: ClinicalExam) {
       return (
         <div className="flex gap-2 items-center flex-wrap md:flex-nowrap justify-end md:justify-start">
@@ -191,5 +192,5 @@ export const createGeneralInspectionColumns = (handleEditItem: (item: ClinicalEx
         </div>
       );
     },
-  },
+  }
 ];

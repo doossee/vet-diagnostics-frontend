@@ -1,1 +1,0 @@
-export { createLeatherCoverColumns } from "./columns";

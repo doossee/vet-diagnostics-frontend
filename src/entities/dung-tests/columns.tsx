@@ -4,6 +4,7 @@ import { FecesExam, LanguageLocales } from "@/shared/types";
 
 export const createDungTestColumns = (handleEditItem: (item: FecesExam) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
   {
+    hideInInfoTable: true,
     title: t("form.animal"),
     key: "animal",
     render(item: FecesExam) {
@@ -41,6 +42,7 @@ export const createDungTestColumns = (handleEditItem: (item: FecesExam) => void,
     },
   },
   {
+    hideInInfoTable: true,
     title: t("table.actions"),
     key: "actions",
     render(item: FecesExam) {

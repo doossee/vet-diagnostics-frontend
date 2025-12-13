@@ -15,6 +15,18 @@
     "eyeLid": "Shilliq pardalar",
     "leatherCover": "Teri qoplamalari",
     "prophylaxis": "Umumiy profilaktik chora tadbirlar",
+    "mucosaExams": "Shilliq qavat tekshiruvlari",
+    "settingsData": "Ma'lumotlar sozlamalari",
+
+    "prophylaxisDetails": "Profilaktika tafsilotlari",
+    "prophylaxisItems": "Profilaktika elementlari",
+    "dungForms": "Tezak shakllari",
+    "dungConsistencies": "Tezak konsistensiyasi",
+    "dungSmells": "Tezak hidi",
+
+    "urineClarities": "Siydik tiniqligi",
+    "urineConsistencies": "Siydik konsistensiyasi",
+    "urineSmells": "Siydik hidi",
 
     "users": "Foydalanuvchilar",
     "veterinarians": "Veterinarlar",
@@ -279,5 +291,6 @@
   "noData": {
     "title": "Maʼlumot topilmadi",
     "description": "Ushbu sahifada hozircha maʼlumot yo‘q. Siz yangi yozuv qo‘shishingiz yoki sahifani yangilashingiz mumkin."
-  }
+  },
+  "show": "Ko'rish"
 }

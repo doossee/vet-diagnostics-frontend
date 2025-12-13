@@ -1,17 +1,17 @@
 import { EyeLidSchema } from "@/features/eye-lid";
-import { Eyelid, UpdateBody } from "@/shared/types";
+import { MucosaAppearance, UpdateBody } from "@/shared/types";
 import { EyeLidQueryKeys } from "../utils/constants/query-keys";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createQueryData, removeQueryData, updateQueryData } from "@/shared/helpers/query-updater";
-import { eyelidsControllerCreate, eyelidsControllerRemove, eyelidsControllerUpdate } from "@/shared/api";
+import { mucosaAppearanceControllerCreate, mucosaAppearanceControllerDelete, mucosaAppearanceControllerUpdate } from "@/shared/api/api-new";
 
 export function useCreateEyeLid() {
   const client = useQueryClient();
 
   return useMutation<any, any, EyeLidSchema>({
-    mutationFn: eyelidsControllerCreate,
+    mutationFn: mucosaAppearanceControllerCreate,
     onSuccess: (data) => {
-      createQueryData<Eyelid>(client, [EyeLidQueryKeys.EYE_LIDS], data);
+      createQueryData<MucosaAppearance>(client, [EyeLidQueryKeys.EYE_LIDS], data);
       client.invalidateQueries({ queryKey: [EyeLidQueryKeys.EYE_LIDS] });
     },
   });
@@ -21,9 +21,9 @@ export function useUpdateEyeLid() {
   const client = useQueryClient();
 
   return useMutation<any, any, UpdateBody<EyeLidSchema>>({
-    mutationFn: async ({ id, body }) => eyelidsControllerUpdate(+id, body),
+    mutationFn: async ({ id, body }) => mucosaAppearanceControllerUpdate(id as string, body),
     onSuccess: (data) => {
-      updateQueryData<Eyelid>(client, [EyeLidQueryKeys.EYE_LIDS], data);
+      updateQueryData<MucosaAppearance>(client, [EyeLidQueryKeys.EYE_LIDS], data);
       client.invalidateQueries({ queryKey: [EyeLidQueryKeys.EYE_LIDS] });
     },
   });
@@ -33,9 +33,9 @@ export function useDeleteEyeLid() {
   const client = useQueryClient();
 
   return useMutation<any, any, number | string>({
-    mutationFn: eyelidsControllerRemove,
+    mutationFn: id => mucosaAppearanceControllerDelete(id as string),
     onSuccess: (data) => {
-      removeQueryData<Eyelid>(client, [EyeLidQueryKeys.EYE_LIDS], data.id);
+      removeQueryData<MucosaAppearance>(client, [EyeLidQueryKeys.EYE_LIDS], data.id);
       client.invalidateQueries({ queryKey: [EyeLidQueryKeys.EYE_LIDS] });
     },
   });

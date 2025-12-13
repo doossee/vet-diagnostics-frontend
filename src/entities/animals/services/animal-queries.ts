@@ -4,7 +4,7 @@ import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { paramsToQueryKeys } from "@/shared/helpers/params-to-keys";
 import { animalsControllerFindOne, animalsControllerFindAll } from "@/shared/api";
 
-export function useGetAnimal(id: string | number, enabled?: boolean) {
+export function useGetAnimal(id: string, enabled?: boolean) {
   return useQuery<Animal, Error>({
     queryKey: [AnimalQueryKeys.ANIMALS, id],
     queryFn: async () => animalsControllerFindOne(id) as Promise<Animal>,

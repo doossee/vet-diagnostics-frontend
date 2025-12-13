@@ -23,7 +23,7 @@ export function DungColorSelect({ value, placeholder, disabled, onChange, onRemo
       placeholder={placeholder}
       queryFn={useGetDungColorsInfinite}
       getOptionLabel={item => item.name_ru}
-      // clientSearch={(search, item) =>
+      // clientSearch={(search, item) => 
       //   searchUtil(search, item, ["id", "name"])
       // }
     />

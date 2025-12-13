@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Microscope, ScanSearch } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,9 +7,9 @@ import { useI18n } from "@/shared/hooks/use-i18n";
 import { Divider } from "@/shared/components/divider";
 import { Input } from "@/shared/components/ui/input";
 import { Button } from "@/shared/components/ui/button";
-import { AnimalSelect } from "../animals/components/animal-select";
+// import { AnimalSelect } from "../animals/components/animal-select";
 import { DungColorSelect } from "../dung-colors/components/dung-color-select";
-import { AnimalTypeSelect } from "../animal-types/components/animal-type-select";
+// import { AnimalTypeSelect } from "../animal-types/components/animal-type-select";
 import { DungTestSchema, createDungTestSchema, dungTestValues } from "./dung-test.model";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 import { DungFormsSelect } from "../additional-crud/components/dung-forms-select";
@@ -29,16 +29,16 @@ export function DungTestForm({ onSubmit, defaultValues }: DungTestFormProps) {
     defaultValues: defaultValues || (dungTestValues as any),
   });
 
-  useEffect(() => {
-    if (defaultValues) form.setValue("animalTypeId" as any, (defaultValues as any)?.animal?.animalTypeId);
-  }, [defaultValues]);
+  // useEffect(() => {
+  //   if (defaultValues) form.setValue("animalTypeId" as any, (defaultValues as any)?.animal?.animalTypeId);
+  // }, [defaultValues]);
 
-  const animalTypeId = form.watch("animalTypeId" as any);
+  // const animalTypeId = form.watch("animalTypeId" as any);
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
-        <FormField
+        {/* <FormField
           name={"animalTypeId" as any}
           control={form.control}
           render={({ field }) => (
@@ -64,7 +64,7 @@ export function DungTestForm({ onSubmit, defaultValues }: DungTestFormProps) {
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
 
         <Divider label="Макроскопическое исследование" icon={<ScanSearch />} className="col-span-1 md:col-span-2" />
         

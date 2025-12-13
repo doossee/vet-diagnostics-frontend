@@ -30,8 +30,7 @@ export default function GeneralBloodTests() {
       if(!newAnimal) return
 
       setMany({
-        [QUERY_PARAM_KEYS.NEW]: null,
-        [QUERY_PARAM_KEYS.ANIMAL_ID]: animalId || null
+        [QUERY_PARAM_KEYS.NEW]: null
       })
     }
   });
@@ -47,7 +46,7 @@ export default function GeneralBloodTests() {
         topSlot={createButton(t("inspections.createBloodTest"))} />
 
       <Modal open={dialog} onClose={handleClose} widthClassName="max-w-[800px]!" title={t(editedItem ? "inspections.editBloodTest" : "inspections.createBloodTest")}>
-        <GeneralBloodTestForm onSubmit={onSubmit} animalId={animalId as number} defaultValues={editedItem ? editedItem : animalId ? {...generalBloodTestValues(animalId as number), date: new Date()} : undefined} />
+        <GeneralBloodTestForm onSubmit={onSubmit} animalId={animalId as string} defaultValues={editedItem ? editedItem : animalId ? {...generalBloodTestValues(String(animalId)), date: new Date()} : undefined} />
       </Modal>
     </div>
   );

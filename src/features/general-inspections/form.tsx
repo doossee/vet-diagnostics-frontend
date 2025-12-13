@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,9 +7,9 @@ import { CircleDot, Droplet, Layers, ListChecks, PersonStanding } from "lucide-r
 import { Input } from "@/shared/components/ui/input";
 import { Divider } from "@/shared/components/divider";
 import { Button } from "@/shared/components/ui/button";
-import { AnimalSelect } from "../animals/components/animal-select";
+// import { AnimalSelect } from "../animals/components/animal-select";
 import { ObjectEntriesSelect } from "@/shared/components/object-entries-select";
-import { AnimalTypeSelect } from "../animal-types/components/animal-type-select";
+// import { AnimalTypeSelect } from "../animal-types/components/animal-type-select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 import { DOWN_TYPE, FEATHER_TYPE, HAIR_TYPE, WOOL_TYPE } from "@/entities/general-inspections/utils/constants/skin-cover";
 import { SKIN_COLOR, SKIN_ELASTICITY, SKIN_HUMIDITY, SKIN_TEMP } from "@/entities/general-inspections/utils/constants/skin";
@@ -18,12 +18,11 @@ import { BODY_POSITION, BODY_TYPE, CONSTITUTION, OBESITY_TYPE, TEMPERAMENT } fro
 import { LYMPH_CONSISTENCY, LYMPH_MOBILITY, LYMPH_PAIN, LYMPH_SHAPE, LYMPH_SIZE, LYMPH_SURFACE, LYMPH_TEMP } from "@/entities/general-inspections/utils/constants/lymph";
 
 interface GeneralInspectionFormProps {
-  hideAnimals?: boolean;
   defaultValues?: GeneralInspectionSchema;
   onSubmit: (values: GeneralInspectionSchema) => void;
 }
 
-export function GeneralInspectionForm({ onSubmit, defaultValues, hideAnimals }: GeneralInspectionFormProps) {
+export function GeneralInspectionForm({ onSubmit, defaultValues }: GeneralInspectionFormProps) {
   const { t, locale } = useI18n();
 
   const form = useForm<GeneralInspectionSchema>({
@@ -31,50 +30,42 @@ export function GeneralInspectionForm({ onSubmit, defaultValues, hideAnimals }: 
     defaultValues: defaultValues || (generalInspectionValues as any),
   });
 
-  useEffect(() => {
-    if (hideAnimals) form.setValue("animalId", 0 as any);
-  }, [hideAnimals]);
+  // useEffect(() => {
+  //   if (defaultValues) form.setValue("animalTypeId" as any, (defaultValues as any)?.animal?.typeId);
+  // }, [defaultValues]);
 
-  useEffect(() => {
-    if (defaultValues) form.setValue("animalTypeId" as any, (defaultValues as any)?.animal?.typeId);
-  }, [defaultValues]);
-
-  const animalTypeId = form.watch("animalTypeId" as any);
+  // const animalTypeId = form.watch("animalTypeId" as any);
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {!hideAnimals && (
-          <>
-            <FormField
-              name={"animalTypeId" as any}
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("animals.animalType")}</FormLabel>
-                  <FormControl>
-                    <AnimalTypeSelect placeholder={t("animals.animalType")} value={field.value} onChange={field.onChange} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        {/* <FormField
+          name={"animalTypeId" as any}
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("animals.animalType")}</FormLabel>
+              <FormControl>
+                <AnimalTypeSelect placeholder={t("animals.animalType")} value={field.value} onChange={field.onChange} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-            <FormField
-              name="animalId"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("form.animal")}</FormLabel>
-                  <FormControl>
-                    <AnimalSelect placeholder={t("form.animal")} value={field.value} onChange={field.onChange} typeId={animalTypeId} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </>
-        )}
+        <FormField
+          name="animalId"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("form.animal")}</FormLabel>
+              <FormControl>
+                <AnimalSelect placeholder={t("form.animal")} value={field.value} onChange={field.onChange} typeId={animalTypeId} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        /> */}
 
         <Divider label={"Общее состояние"} icon={<ListChecks />} className="col-span-1 md:col-span-2 lg:col-span-3" />
 

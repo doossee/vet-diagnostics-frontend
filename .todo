@@ -2,10 +2,11 @@ PRIORY HIGH:
 TODO: folder select
 TODO: folder table ui
 TODO: translations | content text
-TODO: settings crud
-TODO: animal id ui
-TODO: animal id last and exams filter
+[+]: settings crud
+{-}: animal id ui
+[+]: animal id last and exams filter
 TODO: fix breadcrumb
+TODO: invalidate lasts when created, deleted, updated and give infinite stale time
 
 NEW:
 TODO: Animal breed check data

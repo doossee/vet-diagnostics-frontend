@@ -8,14 +8,14 @@ import { Input } from "@/shared/components/ui/input";
 import { Divider } from "@/shared/components/divider";
 import { Button } from "@/shared/components/ui/button";
 import { Textarea } from "@/shared/components/ui/textarea";
-import { AnimalSelect } from "../animals/components/animal-select";
-import { AnimalTypeSelect } from "../animal-types/components/animal-type-select";
+// import { AnimalSelect } from "../animals/components/animal-select";
+// import { AnimalTypeSelect } from "../animal-types/components/animal-type-select";
 import { BLOOD_TEST_FIELDS } from "@/entities/general-blood-tests/utils/constants/blood-test-fields";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 import { GeneralBloodTestSchema, createGeneralBloodTestSchema, generalBloodTestValues } from "./general-blood-test.model";
 
 interface GeneralBloodTestFormProps {
-  animalId: number | null;
+  animalId?: string | null;
   defaultValues?: GeneralBloodTestSchema;
   onSubmit: (values: GeneralBloodTestSchema) => void;
 }
@@ -25,19 +25,19 @@ export function GeneralBloodTestForm({ onSubmit, defaultValues, animalId }: Gene
 
   const form = useForm<GeneralBloodTestSchema>({
     resolver: zodResolver(createGeneralBloodTestSchema(t, locale)),
-    defaultValues: defaultValues ?? generalBloodTestValues(animalId),
+    defaultValues: defaultValues ?? generalBloodTestValues(animalId ? String(animalId) : null),
   });
 
-  useEffect(() => {
-    if (defaultValues) form.setValue("animalTypeId" as any, (defaultValues as any)?.animal?.typeId);
-  }, [defaultValues]);
+  // useEffect(() => {
+  //   if (defaultValues) form.setValue("animalTypeId" as any, (defaultValues as any)?.animal?.typeId);
+  // }, [defaultValues]);
 
-  const animalTypeId = form.watch("animalTypeId" as any);
+  // const animalTypeId = form.watch("animalTypeId" as any);
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 w-full">
-        <FormField
+        {/* <FormField
           name={"animalTypeId" as any}
           control={form.control}
           render={({ field }) => (
@@ -63,7 +63,7 @@ export function GeneralBloodTestForm({ onSubmit, defaultValues, animalId }: Gene
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
 
         {Object.entries(BLOOD_TEST_FIELDS).map(([key, value], index) =>
           <Fragment key={key}>

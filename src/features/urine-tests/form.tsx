@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FlaskConical, Microscope, ScanSearch } from "lucide-react";
@@ -7,7 +7,7 @@ import { useI18n } from "@/shared/hooks/use-i18n";
 import { Input } from "@/shared/components/ui/input";
 import { Divider } from "@/shared/components/divider";
 import { Button } from "@/shared/components/ui/button";
-import { AnimalSelect } from "../animals/components/animal-select";
+// import { AnimalSelect } from "../animals/components/animal-select";
 import { UrineColorSelect } from "../urine-colors/components/urine-color-select";
 import { UrineSmellsSelect } from "../additional-crud/components/urine-smells-select";
 import { UrineClaritiesSelect } from "../additional-crud/components/urine-clarities-select";
@@ -28,30 +28,16 @@ export function UrineTestForm({ onSubmit, defaultValues }: UrineTestFormProps) {
     defaultValues: defaultValues || (urineTestValues as any),
   });
 
-  const animalTypeId = form.watch("animalTypeId" as any);
+  // const animalTypeId = form.watch("animalTypeId" as any);
 
-  useEffect(() => {
-    if (defaultValues) form.setValue("animalTypeId" as any, (defaultValues as any)?.animal?.animalTypeId);
-  }, [defaultValues]);
+  // useEffect(() => {
+  //   if (defaultValues) form.setValue("animalTypeId" as any, (defaultValues as any)?.animal?.animalTypeId);
+  // }, [defaultValues]);
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
         {/* <FormField
-          name={"animalTypeId" as any}
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("animals.animalType")}</FormLabel>
-              <FormControl>
-                <AnimalTypeSelect placeholder={t("animals.animalType")} value={field.value} onChange={field.onChange} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
-
-        <FormField
           name="animalId"
           control={form.control}
           render={({ field }) => (
@@ -63,7 +49,7 @@ export function UrineTestForm({ onSubmit, defaultValues }: UrineTestFormProps) {
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
 
         <FormField
           name="urineColorId"

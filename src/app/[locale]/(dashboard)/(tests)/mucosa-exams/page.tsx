@@ -7,6 +7,7 @@ import { useCrud } from "@/shared/hooks/use-crud";
 import { DataTable } from "@/shared/components/data-table";
 import { Modal } from "@/shared/components/elements/modal";
 import { createMucosaExamColumns } from "@/entities/mucosa-exams";
+import { queryParamKeys } from "@/entities/mucosa-exams/utils/constants/query-param-keys";
 import { MucosaExamForm, MucosaExamSchema } from "@/features/mucosa-exams";
 import { useGetMucosaExams } from "@/entities/mucosa-exams/services/queries";
 import { useCreateMucosaExam, useDeleteMucosaExam, useUpdateMucosaExam } from "@/entities/mucosa-exams/services/mutations";
@@ -21,6 +22,7 @@ export default function MucosaExams() {
   const animalId = get(QUERY_PARAM_KEYS.ANIMAL_ID);
 
   const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<MucosaExam, MucosaExamSchema, MucosaExamSchema>({
+    dialogValue: !!newAnimal,
     createMutation: useCreateMucosaExam,
     updateMutation: useUpdateMucosaExam,
     removeMutation: useDeleteMucosaExam,
@@ -39,6 +41,7 @@ export default function MucosaExams() {
     <div>
       <DataTable
         columns={columns}
+        filterQueryParamKeys={queryParamKeys}
         queryFunction={useGetMucosaExams}
         topSlot={createButton(t("management.createEyeLid"))} />
 
@@ -48,8 +51,7 @@ export default function MucosaExams() {
         title={t(editedItem ? "management.editEyeLid" : "management.createEyeLid")}>
         <MucosaExamForm
           onSubmit={onSubmit}
-          hideAnimals={!!animalId}
-          defaultValues={editedItem ? {...editedItem, animalId } : (undefined as any)} />
+          defaultValues={editedItem ? editedItem as any : animalId ? { animalId: String(animalId) } : undefined} />
       </Modal>
     </div>
   );

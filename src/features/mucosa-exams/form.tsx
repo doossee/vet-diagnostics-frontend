@@ -12,12 +12,11 @@ import { AnimalSelect } from "../animals/components/animal-select";
 import { EyeLidSelect } from "../eye-lid/components/eye-lid-select";
 
 interface MucosaExamFormProps {
-  hideAnimals?: boolean
   defaultValues?: MucosaExamSchema;
   onSubmit: (values: MucosaExamSchema) => void;
 }
 
-export function MucosaExamForm({ onSubmit, defaultValues, hideAnimals }: MucosaExamFormProps) {
+export function MucosaExamForm({ onSubmit, defaultValues }: MucosaExamFormProps) {
   const { t, locale } = useI18n();
 
   const form = useForm<MucosaExamSchema>({
@@ -30,7 +29,7 @@ export function MucosaExamForm({ onSubmit, defaultValues, hideAnimals }: MucosaE
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 h-full">
-        {!hideAnimals && <FormField
+        {/* <FormField
           name="animalId"
           control={form.control}
           render={({ field }) => (
@@ -42,7 +41,7 @@ export function MucosaExamForm({ onSubmit, defaultValues, hideAnimals }: MucosaE
               <FormMessage />
             </FormItem>
           )}
-        />}
+        /> */}
         <ObjectEntriesSelect
           form={form}
           locale={locale}

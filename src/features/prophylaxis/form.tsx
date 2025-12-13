@@ -7,7 +7,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
 import { PROPHYLAXIS_TYPES } from "@/entities/prophylaxis/utils/constants/prophylaxis-types";
 import { DatePicker } from "@/shared/components/date-picker";
-import { AnimalSelect } from "../animals/components/animal-select";
+// import { AnimalSelect } from "../animals/components/animal-select";
 import { ProphylaxisItemSelect } from "../prophylaxis-items/components/prophylaxis-item-select";
 import { ProphylaxisDetailSelect } from "../prophylaxis-details/components/prophylaxis-detail-select";
 
@@ -32,7 +32,7 @@ export function ProphylaxisForm({ onSubmit, defaultValues }: ProphylaxisFormProp
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 h-full">
-        <FormField
+        {/* <FormField
           name={"animalId"}
           control={form.control}
           render={({ field }) => (
@@ -44,7 +44,7 @@ export function ProphylaxisForm({ onSubmit, defaultValues }: ProphylaxisFormProp
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
         <FormField
           name="type"
           control={form.control}

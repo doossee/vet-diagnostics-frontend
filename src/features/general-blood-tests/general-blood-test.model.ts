@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { BLOOD_TEST_FIELDS } from "@/entities/general-blood-tests/utils/constants/blood-test-fields";
 
-export const generalBloodTestValues = (animalId: number | null) => {
+export const generalBloodTestValues = (animalId: string | null) => {
   const obj: any = {
     animalId,
     conclusion: "",

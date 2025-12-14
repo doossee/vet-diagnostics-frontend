@@ -12,6 +12,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { GeneralInspectionQueryKeys } from "@/entities/general-inspections/utils/constants/query-keys";
 import { GeneralBloodTestQueryKeys } from "@/entities/general-blood-tests/utils/constants/query-keys";
 import { BloodExam, ClinicalExam } from "@/shared/types";
+import { useGetLastGeneralInspection } from "@/entities/general-inspections/services/queries";
+import { useGetLastGeneralBloodTest } from "@/entities/general-blood-tests/services/queries";
 
 type Props = {
   id: string;
@@ -66,18 +68,19 @@ const bloodExamFields = [
 ]
 
 function useExamValues(animalId: string) {
-  const queryClient = useQueryClient();
+  const { data: clinicData } = useGetLastGeneralInspection(animalId);
+  const { data: bloodData } = useGetLastGeneralBloodTest(animalId);
 
-  // Берём данные из кэша
-  const clinicData = queryClient.getQueryData([
-    GeneralInspectionQueryKeys.LAST_GENERAL_INSPECTION,
-    animalId
-  ]) as ClinicalExam | undefined;
+  // // Берём данные из кэша
+  // const clinicData = queryClient.getQueryData([
+  //   GeneralInspectionQueryKeys.LAST_GENERAL_INSPECTION,
+  //   animalId
+  // ]) as ClinicalExam | undefined;
 
-  const bloodData = queryClient.getQueryData([
-    GeneralBloodTestQueryKeys.LAST_GENERAL_BLOOD_TEST,
-    animalId
-  ]) as BloodExam | undefined;
+  // const bloodData = queryClient.getQueryData([
+  //   GeneralBloodTestQueryKeys.LAST_GENERAL_BLOOD_TEST,
+  //   animalId
+  // ]) as BloodExam | undefined;
 
   // Собираем значения полей
   const clinicValues = clinicExamFields.reduce((acc, field) => {
@@ -129,7 +132,7 @@ export function PredictInfoTable({ id }: Props) {
     return Object.entries(PREDICT_DISEASES)
       .map(([id, value]) => ({
         name: value ?? `Болезнь ${id}`,
-        value: Number(((data ? data[+id] : 0) * 100)),
+        value: Number(((data ? data[+id] : 0) * 100).toFixed(2)),
       }))
   }, [data]);
 

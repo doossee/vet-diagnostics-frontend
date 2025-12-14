@@ -26,13 +26,13 @@ export function AnimalDashboard({ id }: { id: string }) {
 
         <PredictInfoTable id={id} />
 
-        <FecesExamInfoTable id={id} onCreate={handleOpenRoute} />
-
         <DiseaseInfoTable id={id} onCreate={handleOpenRoute} />
 
         <MucosaExamInfoTable id={id} onCreate={handleOpenRoute} />
 
         <ProphylaxisInfoTable id={id} onCreate={handleOpenRoute} />
+
+        <FecesExamInfoTable id={id} onCreate={handleOpenRoute} />
 
         <UrineExamInfoTable id={id} onCreate={handleOpenRoute} />
 

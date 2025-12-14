@@ -24,11 +24,11 @@ export function AdditionalCrudForm({ onSubmit, defaultValues }: FormProps) {
     defaultValues: defaultValues || additionalCrudValues,
   });
 
-  useEffect(() => {
-    if((defaultValues as any)?.animalType) {
-      setAnimalType(animalType)
-    }
-  }, [defaultValues])
+  // useEffect(() => {
+  //   if((defaultValues as any)?.animalType) {
+  //     setAnimalType(animalType)
+  //   }
+  // }, [defaultValues])
 
   return (
     <Form {...form}>
@@ -66,7 +66,7 @@ export function AdditionalCrudForm({ onSubmit, defaultValues }: FormProps) {
             <FormItem>
               <FormLabel>{t("animals.animalType")}</FormLabel>
               <FormControl>
-                <AnimalTypeTreeSelect placeholder={t("animals.animalType")} value={animalType ?? field.value} onChange={field.onChange} />
+                <AnimalTypeTreeSelect placeholder={t("animals.animalType")} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>

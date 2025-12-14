@@ -38,6 +38,9 @@ export const generalInspectionValues = {
   lymphTemp: undefined,
   lymphPain: undefined,
   lymphMobility: undefined,
+
+  rumenInfusoriaCount: 0,
+  rumenFluidState: "",
 };
 
 export const createGeneralInspectionSchema = (_: any) =>
@@ -49,33 +52,36 @@ export const createGeneralInspectionSchema = (_: any) =>
     temperature: z.coerce.number(),
     respiratoryRate: z.coerce.number(),
 
-    bodyType: z.enum(BODY_TYPE_ARRAY),
-    obesity: z.enum(OBESITY_TYPE_ARRAY),
-    bodyPosition: z.enum(BODY_POSITION_ARRAY),
-    constitution: z.enum(CONSTITUTION_ARRAY),
-    temperament: z.enum(TEMPERAMENT_ARRAY),
+    bodyType: z.enum(BODY_TYPE_ARRAY).optional(),
+    obesity: z.enum(OBESITY_TYPE_ARRAY).optional(),
+    bodyPosition: z.enum(BODY_POSITION_ARRAY).optional(),
+    constitution: z.enum(CONSTITUTION_ARRAY).optional(),
+    temperament: z.enum(TEMPERAMENT_ARRAY).optional(),
 
-    wool: z.enum(WOOL_TYPE_ARRAY),
-    down: z.enum(DOWN_TYPE_ARRAY),
-    hair: z.enum(HAIR_TYPE_ARRAY),
-    feathers: z.enum(FEATHER_TYPE_ARRAY),
+    wool: z.enum(WOOL_TYPE_ARRAY).optional(),
+    down: z.enum(DOWN_TYPE_ARRAY).optional(),
+    hair: z.enum(HAIR_TYPE_ARRAY).optional(),
+    feathers: z.enum(FEATHER_TYPE_ARRAY).optional(),
 
-    skinColor: z.enum(SKIN_COLOR_ARRAY),
-    skinHumidity: z.enum(SKIN_HUMIDITY_ARRAY),
-    skinSmell: z.string(),
-    skinTemp: z.enum(SKIN_TEMP_ARRAY),
-    skinSurface: z.string(),
-    skinElasticity: z.enum(SKIN_ELASTICITY_ARRAY),
-    skinSensitivity: z.string(),
-    skinPain: z.string(),
+    skinColor: z.enum(SKIN_COLOR_ARRAY).optional(),
+    skinHumidity: z.enum(SKIN_HUMIDITY_ARRAY).optional(),
+    skinSmell: z.string().optional(),
+    skinTemp: z.enum(SKIN_TEMP_ARRAY).optional(),
+    skinSurface: z.string().optional(),
+    skinElasticity: z.enum(SKIN_ELASTICITY_ARRAY).optional(),
+    skinSensitivity: z.string().optional(),
+    skinPain: z.string().optional(),
 
-    lymphSize: z.enum(LYMPH_SIZE_ARRAY),
-    lymphShape: z.enum(LYMPH_SHAPE_ARRAY),
-    lymphSurface: z.enum(LYMPH_SURFACE_ARRAY),
-    lymphConsistency: z.enum(LYMPH_CONSISTENCY_ARRAY),
-    lymphTemp: z.enum(LYMPH_TEMP_ARRAY),
-    lymphPain: z.enum(LYMPH_PAIN_ARRAY),
-    lymphMobility: z.enum(LYMPH_MOBILITY_ARRAY),
+    lymphSize: z.enum(LYMPH_SIZE_ARRAY).optional(),
+    lymphShape: z.enum(LYMPH_SHAPE_ARRAY).optional(),
+    lymphSurface: z.enum(LYMPH_SURFACE_ARRAY).optional(),
+    lymphConsistency: z.enum(LYMPH_CONSISTENCY_ARRAY).optional(),
+    lymphTemp: z.enum(LYMPH_TEMP_ARRAY).optional(),
+    lymphPain: z.enum(LYMPH_PAIN_ARRAY).optional(),
+    lymphMobility: z.enum(LYMPH_MOBILITY_ARRAY).optional(),
+
+    rumenInfusoriaCount: z.coerce.number(),
+    rumenFluidState: z.string().optional(),
   });
 
 export type GeneralInspectionSchema = z.infer<ReturnType<typeof createGeneralInspectionSchema>>;

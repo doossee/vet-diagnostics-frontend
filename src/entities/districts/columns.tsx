@@ -1,15 +1,14 @@
-import { District } from "@/shared/types";
+import { District, LanguageLocales } from "@/shared/types";
 import { Edit, Trash } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 
-export const createDistrictColumns = (handleEditItem: (item: District) => void, handleDelete: (id: string) => void, t: any) => [
-  { title: t("form.districtName")+" RU", key: "name_ru" },
-  { title: t("form.districtName")+" UZ", key: "name_uz" },
+export const createDistrictColumns = (handleEditItem: (item: District) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
+  { title: t("form.districtName"), key: `name_${locale}` },
   {
     title: t("form.regionName"),
     key: "region",
     render(item: District) {
-      return item.region?.name_ru;
+      return item.region?.[`name_${locale}`];
     },
   },
   {

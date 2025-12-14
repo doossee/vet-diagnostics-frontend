@@ -12,7 +12,7 @@ import { useGetDistricts } from "@/entities/districts/services/queries";
 import { useCreateDistrict, useDeleteDistrict, useUpdateDistrict } from "@/entities/districts/services/mutations";
 
 export default function Districts() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
 
   const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<District, DistrictSchema, DistrictSchema>({
     createMutation: useCreateDistrict,
@@ -20,7 +20,7 @@ export default function Districts() {
     removeMutation: useDeleteDistrict,
   });
 
-  const columns = useMemo(() => createDistrictColumns(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
+  const columns = useMemo(() => createDistrictColumns(handleEditItem, handleDelete, t, locale), [handleEditItem, handleDelete, locale]);
 
   return (
     <div>

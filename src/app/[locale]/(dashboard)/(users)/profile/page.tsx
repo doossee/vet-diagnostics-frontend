@@ -2,27 +2,17 @@
 
 import { Loader } from "lucide-react";
 import { useI18n } from "@/shared/hooks/use-i18n";
-import { ProfileForm, ProfileSchema } from "@/features/users";
+import { ProfileForm } from "@/features/users";
 import { useGetProfile } from "@/entities/auth/services/queries";
-import { useUpdateProfile } from "@/entities/auth/services/mutations";
+import { useUpdateProfile, useChangePassword } from "@/entities/auth/services/mutations";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { PasswordForm } from "@/features/users/profile/password-form";
 
 export default function Profile() {
   const { t } = useI18n();
-  const { mutateAsync } = useUpdateProfile()
+  const updateProfile = useUpdateProfile();
+  const changePassword = useChangePassword();
   const { data: profile, isLoading } = useGetProfile();
-
-  async function onSubmit(values: ProfileSchema) {
-    try {
-      const { password, ...body } = values;
-
-      if (password?.trim()) Object.assign(body, { password })
-
-      await mutateAsync(body);
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   return (
     <div>
@@ -33,7 +23,17 @@ export default function Profile() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <ProfileForm onSubmit={onSubmit} defaultValues={profile as any} loading={isLoading || isLoading} />
+          <ProfileForm onSubmit={updateProfile.mutateAsync} defaultValues={profile as any} loading={isLoading} />
+        </CardContent>
+      </Card>
+      <Card className="shadow-none rounded-lg !max-w-[700px] w-full mt-4">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            Изменить пароля
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <PasswordForm onSubmit={changePassword.mutateAsync} />
         </CardContent>
       </Card>
     </div>

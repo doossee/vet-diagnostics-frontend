@@ -1,15 +1,14 @@
-import { AnimalType } from "@/shared/types";
+import { AnimalType, LanguageLocales } from "@/shared/types";
 import { Trash, Edit } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 
-export const createAnimalTypeColumns = (handleEditItem: (item: AnimalType) => void, handleDelete: (id: number) => void, t: any) => [
-  { title: t("animalTypes.name")+" UZ", key: "name_uz" },
-  { title: t("animalTypes.name")+" RU", key: "name_ru" },
+export const createAnimalTypeColumns = (handleEditItem: (item: AnimalType) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
+  { title: t("animalTypes.name"), key: `name_${locale}` },
   {
-    title: t("animalTypes.name"),
+    title: "Родительский тип",
     key: "parent",
     render(item: AnimalType) {
-      return item.parent ? item.parent.name_uz : '-'
+      return item.parent ? item.parent?.[`name_${locale}`] : '-'
     }
   },
   {

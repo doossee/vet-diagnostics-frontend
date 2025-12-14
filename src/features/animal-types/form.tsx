@@ -54,9 +54,9 @@ export function AnimalTypeForm({ onSubmit, defaultValues }: AnimalTypeFormProps)
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("animals.animalType")}</FormLabel>
+              <FormLabel>{"Родительский тип"}</FormLabel>
               <FormControl>
-                <AnimalTypeSelect placeholder={t("animals.animalType")} value={field.value} onChange={field.onChange} />
+                <AnimalTypeSelect placeholder={"Родительский тип"} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>

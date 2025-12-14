@@ -3,30 +3,25 @@ import { z } from "zod";
 export const createProfileSchema = (t: any) =>
   z
     .object({
-      phone: z.string().min(8, t("required.phoneRequired")),
-      // gender: z.string().min(1, t("required.genderRequired")),
-      // address: z.string().optional(),
-      // birthDate: z.date({
-      //   required_error: t("required.birthDateRequired"),
-      //   invalid_type_error: t("required.birthDateRequired"),
-      // }),
-      email: z.string().optional(),
-      username: z.string().min(1, t("required.genderRequired")),
-      password: z.string().optional(),
+         phone: z.string()
+      .min(8, t("required.phoneRequired"))
+      .max(13, t("required.phoneRequired"))
+      .regex(
+        /^(?:\+998|998|0)?[3789][0-9]{8}$/,
+        "Неверный номер телефона (Узбекистан)"
+      ),
+      password: z.string()
+        .refine((val) => !val || val.length >= 6, {
+          message: "Пароль должен быть не менее 6 символов",
+        })
+        .optional(),
+      email: z
+        .string()
+        .email("Неверный формат email")
+        .optional(),
+      username: z.string().min(1, "Введите имя пользователя"),
       lastName: z.string().min(1, t("required.lastNameRequired")),
       firstName: z.string().min(1, t("required.firstNameRequired")),
-      // middleName: z.string().optional(),
-      confirmPassword: z.string().optional(),
     })
-    .superRefine((data, ctx) => {
-      if (!!data.password?.trim() && data.password !== data.confirmPassword) {
-        ctx.addIssue({
-          path: ["confirmPassword"],
-          message: t("required.passwordRequired"),
-          code: "custom",
-        });
-      }
-    })
-    .transform(({ confirmPassword, ...rest }) => rest);
 
 export type ProfileSchema = z.infer<ReturnType<typeof createProfileSchema>>;

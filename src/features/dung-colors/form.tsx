@@ -7,6 +7,7 @@ import { Textarea } from "@/shared/components/ui/textarea";
 import { AnimalTypeSelect } from "../animal-types/components/animal-type-select";
 import { DungColorSchema, createDungColorSchema, dungColorValues } from "./dung-color";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
+import { AnimalTypeTreeSelect } from "../animal-types/components/animal-type-tree-select";
 
 interface DungColorFormProps {
   defaultValues?: DungColorSchema;
@@ -57,7 +58,7 @@ export function DungColorForm({ onSubmit, defaultValues }: DungColorFormProps) {
             <FormItem>
               <FormLabel>{t("management.colorName")}</FormLabel>
               <FormControl>
-                <AnimalTypeSelect placeholder={t("animals.animalType")} value={field.value} onChange={field.onChange} />
+                <AnimalTypeTreeSelect placeholder={t("animals.animalType")} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>

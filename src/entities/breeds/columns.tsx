@@ -1,10 +1,9 @@
-import { Breed } from "@/shared/types";
+import { Breed, LanguageLocales } from "@/shared/types";
 import { Edit, Trash } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 
-export const createBreedColumns = (handleEditItem: (item: Breed) => void, handleDelete: (id: number) => void, t: any) => [
-  { title: t("management.breedName")+" RU", key: "name_ru" },
-  { title: t("management.breedName")+" UZ", key: "name_uz" },
+export const createBreedColumns = (handleEditItem: (item: Breed) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
+  { title: t("management.breedName"), key: `name_${locale}` },
   {
     title: t("table.actions"),
     key: "actions",

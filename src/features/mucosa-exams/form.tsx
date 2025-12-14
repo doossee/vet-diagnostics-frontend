@@ -8,7 +8,6 @@ import { ObjectEntriesSelect } from "@/shared/components/object-entries-select";
 // import { AnimalTypeSelect } from "../animal-types/components/animal-type-select";
 import { MucosaExamSchema, createMucosaExamSchema, mucosaExamValues } from "./mucosa-exam.model";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
-import { AnimalSelect } from "../animals/components/animal-select";
 import { EyeLidSelect } from "../eye-lid/components/eye-lid-select";
 
 interface MucosaExamFormProps {

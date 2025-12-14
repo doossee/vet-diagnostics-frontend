@@ -3127,7 +3127,7 @@ export type AnimalTypeControllerFindAllParams = {
   page?: number;
   perPage?: number;
   byId?: AnimalTypeControllerFindAllById;
-  parentId?: string;
+  parentId?: string | null;
 };
 
 export type AnimalTypeControllerFindAllById = (typeof AnimalTypeControllerFindAllById)[keyof typeof AnimalTypeControllerFindAllById];
@@ -4138,6 +4138,11 @@ export const animalControllerFindOne = (id: string, options?: SecondParameter<ty
   return createInstance<AnimalEntity>({ url: `/animals/${id}`, method: "GET" }, options);
 };
 
+
+export const animalControllerFindPredict = (id: string, options?: SecondParameter<typeof createInstance<AnimalEntity>>) => {
+  return createInstance<Record<number, number>>({ url: `/animals/predict/${id}`, method: "GET" }, options);
+};
+
 /**
  * @summary Update animal
  */
@@ -4163,7 +4168,7 @@ export const animalTypeControllerCreate = (createAnimalTypeDto: BodyType<CreateA
  * @summary List animal types
  */
 export const animalTypeControllerFindAll = (params?: AnimalTypeControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedAnimalTypeEntity>>) => {
-  return createInstance<PaginatedAnimalTypeEntity>({ url: `/animal-types`, method: "GET", params }, options);
+  return createInstance<any>({ url: `/animal-types`, method: "GET", params }, options);
 };
 
 /**

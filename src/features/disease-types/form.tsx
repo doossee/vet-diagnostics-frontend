@@ -28,9 +28,9 @@ export function DiseaseTypeForm({ onSubmit, defaultValues }: DiseaseTypeFormProp
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("management.typeName")} RU</FormLabel>
+              <FormLabel>Название вида заболевание RU</FormLabel>
               <FormControl>
-                <Textarea placeholder={t("management.typeName")} {...field} rows={3} />
+                <Textarea placeholder={"Название заболевание"} {...field} rows={3} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -41,9 +41,9 @@ export function DiseaseTypeForm({ onSubmit, defaultValues }: DiseaseTypeFormProp
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("management.typeName")} UZ</FormLabel>
+              <FormLabel>Название вида заболевание UZ</FormLabel>
               <FormControl>
-                <Textarea placeholder={t("management.typeName")} {...field} rows={3} />
+                <Textarea placeholder={"Название заболевание"} {...field} rows={3} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -54,9 +54,9 @@ export function DiseaseTypeForm({ onSubmit, defaultValues }: DiseaseTypeFormProp
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Parent</FormLabel>
+              <FormLabel>Родительский вид заболевания</FormLabel>
               <FormControl>
-                <DiseaseTypeSelect placeholder={t("animals.animalType")} value={field.value} onChange={field.onChange} />
+                <DiseaseTypeSelect placeholder={"Родительский заболевания"} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>

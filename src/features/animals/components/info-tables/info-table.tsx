@@ -48,7 +48,7 @@ export function InfoTable<T>({ localeTitle, icon, hideCreateButton, createColumn
         </Button>}
       </div>
     </CardHeader>
-    <CardContent className="px-4 max-h-[400px] overflow-auto">
+    <CardContent className="px-4 max-h-[630px] overflow-auto">
       {(showEmptyState && !hideCreateButton) ? (
         <EmptyState>
           <Button onClick={() => onCreate?.(true)}>

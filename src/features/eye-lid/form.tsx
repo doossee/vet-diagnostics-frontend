@@ -8,6 +8,7 @@ import { ObjectEntriesSelect } from "@/shared/components/object-entries-select";
 import { AnimalTypeSelect } from "../animal-types/components/animal-type-select";
 import { EyeLidSchema, createEyeLidSchema, eyeLidValues } from "./eye-lid.model";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
+import { AnimalTypeTreeSelect } from "../animal-types/components/animal-type-tree-select";
 
 interface EyeLidFormProps {
   defaultValues?: EyeLidSchema;
@@ -32,7 +33,7 @@ export function EyeLidForm({ onSubmit, defaultValues }: EyeLidFormProps) {
             <FormItem>
               <FormLabel>{t("animals.animalType")}</FormLabel>
               <FormControl>
-                <AnimalTypeSelect placeholder={t("animals.animalType")} value={field.value} onChange={field.onChange} />
+                <AnimalTypeTreeSelect placeholder={t("animals.animalType")} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -69,8 +70,8 @@ export function EyeLidForm({ onSubmit, defaultValues }: EyeLidFormProps) {
           locale={locale}
           name="mucosaType"
           object={MUCOSA_TYPES}
-          label={"Mucosa Type"}
-          placeholder={"Mucosa Type"}
+          label={"Тип слизистой оболочки"}
+          placeholder={"Тип слизистой оболочки"}
         />
         <div className="flex-1 flex items-end">
           <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">

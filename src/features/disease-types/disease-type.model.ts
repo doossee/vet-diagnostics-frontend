@@ -6,10 +6,10 @@ export const diseaseTypeValues = {
   parentId: undefined
 };
 
-export const createDiseaseTypeSchema = (t: any) =>
+export const createDiseaseTypeSchema = (_: any) =>
   z.object({
-    name_ru: z.string().min(1, t("required.typeNameRequired")),
-    name_uz: z.string().min(1, t("required.typeNameRequired")),
+    name_ru: z.string().min(1, "Введите название заболевания на русском языке"),
+    name_uz: z.string().min(1, "Введите название заболевания на узбекском языке"),
     parentId: z.string().optional(),
   });
 

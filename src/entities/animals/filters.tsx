@@ -7,6 +7,7 @@ import { BreedSelect } from "@/features/breeds/components/breed-select";
 import { AnimalTypeSelect } from "@/features/animal-types/components/animal-type-select";
 import { AnimalColorSelect } from "@/features/animal-colors/components/animal-color-select";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
+import { AnimalTypeTreeSelect } from "@/features/animal-types/components/animal-type-tree-select";
 
 export function AnimalFilters() {
   const { get, set, remove } = useSearchQueryParams()
@@ -15,13 +16,13 @@ export function AnimalFilters() {
 
   const gender = get(queryParamKeys.GENDER) as string
   const typeId = get(queryParamKeys.TYPE_ID)
-  const breedId = get(queryParamKeys.BREED_ID)
-  const colorId = get(queryParamKeys.COLOR_ID)
+  // const breedId = get(queryParamKeys.BREED_ID)
+  // const colorId = get(queryParamKeys.COLOR_ID)
 
   return (
     <FiltersWrapper>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 mb-2">
-        <AnimalTypeSelect onRemove={() => remove(queryParamKeys.TYPE_ID)} placeholder={t("filters.byType")} value={typeId} onChange={e => set(queryParamKeys.TYPE_ID, e)} />
+        <AnimalTypeTreeSelect onRemove={() => remove(queryParamKeys.TYPE_ID)} placeholder={t("filters.byType")} value={typeId} onChange={e => set(queryParamKeys.TYPE_ID, e)} />
 
         <Select value={gender ? gender : ""} onValueChange={(e) => set(queryParamKeys.GENDER, e)}>
           <SelectTrigger className="bg-card">
@@ -37,9 +38,9 @@ export function AnimalFilters() {
           </SelectContent>
         </Select>
 
-        <BreedSelect onRemove={() => remove(queryParamKeys.BREED_ID)} placeholder={t("filters.byBreed")} value={breedId} onChange={e => set(queryParamKeys.BREED_ID, e)} />
+        {/* <BreedSelect onRemove={() => remove(queryParamKeys.BREED_ID)} placeholder={t("filters.byBreed")} value={breedId} onChange={e => set(queryParamKeys.BREED_ID, e)} /> */}
 
-        <AnimalColorSelect onRemove={() => remove(queryParamKeys.COLOR_ID)} placeholder={t("filters.byColor")} value={colorId} onChange={e => set(queryParamKeys.COLOR_ID, e)} />
+        {/* <AnimalColorSelect onRemove={() => remove(queryParamKeys.COLOR_ID)} placeholder={t("filters.byColor")} value={colorId} onChange={e => set(queryParamKeys.COLOR_ID, e)} /> */}
       </div>
     </FiltersWrapper>
   );

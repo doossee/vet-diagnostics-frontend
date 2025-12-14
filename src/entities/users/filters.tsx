@@ -8,31 +8,15 @@ import { DistrictSelect } from "@/features/districts/components/district-select"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
 
 export function UserFilters() {
-  const { t, locale } = useI18n();
+  const { t } = useI18n();
   const { get, set, remove } = useSearchQueryParams()
 
-  const gender = get(UsersQueryParamKeys.GENDER) as string ?? ""
-  // const birthDate = get(UsersQueryParamKeys.BIRTH_DATE)
   const regionId = get(UsersQueryParamKeys.REGION_ID)
   const districtId = get(UsersQueryParamKeys.DISTRICT_ID)
 
   return (
     <FiltersWrapper>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mb-2">
-        <Select value={gender} onValueChange={(e) => set(UsersQueryParamKeys.GENDER, e)}>
-          <SelectTrigger className="bg-card">
-            <SelectValue placeholder={t("filters.byGender")} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value={null as any}>{t("filters.all")}</SelectItem>
-            {GENDERS.map((g) => (
-              <SelectItem key={g.value} value={g.value}>
-                {g[locale]}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 mb-2">
         <RegionSelect min placeholder={t("filters.byRegion")} onRemove={() => remove(UsersQueryParamKeys.REGION_ID)} value={regionId} onChange={(e) => set(UsersQueryParamKeys.REGION_ID, e)} />
         
         <DistrictSelect min placeholder={t("filters.byDistrict")} onRemove={() => remove(UsersQueryParamKeys.DISTRICT_ID)} value={districtId} onChange={e => set(UsersQueryParamKeys.DISTRICT_ID, e)} regionId={regionId as number} disabled={!regionId} />

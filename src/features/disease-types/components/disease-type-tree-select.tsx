@@ -2,30 +2,31 @@
 
 import { DiseaseCategory } from "@/shared/types";
 import { useI18n } from "@/shared/hooks/use-i18n";
-import { TreeSelect } from "@/shared/components/tree-select";
 import { useGetDiseaseTypesInfinite } from "@/entities/disease-types/services/queries";
+import { TreeSelect } from "@/shared/components/tree-select";
 
 interface Props {
+  min?: boolean
   value?: unknown;
+  parentId?: string | null;
   disabled?: boolean;
   placeholder?: string;
   onRemove?: () => void;
-  onChange?: (value: unknown) => void;
+  onChange?: (value: unknown, obj: DiseaseCategory) => void;
 }
 
-export function DiseaseTypeTreeSelect({ placeholder, value, disabled, onChange, onRemove }: Props) {
+export function DiseaseTypeTreeSelect({ value, placeholder, disabled, onChange, onRemove }: Props) {
   const { locale } = useI18n()
 
   return (
     <TreeSelect<DiseaseCategory>
+      onRemove={onRemove}
       disabled={disabled}
-      value={value as DiseaseCategory}
+      defaultValue={value as DiseaseCategory}
+      onSelect={(e) => onChange?.(e?.id, e!)}
       placeholder={placeholder}
-      useChildrenQuery={(parentId, enabled) => useGetDiseaseTypesInfinite(parentId, undefined, enabled)}
-      useRootQuery={(enabled) => useGetDiseaseTypesInfinite(null, undefined, enabled)}
-      childrenField="hasChildren"
-      onSelect={(e: any) => onChange?.(e?.id)}
-      getLabel={item => item?.[`name_${locale}`]}
+      getOptionLabel={(option) => option[`name_${locale}`]}
+      queryFn={(parentId) => useGetDiseaseTypesInfinite(parentId)}
     />
   );
 }

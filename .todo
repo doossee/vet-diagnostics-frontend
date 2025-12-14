@@ -1,3 +1,10 @@
+[-] fix update open form select in users form (tree)
+[-] fix password form
+[-] fix /me
+[-] translation
+[-] check translation
+[-] check form validations
+
 PRIORY HIGH:
 TODO: folder select
 TODO: folder table ui
@@ -13,6 +20,7 @@ TODO: Animal breed check data
 TODO: Group table columns
 TODO: Change breadcrumb id item insert some data
 
+[+] fix update
 OLD:
 TODO: fix imports
 TODO: check refresh token and

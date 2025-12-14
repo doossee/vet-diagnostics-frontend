@@ -9,9 +9,12 @@ export const mucosaExamValues = {
 
 export const createMucosaExamSchema = (_: any) =>
   z.object({
-    animalId: z.string(),
-    mucosaAppearanceId: z.string(),
-    mucosaType: z.enum(MUCOSA_TYPES_ARRAY),
+    animalId: z.string().min(1, "Выберите животное"),
+    mucosaAppearanceId: z.string().min(1, "Выберите внешний вид слизистой"),
+    mucosaType: z.enum(MUCOSA_TYPES_ARRAY, {
+      required_error: "Выберите тип слизистой",
+      invalid_type_error: "Тип слизистой выбран некорректно",
+    }),
   });
 
 export type MucosaExamSchema = z.infer<ReturnType<typeof createMucosaExamSchema>>;

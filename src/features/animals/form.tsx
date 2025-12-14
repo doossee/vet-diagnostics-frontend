@@ -1,19 +1,18 @@
 import clsx from "clsx";
-import { ReactNode } from "react";
 import { useForm } from "react-hook-form";
+import { ReactNode } from "react";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { Input } from "@/shared/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/shared/components/ui/button";
 import { DatePicker } from "@/shared/components/date-picker";
 import { BreedSelect } from "../breeds/components/breed-select";
-import { FarmerSelect } from "../users/components/farmer-select";
 import { AnimalSchema, animalValues, createAnimalSchema } from "./animal.model";
-import { AnimalTypeSelect } from "../animal-types/components/animal-type-select";
 import { AnimalColorSelect } from "../animal-colors/components/animal-color-select";
+import { ANIMAL_GENDERS } from "@/entities/animals/utils/constants/animal-genders";
+import { AnimalTypeTreeSelect } from "../animal-types/components/animal-type-tree-select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
-import { ANIMAL_GENDERS } from "@/entities/animals/utils/constants/animal-genders";
 
 interface AnimalFormProps {
   showFarmer: boolean;
@@ -40,13 +39,13 @@ export function AnimalForm({ onSubmit, defaultValues, submitRightContent }: Anim
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 h-full">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <FormField
-            name="animalNameCode"
+            name={"animalTypeId"}
             control={form.control}
-            render={({ field: { value, onChange, ...other } }) => (
+            render={({ field }) => (
               <FormItem>
-                <FormLabel>{"Name"}</FormLabel>
+                <FormLabel>{t("animals.animalType")}</FormLabel>
                 <FormControl>
-                  <Input placeholder={"Name"} value={value} onChange={(v) => onChange(v.target.value)} {...other} />
+                  <AnimalTypeTreeSelect placeholder={t("animals.animalType")} value={field.value} onChange={field.onChange} parentId={null} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -54,39 +53,18 @@ export function AnimalForm({ onSubmit, defaultValues, submitRightContent }: Anim
           />
 
           <FormField
-            name="animalTypeId"
+            name="animalNameCode"
             control={form.control}
-            render={({ field }) => (
+            render={({ field: { value, onChange, ...other } }) => (
               <FormItem>
-                <FormLabel>{t("animals.animalType")}</FormLabel>
+                <FormLabel>{t("animals.name")}</FormLabel>
                 <FormControl>
-                  <AnimalTypeSelect placeholder={t("animals.animalType")} value={field.value} onChange={field.onChange} />
+                  <Input placeholder={t("animals.name")} value={value} onChange={(v) => onChange(v.target.value)} {...other} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-
-          {/* {selectedType?._count?.children > 0 && (
-            <FormField
-              name="childAnimalTypeId"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("animals.childAnimalType")}</FormLabel>
-                  <FormControl>
-                    <AnimalTypeSelect
-                      placeholder={t("animals.childAnimalType")}
-                      parentId={selectedTypeId}  // показываем только детей!
-                      value={field.value}
-                      onChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )} */}
 
           <FormField
             name="animalBreedId"
@@ -107,9 +85,9 @@ export function AnimalForm({ onSubmit, defaultValues, submitRightContent }: Anim
             control={form.control}
             render={({ field: { value, onChange, ...other } }) => (
               <FormItem>
-                <FormLabel>{t("animals.weight")}</FormLabel>
+                <FormLabel>{t("animals.age")}</FormLabel>
                 <FormControl>
-                  <Input type="number" placeholder={t("animals.weight")} value={value} onChange={(v) => onChange(+v.target.value)} {...other} />
+                  <Input type="number" placeholder={t("animals.age")} value={value} onChange={(v) => onChange(+v.target.value)} {...other} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

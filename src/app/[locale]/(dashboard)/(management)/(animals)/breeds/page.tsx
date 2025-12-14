@@ -12,7 +12,7 @@ import { useGetBreeds } from "@/entities/breeds/services/breed-queries";
 import { useCreateBreed, useDeleteBreed, useUpdateBreed } from "@/entities/breeds/services/breed-mutations";
 
 export default function Breeds() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
 
   const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<Breed, BreedSchema, BreedSchema>({
     createMutation: useCreateBreed,
@@ -20,7 +20,7 @@ export default function Breeds() {
     removeMutation: useDeleteBreed,
   });
 
-  const columns = useMemo(() => createBreedColumns(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
+  const columns = useMemo(() => createBreedColumns(handleEditItem, handleDelete, t, locale), [handleEditItem, handleDelete, locale]);
 
   return (
     <div>

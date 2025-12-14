@@ -1,3 +1,4 @@
+import { isArray } from "lodash";
 import { ALERT_MESSAGES } from "@/shared/constants";
 import { createToast } from "@/shared/hooks/use-toast";
 import { useLanguage } from "@/shared/hooks/use-language";
@@ -7,7 +8,6 @@ import Axios, { AxiosError, AxiosResponse, AxiosRequestConfig } from "axios";
 // const baseURL = '/api'
 const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
 // console.log(baseURL)
-const { accessToken, refreshToken, setAuthData } = useAuthData();
 
 let isRefreshing = false;
 let failedQueue: Array<(token: string) => void> = [];
@@ -18,12 +18,29 @@ const processQueue = (token: string | null, _: any = null) => {
 };
 
 export const apiInstance = Axios.create({
-  baseURL,
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: accessToken ? "Bearer " + accessToken : "",
-  },
+  baseURL
 });
+
+const refreshInstance = Axios.create({
+  baseURL
+});
+
+apiInstance.interceptors.request.use(
+  (config: AxiosRequestConfig) => {
+    // if ((config as any)._isRefreshRequest) return config;
+    const { accessToken } = useAuthData();
+    if (!config.headers) config.headers = {};
+
+    if (accessToken) {
+      config.headers = {
+        ...config.headers,
+        Authorization: `Bearer ${accessToken}`,
+      };
+    }
+    return config as any;
+  },
+  (error) => Promise.reject(error)
+);
 
 apiInstance.interceptors.response.use(
   (response: AxiosResponse) => {
@@ -35,16 +52,19 @@ apiInstance.interceptors.response.use(
     return response;
   },
   async (error: AxiosError) => {
-    console.log(error);
-    if (error.status === 400) {
-      const { message } = error.response?.data as { message: string[] };
+    const { refreshToken, setAuthData } = useAuthData();
+    if (error.status! >= 400 ) {
+      const { message } = error.response?.data as { message: string[] | string } ;
 
-      message.map((m) => createToast(m, "WARNING"));
+      if(isArray(message)) {
+        message.map((m) => createToast(m, "WARNING"));
+      } else {
+        createToast((message as any)?.message ?? String(message), "WARNING")
+      }
     }
     const originalRequest: any = error.config!;
     if (error.response?.status === 401 && !originalRequest?._retry) {
-      console.log(error.config?.url);
-      
+
       if (!refreshToken || error.config?.url === "/auth/login") {
         return Promise.reject(error);
       }
@@ -66,8 +86,10 @@ apiInstance.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const response = await apiInstance.post(baseURL + "/auth/refresh", {
-          refreshToken,
+        const response = await refreshInstance.post(baseURL + "/auth/refresh", {}, {
+          headers: {
+            "Authorization": refreshToken as string
+          }
         });
 
         const newAccessToken = response.data.accessToken;

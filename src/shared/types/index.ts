@@ -43,6 +43,28 @@ export interface AdditionalCrudModel {
   animalType: AnimalType;
 }
 
+export interface PredictBody {
+  params: [
+    number, // | x₁  | Температура, °C            | ClinicalExam  | temperature               | ✅     |
+    number, // | x₂  | Пульс                      | ClinicalExam  | pulse                     | ✅     |
+    number, // | x₃  | Дыхание                    | ClinicalExam  | respiratoryRate           | ✅     |
+    number, // | x₄  | Румминация                 | ClinicalExam  | rumination                | ✅     |
+    number, // | x₅  | Эритроциты                 | BloodExam     | erythrocyteCount          | ✅     |
+    number, // | x₆  | Гемоглобин                 | BloodExam     | hemoglobin                | ✅     |
+    number, // | x₇  | Общий белок                | BloodExam     | totalProtein              | ✅     |
+    number, // | x₈  | Кальций                    | BloodExam     | totalCalcium              | ✅     |
+    number, // | x₉  | Фосфор                     | BloodExam     | organicPhosphorus         | ✅     |
+    number, // | x₁₀ | Глюкоза                    | BloodExam     | glucose                   | ✅     |
+    number, // | x₁₁ | Резервная щелочь           | BloodExam     | alkalineReserve           | ✅     |
+    number, // | x₁₂ | Медь                       | BloodExam     | copper                    | ✨ NEW |
+    number, // | x₁₃ | Кобальт                    | BloodExam     | cobalt                    | ✨ NEW |
+    number, // | x₁₄ | Марганец                   | BloodExam     | manganese                 | ✨ NEW |
+    number, // | x₁₅ | Цинк                       | BloodExam     | zinc                      | ✨ NEW |
+    number, // | x₁₆ | Инфузории рубца            | ClinicalExam  | rumenInfusoriaCount       | ✨ NEW |
+    number, // | x₁₇ | Состояние рубца            | ClinicalExam  | rumenFluidState           
+  ]
+}
+
 export type UserRole = "SUPER_ADMIN" | "ADMIN" | "VETERINARIAN" | "FARMER";
 
 export type UserGender = "MALE" | "FEMALE";
@@ -218,6 +240,10 @@ export interface BloodExam {
   vitaminA?: number;
   vitaminB?: number;
   vitaminC?: number;
+  copper?: number;
+  cobalt?: number;
+  manganese?: number;
+  zinc?: number;
   conclusion?: string;
   createdAt: Date;
   updatedAt: Date;

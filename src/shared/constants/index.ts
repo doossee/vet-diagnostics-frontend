@@ -1,25 +1,17 @@
 import { UserRole } from "@/shared/types";
 import {
-  CirclePlus,
-  FlaskRound,
-  FlaskConical,
   Shovel,
-  HeartPulse,
   Syringe,
   Users,
   MapPinned,
   PawPrint,
   ScanHeart,
   Activity,
-  Cross,
-  PillBottle,
   MapPin,
   Map,
   ScanEye,
   Palette,
-  Ham,
   FolderCog,
-  Disc,
   UserCog,
   Sun,
   Moon,
@@ -36,16 +28,18 @@ import {
   Wind,
   Shapes,
   Gauge,
-  Droplet,
   Droplets,
   Sparkles,
+  PlusIcon,
 } from "lucide-react";
+
+export const REACT_QUERY_STALE_TIME = 20 * 60 * 1000; // 20 minutes
 
 export const TABLE_QUERY_PARAMS = {
   PAGE: "page",
   SEARCH: "search",
-  PER_PAGE: "perPage"
-}
+  PER_PAGE: "perPage",
+};
 
 export const THEMES = [
   { name: "light", icon: Sun },
@@ -111,480 +105,260 @@ export const ALERT_MESSAGES = {
 };
 
 export type NavLink = {
-  icon: any
-  url?: string
-  title: string
-  items?: NavLink[]
-  isActive?: boolean
-}
+  icon: any;
+  url?: string;
+  title: string;
+  items?: NavLink[];
+  isActive?: boolean;
+};
+
+export const links = {
+  animals: {
+    title: "nav.animals",
+    icon: PawPrint,
+    url: "/animals",
+  },
+  "animals-create": {
+    title: "animals.createAnimal",
+    icon: PlusIcon,
+    url: "/animals-create",
+  },
+  veterinarians: {
+    title: "nav.veterinarians",
+    icon: UserCheck,
+    url: "/veterinarians",
+  },
+  farmers: {
+    title: "nav.farmers",
+    icon: UserPlus,
+    url: "/farmers",
+  },
+  profile: {
+    title: "nav.profile",
+    icon: UserCog,
+    url: "/profile",
+  },
+  "animal-types": {
+    title: "nav.animalTypes",
+    icon: Box,
+    url: "/animal-types",
+  },
+  breeds: {
+    title: "nav.breeds",
+    icon: Network,
+    url: "/breeds",
+  },
+  "animal-colors": {
+    title: "nav.animalColors",
+    icon: Palette,
+    url: "/animal-colors",
+  },
+  "urine-colors": {
+    title: "nav.urineColors",
+    icon: Palette,
+    url: "/urine-colors",
+  },
+  "urine-clarities": {
+    title: "nav.urineClarities",
+    icon: Sparkles,
+    url: "/urine-clarities",
+  },
+  "urine-consistencies": {
+    title: "nav.urineConsistencies",
+    icon: Droplets,
+    url: "/urine-consistencies",
+  },
+  "urine-smells": {
+    title: "nav.urineSmells",
+    icon: Wind,
+    url: "/urine-smells",
+  },
+  "dung-colors": {
+    title: "nav.dungColors",
+    icon: Palette,
+    url: "/dung-colors",
+  },
+  "dung-forms": {
+    title: "nav.dungForms",
+    icon: Shapes,
+    url: "/dung-forms",
+  },
+  "dung-consistencies": {
+    title: "nav.dungConsistencies",
+    icon: Gauge,
+    url: "/dung-consistencies",
+  },
+  "dung-smells": {
+    title: "nav.dungSmells",
+    icon: Wind,
+    url: "/dung-smells",
+  },
+  regions: {
+    title: "nav.regions",
+    icon: Map,
+    url: "/regions",
+  },
+  districts: {
+    title: "nav.districts",
+    icon: MapPinned,
+    url: "/districts",
+  },
+  vetstations: {
+    title: "nav.vetstations",
+    icon: MapPin,
+    url: "/vetstations",
+  },
+  "disease-types": {
+    title: "nav.diseaseTypes",
+    icon: ClipboardList,
+    url: "/disease-types",
+  },
+  "eye-lid": {
+    title: "nav.eyeLid",
+    icon: Waves,
+    url: "/eye-lid",
+  },
+  "prophylaxis-items": {
+    title: "nav.prophylaxisItems",
+    icon: ListChecks,
+    url: "/prophylaxis-items",
+  },
+  "prophylaxis-details": {
+    title: "nav.prophylaxisDetails",
+    icon: Stethoscope,
+    url: "/prophylaxis-details",
+  },
+  diseases: {
+    title: "nav.diseases",
+    icon: ScanHeart,
+    url: "/diseases",
+  },
+  prophylaxis: {
+    title: "nav.prophylaxis",
+    icon: Activity,
+    url: "/prophylaxis",
+  },
+  "urine-tests": {
+    title: "nav.urineTests",
+    icon: Beaker,
+    url: "/urine-tests",
+  },
+  "dung-tests": {
+    title: "nav.dungTests",
+    icon: Shovel,
+    url: "/dung-tests",
+  },
+  "general-inspections": {
+    title: "nav.generalInspections",
+    icon: Stethoscope,
+    url: "/general-inspections",
+  },
+  "general-blood-tests": {
+    title: "nav.generalBloodTests",
+    icon: Syringe,
+    url: "/general-blood-tests",
+  },
+  "mucosa-exams": {
+    title: "nav.mucosaExams",
+    icon: ScanEye,
+    url: "/mucosa-exams",
+  },
+};
 
 export const navLinksVariant: Record<UserRole, NavLink[]> = {
   SUPER_ADMIN: [
-    {
-      title: "nav.animals",
-      icon: PawPrint,
-      url: "/animals",
-    },
+    links['animals'],
     {
       title: "nav.users",
       icon: Users,
       items: [
-        {
-          title: "nav.veterinarians",
-          icon: UserCheck,
-          url: "/veterinarians",
-        },
-        {
-          title: "nav.farmers",
-          icon: UserPlus,
-          url: "/farmers",
-        },
-        {
-          title: "nav.profile",
-          icon: UserCog,
-          url: "/profile",
-        },
+        links['veterinarians'],
+        links['farmers'],
+        links['profile'],
       ],
     },
     {
       title: "nav.management",
       icon: FolderCog,
       items: [
-        { groupTitle: 'Настройки животных' } as any,
-        {
-          title: "nav.animalTypes",
-          icon: Box,
-          url: "/animal-types",
-        },
-        {
-          title: "nav.breeds",
-          icon: Network,
-          url: "/breeds",
-        },
-        {
-          title: "nav.animalColors",
-          icon: Palette,
-          url: "/animal-colors",
-        },
-        { groupTitle: 'Настройки мочи' } as any,
-        {
-          title: "nav.urineColors",
-          icon: Palette,
-          url: "/urine-colors",
-        },
-        {
-          title: "nav.urineClarities",
-          icon: Sparkles,
-          url: "/urine-clarities",
-        },
-        {
-          title: "nav.urineColors",
-          icon: Droplets,
-          url: "/urine-consistencies",
-        },
-        {
-          title: "nav.urineSmells",
-          icon: Wind,
-          url: "/urine-smells",
-        },
-        { groupTitle: 'Настройки кала' },
-        {
-          title: "nav.dungColors",
-          icon: Palette,
-          url: "/dung-colors",
-        },
-        {
-          title: "nav.dungForms",
-          icon: Shapes,
-          url: "/dung-forms",
-        },
-        {
-          title: "nav.dungConsistencies",
-          icon: Gauge,
-          url: "/dung-consistencies",
-        },
-        {
-          title: "nav.dungSmells",
-          icon: Wind,
-          url: "/dung-smells",
-        },
-        { groupTitle: 'Настройки карту' },
-        {
-          title: "nav.regions",
-          icon: Map,
-          url: "/regions",
-        },
-        {
-          title: "nav.districts",
-          icon: MapPinned,
-          url: "/districts",
-        },
-        {
-          title: "nav.vetstations",
-          icon: MapPin,
-          url: "/vetstations",
-        },
-        { groupTitle: 'Настройки медицину' },
-        {
-          title: "nav.diseaseTypes",
-          icon: ClipboardList,
-          url: "/disease-types",
-        },
-        {
-          title: "nav.eyeLid",
-          icon: Waves,
-          url: "/eye-lid",
-        },
-        {
-          title: "nav.prophylaxisItems",
-          icon: ListChecks,
-          url: "/prophylaxis-items",
-        },
-        {
-          title: "nav.prophylaxisDetails",
-          icon: Stethoscope,
-          url: "/prophylaxis-details",
-        },
+        { groupTitle: "Настройки животных" } as any,
+        links['animal-types'],
+        links['breeds'],
+        links['animal-colors'],
+        { groupTitle: "Настройки мочи" } as any,
+        links['urine-colors'],
+        links['urine-clarities'],
+        links['urine-consistencies'],
+        links['urine-smells'],
+        { groupTitle: "Настройки кала" },
+        links['dung-colors'],
+        links['dung-forms'],
+        links['dung-consistencies'],
+        links['dung-smells'],
+        { groupTitle: "Настройки карту" },
+        links['regions'],
+        links['districts'],
+        links['vetstations'],
+        { groupTitle: "Настройки медицину" },
+        links['disease-types'],
+        links['eye-lid'],
+        links['prophylaxis-items'],
+        links['prophylaxis-details'],
       ],
     },
-    // {
-    //   title: "nav.inspections",
-    //   icon: HeartPulse,
-    //   items: [
-    //     {
-    //       title: "nav.diseases",
-    //       icon: ScanHeart,
-    //       url: "/diseases",
-    //     },
-    //     {
-    //       title: "nav.prophylaxis",
-    //       icon: Activity,
-    //       url: "/prophylaxis",
-    //     },
-    //     {
-    //       title: "nav.urineTests",
-    //       icon: Beaker,
-    //       url: "/urine-tests",
-    //     },
-    //     {
-    //       title: "nav.dungTests",
-    //       icon: Shovel,
-    //       url: "/dung-tests",
-    //     },
-    //     {
-    //       title: "nav.generalInspections",
-    //       icon: Stethoscope,
-    //       url: "/general-inspections",
-    //     },
-    //     {
-    //       title: "nav.generalBloodTests",
-    //       icon: Syringe,
-    //       url: "/general-blood-tests",
-    //     },
-    //     {
-    //       title: "nav.mucosaExams",
-    //       icon: ScanEye,
-    //       url: "/mucosa-exams",
-    //     },
-    //   ],
-    // },
   ],
   ADMIN: [
-    {
-      title: "nav.management",
-      icon: FolderCog,
-      items: [
-        {
-          title: "nav.animalTypes",
-          icon: PawPrint,
-          url: "/animal-types",
-        },
-        {
-          title: "nav.breeds",
-          icon: Ham,
-          url: "/breeds",
-        },
-        {
-          title: "nav.vaccineTypes",
-          icon: Cross,
-          url: "/vaccine-types",
-        },
-        {
-          title: "nav.diseaseTypes",
-          icon: Activity,
-          url: "/disease-types",
-        },
-
-        {
-          title: "nav.animalColors",
-          icon: Palette,
-          url: "/animal-colors",
-        },
-        {
-          title: "nav.urineColors",
-          icon: Palette,
-          url: "/urine-colors",
-        },
-        {
-          title: "nav.dungColors",
-          icon: Palette,
-          url: "/dung-colors",
-        },
-
-        {
-          title: "nav.regions",
-          icon: Map,
-          url: "/regions",
-        },
-        {
-          title: "nav.districts",
-          icon: MapPinned,
-          url: "/districts",
-        },
-        {
-          title: "nav.vetstations",
-          icon: MapPin,
-          url: "/vetstations",
-        },
-
-        {
-          title: "nav.eyeLid",
-          icon: ScanEye,
-          url: "/eye-lid",
-        },
-        {
-          title: "nav.leatherCover",
-          icon: Disc,
-          url: "/leather-cover",
-        },
-      ],
-    },
+    links['animals'],
     {
       title: "nav.users",
       icon: Users,
       items: [
-        {
-          title: "nav.veterinarians",
-          icon: Users,
-          url: "/veterinarians",
-        },
-        {
-          title: "nav.farmers",
-          icon: Users,
-          url: "/farmers",
-        },
-        {
-          title: "nav.profile",
-          icon: UserCog,
-          url: "/profile",
-        },
+        links['veterinarians'],
+        links['farmers'],
+        links['profile'],
       ],
     },
     {
-      title: "nav.animals",
-      icon: PawPrint,
-      url: "/animals",
-    },
-    {
-      title: "nav.inspections",
-      icon: HeartPulse,
+      title: "nav.management",
+      icon: FolderCog,
       items: [
-        {
-          title: "nav.diseases",
-          icon: ScanHeart,
-          url: "/diseases",
-        },
-        {
-          title: "nav.urineTests",
-          icon: FlaskConical,
-          url: "/urine-tests",
-        },
-        {
-          title: "nav.dungTests",
-          icon: Shovel,
-          url: "/dung-tests",
-        },
-        {
-          title: "nav.vaccines",
-          icon: PillBottle,
-          url: "/vaccines",
-        },
-        {
-          title: "nav.generalInspections",
-          icon: HeartPulse,
-          url: "/general-inspections",
-        },
-        {
-          title: "nav.inspections",
-          icon: Activity,
-          url: "/inspections",
-        },
-        {
-          title: "nav.generalBloodTests",
-          icon: Syringe,
-          url: "/general-blood-tests",
-        },
-        {
-          title: "nav.bloodSerumTests",
-          icon: FlaskRound,
-          url: "/blood-serum-tests",
-        },
+        { groupTitle: "Настройки животных" } as any,
+        links['animal-types'],
+        links['breeds'],
+        links['animal-colors'],
+        { groupTitle: "Настройки мочи" } as any,
+        links['urine-colors'],
+        links['urine-clarities'],
+        links['urine-consistencies'],
+        links['urine-smells'],
+        { groupTitle: "Настройки кала" },
+        links['dung-colors'],
+        links['dung-forms'],
+        links['dung-consistencies'],
+        links['dung-smells'],
+        { groupTitle: "Настройки карту" },
+        links['regions'],
+        links['districts'],
+        links['vetstations'],
+        { groupTitle: "Настройки медицину" },
+        links['disease-types'],
+        links['eye-lid'],
+        links['prophylaxis-items'],
+        links['prophylaxis-details'],
       ],
     },
   ],
   FARMER: [
-    {
-      // isActive: true,
-      title: "nav.management",
-      icon: FolderCog,
-      items: [
-        {
-          title: "nav.animals",
-          icon: PawPrint,
-          url: "/animals",
-        },
-        {
-          title: "nav.profile",
-          icon: UserCog,
-          url: "/profile",
-        },
-      ],
-    },
-    {
-      title: "nav.inspections",
-      icon: HeartPulse,
-      items: [
-        {
-          title: "nav.diseases",
-          icon: ScanHeart,
-          url: "/diseases",
-        },
-        {
-          title: "nav.urineTests",
-          icon: FlaskConical,
-          url: "/urine-tests",
-        },
-        {
-          title: "nav.dungTests",
-          icon: Shovel,
-          url: "/dung-tests",
-        },
-        {
-          title: "nav.vaccines",
-          icon: PillBottle,
-          url: "/vaccines",
-        },
-        {
-          title: "nav.generalInspections",
-          icon: HeartPulse,
-          url: "/general-inspections",
-        },
-        {
-          title: "nav.inspections",
-          icon: Activity,
-          url: "/inspections",
-        },
-        {
-          title: "nav.generalBloodTests",
-          icon: Syringe,
-          url: "/general-blood-tests",
-        },
-        {
-          title: "nav.bloodSerumTests",
-          icon: FlaskRound,
-          url: "/blood-serum-tests",
-        },
-      ],
-    },
+    links['animals'],
+    links['animals-create'],
+    links['profile'],
   ],
   VETERINARIAN: [
-    {
-      // isActive: true,
-      title: "nav.management",
-      icon: FolderCog,
-      items: [
-        {
-          title: "nav.farmers",
-          icon: Users,
-          url: "/farmers",
-        },
-        {
-          title: "nav.profile",
-          icon: UserCog,
-          url: "/profile",
-        },
-      ],
-    },
-    {
-      title: "nav.animals",
-      icon: PawPrint,
-      items: [
-        {
-          title: "animals.createAnimal",
-          url: "/animals-create",
-          icon: CirclePlus,
-        },
-        {
-          title: "nav.animals",
-          icon: PawPrint,
-          url: "/animals",
-        },
-      ],
-    },
-    // {
-    //   title: "nav.inspections",
-    //   icon: HeartPulse,
-    //   items: [
-    //     {
-    //       title: "nav.diseases",
-    //       icon: ScanHeart,
-    //       url: "/diseases",
-    //     },
-    //     {
-    //       title: "nav.urineTests",
-    //       icon: FlaskConical,
-    //       url: "/urine-tests",
-    //     },
-    //     {
-    //       title: "nav.dungTests",
-    //       icon: Shovel,
-    //       url: "/dung-tests",
-    //     },
-    //     {
-    //       title: "nav.vaccines",
-    //       icon: PillBottle,
-    //       url: "/vaccines",
-    //     },
-    //     {
-    //       title: "nav.generalInspections",
-    //       icon: HeartPulse,
-    //       url: "/general-inspections",
-    //     },
-    //     {
-    //       title: "nav.inspections",
-    //       icon: Activity,
-    //       url: "/inspections",
-    //     },
-    //     {
-    //       title: "nav.generalBloodTests",
-    //       icon: Syringe,
-    //       url: "/general-blood-tests",
-    //     },
-    //     {
-    //       title: "nav.bloodSerumTests",
-    //       icon: FlaskRound,
-    //       url: "/blood-serum-tests",
-    //     },
-    //   ],
-    // },
+    links['animals'],
+    links['animals-create'],
+    links['farmers'],
+    links['profile'],
   ],
-};
-
-export const TOAST_OPTIONS = {
-  style: { background: "hsl(var(--card))" },
-  action: { label: "Закрыть", onClick: () => {} },
-  className: "bg-primary",
-  actionButtonStyle: { background: "hsl(var(--primary))" },
 };
 
 export const SKELETON_TYPES = {
@@ -596,10 +370,129 @@ export const SKELETON_TYPES = {
   card: "h-40 w-full rounded-xl",
   input: "h-10 w-full rounded-md",
   image: "h-48 w-full rounded-xl",
-}
+};
 
 export const QUERY_PARAM_KEYS = {
   ANIMAL_ID: "animalId",
   NEW: "new",
   ID: "id",
+};
+
+export const PREDICT_DISEASES = {
+  "1": "Стоматит",
+  "2": "Фарингит",
+  "3": "Гипотония преджелудков",
+  "4": "Атония преджелудков",
+  "5": "Парец рубца",
+  "6": "Алиментпрная дистрофия",
+  "7": "Ожирении",
+  "8": "Кетоз молочных коров",
+  "9": "Кетонурия суягных овец",
+  "10": "Миоглобунурия",
+  "11": "Нефрит",
+  "12": "Нефроз",
+  "13": "Нефросклероз",
+  "14": "Пиелонефрит",
+  "15": "Уроцистит",
+  "16": "Мочекаменная болезнь",
+  "17": "Хроническая гематурия крс",
+  "18": "Солнечный удар",
+  "19": "Гиперинсоляция",
+  "20": "Гелиоз ",
+  "21": "Тепловой удар",
+  "22": "Гипертермия ",
+  "23": "Гиперемия головного мозга ",
+  "24": "Анемия головного мозга ",
+  "25": "Менингоэнцефалит",
+  "26": "Хроническая водянка головного мозга",
+  "27": "Менингомиелит",
+  "28": "Стресс ",
+  "29": "Неврозы",
+  "30": "Эпилепсия",
+  "31": "Эклампсия",
+  "32": "Ацидоз",
+  "33": "Алкалоз",
+  "34": "Тимпания",
+  "35": "Паракератоз",
+  "36": "Травматический ретикулит ",
+  "37": "Ретикулоперитонит ",
+  "38": "Гастрит ",
+  "39": "язвенная болезнь желудка",
+  "40": "Гастроэнтерит",
+  "41": "Энтероколит ",
+  "42": "Метеоризм кишечника",
+  "43": "Гепатит",
+  "44": "Гепатоз",
+  "45": "Цирроз печени",
+  "46": "Абсцесс печени",
+  "47": "Холецистит",
+  "48": "Холангит",
+  "49": "Желчнокаменная болезнь ",
+  "50": "Перитонит",
+  "51": "Брюшная водянка ",
+  "52": "Интоксикация поваренной солью ",
+  "53": "Интоксикация мочевиной ",
+  "54": "Интоксикация гречихой ",
+  "55": "Интоксикация клевером ",
+  "56": "Интоксикация суданкой ",
+  "57": "Интоксикация люпином (люпиноз)",
+  "58": "Интоксикация хлопчатниковым шротом, семенами и шелухой ",
+  "59": "Интоксикация семенами и жмыхами клещевины ",
+  "60": "Интоксикация картофельной бардой ",
+  "61": "Интоксикация свекловичным жомом ",
+  "62": "Интоксикация патокой ",
+  "63": "Клавицепстоксикоз",
+  "64": "Фузариотоксикоз ",
+  "65": "Устилаготоксикоз",
+  "66": "Стахиботриотоксикоз ",
+  "67": "Интоксикация испорченными кормами ",
+  "68": "Интоксикация пасленом ",
+  "69": "Интоксикация горчицей и рапсом ",
+  "70": "Интоксикация лютиками ",
+  "71": "Интоксикация донником ",
+  "72": "Интоксикация верхом ядовитым ",
+  "73": "Интоксикация чемерицей ",
+  "74": "Интоксикация гелиотропом ",
+  "75": "Триходесмотоксикоз",
+  "76": "Остеодистрофия",
+  "77": "Гипомагниемическая тетания",
+  "78": "Гипокобальтоз",
+  "79": "Недостаточность меди",
+  "80": "Недостаточность цинка",
+  "81": "Недостаточность марганца",
+  "82": "Недостаточность селена",
+  "83": "Недостаточность фтора",
+  "84": "Избытоки фтора",
+  "85": "Избытоки бора",
+  "86": "Избытоки молибдена",
+  "87": "Избытоки никеля",
+  "88": "Недостаточность ретинола",
+  "89": "Недостаточность токоферола",
+  "90": "Недостаточность филлохинона",
+  "91": "Недостаточность аскорбиновой кислоты",
+  "92": "Недостаточность тиамина",
+  "93": "Недостаточность рибофлавина",
+  "94": "Недостаточность никотиновой кислоты ",
+  "95": "Недостаточность  пиродоксина ",
+  "96": "Недостаточность циаминкобаламина ",
+  "97": "Сахарный диабет ",
+  "98": "Несахарный диабет ",
+  "99": "Послеродовая гипокальцемия ",
+  "100": "Эндемический зоб",
+  "101": "Перикардит ",
+  "102": "Миокардит ",
+  "103": "Миокардоз",
+  "104": "Миокардосклероз",
+  "105": "Эндокардит",
+  "106": "Атеросклероз",
+  "107": "Ринит",
+  "108": "Гайморит",
+  "109": "Фронтит",
+  "110": "Аэроцистит",
+  "111": "Ларингит",
+  "112": "Бронхит",
+  "113": "Гиперемия и отек легких",
+  "114": "Пневмония",
+  "115": "Эмфизема",
+  "116": "Пневмоторакс",
 }

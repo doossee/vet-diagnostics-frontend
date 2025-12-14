@@ -12,7 +12,7 @@ import { useGetVetStations } from "@/entities/vetstations/services/queries";
 import { useCreateVetStation, useDeleteVetStation, useUpdateVetStation } from "@/entities/vetstations/services/mutations";
 
 export default function VetStations() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
 
   const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<VetStation, VetStationSchema, VetStationSchema>({
     createMutation: useCreateVetStation,
@@ -20,7 +20,7 @@ export default function VetStations() {
     removeMutation: useDeleteVetStation,
   });
 
-  const columns = useMemo(() => createVetStationColumns(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
+  const columns = useMemo(() => createVetStationColumns(handleEditItem, handleDelete, t, locale), [handleEditItem, handleDelete, locale]);
 
   return (
     <div>

@@ -10,11 +10,8 @@ export function useCreateFarmer() {
 
   return useMutation<any, any, UserSchema>({
     mutationFn: usersControllerCreate,
-    onSuccess: ({ user, veterinarianId }) => {
-      createQueryData<User>(client, [UserQueryKeys.FARMERS], {
-        ...user,
-        veterinarianId,
-      });
+    onSuccess: (user) => {
+      createQueryData<User>(client, [UserQueryKeys.FARMERS], user);
       client.invalidateQueries({ queryKey: [UserQueryKeys.FARMERS_SELECT] });
     },
   });
@@ -49,7 +46,7 @@ export function useCreateVeterinarian() {
 
   return useMutation<any, any, UserSchema>({
     mutationFn: usersControllerCreate,
-    onSuccess: ({ user }) => {
+    onSuccess: (user) => {
       createQueryData<User>(client, [UserQueryKeys.VETERINARIANS], user);
       client.invalidateQueries({
         queryKey: [UserQueryKeys.VETERINARIANS_SELECT],
@@ -64,7 +61,6 @@ export function useUpdateVeterinarian() {
   return useMutation<any, any, UpdateBody<UserSchema>>({
     mutationFn: async ({ id, body }) => usersControllerUpdate(String(id), body),
     onSuccess: (data) => {
-      console.log(data);
       updateQueryData<User>(client, [UserQueryKeys.VETERINARIANS], data);
       client.invalidateQueries({
         queryKey: [UserQueryKeys.VETERINARIANS_SELECT],

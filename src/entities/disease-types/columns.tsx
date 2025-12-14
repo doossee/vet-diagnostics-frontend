@@ -1,15 +1,14 @@
 import { Edit, Trash } from "lucide-react";
-import { DiseaseCategory } from "@/shared/types";
+import { DiseaseCategory, LanguageLocales } from "@/shared/types";
 import { Button } from "@/shared/components/ui/button";
 
-export const createDiseaseTypeColumns = (handleEditItem: (item: DiseaseCategory) => void, handleDelete: (id: string) => void, t: any) => [
-  { title: t("management.typeName")+" RU", key: "name_ru" },
-  { title: t("management.typeName")+" UZ", key: "name_uz" },
+export const createDiseaseTypeColumns = (handleEditItem: (item: DiseaseCategory) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
+  { title: "Название вида заболевание", key: `name_${locale}` },
   {
-    title: "Parent",
+    title: "Родительский вид заболевания",
     key: "parent",
     render(item: DiseaseCategory) {
-      return item.parent ? item.parent.name_ru : '-'
+      return item.parent ? item.parent?.[`name_${locale}`] : '-'
     }
   },
   {

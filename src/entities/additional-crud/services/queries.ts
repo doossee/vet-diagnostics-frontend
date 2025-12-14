@@ -34,7 +34,6 @@ export function useGetDungConsistenciesInfinite(search?: string) {
           }
         : null;
     },
-    staleTime: 20 * 60 * 1000, // 20 minutes
   });
 }
 
@@ -65,7 +64,6 @@ export function useGetDungSmellsInfinite(search?: string) {
           }
         : null;
     },
-    staleTime: 20 * 60 * 1000, // 20 minutes
   });
 }
 
@@ -96,7 +94,6 @@ export function useGetDungFormsInfinite(search?: string) {
           }
         : null;
     },
-    staleTime: 20 * 60 * 1000, // 20 minutes
   });
 }
 
@@ -129,7 +126,6 @@ export function useGetUrineConsistenciesInfinite(search?: string) {
           }
         : null;
     },
-    staleTime: 20 * 60 * 1000, // 20 minutes
   });
 }
 
@@ -160,7 +156,6 @@ export function useGetUrineSmellsInfinite(search?: string) {
           }
         : null;
     },
-    staleTime: 20 * 60 * 1000, // 20 minutes
   });
 }
 
@@ -191,6 +186,5 @@ export function useGetUrineClaritiesInfinite(search?: string) {
           }
         : null;
     },
-    staleTime: 20 * 60 * 1000, // 20 minutes
   });
 }

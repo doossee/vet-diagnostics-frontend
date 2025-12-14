@@ -50,11 +50,11 @@ export function ProphylaxisForm({ onSubmit, defaultValues }: ProphylaxisFormProp
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("form.gender")}</FormLabel>
+              <FormLabel>{t("inspections.specificProphylaxis")}</FormLabel>
               <FormControl>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <SelectTrigger>
-                    <SelectValue placeholder={t("form.gender")} />
+                    <SelectValue placeholder={t("inspections.specificProphylaxis")} />
                   </SelectTrigger>
                   <SelectContent>
                     {Object.entries(PROPHYLAXIS_TYPES).map(([key, value]) => (
@@ -74,9 +74,9 @@ export function ProphylaxisForm({ onSubmit, defaultValues }: ProphylaxisFormProp
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("form.regionName")}</FormLabel>
+              <FormLabel>Элемент профилактики</FormLabel>
               <FormControl>
-                <ProphylaxisItemSelect placeholder={t("form.regionName")} value={field.value} onChange={field.onChange} type={type} />
+                <ProphylaxisItemSelect placeholder={"Элемент профилактики"} value={field.value} onChange={field.onChange} type={type} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -87,9 +87,9 @@ export function ProphylaxisForm({ onSubmit, defaultValues }: ProphylaxisFormProp
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("form.regionName")}</FormLabel>
+              <FormLabel>Деталь профилактики</FormLabel>
               <FormControl>
-                <ProphylaxisDetailSelect placeholder={t("form.regionName")} value={field.value} onChange={field.onChange} itemId={itemId} />
+                <ProphylaxisDetailSelect placeholder={"Деталь профилактики"} value={field.value} onChange={field.onChange} itemId={itemId} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -100,7 +100,7 @@ export function ProphylaxisForm({ onSubmit, defaultValues }: ProphylaxisFormProp
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex flex-col pt-1.5 gap-1">
-              <FormLabel>{t("form.birthDate")}</FormLabel>
+              <FormLabel>{t("form.date")}</FormLabel>
               <FormControl>
                 <DatePicker field={field} />
               </FormControl>

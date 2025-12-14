@@ -24,10 +24,13 @@ export default function UrineClarities() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetUrineClarities} topSlot={createButton(t("management.urineColorCreate"))} />
+      <DataTable columns={columns} queryFunction={useGetUrineClarities} topSlot={createButton("Создать прозрачность мочи")} />
 
-      <Modal open={dialog} onClose={handleClose} title={t(editedItem ? "management.editColor" : "management.createColor")}>
-        <AdditionalCrudForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : (undefined as any)} />
+      <Modal open={dialog} onClose={handleClose} title={editedItem ? "Изменить прозрачность мочи" : "Создать прозрачность мочи"}>
+        <AdditionalCrudForm
+          onSubmit={onSubmit}
+          nameTitle="Называние прозрачность мочи"
+          defaultValues={editedItem ? editedItem : (undefined as any)} />
       </Modal>
     </div>
   );

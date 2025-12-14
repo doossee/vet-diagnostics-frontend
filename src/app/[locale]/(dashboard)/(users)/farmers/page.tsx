@@ -27,19 +27,14 @@ export default function Farmers() {
     // },
     extraOnCreate(values) {
       return { ...values, role: "FARMER" }
-    },
-    extraOnUpdate: (values) => {
-      const { password, ...others } = values;
-      if (password?.trim()) Object.assign(others, { password });
-      return others;
-    },
+    }
   });
 
   const columns = useMemo(() => createUserColumns(handleEditItem, handleDelete, t, locale), [handleEditItem, handleDelete]);
 
   return (
     <div>
-      <UserFilters />
+      {/* <UserFilters /> */}
 
       <DataTable
         columns={columns}

@@ -24,9 +24,9 @@ export default function ProphylaxisItems() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetProphylaxisItems} topSlot={createButton(t("management.urineColorCreate"))} />
+      <DataTable columns={columns} queryFunction={useGetProphylaxisItems} topSlot={createButton("Создать элемент профилактики")} />
 
-      <Modal open={dialog} onClose={handleClose} title={t(editedItem ? "management.editColor" : "management.createColor")}>
+      <Modal open={dialog} onClose={handleClose} title={editedItem ? "Изменить элемента профилактики" : "Создать элемент профилактики"}>
         <ProphylaxisItemsForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : (undefined as any)} />
       </Modal>
     </div>

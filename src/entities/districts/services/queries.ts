@@ -31,6 +31,5 @@ export function useGetDistrictsInfinite(search?: string) {
     },
     refetchOnMount: false,
     refetchOnWindowFocus: false,
-    staleTime: 20 * 60 * 1000, // 20 minutes
   });
 }

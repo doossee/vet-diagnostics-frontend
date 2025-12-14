@@ -38,7 +38,7 @@
     "urineTests": "Siydik tekshiruvlari",
     "dungTests": "Tezak tekshiruvlari",
     "vaccines": "Vaksinalar",
-    "generalInspections": "Umumiy tekshiruvlar",
+    "generalInspections": "Klinik tekshiruvlar",
     "generalBloodTests": "Qonni morfologik tekshiruvi",
     "bloodSerumTests": "Qon serum tekshiruvi"
   },
@@ -102,7 +102,7 @@
     "createAnimal": "Hayvon qo'shish",
     "editAnimal": "Hayvonni o'zgartirish",
     "animalInfo": "Hayvon ma'lumotlari",
-    "generalInspection": "Umumiy Tekshiruv",
+    "generalInspection": "Klinik Tekshiruv",
     "vaccine": "Vaksina"
   },
   "table": {
@@ -219,11 +219,10 @@
     "createBloodTest": "Qon tahlili yaratish",
     "editBloodTest": "Qon tahlilni o'zgartirish",
 
-    "createGeneralInspections": "Umummiy tekshiruv yaratish",
-    "editGeneralInspections": "Umummiy tekshiruvni o'zgartirish",
+    "createGeneralInspections": "Klinik tekshiruv yaratish",
+    "editGeneralInspections": "Klinik tekshiruvni o'zgartirish",
 
     "inspection": "Tekshiruv",
-    "habitus": "Gabitus-tashqi ko’rinishi",
     "inspectionType": "Tekshiruv turi",
 
     "createUrineTest": "Siydik tahlili yaratish",

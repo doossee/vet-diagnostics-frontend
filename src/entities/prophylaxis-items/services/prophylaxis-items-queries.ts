@@ -30,6 +30,5 @@ export function useGetProphylaxisItemsInfinite(type?: ProphylaxisType, search?: 
           }
         : null;
     },
-    staleTime: 20 * 60 * 1000, // 20 minutes
   });
 }

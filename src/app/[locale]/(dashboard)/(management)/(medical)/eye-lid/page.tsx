@@ -12,7 +12,7 @@ import { useCreateEyeLid, useDeleteEyeLid, useUpdateEyeLid } from "@/entities/ey
 import { Modal } from "@/shared/components/elements/modal";
 
 export default function EyeLid() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
 
   const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<MucosaAppearance, EyeLidSchema, EyeLidSchema>({
     createMutation: useCreateEyeLid,
@@ -20,7 +20,7 @@ export default function EyeLid() {
     removeMutation: useDeleteEyeLid,
   });
 
-  const columns = useMemo(() => createEyeLidColumns(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
+  const columns = useMemo(() => createEyeLidColumns(handleEditItem, handleDelete, t, locale), [handleEditItem, handleDelete, locale]);
 
   return (
     <div>

@@ -1,8 +1,8 @@
 "use client";
 
+import { links } from "@/shared/constants";
 import { useTranslations } from "next-intl";
 import { ChevronsRight, Home } from "lucide-react";
-import { navLinksVariant } from "@/shared/constants";
 import { useIsClient } from "@/shared/hooks/use-client";
 import { Fragment, ReactNode, useCallback } from "react";
 import { Link, usePathname } from "@/shared/i18n/routing";
@@ -16,17 +16,11 @@ export function AppBreadcrumb() {
   const pathname = usePathname();
   const { userData } = useAuthData();
 
-  const rootLinks = useCallback(() => {
-    if (!userData) return [];
-
-    return navLinksVariant[userData.role].map((i) => i.items ? i.items : i).flat(1);
-  }, [userData]);
-
-  const links = useCallback(() => {
+  const generatedLinks = useCallback(() => {
     const paths: { root: ReactNode; link?: string }[] = [{ root: <Home size={18} />, link: "/" }];
 
     const [path, param] = splitPathParam(pathname);
-    const page = rootLinks().find((l) => l?.url === path);
+    const page = links[(path)?.replaceAll('/', '') as keyof typeof links];
 
     paths.push({
       root: (
@@ -45,9 +39,9 @@ export function AppBreadcrumb() {
       });
 
     return paths;
-  }, [pathname, rootLinks]);
+  }, [pathname, links]);
 
-  const items = links();
+  const items = generatedLinks();
 
   if (!isClient || !userData) return null;
 

@@ -1,15 +1,14 @@
 import { Edit, Trash } from "lucide-react";
-import { UrineColor } from "@/shared/types";
+import { LanguageLocales, UrineColor } from "@/shared/types";
 import { Button } from "@/shared/components/ui/button";
 
-export const createUrineColorColumns = (handleEditItem: (item: UrineColor) => void, handleDelete: (id: string) => void, t: any) => [
-  { title: t("management.colorName")+" RU", key: "name_ru" },
-  { title: t("management.colorName")+" UZ", key: "name_uz" },
+export const createUrineColorColumns = (handleEditItem: (item: UrineColor) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
+  { title: t("management.colorName"), key: `name_${locale}` },
   {
-    title: "Animal type",
+    title: t("animals.animalType"),
     key: "animalType",
     render(item: UrineColor) {
-      return item?.animalType?.name_ru
+      return item?.animalType?.[`name_${locale}`]
     }
   },
   {

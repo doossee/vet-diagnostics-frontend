@@ -4,16 +4,13 @@ import { useEffect } from "react";
 import { cn } from "@/shared/lib/utils";
 import { useForm } from "react-hook-form";
 import { userValues } from "../user.model";
-// import { GENDERS } from "@/shared/constants";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { Input } from "@/shared/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/shared/components/ui/button";
-import { Separator } from "@/shared/components/ui/separator";
-// import { DatePicker } from "@/shared/components/date-picker";
 import { ProfileSchema, createProfileSchema } from "./profile.model";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
-// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
+// import { PhoneInput } from "@/shared/components/phone-input";
 
 interface UserFormProps {
   loading: boolean;
@@ -24,16 +21,10 @@ interface UserFormProps {
 function mergeDefaultValues(profile: Partial<ProfileSchema> | undefined): ProfileSchema {
   return {
     phone: profile?.phone ?? userValues.phone,
-    // gender: profile?.gender ?? userValues.gender,
-    // address: profile?.address ?? userValues.address,
     email: profile?.email ?? userValues.email,
     username: profile?.username ?? userValues.username,
     lastName: profile?.lastName ?? userValues.lastName,
-    // password: profile?.password ?? userValues.password,
     firstName: profile?.firstName ?? userValues.firstName,
-    password: "",
-    // middleName: profile?.middleName ?? userValues.middleName,
-    // birthDate: profile?.birthDate ? new Date(profile.birthDate) : (userValues.birthDate as any),
   };
 }
 
@@ -53,7 +44,7 @@ export function ProfileForm({ onSubmit, loading, defaultValues }: UserFormProps)
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className={cn("grid grid-cols-1 md:grid-cols-2 gap-4", loading && "opacity-50")}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className={cn("grid grid-cols-1 md:grid-cols-2 gap-4", loading && "opacity-70")}>
         <FormField
           name="firstName"
           control={form.control}
@@ -61,7 +52,7 @@ export function ProfileForm({ onSubmit, loading, defaultValues }: UserFormProps)
             <FormItem>
               <FormLabel>{t("users.firstName")}</FormLabel>
               <FormControl>
-                <Input placeholder={t("users.firstName")} {...field} />
+                <Input disabled={loading} placeholder={t("users.firstName")} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -74,7 +65,7 @@ export function ProfileForm({ onSubmit, loading, defaultValues }: UserFormProps)
             <FormItem>
               <FormLabel>{t("users.lastName")}</FormLabel>
               <FormControl>
-                <Input placeholder={t("users.lastName")} {...field} />
+                <Input disabled={loading} placeholder={t("users.lastName")} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -86,9 +77,9 @@ export function ProfileForm({ onSubmit, loading, defaultValues }: UserFormProps)
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{"Email"}</FormLabel>
+              <FormLabel>{"Электронная почта"}</FormLabel>
               <FormControl>
-                <Input placeholder={"Email"} {...field} />
+                <Input disabled={loading} placeholder={"Электронная почта"} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -99,9 +90,9 @@ export function ProfileForm({ onSubmit, loading, defaultValues }: UserFormProps)
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{"Username"}</FormLabel>
+              <FormLabel>{"Имя пользователтя (Логин)"}</FormLabel>
               <FormControl>
-                <Input placeholder={"Username"} {...field} />
+                <Input disabled={loading} placeholder={"Имя пользователтя (Логин)"} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -142,8 +133,9 @@ export function ProfileForm({ onSubmit, loading, defaultValues }: UserFormProps)
             <FormItem className="flex flex-col gap-1 pt-1.5">
               <FormLabel>{t("form.phone")}</FormLabel>
               <FormControl>
-                <Input placeholder="+998 00 000 00 00" {...field} />
+                <Input disabled={loading} placeholder="+998 00 000 00 00" {...field} />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -185,32 +177,7 @@ export function ProfileForm({ onSubmit, loading, defaultValues }: UserFormProps)
             </FormItem>
           )}
         /> */}
-
-        <Separator className="col-span-1 md:col-span-2" />
-        <FormField
-          name="password"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{t("form.password")}</FormLabel>
-              <FormControl>
-                <Input type="password" placeholder={t("form.password")} {...field} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        <FormField
-          name={"confirmPassword" as any}
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{t("form.confirmPassword")}</FormLabel>
-              <FormControl>
-                <Input type="password" placeholder={t("form.confirmPassword")} {...field} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
+        <span></span>
         <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">
           {t(form.formState.isSubmitting ? "form.submitting" : "form.submit")}
         </Button>

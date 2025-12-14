@@ -30,9 +30,9 @@ export function ProphylaxisItemsForm({ onSubmit, defaultValues }: FormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("management.colorName")} RU</FormLabel>
+              <FormLabel>Называние элемента RU</FormLabel>
               <FormControl>
-                <Textarea placeholder={t("management.colorName")} {...field} rows={3} />
+                <Textarea placeholder={"Называние элемента"} {...field} rows={3} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -43,9 +43,9 @@ export function ProphylaxisItemsForm({ onSubmit, defaultValues }: FormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("management.colorName")} UZ</FormLabel>
+              <FormLabel>{"Называние элемента"} UZ</FormLabel>
               <FormControl>
-                <Textarea placeholder={t("management.colorName")} {...field} rows={3} />
+                <Textarea placeholder={"Называние элемента"} {...field} rows={3} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -56,11 +56,11 @@ export function ProphylaxisItemsForm({ onSubmit, defaultValues }: FormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("form.gender")}</FormLabel>
+              <FormLabel>{t("inspections.specificProphylaxis")}</FormLabel>
               <FormControl>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <SelectTrigger>
-                    <SelectValue placeholder={t("form.gender")} />
+                    <SelectValue placeholder={t("inspections.specificProphylaxis")} />
                   </SelectTrigger>
                   <SelectContent>
                     {Object.entries(PROPHYLAXIS_TYPES).map(([key, value]) => (

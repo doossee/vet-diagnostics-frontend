@@ -28,7 +28,6 @@ export function useGetAnimalColorsInfinite(search?: string) {
             ...(search && { search }),
           }
         : null;
-    },
-    staleTime: 20 * 60 * 1000, // 20 minutes
+    }
   });
 }

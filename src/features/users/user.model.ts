@@ -4,59 +4,60 @@ import { z } from "zod";
 export const userValues = {
   phone: "",
   email: "",
-  // address: "",
   username: "",
   lastName: "",
   password: "",
   firstName: "",
-  // gender: USER_GENDERS_ARRAY[0],
-  // birthDate: null,
   districtId: null,
   confirmPassword: "",
-  // isActive: true
 };
 
 export const createUserSchema = (t: any, itemId?: string) =>
   z
     .object({
-      phone: z.string().min(8, t("required.phoneRequired")),
-      // gender: z.enum(USER_GENDERS_ARRAY).default(USER_GENDERS_ARRAY[0]).optional(),
-      // address: z.string().optional(),
-      // birthDate: z.date({
-      //   required_error: t("required.birthDateRequired"),
-      //   invalid_type_error: t("required.birthDateRequired"),
-      // }),
-      password: z.string().optional(),
-      email: z.string().optional(),
-      username: z.string().min(1, t("required.genderRequired")),
+      phone: z.string()
+      .min(8, t("required.phoneRequired"))
+      .max(13, t("required.phoneRequired"))
+      .regex(
+        /^(?:\+998|998|0)?[3789][0-9]{8}$/,
+        "Неверный номер телефона (Узбекистан)"
+      ),
+      password: z.string()
+        .refine((val) => !val || val.length >= 6, {
+          message: "Пароль должен быть не менее 6 символов",
+        })
+        .optional(),
+      email: z
+        .string()
+        .email("Неверный формат email")
+        .optional(),
+      username: z.string().min(1, "Введите имя пользователя"),
       lastName: z.string().min(1, t("required.lastNameRequired")),
       firstName: z.string().min(1, t("required.firstNameRequired")),
       districtId: z.string({
         required_error: t("required.districtRequired"),
         invalid_type_error: t("required.districtRequired"),
       }),
-      // isActive: z.boolean().default(true).optional(),
       confirmPassword: z.string().optional(),
-      // veterinarianId: z.string().nullable().optional(),
     })
     .superRefine((data, ctx) => {
-      if (!itemId) {
-        if (!data.password?.trim()) {
-          ctx.addIssue({
-            path: ["password"],
-            message: t("required.passwordRequired"),
-            code: "custom",
-          });
-        }
-        if (data.password !== data.confirmPassword) {
-          ctx.addIssue({
-            path: ["confirmPassword"],
-            message: t("required.confirmPasswordRequired"),
-            code: "custom",
-          });
-        }
+      if (!itemId && !data.password?.trim()) {
+        ctx.addIssue({
+          path: ["password"],
+          message: t("required.passwordRequired"),
+          code: "custom",
+        });
+      }
+
+      // Проверка совпадения confirmPassword, только если password указан
+      if (data.password && data.password !== data.confirmPassword) {
+        ctx.addIssue({
+          path: ["confirmPassword"],
+          message: t("required.confirmPasswordRequired"),
+          code: "custom",
+        });
       }
     })
-    .transform(({ confirmPassword, ...rest }) => rest);
+    .transform(({ confirmPassword, password, ...rest }) => itemId ? rest : {...rest, password});
 
 export type UserSchema = z.infer<ReturnType<typeof createUserSchema>>;

@@ -1,6 +1,6 @@
 export const queryParamKeys = {
   COLOR_ID: "colorId",
-  TYPE_ID: "typeId",
+  TYPE_ID: "animalTypeId",
   BREED_ID: "breedId",
-  GENDER: "gender",
+  GENDER: "sex",
 }

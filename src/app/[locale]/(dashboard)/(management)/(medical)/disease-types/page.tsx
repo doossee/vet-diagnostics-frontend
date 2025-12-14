@@ -12,7 +12,7 @@ import { useGetDiseaseTypes } from "@/entities/disease-types/services/queries";
 import { useCreateDiseaseType, useDeleteDiseaseType, useUpdateDiseaseType } from "@/entities/disease-types/services/mutations";
 
 export default function DiseaseTypes() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
 
   const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<DiseaseCategory, DiseaseTypeSchema, DiseaseTypeSchema>({
     createMutation: useCreateDiseaseType,
@@ -20,13 +20,13 @@ export default function DiseaseTypes() {
     removeMutation: useDeleteDiseaseType,
   });
 
-  const columns = useMemo(() => createDiseaseTypeColumns(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
+  const columns = useMemo(() => createDiseaseTypeColumns(handleEditItem, handleDelete, t, locale), [handleEditItem, handleDelete, locale]);
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetDiseaseTypes} topSlot={createButton(t("management.diseaseTypeCreate"))} />
+      <DataTable columns={columns} queryFunction={useGetDiseaseTypes} topSlot={createButton("Создать вид заболевание")} />
 
-      <Modal open={dialog} onClose={handleClose} title={t(editedItem ? "management.editType" : "management.createType")}>
+      <Modal open={dialog} onClose={handleClose} title={editedItem ? "Изменить вид заболевание" : "Создать вид заболевание"}>
         <DiseaseTypeForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : (undefined as any)} />
       </Modal>
     </div>

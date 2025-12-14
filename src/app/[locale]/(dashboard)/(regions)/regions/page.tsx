@@ -12,14 +12,14 @@ import { useCreateRegions, useDeleteRegions, useUpdateRegions } from "@/entities
 import { useGetRegions } from "@/entities/regions/services/queries";
 
 export default function Regions() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<Region, RegionSchema, RegionSchema>({
     createMutation: useCreateRegions,
     updateMutation: useUpdateRegions,
     removeMutation: useDeleteRegions,
   });
 
-  const columns = useMemo(() => createRegionColumns(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
+  const columns = useMemo(() => createRegionColumns(handleEditItem, handleDelete, t, locale), [handleEditItem, handleDelete, locale]);
 
   return (
     <div>

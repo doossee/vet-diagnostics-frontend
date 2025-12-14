@@ -1,23 +1,22 @@
 import { Edit, Trash } from "lucide-react";
-import { MucosaAppearance } from "@/shared/types";
+import { LanguageLocales, MucosaAppearance } from "@/shared/types";
 import { Button } from "@/shared/components/ui/button";
 import { MUCOSA_TYPES } from "./utils/constants/mucosa-types";
 
-export const createEyeLidColumns = (handleEditItem: (item: MucosaAppearance) => void, handleDelete: (id: string) => void, t: any) => [
-  { title: t("management.eyeLidName"), key: "name_ru" },
-  { title: t("management.eyeLidName"), key: "name_uz" },
+export const createEyeLidColumns = (handleEditItem: (item: MucosaAppearance) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
+  { title: t("management.eyeLidName"), key: `name_${locale}` },
   {
-    title: t("management.eyeLidName"),
+    title: "Тип слизистой оболочки",
     key: "mucosaType",
     render(item: MucosaAppearance) {
-      return MUCOSA_TYPES?.[item.mucosaType]?.ru
+      return MUCOSA_TYPES?.[item.mucosaType]?.[locale]
     }
   },
   {
-    title: t("management.eyeLidName"),
+    title: t("animals.animalType"),
     key: "animalType",
     render(item: MucosaAppearance) {
-      return item.animalType?.name_ru
+      return item.animalType?.[`name_${locale}`]
     }
   },
   {

@@ -1,6 +1,6 @@
 import { Fragment, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Droplet, FlaskRound } from "lucide-react";
+import { Droplet, Droplets, FlaskRound } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useI18n } from "@/shared/hooks/use-i18n";
@@ -69,11 +69,12 @@ export function GeneralBloodTestForm({ onSubmit, defaultValues, animalId }: Gene
           <Fragment key={key}>
             {index === 0 && <Divider label={t("inspections.morphologicalBloodExamination")} icon={<Droplet />} className="col-span-1 md:col-span-2 lg:col-span-3" />}
             {index === 8 && <Divider label={t("inspections.bloodSerumExamination")} icon={<FlaskRound />} className="col-span-1 md:col-span-2 lg:col-span-3" />}
+            {index === 35 && <Divider label={"Микроэлементы"} icon={<Droplets />} className="col-span-1 md:col-span-2 lg:col-span-3" />}
             <FormField
               name={key}
               control={form.control}
               render={({ field }) => (
-                <FormItem className="flex flex-col gap-2 pt-1 justify-between">
+                <FormItem className="flex flex-col justify-start gap-2 pt-1">
                   <FormLabel>
                     {value[locale]} ({value[`unit_${locale}`]})
                   </FormLabel>

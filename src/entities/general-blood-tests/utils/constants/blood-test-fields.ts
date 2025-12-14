@@ -204,4 +204,28 @@ export const BLOOD_TEST_FIELDS: Partial<Record<keyof BloodExam, Record<LanguageL
     unit_ru: "мкмоль/л",
     unit_uz: "µmol/L",
   },
+  copper: {
+    ru: "Медь",
+    uz: "Mis",
+    unit_ru: "ммоль/л",
+    unit_uz: "mmol/l",
+  },
+  cobalt: {
+    ru: "Кобальт",
+    uz: "Kobalt",
+    unit_ru: "ммоль/л",
+    unit_uz: "mmol/l",
+  },
+  manganese: {
+    ru: "Марганец",
+    uz: "Marganets",
+    unit_ru: "ммоль/л",
+    unit_uz: "mmol/l",
+  },
+  zinc: {
+    ru: "Цинк",
+    uz: "Rux",
+    unit_ru: "ммоль/л",
+    unit_uz: "mmol/l",
+  },
 };

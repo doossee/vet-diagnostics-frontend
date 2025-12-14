@@ -24,9 +24,9 @@ export default function DungConsistencies() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetDungConsistencies} topSlot={createButton(t("management.urineColorCreate"))} />
+      <DataTable columns={columns} queryFunction={useGetDungConsistencies} topSlot={createButton("Создать консистенции кала")} />
 
-      <Modal open={dialog} onClose={handleClose} title={t(editedItem ? "management.editColor" : "management.createColor")}>
+      <Modal open={dialog} onClose={handleClose} title={editedItem ? "Изменить консистенции кала" : "Создать консистенции кала"}>
         <AdditionalCrudForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : (undefined as any)} />
       </Modal>
     </div>

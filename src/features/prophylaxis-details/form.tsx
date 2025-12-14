@@ -58,11 +58,11 @@ export function ProphylaxisDetailsForm({ onSubmit, defaultValues }: FormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("form.gender")}</FormLabel>
+              <FormLabel>{t("inspections.specificProphylaxis")}</FormLabel>
               <FormControl>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <SelectTrigger>
-                    <SelectValue placeholder={t("form.gender")} />
+                    <SelectValue placeholder={t("inspections.specificProphylaxis")} />
                   </SelectTrigger>
                   <SelectContent>
                     {Object.entries(PROPHYLAXIS_TYPES).map(([key, value]) => (

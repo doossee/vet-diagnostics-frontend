@@ -5,7 +5,8 @@ import { Button } from "@/shared/components/ui/button";
 import { Textarea } from "@/shared/components/ui/textarea";
 import { DiseaseSchema, createDiseaseSchema, diseaseValues } from "./disease.model";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
-import { DiseaseTypeSelect } from "../disease-types/components/disease-type-select";
+// import { DiseaseTypeSelect } from "../disease-types/components/disease-type-select";
+import { DiseaseTypeTreeSelect } from "../disease-types/components/disease-type-tree-select";
 // import { DiseaseTypeTreeSelect } from "../disease-types/components/disease-type-tree-select";
 
 interface DiseaseFormProps {
@@ -29,7 +30,7 @@ export function DiseaseForm({ onSubmit, defaultValues }: DiseaseFormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name RU</FormLabel>
+              <FormLabel>Называние RU</FormLabel>
               <FormControl>
                 <Textarea rows={3} className="resize-none" placeholder={t("inspections.conclusion")} {...field} />
               </FormControl>
@@ -42,7 +43,7 @@ export function DiseaseForm({ onSubmit, defaultValues }: DiseaseFormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name Uz</FormLabel>
+              <FormLabel>Называние Uz</FormLabel>
               <FormControl>
                 <Textarea rows={3} className="resize-none" placeholder={t("inspections.conclusion")} {...field} />
               </FormControl>
@@ -55,15 +56,15 @@ export function DiseaseForm({ onSubmit, defaultValues }: DiseaseFormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("form.diseaseType")}</FormLabel>
+              <FormLabel>Заболевания</FormLabel>
               <FormControl>
-                <DiseaseTypeSelect placeholder={t("form.diseaseType")} value={field.value} onChange={field.onChange} />
+                <DiseaseTypeTreeSelect placeholder={"Заболевания"} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        
+
         {/* <FormField
           name="diseaseCategoryId"
           control={form.control}

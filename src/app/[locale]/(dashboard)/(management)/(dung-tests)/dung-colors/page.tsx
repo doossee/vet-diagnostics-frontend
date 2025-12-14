@@ -12,7 +12,7 @@ import { useGetDungColors } from "@/entities/dung-colors/services/queries";
 import { useCreateDungColor, useDeleteDungColor, useUpdateDungColor } from "@/entities/dung-colors/services/mutations";
 
 export default function DungColors() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
 
   const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<FecesColor, DungColorSchema, DungColorSchema>({
     createMutation: useCreateDungColor,
@@ -20,7 +20,7 @@ export default function DungColors() {
     removeMutation: useDeleteDungColor,
   });
 
-  const columns = useMemo(() => createDungColorColumns(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
+  const columns = useMemo(() => createDungColorColumns(handleEditItem, handleDelete, t, locale), [handleEditItem, handleDelete, locale]);
 
   return (
     <div>

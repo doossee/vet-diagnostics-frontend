@@ -12,7 +12,7 @@ import { useGetAnimalColors } from "@/entities/animal-colors/services/animal-col
 import { useCreateAnimalColor, useDeleteAnimalColor, useUpdateAnimalColor } from "@/entities/animal-colors/services/animal-color-mutations";
 
 export default function AnimalColors() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
 
   const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<Color, AnimalColorSchema, AnimalColorSchema>({
     createMutation: useCreateAnimalColor,
@@ -20,7 +20,7 @@ export default function AnimalColors() {
     removeMutation: useDeleteAnimalColor,
   });
 
-  const columns = useMemo(() => createAnimalColorColumns(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
+  const columns = useMemo(() => createAnimalColorColumns(handleEditItem, handleDelete, t, locale), [handleEditItem, handleDelete, locale]);
 
   return (
     <div>

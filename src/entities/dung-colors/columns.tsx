@@ -1,15 +1,14 @@
-import { FecesColor } from "@/shared/types";
+import { FecesColor, LanguageLocales } from "@/shared/types";
 import { Edit, Trash } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 
-export const createDungColorColumns = (handleEditItem: (item: FecesColor) => void, handleDelete: (id: string) => void, t: any) => [
-  { title: t("management.colorName")+" RU", key: "name_ru" },
-  { title: t("management.colorName")+" UZ", key: "name_uz" },
+export const createDungColorColumns = (handleEditItem: (item: FecesColor) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
+  { title: t("inspections.name"), key: `name_${locale}` },
   {
-    title: "Animal type",
+    title: t("animals.animalType"),
     key: "animalType",
     render(item: FecesColor) {
-      return item?.animalType?.name_ru
+      return item?.animalType?.[`name_${locale}`]
     }
   },
   {

@@ -2,7 +2,7 @@
 import { useForm } from "react-hook-form";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CircleDot, Droplet, Layers, ListChecks, PersonStanding } from "lucide-react";
+import { CircleDot, Droplet, Layers, ListChecks, PersonStanding, TestTube } from "lucide-react";
 
 import { Input } from "@/shared/components/ui/input";
 import { Divider } from "@/shared/components/divider";
@@ -357,6 +357,35 @@ export function GeneralInspectionForm({ onSubmit, defaultValues }: GeneralInspec
           label={t("inspections.lymphMobility")}
           placeholder={t("inspections.lymphMobility")}
         />
+        
+        <Divider label={"Рубцовая жидкость"} icon={<TestTube />} className="col-span-1 md:col-span-2 lg:col-span-3" />
+
+        <FormField
+          name="rumenInfusoriaCount"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem className="flex flex-col gap-1 pt-1.5">
+              <FormLabel>{"Количество инфузорий в рубце — 1000/мл"}</FormLabel>
+              <FormControl>
+                <Input placeholder={"Количество инфузорий в рубце — 1000/мл"} {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          name="rumenFluidState"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem className="flex flex-col gap-1 pt-1.5">
+              <FormLabel>{"Состояние рубцовой жидкости (Раметром)"}</FormLabel>
+              <FormControl>
+                <Input placeholder={"Состояние рубцовой жидкости (Раметром)"} {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
 
         <div className="col-span-1 md:col-span-2 lg:col-span-3" />
 

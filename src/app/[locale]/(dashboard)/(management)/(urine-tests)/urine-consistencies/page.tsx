@@ -24,10 +24,12 @@ export default function UrineConsistencies() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetUrineConsistencies} topSlot={createButton(t("management.urineColorCreate"))} />
+      <DataTable columns={columns} queryFunction={useGetUrineConsistencies} topSlot={createButton("Создать консистенция мочи")} />
 
-      <Modal open={dialog} onClose={handleClose} title={t(editedItem ? "management.editColor" : "management.createColor")}>
-        <AdditionalCrudForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : (undefined as any)} />
+      <Modal open={dialog} onClose={handleClose} title={editedItem ? "Изменить консистенция мочи" : "Создать консистенция мочи"}>
+        <AdditionalCrudForm
+          onSubmit={onSubmit}
+          defaultValues={editedItem ? editedItem : (undefined as any)} />
       </Modal>
     </div>
   );

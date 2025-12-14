@@ -37,9 +37,9 @@ export default function Prophylaxis() {
         columns={columns}
         queryFunction={useGetProphylaxis}
         filterQueryParamKeys={PROPHYLAXIS_QUERY_PARAM_KEYS}
-        topSlot={createButton(t("management.vaccineTypeCreate"))} />
+        topSlot={createButton("Создать профилактические меры")} />
 
-      <Modal open={dialog} onClose={handleClose} title={t(editedItem ? "management.editType" : "management.createType")}>
+      <Modal open={dialog} onClose={handleClose} title={editedItem ? "Изменить профилактические меры" : "Создать профилактические меры"}>
         <ProphylaxisForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem as any : animalId ? { ...prophylaxisValues, animalId: String(animalId) } : undefined} />
       </Modal>
     </div>

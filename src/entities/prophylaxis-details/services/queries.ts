@@ -31,6 +31,5 @@ export function useGetProphylaxisDetailsInfinite(itemId?: string, search?: strin
         : null;
     },
     enabled: !!itemId,
-    staleTime: 20 * 60 * 1000, // 20 minutes
   });
 }

@@ -1,10 +1,9 @@
-import { Color } from "@/shared/types";
+import { Color, LanguageLocales } from "@/shared/types";
 import { Button } from "@/shared/components/ui/button";
 import { Edit, Trash } from "lucide-react";
 
-export const createAnimalColorColumns = (handleEditItem: (item: Color) => void, handleDelete: (id: string) => void, t: any) => [
-  { title: t("management.colorName")+" RU", key: "name_ru" },
-  { title: t("management.colorName")+" UZ", key: "name_uz" },
+export const createAnimalColorColumns = (handleEditItem: (item: Color) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
+  { title: t("management.colorName"), key: `name_${locale}` },
   {
     title: t("table.actions"),
     key: "actions",

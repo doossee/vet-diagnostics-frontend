@@ -1,24 +1,34 @@
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/shared/components/ui/button";
 import { Textarea } from "@/shared/components/ui/textarea";
-import { AnimalTypeSelect } from "../animal-types/components/animal-type-select";
 import { AdditionalCrudSchema, additionalCrudValues, createAdditionalCrudSchema } from "./additional-crud.model";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
+import { AnimalTypeTreeSelect } from "../animal-types/components/animal-type-tree-select";
+import { AnimalType } from "@/shared/types";
 
 interface FormProps {
+  nameTitle?: string
   defaultValues?: AdditionalCrudSchema;
   onSubmit: (values: AdditionalCrudSchema) => void;
 }
 
 export function AdditionalCrudForm({ onSubmit, defaultValues }: FormProps) {
   const { t } = useI18n();
+  const [animalType, setAnimalType] = useState<AnimalType|null>(null);
 
   const form = useForm<AdditionalCrudSchema>({
     resolver: zodResolver(createAdditionalCrudSchema(t)),
     defaultValues: defaultValues || additionalCrudValues,
   });
+
+  useEffect(() => {
+    if((defaultValues as any)?.animalType) {
+      setAnimalType(animalType)
+    }
+  }, [defaultValues])
 
   return (
     <Form {...form}>
@@ -28,9 +38,9 @@ export function AdditionalCrudForm({ onSubmit, defaultValues }: FormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("management.colorName")} RU</FormLabel>
+              <FormLabel>{t("inspections.name")} RU</FormLabel>
               <FormControl>
-                <Textarea placeholder={t("management.colorName")} {...field} rows={3} />
+                <Textarea placeholder={t("inspections.name")} {...field} rows={3} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -41,9 +51,9 @@ export function AdditionalCrudForm({ onSubmit, defaultValues }: FormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("management.colorName")} UZ</FormLabel>
+              <FormLabel>{t("inspections.name")} UZ</FormLabel>
               <FormControl>
-                <Textarea placeholder={t("management.colorName")} {...field} rows={3} />
+                <Textarea placeholder={t("inspections.name")} {...field} rows={3} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -54,9 +64,9 @@ export function AdditionalCrudForm({ onSubmit, defaultValues }: FormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("management.colorName")}</FormLabel>
+              <FormLabel>{t("animals.animalType")}</FormLabel>
               <FormControl>
-                <AnimalTypeSelect placeholder={t("animals.animalType")} value={field.value} onChange={field.onChange} />
+                <AnimalTypeTreeSelect placeholder={t("animals.animalType")} value={animalType ?? field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>

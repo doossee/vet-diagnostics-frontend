@@ -35,7 +35,6 @@ export function UserForm({ onSubmit, itemId, defaultValues }: UserFormProps) {
           ...defaultValues,
           password: "",
           confirmPassword: "",
-          // birthDate: new Date(defaultValues.birthDate),
         }
       : (userValues as any),
   });
@@ -46,6 +45,7 @@ export function UserForm({ onSubmit, itemId, defaultValues }: UserFormProps) {
     if (!defaultValues) return;
 
     form.setValue("regionId" as any, (defaultValues as any)?.district?.regionId);
+    form.setValue("districtId", defaultValues.districtId);
   }, [defaultValues]);
 
   return (
@@ -83,9 +83,9 @@ export function UserForm({ onSubmit, itemId, defaultValues }: UserFormProps) {
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>Имя пользователтя (Логин)</FormLabel>
                 <FormControl>
-                  <Input placeholder="Username" {...field} />
+                  <Input placeholder="Имя пользователтя (Логин)" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -96,9 +96,9 @@ export function UserForm({ onSubmit, itemId, defaultValues }: UserFormProps) {
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>Электронная почта</FormLabel>
                 <FormControl>
-                  <Input placeholder={"Email"} {...field} />
+                  <Input placeholder="Электронная почта" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -211,31 +211,35 @@ export function UserForm({ onSubmit, itemId, defaultValues }: UserFormProps) {
             )}
           /> */}
 
-          <Separator className="col-span-1 md:col-span-2" />
-          <FormField
-            name="password"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem className="flex flex-col gap-1 pt-1.5">
-                <FormLabel>{t("form.password")}</FormLabel>
-                <FormControl>
-                  <Input required={itemId === null} type="password" placeholder={t("form.password")} {...field} />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <FormField
-            name={"confirmPassword" as any}
-            control={form.control}
-            render={({ field }) => (
-              <FormItem className="flex flex-col gap-1 pt-1.5">
-                <FormLabel>{t("form.confirmPassword")}</FormLabel>
-                <FormControl>
-                  <Input required={itemId === null} type="password" placeholder={t("form.confirmPassword")} {...field} />
-                </FormControl>
-              </FormItem>
-            )}
-          />
+          {!itemId?.trim() && <>
+            <Separator className="col-span-1 md:col-span-2" />
+            <FormField
+              name="password"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="flex flex-col gap-1 pt-1.5">
+                  <FormLabel>{t("form.password")}</FormLabel>
+                  <FormControl>
+                    <Input required={itemId === null} type="password" placeholder={t("form.password")} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name={"confirmPassword" as any}
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="flex flex-col gap-1 pt-1.5">
+                  <FormLabel>{t("form.confirmPassword")}</FormLabel>
+                  <FormControl>
+                    <Input required={itemId === null} type="password" placeholder={t("form.confirmPassword")} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </>}
         </div>
         <div className="flex-1 flex items-end">
           <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">

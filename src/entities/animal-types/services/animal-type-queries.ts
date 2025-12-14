@@ -12,11 +12,18 @@ export function useGetAnimalTypes(params: Record<string, unknown>, enabled?: boo
   });
 }
 
-export function useGetAnimalTypesInfinite(parentId?: string, search?: string) {
+export function useGetAnimalTypesInfinite(parentId?: string | null, search?: string) {
   return useInfiniteQuery<PaginatedEntity<AnimalType>, Error>({
     queryKey: [AnimalTypesQueryKeys.ANIMAL_TYPES_SELECT, parentId, search],
     queryFn: (params) => animalTypeControllerFindAll(params.pageParam!),
-    initialPageParam: { page: 1, perPage: 20, ...(search && { search }) },
+    initialPageParam: {
+      page: 1,
+      perPage: 20,
+      ...(parentId !== undefined && {
+        parentId: parentId === null ? 'null' : parentId,
+      }),
+      ...(search && { search })
+    },
     getNextPageParam: (lastPage) => {
       const nextPage = (lastPage?.meta?.currentPage ?? 0) + 1;
       const isLast = lastPage?.meta?.currentPage === lastPage?.meta?.lastPage;
@@ -25,10 +32,12 @@ export function useGetAnimalTypesInfinite(parentId?: string, search?: string) {
         ? {
             page: nextPage,
             perPage: 20,
+            ...(parentId !== undefined && {
+              parentId: parentId === null ? 'null' : parentId,
+            }),
             ...(search && { search }),
           }
         : null;
     },
-    staleTime: 20 * 60 * 1000, // 20 minutes
   });
 }

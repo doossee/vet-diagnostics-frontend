@@ -4,6 +4,7 @@ import { GeneralBloodTestSchema } from "@/features/general-blood-tests";
 import { GeneralBloodTestQueryKeys } from "../utils/constants/query-keys";
 import { createQueryData, removeQueryData, updateQueryData } from "@/shared/helpers/query-updater";
 import { bloodExamControllerCreate, bloodExamControllerUpdate, bloodExamControllerDelete } from "@/shared/api/api-new";
+import { AnimalQueryKeys } from "@/entities/animals/utils/constants/query-keys";
 
 export function useCreateGeneralBloodTest() {
   const client = useQueryClient();
@@ -18,6 +19,9 @@ export function useCreateGeneralBloodTest() {
       if (data?.animalId) {
         client.invalidateQueries({
           queryKey: [GeneralBloodTestQueryKeys.LAST_GENERAL_BLOOD_TEST, data.animalId],
+        });
+        client.invalidateQueries({
+          queryKey: [AnimalQueryKeys.ANIMALS_PREDICT_INFO, data.animalId],
         });
       }
     },
@@ -38,6 +42,9 @@ export function useUpdateGeneralBloodTest() {
         client.invalidateQueries({
           queryKey: [GeneralBloodTestQueryKeys.LAST_GENERAL_BLOOD_TEST, data.animalId],
         });
+        client.invalidateQueries({
+          queryKey: [AnimalQueryKeys.ANIMALS_PREDICT_INFO, data.animalId],
+        });
       }
     },
   });
@@ -56,6 +63,9 @@ export function useDeleteGeneralBloodTest() {
       if (data?.animalId) {
         client.invalidateQueries({
           queryKey: [GeneralBloodTestQueryKeys.LAST_GENERAL_BLOOD_TEST, data.animalId],
+        });
+        client.invalidateQueries({
+          queryKey: [AnimalQueryKeys.ANIMALS_PREDICT_INFO, data.animalId],
         });
       }
     },

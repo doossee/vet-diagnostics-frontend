@@ -25,12 +25,12 @@ export const urineTestValues = {
 
 export const createUrineTestSchema = (_: any) =>
   z.object({
-    animalId: z.string({}),
-    urineColorId: z.string({}).optional(),
+    animalId: z.string(),
+    urineColorId: z.string().optional(),
 
-    urineSmellId: z.string({}).optional(),
-    urineClarityId: z.string({}).optional(),
-    urineConsistencyId: z.string({}).optional(),
+    urineSmellId: z.string().optional(),
+    urineClarityId: z.string().optional(),
+    urineConsistencyId: z.string().optional(),
     amount: z.coerce.number().optional(),
 
     ph: z.coerce.number().optional(),

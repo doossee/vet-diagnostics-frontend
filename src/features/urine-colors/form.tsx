@@ -3,9 +3,9 @@ import { useI18n } from "@/shared/hooks/use-i18n";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/shared/components/ui/button";
 import { Textarea } from "@/shared/components/ui/textarea";
-import { AnimalTypeSelect } from "../animal-types/components/animal-type-select";
 import { UrineColorSchema, createUrineColorSchema, urineColorValues } from "./urine-color";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
+import { AnimalTypeTreeSelect } from "../animal-types/components/animal-type-tree-select";
 
 interface UrineColorFormProps {
   defaultValues?: UrineColorSchema;
@@ -54,9 +54,9 @@ export function UrineColorForm({ onSubmit, defaultValues }: UrineColorFormProps)
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("management.colorName")}</FormLabel>
+              <FormLabel>{t("animals.animalType")}</FormLabel>
               <FormControl>
-                <AnimalTypeSelect placeholder={t("animals.animalType")} value={field.value} onChange={field.onChange} />
+                <AnimalTypeTreeSelect placeholder={t("animals.animalType")} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>

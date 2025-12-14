@@ -24,9 +24,9 @@ export default function DungSmells() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetDungSmells} topSlot={createButton(t("management.urineColorCreate"))} />
+      <DataTable columns={columns} queryFunction={useGetDungSmells} topSlot={createButton("Создать запах кала")} />
 
-      <Modal open={dialog} onClose={handleClose} title={t(editedItem ? "management.editColor" : "management.createColor")}>
+      <Modal open={dialog} onClose={handleClose} title={editedItem ? "Изменить запах кала" : "Создать запах кала"}>
         <AdditionalCrudForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : (undefined as any)} />
       </Modal>
     </div>

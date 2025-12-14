@@ -12,7 +12,7 @@ import { useCreateAnimalType, useDeleteAnimalType, useUpdateAnimalType } from "@
 import { Modal } from "@/shared/components/elements/modal";
 
 export default function AnimalTypes() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
 
   const { dialog, editedItem, onSubmit, handleClose, handleDelete, createButton, handleEditItem } = useCrud<AnimalType, AnimalTypeSchema, AnimalTypeSchema>({
     createMutation: useCreateAnimalType,
@@ -20,7 +20,7 @@ export default function AnimalTypes() {
     removeMutation: useDeleteAnimalType,
   });
 
-  const columns = useMemo(() => createAnimalTypeColumns(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
+  const columns = useMemo(() => createAnimalTypeColumns(handleEditItem, handleDelete, t, locale), [handleEditItem, handleDelete, locale]);
 
   return (
     <div>

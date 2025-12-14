@@ -5,7 +5,7 @@
     "animalTypes": "Виды животных",
     "breeds": "Породы животных",
     "vaccineTypes": "Типы вакцин",
-    "diseaseTypes": "Заболевания",
+    "diseaseTypes": "Виды заболеваний",
     "animalColors": "Окрас животных ",
     "urineColors": "Цвет мочи",
     "dungColors": "Цвет кала",
@@ -39,8 +39,8 @@
     "urineTests": "Исследование мочи",
     "dungTests": "Исследование кала",
     "vaccines": "Вакцины",
-    "generalInspections": "Общие проверки",
-    "generalBloodTests": "Морфологическое исследование крови",
+    "generalInspections": "Клинические проверки",
+    "generalBloodTests": "Исследование крови",
     "bloodSerumTests": "Анализы сыворотки крови"
   },
   "theme": {
@@ -54,7 +54,7 @@
     "phoneRequired": "Необходимо ввести номер телефона",
     "password": "Пароль",
     "passwordRequired": "Пароль должен быть не менее 8 символов",
-    "authError": "Неверный номер телефона или пароль",
+    "authError": "Неверный логин или пароль",
     "submit": "Войти"
   },
   "form": {
@@ -103,7 +103,7 @@
     "createAnimal": "Добавить животное",
     "editAnimal": "Редактировать животное",
     "animalInfo": "Данные животного",
-    "generalInspection": "Общие проверка",
+    "generalInspection": "Клинические проверка",
     "vaccine": "Вакцина"
   },
   "table": {
@@ -220,11 +220,10 @@
     "createBloodTest": "Создать анализ крови",
     "editBloodTest": "Редактировать анализ крови",
 
-    "createGeneralInspections": "Создать общий проверку",
-    "editGeneralInspections": "Редактировать общий проверку",
+    "createGeneralInspections": "Создать клинические проверку",
+    "editGeneralInspections": "Редактировать клинические проверку",
 
     "inspection": "Проверка",
-    "habitus": "Габитус внешней вид",
     "inspectionType": "Тип проверка",
 
     "createUrineTest": "Создать анализ мочи",
@@ -236,7 +235,7 @@
     "macroscopicExamination": "Макроскопическое исследование",
     "microscopicExamination": "Микроскопическое исследование",
     "laboratoryExamination": "Лабораторное исследование",
-    "morphologicalBloodExamination": "Морфологическое исследование крови",
+    "morphologicalBloodExamination": "Исследование крови",
     "bloodSerumExamination": "Исследование сыворотки крови",
     "generalCondition": "Общее состояние",
 

@@ -1,248 +1,293 @@
 "use client";
 
-import * as React from "react";
+import type React from "react";
+import { useMemo } from "react";
 import { cn } from "@/shared/lib/utils";
+import { useState, useEffect } from "react";
+import type { PaginatedEntity } from "@/shared/types";
 import { Button } from "@/shared/components/ui/button";
-import { Input } from "@/shared/components/ui/input";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@/shared/components/ui/popover";
-import { ChevronDown, Folder, FolderOpen, Check, Search, X } from "lucide-react";
 import { useInView } from "react-intersection-observer";
 import { Spinner } from "@/shared/components/elements/spinner";
 import { pageableToArray } from "@/shared/helpers/pageable-to-array";
-import type { UseInfiniteQueryResult } from "@tanstack/react-query";
+import { Check, Folder, FolderOpen, X, Inbox, ChevronDown, FolderX } from "lucide-react";
+import type { UseInfiniteQueryResult, InfiniteData } from "@tanstack/react-query";
+import { Popover, PopoverContent, PopoverTrigger } from "@/shared/components/ui/popover";
 
-/* =======================
-   Types
-======================= */
-
-export interface BaseTreeItem {
-  id: string;
-  parentId?: string | null;
-  [key: string]: any;
-}
-
-interface TreeSelectProps<T extends BaseTreeItem> {
-  value?: T | null;
-  onSelect?: (value: T | null) => void;
-  placeholder?: string;
+interface TreeSelectProps<T> {
   disabled?: boolean;
   className?: string;
-
-  /** boolean field from backend */
-  childrenField: keyof T;
-
-  /** hooks */
-  useRootQuery: (
-    enabled: boolean,
-    search?: string
-  ) => UseInfiniteQueryResult<any, Error>;
-
-  useChildrenQuery: (
-    parentId: string,
-    enabled: boolean
-  ) => UseInfiniteQueryResult<any, Error>;
-
-  getLabel?: (item: T) => string;
+  placeholder?: string;
+  minWidth?: boolean;
+  defaultValue?: T | string | number;
+  onSelect?: (value: T | null) => void;
+  onRemove?: () => void;
+  queryFn: (parentId?: string | null) => UseInfiniteQueryResult<InfiniteData<PaginatedEntity<T>, unknown>, Error>;
+  renderOption?: (option: T) => React.ReactNode;
+  getOptionLabel?: (option: T) => string;
+  getOptionId?: (option: T) => string;
+  customFilter?: (option: T) => boolean;
+  dependsOn?: unknown | null;
 }
 
-/* =======================
-   TreeNode
-======================= */
-
-function TreeNode<T extends BaseTreeItem>({
-  item,
-  level,
-  selectedId,
-  onSelect,
-  childrenField,
-  useChildrenQuery,
-  getLabel,
-}: {
-  item: T;
+interface TreeNodesProps<T> {
+  parentId: string | null;
   level: number;
-  selectedId?: string | null;
-  onSelect: (item: T) => void;
-  childrenField: keyof T;
-  useChildrenQuery: TreeSelectProps<T>["useChildrenQuery"];
-  getLabel: (item: T) => string;
-}) {
-  const [open, setOpen] = React.useState(false);
+  expanded: Record<string, boolean>;
+  setExpanded: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
+  onSelect: (option: T) => void;
+  selectedId: string | null;
+  queryFn: (parentId?: string | null) => UseInfiniteQueryResult<InfiniteData<PaginatedEntity<T>, unknown>, Error>;
+  renderOption?: (option: T) => React.ReactNode;
+  getOptionLabel: (option: T) => string;
+  getOptionId: (option: T) => string;
+  customFilter?: (option: T) => boolean;
+}
 
-  const hasChildren = item?._count?.children > 0;;
+function TreeNodes<T>({
+  parentId,
+  level,
+  expanded,
+  setExpanded,
+  onSelect,
+  selectedId,
+  queryFn,
+  renderOption,
+  getOptionLabel,
+  getOptionId,
+  customFilter,
+}: TreeNodesProps<T>) {
+  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = queryFn(parentId);
+  const options = pageableToArray(data);
 
-  /** ✅ hook always called */
-  const childrenQuery = useChildrenQuery(item.id, open && hasChildren);
-  const children = pageableToArray(childrenQuery.data);
+  const filteredOptions = useMemo(() => {
+    return customFilter ? options.filter(customFilter) : options;
+  }, [options, customFilter]);
 
-  const { ref, inView } = useInView();
+  const { ref, inView } = useInView({ delay: 100 });
 
-  React.useEffect(() => {
-    if (inView && childrenQuery.hasNextPage) {
-      childrenQuery.fetchNextPage();
-    }
-  }, [inView, childrenQuery]);
+  useEffect(() => {
+    if (inView && hasNextPage) fetchNextPage();
+  }, [inView, fetchNextPage, hasNextPage]);
+
+  if (isLoading && level === 0) {
+    return (
+      <div className="flex justify-center py-3">
+        <Spinner />
+      </div>
+    );
+  }
+
+  if (filteredOptions.length === 0 && !hasNextPage && !isLoading && level === 0) {
+    return (
+      <div className="px-3 py-4 text-sm text-muted-foreground text-center">
+        <Inbox className="mx-auto h-8 w-8 opacity-50" />
+        <p className="mt-2">Нет элементов</p>
+      </div>
+    );
+  }
+
+  const paddingLeft = 32 + ((level - 1) * 16);
 
   return (
-    <div>
-      <button
-        role="button"
-        type="button"
-        className="flex w-full items-center gap-2 px-3 py-2 text-sm hover:bg-accent"
-        style={{ paddingLeft: 12 + level * 16 }}>
-        {/* 📁 ICON — only toggle */}
-        {hasChildren ? (
-          <div
-            onClick={(e) => {
-              e.stopPropagation();
-              setOpen(v => !v);
-            }}
-            className="h-4 w-4 shrink-0"
-          >
-            {open ? (
-              <FolderOpen className="h-4 w-4" />
-            ) : (
-              <Folder className="h-4 w-4" />
+    <>
+      {filteredOptions.map((option) => {
+        const id = getOptionId(option);
+        const hasChildren = (option as any)._count?.children > 0;
+        const isExpanded = expanded[id];
+        const isSelected = selectedId === id;
+
+        const handleIconClick = (e: React.MouseEvent) => {
+          e.stopPropagation();
+          if (hasChildren) {
+            setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
+          }
+        };
+
+        const handleSelectClick = () => {
+          onSelect(option);
+        };
+
+        const handleKeyDown = (e: React.KeyboardEvent) => {
+          if (e.key === " ") {
+            e.preventDefault();
+             if (hasChildren) {
+              setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
+            }
+          }
+        };
+
+        return (
+          <div key={id}>
+            <button
+              type="button"
+              onClick={handleSelectClick}
+              onKeyDown={handleKeyDown}
+              style={{ paddingLeft }}
+              className={cn(
+                "flex w-full items-center justify-between px-3 py-2 text-left text-sm hover:bg-accent hover:text-accent-foreground",
+              )}
+            >
+              <div className="flex items-center gap-2">
+                <div onClick={handleIconClick} className="shrink-0">
+                  {hasChildren ? (
+                    isExpanded ? (
+                      <FolderOpen className="h-4 w-4 shrink-0" />
+                    ) : (
+                      <Folder fill="var(--sidebar-primary-foreground)" className="h-4 w-4 shrink-0" />
+                    )
+                  ) : (
+                    <FolderX className="h-4 w-4 shrink-0 text-muted-foreground" />
+                  )}
+                </div>
+                {renderOption ? renderOption(option) : <span>{getOptionLabel(option)}</span>}
+              </div>
+
+              {!hasChildren && (
+                <Check className={cn("h-4 w-4 shrink-0", isSelected ? "opacity-100" : "opacity-0")} />
+              )}
+            </button>
+
+            {isExpanded && hasChildren && (
+              <TreeNodes
+                parentId={id}
+                level={level + 1}
+                expanded={expanded}
+                setExpanded={setExpanded}
+                onSelect={onSelect}
+                selectedId={selectedId}
+                queryFn={queryFn}
+                renderOption={renderOption}
+                getOptionLabel={getOptionLabel}
+                getOptionId={getOptionId}
+                customFilter={customFilter}
+              />
             )}
           </div>
-        ) : (
-          <span className="w-4 shrink-0" />
-        )}
+        );
+      })}
 
-        {/* 🏷 LABEL — always selectable */}
-        <div
-          onClick={() => onSelect(item)}
-          className="flex flex-1 items-center justify-between text-left"
-        >
-          <span className="truncate">
-            {getLabel(item)}
-          </span>
+      {isLoading && <div className="flex justify-center py-2">
+        <Spinner />
+      </div>}
 
-          <Check
-            className={cn(
-              "h-4 w-4 shrink-0",
-              selectedId === item.id ? "opacity-100" : "opacity-0"
-            )}
-          />
-        </div>
-      </button>
-
-
-      {open && hasChildren && (
-        <div>
-          {children.map((child: any) => (
-            <TreeNode
-              key={child.id}
-              item={child}
-              level={level + 1}
-              selectedId={selectedId}
-              onSelect={onSelect}
-              childrenField={childrenField}
-              useChildrenQuery={useChildrenQuery}
-              getLabel={getLabel}
-            />
-          ))}
-
-          {childrenQuery.isLoading && (
-            <div className="py-2">
-              <Spinner />
-            </div>
-          )}
-
-          {childrenQuery.hasNextPage && <div ref={ref} />}
-        </div>
+      {hasNextPage && (
+        <div ref={ref} className="flex justify-center py-2" />
       )}
-    </div>
+    </>
   );
 }
 
-/* =======================
-   TreeSelect
-======================= */
-
-export function TreeSelect<T extends BaseTreeItem>({
-  value,
-  onSelect,
-  placeholder = "Select",
+export function TreeSelect<T>({
   disabled,
+  placeholder = "Выберите элемент",
+  defaultValue,
+  minWidth,
+  onSelect,
   className,
-  childrenField,
-  useRootQuery,
-  useChildrenQuery,
-  getLabel = (item) => item.name ?? String(item.id),
+  dependsOn,
+  queryFn,
+  onRemove,
+  renderOption,
+  customFilter,
+  getOptionLabel = (option: any) => option.name || option.label || String(option),
+  getOptionId = (option: any) => option.id || String(option),
 }: TreeSelectProps<T>) {
-  const [open, setOpen] = React.useState(false);
-  const [search, setSearch] = React.useState("");
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState<T | null>(null);
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
 
-  /** root hook ALWAYS called */
-  const rootQuery = useRootQuery(open, search || undefined);
-  const rootItems = pageableToArray(rootQuery.data);
+  // Поддержка defaultValue как объекта
+  const resolvedDefaultValue = useMemo(() => {
+    if (!defaultValue) return null;
+    if (typeof defaultValue === "object" && defaultValue !== null) {
+      return defaultValue as T;
+    }
+    return null; // Если нужен поиск по ID — потребуется отдельный query
+  }, [defaultValue]);
+
+  useEffect(() => {
+    if (resolvedDefaultValue && !value) {
+      setValue(resolvedDefaultValue);
+    }
+  }, [resolvedDefaultValue, value]);
+
+  useEffect(() => {
+    if (dependsOn === null) {
+      setValue(null);
+      onSelect?.(null);
+      onRemove?.();
+    }
+  }, [dependsOn, onSelect, onRemove]);
+
+  const handleSelect = (option: T) => {
+    setValue(option);
+    setOpen(false);
+    onSelect?.(option);
+  };
+
+  const handleRemove = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setValue(null);
+    setOpen(false);
+    onSelect?.(null);
+    onRemove?.();
+  };
+
+  const selectedId = value ? getOptionId(value) : null;
 
   return (
-    <div className={cn("w-full", className)}>
+    <div className={cn("relative", minWidth ? "" : "w-full", className)}>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
-            type="button"
             variant="outline"
+            role="combobox"
+            type="button"
             disabled={disabled}
-            className="w-full justify-between"
+            aria-expanded={open}
+            onClick={() => setOpen(!open)}
+            className="border-input data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 flex w-full items-center justify-between gap-2 rounded-md border bg-transparent px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-9"
           >
-            <span className="truncate">
-              {value ? getLabel(value) : placeholder}
-            </span>
+            {value ? (
+              <span className="truncate font-normal">{getOptionLabel(value)}</span>
+            ) : (
+              <span className="text-muted-foreground font-normal">{placeholder}</span>
+            )}
 
             <div className="flex items-center gap-1">
               {value && (
-                <X
-                  className="h-4 w-4 opacity-50 hover:opacity-100"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onSelect?.(null);
-                  }}
-                />
+                <div onClick={handleRemove} className="cursor-pointer opacity-50 hover:opacity-100">
+                  <X className="h-4 w-4" />
+                </div>
               )}
-              <ChevronDown className="h-4 w-4 opacity-50" />
+              <ChevronDown
+                className={cn("h-4 w-4 shrink-0 opacity-50 transition-transform", open && "rotate-180")}
+              />
             </div>
           </Button>
         </PopoverTrigger>
 
-        <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0">
-          <div className="flex items-center border-b px-3 py-2">
-            <Search className="mr-2 h-4 w-4 opacity-50" />
-            <Input
-              placeholder="Search..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="border-0 bg-transparent p-0 focus-visible:ring-0"
+        <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
+          <div className="max-h-[300px] overflow-auto overflow-x-hidden overscroll-contain"
+            style={{ scrollBehavior: "smooth" }}
+            onWheel={(e) => {
+              e.stopPropagation();
+            }}
+            tabIndex={-1}>
+            <TreeNodes
+              parentId={null}
+              level={0}
+              expanded={expanded}
+              setExpanded={setExpanded}
+              onSelect={handleSelect}
+              selectedId={selectedId}
+              queryFn={queryFn}
+              renderOption={renderOption}
+              getOptionLabel={getOptionLabel}
+              getOptionId={getOptionId}
+              customFilter={customFilter}
             />
-          </div>
-
-          <div className="max-h-[260px] overflow-auto">
-            {rootItems.map((item: any) => (
-              <TreeNode
-                key={item.id}
-                item={item}
-                level={0}
-                selectedId={value?.id}
-                onSelect={(v) => {
-                  onSelect?.(v);
-                  setOpen(false);
-                  setSearch("");
-                }}
-                childrenField={childrenField}
-                useChildrenQuery={useChildrenQuery}
-                getLabel={getLabel}
-              />
-            ))}
-
-            {rootQuery.isFetching && (
-              <div className="p-2">
-                <Spinner />
-              </div>)}
           </div>
         </PopoverContent>
       </Popover>

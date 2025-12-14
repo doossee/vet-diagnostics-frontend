@@ -1,6 +1,5 @@
 "use client";
 
-import { routes } from "@/shared/constants/routes";
 import { useSearchQueryParams } from "@/shared/hooks/use-query-params";
 import { AnimalInfoTable } from "@/features/animals/components/info-tables/animal-info-table";
 import { DiseaseInfoTable } from "@/features/animals/components/info-tables/disease-info-table";
@@ -10,11 +9,12 @@ import { MucosaExamInfoTable } from "@/features/animals/components/info-tables/m
 import { UrineExamInfoTable } from "@/features/animals/components/info-tables/urine-exam-info-table";
 import { FecesExamInfoTable } from "@/features/animals/components/info-tables/feces-examp-info-table";
 import { ProphylaxisInfoTable } from "@/features/animals/components/info-tables/prophylaxis-info-table";
+import { PredictInfoTable } from "@/features/animals/components/info-tables/predict-info-table";
 
 export function AnimalDashboard({ id }: { id: string }) {
   const { setMany } = useSearchQueryParams();
   
-  const handleOpenRoute = (route: string, createNew: boolean = true) => {
+  const handleOpenRoute = (route: string, createNew?: boolean) => {
     setMany({ animalId: id, new: createNew }, route)
   }
 
@@ -24,15 +24,17 @@ export function AnimalDashboard({ id }: { id: string }) {
 
         <AnimalInfoTable id={id} />
 
+        <PredictInfoTable id={id} />
+
+        <FecesExamInfoTable id={id} onCreate={handleOpenRoute} />
+
         <DiseaseInfoTable id={id} onCreate={handleOpenRoute} />
 
         <MucosaExamInfoTable id={id} onCreate={handleOpenRoute} />
 
-        <UrineExamInfoTable id={id} onCreate={handleOpenRoute} />
-
-        <FecesExamInfoTable id={id} onCreate={handleOpenRoute} />
-
         <ProphylaxisInfoTable id={id} onCreate={handleOpenRoute} />
+
+        <UrineExamInfoTable id={id} onCreate={handleOpenRoute} />
 
         <ClinicExamInfoTable id={id} onCreate={handleOpenRoute} />
 

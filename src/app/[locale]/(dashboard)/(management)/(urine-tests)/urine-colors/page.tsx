@@ -5,14 +5,14 @@ import type { UrineColor } from "@/shared/types";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { useCrud } from "@/shared/hooks/use-crud";
 import { DataTable } from "@/shared/components/data-table";
+import { Modal } from "@/shared/components/elements/modal";
 import { createUrineColorColumns } from "@/entities/urine-colors";
 import { UrineColorForm, UrineColorSchema } from "@/features/urine-colors";
 import { useGetUrineColors } from "@/entities/urine-colors/services/queries";
 import { useCreateUrineColor, useDeleteUrineColor, useUpdateUrineColor } from "@/entities/urine-colors/services/mutations";
-import { Modal } from "@/shared/components/elements/modal";
 
 export default function UrineColors() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
 
   const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<UrineColor, UrineColorSchema, UrineColorSchema>({
     createMutation: useCreateUrineColor,
@@ -20,7 +20,7 @@ export default function UrineColors() {
     removeMutation: useDeleteUrineColor,
   });
 
-  const columns = useMemo(() => createUrineColorColumns(handleEditItem, handleDelete, t), [handleEditItem, handleDelete]);
+  const columns = useMemo(() => createUrineColorColumns(handleEditItem, handleDelete, t, locale), [handleEditItem, handleDelete, locale]);
 
   return (
     <div>

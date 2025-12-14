@@ -1,5 +1,4 @@
 import { Edit, Trash } from "lucide-react";
-// import { GENDERS } from "@/shared/constants";
 import { LanguageLocales, User } from "@/shared/types";
 import { Button } from "@/shared/components/ui/button";
 
@@ -8,7 +7,7 @@ export const createUserColumns = (handleEditItem: (item: User) => void, handleDe
     title: t("form.name"),
     key: "name",
     render(item: User) {
-      return `${item.firstName} ${item.lastName}`;
+      return `${item?.firstName} ${item?.lastName}`;
     },
   },
   {
@@ -19,48 +18,33 @@ export const createUserColumns = (handleEditItem: (item: User) => void, handleDe
     },
   },
   {
-    title: "Email",
+    title: "Электронная почта",
     key: "email",
     render(item: User) {
       return item.email;
     },
   },
   {
-    title: "Username",
+    title: "Имя пользователтя (Логин)",
     key: "username",
     render(item: User) {
       return item.username;
     },
   },
-  // {
-  //   title: t("form.address"),
-  //   key: "address",
-  //   render(item: User) {
-  //     return item.address;
-  //   },
-  // },
-  // {
-  //   title: t("form.gender"),
-  //   key: "gender",
-  //   sorting: "byGender",
-  //   render(item: User) {
-  //     return GENDERS.find((g) => g.value === item.gender)?.[locale];
-  //   },
-  // },
-  // {
-  //   title: t("form.birthDate"),
-  //   key: "birthdate",
-  //   sorting: "byBirthDate",
-  //   render(item: User) {
-  //     return new Date(item.birthDate!).toDateString();
-  //   },
-  // },
   {
     title: t("form.districtName"),
     key: "district",
-    sorting: "byDistrictId",
+    // sorting: "byDistrictId",
     render(item: User) {
       return item.district?.[`name_${locale}`];
+    },
+  },
+  {
+    title: "Дата создание",
+    key: "createdDate",
+    sorting: "byCreatedDate",
+    render(item: User) {
+      return new Date(item.createdAt).toLocaleString();
     },
   },
   {

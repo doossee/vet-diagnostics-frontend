@@ -1,10 +1,9 @@
-import { Region } from "@/shared/types";
+import { LanguageLocales, Region } from "@/shared/types";
 import { Edit, Trash } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 
-export const createRegionColumns = (handleEditItem: (item: Region) => void, handleDelete: (id: number) => void, t: any) => [
-  { title: t("form.regionName")+" RU", key: "name_ru" },
-  { title: t("form.regionName")+" UZ", key: "name_uz" },
+export const createRegionColumns = (handleEditItem: (item: Region) => void, handleDelete: (id: number) => void, t: any, locale: LanguageLocales) => [
+  { title: t("form.regionName"), key: `name_${locale}` },
   {
     title: t("regions.countOfDistricts"),
     key: "districts",

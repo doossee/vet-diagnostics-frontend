@@ -9,9 +9,12 @@ export const prophylaxisItemValues = {
 
 export const createProphylaxisItemSchema = (_: any) =>
   z.object({
-    name_ru: z.string(),
-    name_uz: z.string(),
-    type: z.enum(PROPHYLAXIS_TYPES_ARRAY),
+    name_ru: z.string().min(1, "Введите название на русском языке"),
+    name_uz: z.string().min(1, "Введите название на узбекском языке"),
+    type: z.enum(PROPHYLAXIS_TYPES_ARRAY, {
+      required_error: "Выберите cпецифическая профилактики",
+      invalid_type_error: "Специфическая профилактики выбран некорректно",
+    }),
   });
 
 export type ProphylaxisItemSchema = z.infer<ReturnType<typeof createProphylaxisItemSchema>>;

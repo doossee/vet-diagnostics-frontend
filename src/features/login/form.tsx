@@ -1,13 +1,13 @@
 "use client";
 
-import { toast } from "sonner";
 import { useForm } from "react-hook-form";
+import { UserRole } from "@/shared/types";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/shared/i18n/routing";
-import { TOAST_OPTIONS } from "@/shared/constants";
-import { routes } from "@/shared/constants/routes";
 import { Input } from "@/shared/components/ui/input";
+import { navLinksVariant } from "@/shared/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { createToast } from "@/shared/hooks/use-toast";
 import { Button } from "@/shared/components/ui/button";
 import { useAuthData } from "@/shared/hooks/use-auth-data";
 import { useLogin } from "@/entities/auth/services/mutations";
@@ -33,16 +33,14 @@ export function LoginForm() {
       setAuthData(refreshToken, "REFRESH_TOKEN");
       setAuthData(JSON.stringify(user), "USER_DATA");
 
-      if (user.role === "SUPER_ADMIN") {
-        router.push(routes.ANIMAL_TYPES);
-      } else if (user.role === "VETERINARIAN") {
-        router.push(routes.FARMERS);
-      } else if (user.role === "FARMER") {
-        router.push(routes.ANIMALS.INDEX);
-      }
+      
+      const firstLink = navLinksVariant[user.role as UserRole]?.[0];
+      const link = firstLink.items ? firstLink.items?.[0]?.url! : firstLink?.url!
+
+      router.push(link);
     } catch (error) {
       console.log(error);
-      toast(t("login.authError"), TOAST_OPTIONS);
+      createToast(t("login.authError"), "WARNING");
     }
   };
 
@@ -59,10 +57,10 @@ export function LoginForm() {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t("login.phone")}</FormLabel> 
+                  <FormLabel>{"Имя пользователтя (Логин)"}</FormLabel> 
                   {/* username */}
                   <FormControl>
-                    <Input placeholder="Login" {...field} />
+                    <Input placeholder="Имя пользователтя (Логин)" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

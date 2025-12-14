@@ -24,9 +24,9 @@ export default function DungForms() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetDungForms} topSlot={createButton(t("management.urineColorCreate"))} />
+      <DataTable columns={columns} queryFunction={useGetDungForms} topSlot={createButton("Создать формы кала")} />
 
-      <Modal open={dialog} onClose={handleClose} title={t(editedItem ? "management.editColor" : "management.createColor")}>
+      <Modal open={dialog} onClose={handleClose} title={editedItem ? "Изменить формы кала" : "Создать формы кала"}>
         <AdditionalCrudForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : (undefined as any)} />
       </Modal>
     </div>

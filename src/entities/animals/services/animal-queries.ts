@@ -2,12 +2,20 @@ import { Animal, PaginatedEntity } from "@/shared/types";
 import { AnimalQueryKeys } from "../utils/constants/query-keys";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { paramsToQueryKeys } from "@/shared/helpers/params-to-keys";
-import { animalsControllerFindOne, animalsControllerFindAll } from "@/shared/api";
+import { animalControllerFindPredict, animalControllerFindAll, animalControllerFindOne } from "@/shared/api/api-new";
 
 export function useGetAnimal(id: string, enabled?: boolean) {
   return useQuery<Animal, Error>({
     queryKey: [AnimalQueryKeys.ANIMALS, id],
-    queryFn: async () => animalsControllerFindOne(id) as Promise<Animal>,
+    queryFn: async () => animalControllerFindOne(id) as Promise<Animal>,
+    enabled,
+  });
+}
+
+export function useGetAnimalPredict(id: string, enabled?: boolean) {
+  return useQuery<Record<number, number>, Error>({
+    queryKey: [AnimalQueryKeys.ANIMALS_PREDICT_INFO, id],
+    queryFn: async () => animalControllerFindPredict(id) as Promise<Record<number, number>>,
     enabled,
   });
 }
@@ -15,7 +23,7 @@ export function useGetAnimal(id: string, enabled?: boolean) {
 export function useGetAnimals(params: Record<string, unknown>, enabled?: boolean) {
   return useQuery<PaginatedEntity<Animal>, Error>({
     queryKey: [AnimalQueryKeys.ANIMALS, ...paramsToQueryKeys(params)],
-    queryFn: async () => animalsControllerFindAll(params) as Promise<PaginatedEntity<Animal>>,
+    queryFn: async () => animalControllerFindAll(params) as Promise<PaginatedEntity<Animal>>,
     enabled,
   });
 }
@@ -23,7 +31,7 @@ export function useGetAnimals(params: Record<string, unknown>, enabled?: boolean
 export function useGetAnimalsInfinite(search?: string) {
   return useInfiniteQuery({
     queryKey: [AnimalQueryKeys.ANIMALS_SELECT, search],
-    queryFn: (params) => animalsControllerFindAll(params.pageParam) as Promise<PaginatedEntity<Animal>>,
+    queryFn: (params) => animalControllerFindAll(params.pageParam) as Promise<PaginatedEntity<Animal>>,
     initialPageParam: { page: 1, perPage: 20, ...(search && { search }) },
     getNextPageParam: (lastPage) => {
       const nextPage = (lastPage?.meta?.currentPage ?? 0) + 1;
@@ -37,6 +45,5 @@ export function useGetAnimalsInfinite(search?: string) {
           }
         : null;
     },
-    staleTime: 20 * 60 * 1000, // 20 minutes
   });
 }

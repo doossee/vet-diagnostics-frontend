@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/shared/components/ui/tabs";
 import { PROPHYLAXIS_TYPES, PROPHYLAXIS_TYPES_ARRAY } from "@/entities/prophylaxis/utils/constants/prophylaxis-types";
 import { useSearchQueryParams } from "@/shared/hooks/use-query-params";
@@ -9,8 +9,10 @@ export function ProphylaxisSegmented() {
   const { t } = useI18n();
   const { get, set, remove } = useSearchQueryParams()
   const [segmented, setSegmented] = useState<string>('all')
-
+  
   const paramKey = PROPHYLAXIS_QUERY_PARAM_KEYS.type
+
+  const type = get(paramKey)
 
   const options = [
     { key: 'all', value: t("inspections.all") },
@@ -24,6 +26,10 @@ export function ProphylaxisSegmented() {
 
     setSegmented(value)
   }
+
+  useEffect(() => {
+    if(type) setSegmented(String(type))
+  }, [type])
 
   return (
     <div className="mb-2">

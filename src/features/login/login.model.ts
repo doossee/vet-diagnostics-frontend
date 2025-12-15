@@ -7,7 +7,7 @@ export const loginValues = {
 
 export const createLoginSchema = (t: any) =>
   z.object({
-    username: z.string().min(1, t("login.phoneRequired")), // TODO: username
+    username: z.string().min(1, "Введите имя пользователя"), // TODO: username
     password: z.string().min(6, t("login.passwordRequired")),
   });
 

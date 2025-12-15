@@ -51,9 +51,9 @@
   "login": {
     "title": "Вход в систему",
     "phone": "Номер телефона",
-    "phoneRequired": "Необходимо ввести номер телефона",
+    "phoneRequired": "Введите имя пользователя",
     "password": "Пароль",
-    "passwordRequired": "Пароль должен быть не менее 8 символов",
+    "passwordRequired": "Поле пароля обязательно.",
     "authError": "Неверный логин или пароль",
     "submit": "Войти"
   },
@@ -305,7 +305,7 @@
 
     "districtRequired": "Район обязателен для выбора",
     "districtNameRequired": "Название района обязательно для заполнения",
-    "passwordRequired": "Пароль не должен быть короче 8 символов",
+    "passwordRequired": "Пароль не должен быть короче 6 символов",
     "confirmPasswordRequired": "Пароли должны совпадать",
 
     "arrivalDateRequired": "Дата прибытия обязательна для заполнения",

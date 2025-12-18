@@ -5,10 +5,11 @@ import { Button } from "@/shared/components/ui/button";
 import { Textarea } from "@/shared/components/ui/textarea";
 import { MUCOSA_TYPES } from "@/entities/eye-lid/utils/constants/mucosa-types";
 import { ObjectEntriesSelect } from "@/shared/components/object-entries-select";
-import { AnimalTypeSelect } from "../animal-types/components/animal-type-select";
 import { EyeLidSchema, createEyeLidSchema, eyeLidValues } from "./eye-lid.model";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 import { AnimalTypeTreeSelect } from "../animal-types/components/animal-type-tree-select";
+import { useEffect, useState } from "react";
+import { AnimalType } from "@/shared/types";
 
 interface EyeLidFormProps {
   defaultValues?: EyeLidSchema;
@@ -17,11 +18,18 @@ interface EyeLidFormProps {
 
 export function EyeLidForm({ onSubmit, defaultValues }: EyeLidFormProps) {
   const { t, locale } = useI18n();
+  const [animalType, setAnimalType] = useState<AnimalType|null>(null);
 
   const form = useForm<EyeLidSchema>({
     resolver: zodResolver(createEyeLidSchema(t)),
     defaultValues: defaultValues || eyeLidValues,
   });
+
+  useEffect(() => {
+    if((defaultValues as any)?.animalType) {
+      setAnimalType((defaultValues as any)?.animalType)
+    }
+  }, [defaultValues]);
 
   return (
     <Form {...form}>
@@ -33,7 +41,7 @@ export function EyeLidForm({ onSubmit, defaultValues }: EyeLidFormProps) {
             <FormItem>
               <FormLabel>{t("animals.animalType")}</FormLabel>
               <FormControl>
-                <AnimalTypeTreeSelect placeholder={t("animals.animalType")} value={field.value} onChange={field.onChange} />
+                <AnimalTypeTreeSelect placeholder={t("animals.animalType")} value={animalType} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>

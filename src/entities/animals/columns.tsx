@@ -56,6 +56,7 @@ export const createAnimalColumns = (handleEditItem: (item: Animal) => void, hand
     hideInInfoTable: true,
     title: t("table.actions"),
     key: "actions",
+    stopPropagationOnClick: true,
     render(item: Animal) {
       return (
         <div className="flex gap-2 items-center flex-wrap md:flex-nowrap justify-end md:justify-start" onClick={(event) => event.stopPropagation()}>

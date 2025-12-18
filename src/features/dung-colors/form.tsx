@@ -8,6 +8,8 @@ import { AnimalTypeSelect } from "../animal-types/components/animal-type-select"
 import { DungColorSchema, createDungColorSchema, dungColorValues } from "./dung-color";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 import { AnimalTypeTreeSelect } from "../animal-types/components/animal-type-tree-select";
+import { useEffect, useState } from "react";
+import { AnimalType } from "@/shared/types";
 
 interface DungColorFormProps {
   defaultValues?: DungColorSchema;
@@ -16,11 +18,18 @@ interface DungColorFormProps {
 
 export function DungColorForm({ onSubmit, defaultValues }: DungColorFormProps) {
   const { t } = useI18n();
+  const [animalType, setAnimalType] = useState<AnimalType|null>(null);
 
   const form = useForm<DungColorSchema>({
     resolver: zodResolver(createDungColorSchema(t)),
     defaultValues: defaultValues || dungColorValues,
   });
+
+  useEffect(() => {
+    if((defaultValues as any)?.animalType) {
+      setAnimalType((defaultValues as any)?.animalType)
+    }
+  }, [defaultValues]);
 
   return (
     <Form {...form}>
@@ -58,7 +67,7 @@ export function DungColorForm({ onSubmit, defaultValues }: DungColorFormProps) {
             <FormItem>
               <FormLabel>{t("management.colorName")}</FormLabel>
               <FormControl>
-                <AnimalTypeTreeSelect placeholder={t("animals.animalType")} value={field.value} onChange={field.onChange} />
+                <AnimalTypeTreeSelect placeholder={t("animals.animalType")} value={animalType} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>

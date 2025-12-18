@@ -6,6 +6,8 @@ import { Textarea } from "@/shared/components/ui/textarea";
 import { UrineColorSchema, createUrineColorSchema, urineColorValues } from "./urine-color";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 import { AnimalTypeTreeSelect } from "../animal-types/components/animal-type-tree-select";
+import { useEffect, useState } from "react";
+import { AnimalType } from "@/shared/types";
 
 interface UrineColorFormProps {
   defaultValues?: UrineColorSchema;
@@ -14,11 +16,18 @@ interface UrineColorFormProps {
 
 export function UrineColorForm({ onSubmit, defaultValues }: UrineColorFormProps) {
   const { t } = useI18n();
+  const [animalType, setAnimalType] = useState<AnimalType|null>(null);
 
   const form = useForm<UrineColorSchema>({
     resolver: zodResolver(createUrineColorSchema(t)),
     defaultValues: defaultValues || urineColorValues,
   });
+  
+  useEffect(() => {
+    if((defaultValues as any)?.animalType) {
+      setAnimalType((defaultValues as any)?.animalType)
+    }
+  }, [defaultValues]);
 
   return (
     <Form {...form}>
@@ -56,7 +65,7 @@ export function UrineColorForm({ onSubmit, defaultValues }: UrineColorFormProps)
             <FormItem>
               <FormLabel>{t("animals.animalType")}</FormLabel>
               <FormControl>
-                <AnimalTypeTreeSelect placeholder={t("animals.animalType")} value={field.value} onChange={field.onChange} />
+                <AnimalTypeTreeSelect placeholder={t("animals.animalType")} value={animalType} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>

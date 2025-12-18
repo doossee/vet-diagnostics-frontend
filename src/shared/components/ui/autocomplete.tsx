@@ -188,7 +188,7 @@ export function Autocomplete<T>({
   // TODO: bg
   return (
     <div className={cn("relative", minWidth ? "" : "w-full", className)}>
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover modal={false} open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button variant="outline" role="combobox" type="button" disabled={disabled} aria-expanded={open} onClick={toggleDropdown}
             // className="w-full justify-between p-3 bg-input! border-input!"
@@ -210,7 +210,7 @@ export function Autocomplete<T>({
             </div>
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
+        <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start" sideOffset={5} onTouchStart={(e) => e.stopPropagation()} onTouchMove={(e) => e.stopPropagation()}>
           {!hideSearch && (
             <div className="flex items-center border-b px-3 py-2">
               <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
@@ -220,15 +220,21 @@ export function Autocomplete<T>({
           )}
 
           <div
-            className="max-h-[200px] overflow-auto overscroll-contain"
-            style={{ scrollBehavior: "smooth" }}
+            className="max-h-[200px] overflow-auto"
+            // style={{
+            //   scrollBehavior: "smooth"
+            // }}
             onWheel={(e) => {
               e.stopPropagation();
             }}
-            tabIndex={-1}>
+            // tabIndex={-1}
+            style={{
+              WebkitOverflowScrolling: 'touch',
+              touchAction: 'pan-y',
+            }}
+            >
             {allOptions.length === 0 && !isLoading && (
               <div className="px-3 py-2 text-sm text-muted-foreground text-center">
-                {/* <span>No Data.</span> */}
                 <Inbox className="mx-auto" />
               </div>
             )}

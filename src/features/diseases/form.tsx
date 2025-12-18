@@ -7,6 +7,8 @@ import { DiseaseSchema, createDiseaseSchema, diseaseValues } from "./disease.mod
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 // import { DiseaseTypeSelect } from "../disease-types/components/disease-type-select";
 import { DiseaseTypeTreeSelect } from "../disease-types/components/disease-type-tree-select";
+import { useEffect, useState } from "react";
+import { DiseaseCategory } from "@/shared/types";
 // import { DiseaseTypeTreeSelect } from "../disease-types/components/disease-type-tree-select";
 
 interface DiseaseFormProps {
@@ -16,11 +18,18 @@ interface DiseaseFormProps {
 
 export function DiseaseForm({ onSubmit, defaultValues }: DiseaseFormProps) {
   const { t } = useI18n();
+  const [type, setType] = useState<DiseaseCategory|null>(null);
 
   const form = useForm<DiseaseSchema>({
     resolver: zodResolver(createDiseaseSchema(t)),
     defaultValues: defaultValues ? defaultValues : diseaseValues,
   });
+
+  useEffect(() => {
+    if((defaultValues as any)?.diseaseCategory) {
+      setType((defaultValues as any)?.diseaseCategory)
+    }
+  }, [defaultValues]);
 
   return (
     <Form {...form}>
@@ -58,7 +67,7 @@ export function DiseaseForm({ onSubmit, defaultValues }: DiseaseFormProps) {
             <FormItem>
               <FormLabel>Заболевания</FormLabel>
               <FormControl>
-                <DiseaseTypeTreeSelect placeholder={"Заболевания"} value={field.value} onChange={field.onChange} />
+                <DiseaseTypeTreeSelect placeholder={"Заболевания"} value={type} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>

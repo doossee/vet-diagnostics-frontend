@@ -3,9 +3,6 @@ import { ANIMAL_GENDERS } from "./utils/constants/animal-genders";
 import { queryParamKeys } from './utils/constants/query-param-keys';
 import { FiltersWrapper } from "@/shared/components/filters-wrapper";
 import { useSearchQueryParams } from "@/shared/hooks/use-query-params";
-import { BreedSelect } from "@/features/breeds/components/breed-select";
-import { AnimalTypeSelect } from "@/features/animal-types/components/animal-type-select";
-import { AnimalColorSelect } from "@/features/animal-colors/components/animal-color-select";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
 import { AnimalTypeTreeSelect } from "@/features/animal-types/components/animal-type-tree-select";
 
@@ -16,8 +13,6 @@ export function AnimalFilters() {
 
   const gender = get(queryParamKeys.GENDER) as string
   const typeId = get(queryParamKeys.TYPE_ID)
-  // const breedId = get(queryParamKeys.BREED_ID)
-  // const colorId = get(queryParamKeys.COLOR_ID)
 
   return (
     <FiltersWrapper>
@@ -37,10 +32,6 @@ export function AnimalFilters() {
             ))}
           </SelectContent>
         </Select>
-
-        {/* <BreedSelect onRemove={() => remove(queryParamKeys.BREED_ID)} placeholder={t("filters.byBreed")} value={breedId} onChange={e => set(queryParamKeys.BREED_ID, e)} /> */}
-
-        {/* <AnimalColorSelect onRemove={() => remove(queryParamKeys.COLOR_ID)} placeholder={t("filters.byColor")} value={colorId} onChange={e => set(queryParamKeys.COLOR_ID, e)} /> */}
       </div>
     </FiltersWrapper>
   );

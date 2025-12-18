@@ -142,9 +142,9 @@ function TreeNodes<T>({
                 {renderOption ? renderOption(option) : <span>{getOptionLabel(option)}</span>}
               </div>
 
-              {!hasChildren && (
-                <Check className={cn("h-4 w-4 shrink-0", isSelected ? "opacity-100" : "opacity-0")} />
-              )}
+              {/* {!hasChildren && ( */}
+              <Check className={cn("h-4 w-4 shrink-0", isSelected ? "opacity-100" : "opacity-0")} />
+              {/* )} */}
             </button>
 
             {isExpanded && hasChildren && (
@@ -203,6 +203,20 @@ export function TreeSelect<T>({
       return defaultValue as T;
     }
     return null; // Если нужен поиск по ID — потребуется отдельный query
+  }, [defaultValue]);
+
+  useEffect(() => {
+    if (defaultValue == null) {
+      setValue(null);
+      return;
+    }
+
+    if (typeof defaultValue === "object") {
+      setValue(defaultValue as T);
+      return;
+    }
+
+    setValue(null);
   }, [defaultValue]);
 
   useEffect(() => {
@@ -268,13 +282,15 @@ export function TreeSelect<T>({
           </Button>
         </PopoverTrigger>
 
-        <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
+        <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start" sideOffset={5} onTouchStart={(e) => e.stopPropagation()} onTouchMove={(e) => e.stopPropagation()}>
           <div className="max-h-[300px] overflow-auto overflow-x-hidden overscroll-contain"
-            style={{ scrollBehavior: "smooth" }}
             onWheel={(e) => {
               e.stopPropagation();
             }}
-            tabIndex={-1}>
+            style={{
+              WebkitOverflowScrolling: 'touch',
+              touchAction: 'pan-y',
+            }}>
             <TreeNodes
               parentId={null}
               level={0}

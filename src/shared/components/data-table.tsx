@@ -20,11 +20,13 @@ import { ArrowLeft, ArrowRight, MoveUp, MoveDown, ListFilter } from "lucide-reac
 import { Popover, PopoverTrigger, PopoverContent } from "@/shared/components/ui/popover";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
+import { stopPropagation } from "../helpers/stop-propogation";
 
 interface DataTableColumn<T> {
   title: string;
   hide?: boolean;
   sorting?: string;
+  stopPropagationOnClick?: boolean
   key: string | keyof T;
   hideTitleInMobile?: boolean;
   render?: (item: T) => ReactNode;
@@ -174,7 +176,7 @@ export function DataTable<T extends { id: any }>({ onRowClick, columns, topSlot,
               <Card key={i} className={cn("shadow-none rounded p-0 bg-card border", !!onRowClick ? "cursor-pointer hover:bg-card" : "")} onClick={() => !!onRowClick && onRowClick(item, i)}>
                 <CardContent className="p-2 py-1 divide-y">
                   {columns.map((col, i) => (
-                    <div key={i} className="w-full p-2">
+                    <div key={i} className="w-full p-2" onClick={col?.stopPropagationOnClick ? stopPropagation : () => {}} >
                       <div className="flex w-full gap-2 items-start justify-between">
                         {!col.hideTitleInMobile && <b className="text-sm">{col.title}:</b>}
                         <SkeletonWrapper loading={isLoading}>

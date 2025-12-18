@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { useForm } from "react-hook-form";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { Input } from "@/shared/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,6 +13,7 @@ import { ANIMAL_GENDERS } from "@/entities/animals/utils/constants/animal-gender
 import { AnimalTypeTreeSelect } from "../animal-types/components/animal-type-tree-select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
+import { AnimalType } from "@/shared/types";
 
 interface AnimalFormProps {
   showFarmer: boolean;
@@ -23,7 +24,8 @@ interface AnimalFormProps {
 
 export function AnimalForm({ onSubmit, defaultValues, submitRightContent }: AnimalFormProps) {
   const { t, locale } = useI18n();
-
+  const [animalType, setAnimalType] = useState<AnimalType|null>(null);
+  
   const form = useForm<AnimalSchema>({
     resolver: zodResolver(createAnimalSchema(t)),
     defaultValues: defaultValues
@@ -33,6 +35,12 @@ export function AnimalForm({ onSubmit, defaultValues, submitRightContent }: Anim
         }
       : (animalValues as any),
   });
+
+  useEffect(() => {
+    if((defaultValues as any)?.animalType) {
+      setAnimalType((defaultValues as any)?.animalType)
+    }
+  }, [defaultValues]);
 
   return (
     <Form {...form}>
@@ -45,7 +53,7 @@ export function AnimalForm({ onSubmit, defaultValues, submitRightContent }: Anim
               <FormItem>
                 <FormLabel>{t("animals.animalType")}</FormLabel>
                 <FormControl>
-                  <AnimalTypeTreeSelect placeholder={t("animals.animalType")} value={field.value} onChange={field.onChange} parentId={null} />
+                  <AnimalTypeTreeSelect placeholder={t("animals.animalType")} value={animalType} onChange={field.onChange} parentId={null} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

@@ -1,7 +1,7 @@
 "use client";
 
 import { ExternalLink, Plus } from "lucide-react";
-import { JSX, ReactNode, useMemo } from "react";
+import { ReactNode, useMemo } from "react";
 
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { LanguageLocales } from "@/shared/types";

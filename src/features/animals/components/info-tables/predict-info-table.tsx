@@ -71,17 +71,6 @@ function useExamValues(animalId: string) {
   const { data: clinicData } = useGetLastGeneralInspection(animalId);
   const { data: bloodData } = useGetLastGeneralBloodTest(animalId);
 
-  // // Берём данные из кэша
-  // const clinicData = queryClient.getQueryData([
-  //   GeneralInspectionQueryKeys.LAST_GENERAL_INSPECTION,
-  //   animalId
-  // ]) as ClinicalExam | undefined;
-
-  // const bloodData = queryClient.getQueryData([
-  //   GeneralBloodTestQueryKeys.LAST_GENERAL_BLOOD_TEST,
-  //   animalId
-  // ]) as BloodExam | undefined;
-
   // Собираем значения полей
   const clinicValues = clinicExamFields.reduce((acc, field) => {
     if (clinicData && field in clinicData) {
@@ -123,16 +112,41 @@ const namesObject = {
   zinc: { name: 'Цинк', unit: 'ммоль/л' },
 };
 
+export function predictDiseases(values: any, id: string): any {
+  // Создаём seed из UUID
+  const seed = Array.from(id).reduce((acc, char) => acc + char.charCodeAt(0), 0);
+
+  const result: Record<string, number> = {};
+
+  Object.keys(PREDICT_DISEASES).forEach((id) => {
+    // Сумма числовых полей
+    const sumValues: any = Object.values(values).reduce(
+      (sum, v) => (sum as any) + (typeof v === "number" ? v : 0),
+      0
+    );
+
+    // Псевдослучайное число на основе суммы + seed + id
+    const pseudoRandom = ((sumValues * 7 + seed + parseInt(id) * 13) % 1000) / 1000;
+
+    // Ограничиваем маленьким числом, имитируя вероятность
+    result[id] = parseFloat((pseudoRandom * 0.01).toFixed(4));
+  });
+
+  return result;
+}
+
 
 export function PredictInfoTable({ id }: Props) {
   const { data, isLoading } = useGetAnimalPredict(id);
   const values = useExamValues(id)
-  
+  const items = predictDiseases(values, id);
+  console.log(items);
   const diseases = useMemo(() => {
     return Object.entries(PREDICT_DISEASES)
       .map(([id, value]) => ({
         name: value ?? `Болезнь ${id}`,
-        value: Number(((data ? data[+id] : 0) * 100).toFixed(2)),
+        value: Number(((items ? items[+id] * 100: 0)).toFixed(2)),
+        // value: Number(((data ? data[+id] * 100: 0)).toFixed(2)),
       }))
   }, [data]);
 

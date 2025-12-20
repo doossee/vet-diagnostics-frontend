@@ -21,7 +21,7 @@ export function useUpdateAnimal() {
   const client = useQueryClient();
 
   return useMutation<any, any, UpdateBody<AnimalSchema>>({
-    mutationFn: async ({ id, body }) => animalsControllerUpdate(+id, body),
+    mutationFn: async ({ id, body }) => animalsControllerUpdate(id, body),
     onSuccess: (data) => {
       updateQueryData<Color>(client, [AnimalQueryKeys.ANIMALS], data);
       // client.invalidateQueries({ queryKey: [AnimalColorQueryKeys.ANIMAL_COLORS] })

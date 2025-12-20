@@ -140,7 +140,7 @@ export function PredictInfoTable({ id }: Props) {
   const { data, isLoading } = useGetAnimalPredict(id);
   const values = useExamValues(id)
   const items = predictDiseases(values, id);
-  console.log(items);
+
   const diseases = useMemo(() => {
     return Object.entries(PREDICT_DISEASES)
       .map(([id, value]) => ({

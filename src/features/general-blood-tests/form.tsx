@@ -69,7 +69,7 @@ export function GeneralBloodTestForm({ onSubmit, defaultValues, animalId }: Gene
           <Fragment key={key}>
             {index === 0 && <Divider label={t("inspections.morphologicalBloodExamination")} icon={<Droplet />} className="col-span-1 md:col-span-2 lg:col-span-3" />}
             {index === 8 && <Divider label={t("inspections.bloodSerumExamination")} icon={<FlaskRound />} className="col-span-1 md:col-span-2 lg:col-span-3" />}
-            {index === 35 && <Divider label={"Микроэлементы"} icon={<Droplets />} className="col-span-1 md:col-span-2 lg:col-span-3" />}
+            {index === 35 && <Divider label={t("inspections.microelements")} icon={<Droplets />} className="col-span-1 md:col-span-2 lg:col-span-3" />}
             <FormField
               name={key}
               control={form.control}

@@ -284,7 +284,25 @@
     "specificProphylaxis": "Maxsus profilaktika",
     "name": "Nomi",
     "child": "Tugunlar",
-    "all": "Barchasi"
+    "all": "Barchasi",
+    "microelements": "Mikroelementlar",
+    "rumenFluid": "Qorin suyuqligi",
+    "rumenInfusoriaCount": "Qorindagi infuzoriyalar soni - 1000/ml",
+    "rumenFluidState": "Qorin suyuqligi holati (Rametrom)",
+    "prophylaxisItem": "Profilaktika elementi",
+    "prophylaxisDetail": "Profilaktika tafsiloti",
+    "diseaseTypeName": "Kasallik turi nomi",
+    "parentDiseaseType": "Ota kasallik turi",
+    "diseaseName": "Nomi",
+    "diseases": "Kasalliklar",
+    "parentType": "Ota turi",
+    "itemName": "Element nomi",
+    "email": "Elektron pochta",
+    "username": "Foydalanuvchi nomi (Login)",
+    "createdDate": "Yaratilgan sana",
+    "currentPassword": "Joriy parol",
+    "newPassword": "Yangi parol",
+    "confirmNewPassword": "Yangi parolni tasdiqlang"
   },
   "required": {
     "breedNameRequired": "Zot nomi kiritilishi shart",
@@ -346,5 +364,30 @@
     "title": "Maʼlumot topilmadi",
     "description": "Ushbu sahifada hozircha maʼlumot yo‘q. Siz yangi yozuv qo‘shishingiz yoki sahifani yangilashingiz mumkin."
   },
-  "show": "Ko'rish"
+  "show": "Ko'rish",
+  "pages": {
+    "createProphylaxisMeasures": "Profilaktika choralarini yaratish",
+    "editProphylaxisMeasures": "Profilaktika choralarini o'zgartirish",
+    "createDiseaseType": "Kasallik turini yaratish",
+    "editDiseaseType": "Kasallik turini o'zgartirish",
+    "createProphylaxisDetails": "Profilaktika tafsilotlarini yaratish",
+    "editProphylaxisDetails": "Profilaktika tafsilotlarini o'zgartirish",
+    "createProphylaxisItem": "Profilaktika elementini yaratish",
+    "editProphylaxisItem": "Profilaktika elementini o'zgartirish",
+    "createDungSmell": "Tezak hidini yaratish",
+    "editDungSmell": "Tezak hidini o'zgartirish",
+    "createDungConsistency": "Tezak konsistensiyasini yaratish",
+    "editDungConsistency": "Tezak konsistensiyasini o'zgartirish",
+    "createDungForm": "Tezak shaklini yaratish",
+    "editDungForm": "Tezak shaklini o'zgartirish",
+    "createUrineSmell": "Siydik hidini yaratish",
+    "editUrineSmell": "Siydik hidini o'zgartirish",
+    "createUrineConsistency": "Siydik konsistensiyasini yaratish",
+    "editUrineConsistency": "Siydik konsistensiyasini o'zgartirish",
+    "createUrineClarity": "Siydik tiniqligini yaratish",
+    "editUrineClarity": "Siydik tiniqligini o'zgartirish",
+    "urineClarityNameTitle": "Siydik tiniqligi nomi",
+    "aiPredictionResult": "AI kasallik prognozi natijasi",
+    "mostLikelyDisease": "Eng ehtimolli kasallik"
+  }
 }

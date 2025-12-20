@@ -24,9 +24,9 @@ export default function ProphylaxisDetails() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetProphylaxisDetails} topSlot={createButton("Создать детали профилактики")} />
+      <DataTable columns={columns} queryFunction={useGetProphylaxisDetails} topSlot={createButton(t("pages.createProphylaxisDetails"))} />
 
-      <Modal open={dialog} onClose={handleClose} title={editedItem ? "Изменить детали профилактики" : "Создать детали профилактики"}>
+      <Modal open={dialog} onClose={handleClose} title={editedItem ? t("pages.editProphylaxisDetails") : t("pages.createProphylaxisDetails")}>
         <ProphylaxisDetailsForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : (undefined as any)} />
       </Modal>
     </div>

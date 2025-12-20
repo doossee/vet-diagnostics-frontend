@@ -24,12 +24,12 @@ export default function UrineClarities() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetUrineClarities} topSlot={createButton("Создать прозрачность мочи")} />
+      <DataTable columns={columns} queryFunction={useGetUrineClarities} topSlot={createButton(t("pages.createUrineClarity"))} />
 
-      <Modal open={dialog} onClose={handleClose} title={editedItem ? "Изменить прозрачность мочи" : "Создать прозрачность мочи"}>
+      <Modal open={dialog} onClose={handleClose} title={editedItem ? t("pages.editUrineClarity") : t("pages.createUrineClarity")}>
         <AdditionalCrudForm
           onSubmit={onSubmit}
-          nameTitle="Называние прозрачность мочи"
+          nameTitle={t("pages.urineClarityNameTitle")}
           defaultValues={editedItem ? editedItem : (undefined as any)} />
       </Modal>
     </div>

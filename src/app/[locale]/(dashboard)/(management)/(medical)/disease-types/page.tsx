@@ -24,9 +24,9 @@ export default function DiseaseTypes() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetDiseaseTypes} topSlot={createButton("Создать вид заболевание")} />
+      <DataTable columns={columns} queryFunction={useGetDiseaseTypes} topSlot={createButton(t("pages.createDiseaseType"))} />
 
-      <Modal open={dialog} onClose={handleClose} title={editedItem ? "Изменить вид заболевание" : "Создать вид заболевание"}>
+      <Modal open={dialog} onClose={handleClose} title={editedItem ? t("pages.editDiseaseType") : t("pages.createDiseaseType")}>
         <DiseaseTypeForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : (undefined as any)} />
       </Modal>
     </div>

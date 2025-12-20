@@ -32,7 +32,7 @@ export default function Animals() {
     },
   });
 
-  const columns = useMemo(() => createAnimalColumns(handleEditItem, handleDelete, t, locale), [handleEditItem, handleDelete]);
+  const columns = useMemo(() => createAnimalColumns(handleEditItem, handleDelete, t, locale), [handleEditItem, handleDelete, locale]);
 
   const handleNavigate = (item: Animal) => {
     router.push(routes.ANIMALS.ID(item.id));

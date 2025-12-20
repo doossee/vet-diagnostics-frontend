@@ -24,9 +24,9 @@ export default function UrineSmells() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetUrineSmells} topSlot={createButton("Создать запах мочи")} />
+      <DataTable columns={columns} queryFunction={useGetUrineSmells} topSlot={createButton(t("pages.createUrineSmell"))} />
 
-      <Modal open={dialog} onClose={handleClose} title={editedItem ? "Изменить запах мочи" : "Создать запах мочи"}>
+      <Modal open={dialog} onClose={handleClose} title={editedItem ? t("pages.editUrineSmell") : t("pages.createUrineSmell")}>
         <AdditionalCrudForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : (undefined as any)} />
       </Modal>
     </div>

@@ -14,6 +14,7 @@ import { GeneralBloodTestQueryKeys } from "@/entities/general-blood-tests/utils/
 import { BloodExam, ClinicalExam } from "@/shared/types";
 import { useGetLastGeneralInspection } from "@/entities/general-inspections/services/queries";
 import { useGetLastGeneralBloodTest } from "@/entities/general-blood-tests/services/queries";
+import { useI18n } from "@/shared/hooks/use-i18n";
 
 type Props = {
   id: string;
@@ -137,6 +138,7 @@ export function predictDiseases(values: any, id: string): any {
 
 
 export function PredictInfoTable({ id }: Props) {
+  const { t } = useI18n();
   const { data, isLoading } = useGetAnimalPredict(id);
   const values = useExamValues(id)
   const items = predictDiseases(values, id);
@@ -144,11 +146,11 @@ export function PredictInfoTable({ id }: Props) {
   const diseases = useMemo(() => {
     return Object.entries(PREDICT_DISEASES)
       .map(([id, value]) => ({
-        name: value ?? `Болезнь ${id}`,
+        name: value ?? `${t("inspections.diseases")} ${id}`,
         value: Number(((items ? items[+id] * 100: 0)).toFixed(2)),
         // value: Number(((data ? data[+id] * 100: 0)).toFixed(2)),
       }))
-  }, [data]);
+  }, [data, t]);
 
   const topIndex = diseases.reduce(
     (maxIdx, item, idx, arr) =>
@@ -162,7 +164,7 @@ export function PredictInfoTable({ id }: Props) {
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
             <LineChart />
-            Результат AI-прогноза заболеваний
+            {t("pages.aiPredictionResult")}
           </CardTitle>
 
         </div>
@@ -186,7 +188,7 @@ export function PredictInfoTable({ id }: Props) {
         {data && <>
           <div className="mb-4 rounded-lg border bg-card-foreground/5 p-3">
             <p className="text-sm">
-              Наиболее вероятное заболевание
+              {t("pages.mostLikelyDisease")}
             </p>
             <p className="text-lg font-semibold">
               {diseases[topIndex]?.name??"-"} — {diseases[topIndex].value??0}%

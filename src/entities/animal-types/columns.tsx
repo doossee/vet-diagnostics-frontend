@@ -5,7 +5,7 @@ import { Button } from "@/shared/components/ui/button";
 export const createAnimalTypeColumns = (handleEditItem: (item: AnimalType) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
   { title: t("animalTypes.name"), key: `name_${locale}` },
   {
-    title: "Родительский тип",
+    title: t("inspections.parentType"),
     key: "parent",
     render(item: AnimalType) {
       return item.parent ? item.parent?.[`name_${locale}`] : '-'

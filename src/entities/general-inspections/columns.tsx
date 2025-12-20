@@ -169,8 +169,8 @@ export const createGeneralInspectionColumns = (handleEditItem: (item: ClinicalEx
     },
   },
 
-  { title: "Количество инфузорий в рубце - 1000/мл", key: "rumenInfusoriaCount" },
-  { title: "Состояние рубцовой жидкости (Раметром)", key: "rumenFluidState" },
+  { title: t("inspections.rumenInfusoriaCount"), key: "rumenInfusoriaCount" },
+  { title: t("inspections.rumenFluidState"), key: "rumenFluidState" },
   
   {
     title: t("table.actions"),

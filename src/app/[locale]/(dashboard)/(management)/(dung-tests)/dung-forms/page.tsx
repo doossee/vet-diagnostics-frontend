@@ -24,9 +24,9 @@ export default function DungForms() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetDungForms} topSlot={createButton("Создать формы кала")} />
+      <DataTable columns={columns} queryFunction={useGetDungForms} topSlot={createButton(t("pages.createDungForm"))} />
 
-      <Modal open={dialog} onClose={handleClose} title={editedItem ? "Изменить формы кала" : "Создать формы кала"}>
+      <Modal open={dialog} onClose={handleClose} title={editedItem ? t("pages.editDungForm") : t("pages.createDungForm")}>
         <AdditionalCrudForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : (undefined as any)} />
       </Modal>
     </div>

@@ -2,6 +2,7 @@
 
 // import { searchUtil } from "@/shared/helpers/search-util";
 import { Color } from '@/shared/types';
+import { useI18n } from '@/shared/hooks/use-i18n';
 import { Autocomplete } from "@/shared/components/ui/autocomplete";
 import { useGetAnimalColorsInfinite } from "@/entities/animal-colors/services/animal-color-queries";
 
@@ -15,6 +16,8 @@ interface Props {
 }
 
 export function AnimalColorSelect({ value, placeholder, disabled, min, onChange, onRemove }: Props) {
+  const { locale } = useI18n()
+
   return (
     <Autocomplete<Color>
       minWidth={min}
@@ -24,7 +27,7 @@ export function AnimalColorSelect({ value, placeholder, disabled, min, onChange,
       placeholder={placeholder}
       onSelect={(e: any) => onChange?.(e?.id)}
       queryFn={useGetAnimalColorsInfinite}
-      getOptionLabel={item => item.name_ru}
+      getOptionLabel={item => item?.[`name_${locale}`]}
       // clientSearch={(search, item) =>
       //   searchUtil(search, item, ["id", "name"])
       // }

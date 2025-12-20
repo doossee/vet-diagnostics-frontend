@@ -77,9 +77,9 @@ export function ProfileForm({ onSubmit, loading, defaultValues }: UserFormProps)
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{"Электронная почта"}</FormLabel>
+              <FormLabel>{t("inspections.email")}</FormLabel>
               <FormControl>
-                <Input disabled={loading} placeholder={"Электронная почта"} {...field} />
+                <Input disabled={loading} placeholder={t("inspections.email")} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -90,9 +90,9 @@ export function ProfileForm({ onSubmit, loading, defaultValues }: UserFormProps)
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{"Имя пользователтя (Логин)"}</FormLabel>
+              <FormLabel>{t("inspections.username")}</FormLabel>
               <FormControl>
-                <Input disabled={loading} placeholder={"Имя пользователтя (Логин)"} {...field} />
+                <Input disabled={loading} placeholder={t("inspections.username")} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -7,7 +7,7 @@ import { PROPHYLAXIS_TYPES, PROPHYLAXIS_BADGE_COLORS } from "../prophylaxis/util
 
 export const createProphylaxisItemsColumns = (handleEditItem: (item: ProphylaxisItem) => void, handleDelete: (id: number | string) => void, t: any, locale: LanguageLocales) => [
   {
-    title: "Называние элемента", key: `name_${locale}`
+    title: t("inspections.itemName"), key: `name_${locale}`
   },
   {
     title: t("inspections.specificProphylaxis"), key: "type", render(item: ProphylaxisItem) {

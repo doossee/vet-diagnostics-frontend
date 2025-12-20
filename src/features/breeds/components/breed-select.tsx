@@ -2,6 +2,7 @@
 
 // import { searchUtil } from "@/shared/helpers/search-util";
 import { Breed } from '@/shared/types';
+import { useI18n } from '@/shared/hooks/use-i18n';
 import { Autocomplete } from "@/shared/components/ui/autocomplete";
 import { useGetBreedsInfinite } from "@/entities/breeds/services/breed-queries";
 
@@ -15,6 +16,8 @@ interface Props {
 }
 
 export function BreedSelect({ placeholder, value, disabled, min, onChange, onRemove }: Props) {
+  const { locale } = useI18n()
+
   return (
     <Autocomplete<Breed>
       minWidth={min}
@@ -24,7 +27,7 @@ export function BreedSelect({ placeholder, value, disabled, min, onChange, onRem
       onSelect={(e: any) => onChange?.(e?.id)}
       placeholder={placeholder}
       queryFn={useGetBreedsInfinite}
-      getOptionLabel={item => item.name_ru}
+      getOptionLabel={item => item?.[`name_${locale}`]}
       // clientSearch={(search, item) =>
       //   searchUtil(search, item, ["id", "name"])
       // }

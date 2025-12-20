@@ -78,8 +78,8 @@ export function EyeLidForm({ onSubmit, defaultValues }: EyeLidFormProps) {
           locale={locale}
           name="mucosaType"
           object={MUCOSA_TYPES}
-          label={"Тип слизистой оболочки"}
-          placeholder={"Тип слизистой оболочки"}
+          label={t("inspections.mucosaType")}
+          placeholder={t("inspections.mucosaType")}
         />
         <div className="flex-1 flex items-end">
           <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">

@@ -3,17 +3,17 @@ import { Edit, Trash } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 
 export const createDiseaseColumns = (handleEditItem: (item: Disease) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
-  { title: "Называние", key: `name_${locale}` },
+  { title: t("inspections.diseaseName"), key: `name_${locale}` },
   // { title: "Name Uz", key: "name_uz" },
   {
-    title: "Заболевания",
+    title: t("inspections.diseases"),
     key: "diseaseCategory",
     render(item: Disease) {
       return item?.diseaseCategory?.[`name_${locale}`];
     },
   },
   {
-    title: "Дата",
+    title: t("form.date"),
     key: "date",
     render(item: Disease) {
       return new Date(item.createdAt).toLocaleString()

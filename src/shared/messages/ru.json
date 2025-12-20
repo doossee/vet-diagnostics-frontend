@@ -285,7 +285,25 @@
     "specificProphylaxis": "Специфическая профилактика",
     "name": "Название",
     "child": "Дочерние",
-    "all": "Все"
+    "all": "Все",
+    "microelements": "Микроэлементы",
+    "rumenFluid": "Рубцовая жидкость",
+    "rumenInfusoriaCount": "Количество инфузорий в рубце — 1000/мл",
+    "rumenFluidState": "Состояние рубцовой жидкости (Раметром)",
+    "prophylaxisItem": "Элемент профилактики",
+    "prophylaxisDetail": "Деталь профилактики",
+    "diseaseTypeName": "Название вида заболевание",
+    "parentDiseaseType": "Родительский вид заболевания",
+    "diseaseName": "Называние",
+    "diseases": "Заболевания",
+    "parentType": "Родительский тип",
+    "itemName": "Называние элемента",
+    "email": "Электронная почта",
+    "username": "Имя пользователтя (Логин)",
+    "createdDate": "Дата создание",
+    "currentPassword": "Текущий пароль",
+    "newPassword": "Новый пароль",
+    "confirmNewPassword": "Подтвердите новый пароль"
   },
   "required": {
     "breedNameRequired": "Название породы обязательно для заполнения",
@@ -347,5 +365,30 @@
     "title": "Данные не найдены",
     "description": "Похоже, на этой странице пока нет данных. Вы можете добавить новую запись или обновить страницу."
   },
-  "show": "Посмотреть"
+  "show": "Посмотреть",
+  "pages": {
+    "createProphylaxisMeasures": "Создать профилактические меры",
+    "editProphylaxisMeasures": "Изменить профилактические меры",
+    "createDiseaseType": "Создать вид заболевание",
+    "editDiseaseType": "Изменить вид заболевание",
+    "createProphylaxisDetails": "Создать детали профилактики",
+    "editProphylaxisDetails": "Изменить детали профилактики",
+    "createProphylaxisItem": "Создать элемент профилактики",
+    "editProphylaxisItem": "Изменить элемента профилактики",
+    "createDungSmell": "Создать запах кала",
+    "editDungSmell": "Изменить запах кала",
+    "createDungConsistency": "Создать консистенции кала",
+    "editDungConsistency": "Изменить консистенции кала",
+    "createDungForm": "Создать формы кала",
+    "editDungForm": "Изменить формы кала",
+    "createUrineSmell": "Создать запах мочи",
+    "editUrineSmell": "Изменить запах мочи",
+    "createUrineConsistency": "Создать консистенция мочи",
+    "editUrineConsistency": "Изменить консистенция мочи",
+    "createUrineClarity": "Создать прозрачность мочи",
+    "editUrineClarity": "Изменить прозрачность мочи",
+    "urineClarityNameTitle": "Называние прозрачность мочи",
+    "aiPredictionResult": "Результат AI-прогноза заболеваний",
+    "mostLikelyDisease": "Наиболее вероятное заболевание"
+  }
 }

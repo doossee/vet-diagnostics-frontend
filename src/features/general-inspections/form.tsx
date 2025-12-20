@@ -358,16 +358,16 @@ export function GeneralInspectionForm({ onSubmit, defaultValues }: GeneralInspec
           placeholder={t("inspections.lymphMobility")}
         />
         
-        <Divider label={"Рубцовая жидкость"} icon={<TestTube />} className="col-span-1 md:col-span-2 lg:col-span-3" />
+        <Divider label={t("inspections.rumenFluid")} icon={<TestTube />} className="col-span-1 md:col-span-2 lg:col-span-3" />
 
         <FormField
           name="rumenInfusoriaCount"
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{"Количество инфузорий в рубце — 1000/мл"}</FormLabel>
+              <FormLabel>{t("inspections.rumenInfusoriaCount")}</FormLabel>
               <FormControl>
-                <Input placeholder={"Количество инфузорий в рубце — 1000/мл"} {...field} />
+                <Input placeholder={t("inspections.rumenInfusoriaCount")} {...field} />
               </FormControl>
             </FormItem>
           )}
@@ -378,9 +378,9 @@ export function GeneralInspectionForm({ onSubmit, defaultValues }: GeneralInspec
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{"Состояние рубцовой жидкости (Раметром)"}</FormLabel>
+              <FormLabel>{t("inspections.rumenFluidState")}</FormLabel>
               <FormControl>
-                <Input placeholder={"Состояние рубцовой жидкости (Раметром)"} {...field} />
+                <Input placeholder={t("inspections.rumenFluidState")} {...field} />
               </FormControl>
             </FormItem>
           )}

@@ -18,14 +18,14 @@ export const createUserColumns = (handleEditItem: (item: User) => void, handleDe
     },
   },
   {
-    title: "Электронная почта",
+    title: t("inspections.email"),
     key: "email",
     render(item: User) {
       return item.email;
     },
   },
   {
-    title: "Имя пользователтя (Логин)",
+    title: t("inspections.username"),
     key: "username",
     render(item: User) {
       return item.username;
@@ -40,7 +40,7 @@ export const createUserColumns = (handleEditItem: (item: User) => void, handleDe
     },
   },
   {
-    title: "Дата создание",
+    title: t("inspections.createdDate"),
     key: "createdDate",
     sorting: "byCreatedDate",
     render(item: User) {

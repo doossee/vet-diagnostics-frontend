@@ -79,9 +79,9 @@ export function AnimalForm({ onSubmit, defaultValues, submitRightContent }: Anim
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t("management.breedParent")}</FormLabel>
+                <FormLabel>{t("animals.breed")}</FormLabel>
                 <FormControl>
-                  <BreedSelect placeholder={t("management.breedParent")} value={field.value} onChange={field.onChange} />
+                  <BreedSelect placeholder={t("animals.breed")} value={field.value} onChange={field.onChange} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

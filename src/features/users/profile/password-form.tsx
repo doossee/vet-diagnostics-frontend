@@ -38,11 +38,11 @@ export function PasswordForm({ onSubmit }: FormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{"Текущий пароль"}</FormLabel>
+              <FormLabel>{t("inspections.currentPassword")}</FormLabel>
               <FormControl>
                 <Input
                   type="password"
-                  placeholder={"Текущий пароль"}
+                  placeholder={t("inspections.currentPassword")}
                   {...field}
                 />
               </FormControl>
@@ -56,11 +56,11 @@ export function PasswordForm({ onSubmit }: FormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>Новый пароль</FormLabel>
+              <FormLabel>{t("inspections.newPassword")}</FormLabel>
               <FormControl>
                 <Input
                   type="password"
-                  placeholder={"Новый пароль"}
+                  placeholder={t("inspections.newPassword")}
                   {...field}
                 />
               </FormControl>
@@ -74,11 +74,11 @@ export function PasswordForm({ onSubmit }: FormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{"Подтвердите новый пароль"}</FormLabel>
+              <FormLabel>{t("inspections.confirmNewPassword")}</FormLabel>
               <FormControl>
                 <Input
                   type="password"
-                  placeholder={"Подтвердите новый пароль"}
+                  placeholder={t("inspections.confirmNewPassword")}
                   {...field}
                 />
               </FormControl>

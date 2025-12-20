@@ -4,6 +4,7 @@
 import { Autocomplete } from "@/shared/components/ui/autocomplete";
 import { useGetProphylaxisDetailsInfinite } from "@/entities/prophylaxis-details/services/queries";
 import { ProphylaxisDetail } from "@/shared/types";
+import { useI18n } from "@/shared/hooks/use-i18n";
 
 interface Props {
   itemId?: string;
@@ -15,6 +16,8 @@ interface Props {
 }
 
 export function ProphylaxisDetailSelect({ value, placeholder, disabled, itemId, onChange, onRemove }: Props) {
+  const { locale } = useI18n();
+
   return (
     <Autocomplete<ProphylaxisDetail>
       onRemove={onRemove}
@@ -23,7 +26,7 @@ export function ProphylaxisDetailSelect({ value, placeholder, disabled, itemId, 
       placeholder={placeholder}
       queryFn={search => useGetProphylaxisDetailsInfinite(itemId, search)}
       onSelect={(e: any) => onChange?.(e?.id)}
-      getOptionLabel={(item) => item.name_ru}
+      getOptionLabel={item => item?.[`name_${locale}`]}
       // clientSearch={(search, item) =>
       //   searchUtil(search, item, ["id", "name"])
       // }

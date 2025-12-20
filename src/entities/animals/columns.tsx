@@ -18,7 +18,7 @@ export const createAnimalColumns = (handleEditItem: (item: Animal) => void, hand
     key: "type",
     // sorting: "byTypeId",
     render(item: Animal) {
-      return item.animalType?.name_ru;
+      return item.animalType?.[`name_${locale}`];
     },
   },
   {
@@ -26,7 +26,7 @@ export const createAnimalColumns = (handleEditItem: (item: Animal) => void, hand
     key: "color",
     // sorting: "byColorId",
     render(item: Animal) {
-      return item.animalColor?.name_ru;
+      return item.animalColor?.[`name_${locale}`];
     },
   },
   {
@@ -42,7 +42,7 @@ export const createAnimalColumns = (handleEditItem: (item: Animal) => void, hand
     key: "breed",
     // sorting: "byBreed",
     render(item: Animal) {
-      return item.animalBreed?.name_ru;
+      return item.animalBreed?.[`name_${locale}`];
     },
   },
   {

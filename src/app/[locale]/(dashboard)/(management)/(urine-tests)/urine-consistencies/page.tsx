@@ -24,9 +24,9 @@ export default function UrineConsistencies() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetUrineConsistencies} topSlot={createButton("Создать консистенция мочи")} />
+      <DataTable columns={columns} queryFunction={useGetUrineConsistencies} topSlot={createButton(t("pages.createUrineConsistency"))} />
 
-      <Modal open={dialog} onClose={handleClose} title={editedItem ? "Изменить консистенция мочи" : "Создать консистенция мочи"}>
+      <Modal open={dialog} onClose={handleClose} title={editedItem ? t("pages.editUrineConsistency") : t("pages.createUrineConsistency")}>
         <AdditionalCrudForm
           onSubmit={onSubmit}
           defaultValues={editedItem ? editedItem : (undefined as any)} />

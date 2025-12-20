@@ -6,7 +6,7 @@ import { MUCOSA_TYPES } from "./utils/constants/mucosa-types";
 export const createEyeLidColumns = (handleEditItem: (item: MucosaAppearance) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
   { title: t("management.eyeLidName"), key: `name_${locale}` },
   {
-    title: "Тип слизистой оболочки",
+    title: t("inspections.mucosaType"),
     key: "mucosaType",
     render(item: MucosaAppearance) {
       return MUCOSA_TYPES?.[item.mucosaType]?.[locale]

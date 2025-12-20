@@ -8,7 +8,7 @@ import { Toaster } from "@/shared/components/ui/sonner";
 import { ClientProvider } from "@/shared/components/query-client";
 import { ThemeProvider } from "@/shared/components/theme-provider";
 import { ErrorSender } from "@/shared/components/elements/error-boundary";
-import { PageLoadingIndicator } from "@/shared/components/page-loading-indicator";
+// import { PageLoadingIndicator } from "@/shared/components/page-loading-indicator";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -38,13 +38,10 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} translate="no" suppressHydrationWarning>
-      <header>
-        <meta name="google" content="notranslate" />
-      </header>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-            <PageLoadingIndicator />
+            {/* <PageLoadingIndicator /> */}
             <ErrorSender />
             <ClientProvider>{children}</ClientProvider>
             <Toaster />

@@ -14,12 +14,12 @@ export const createProphylaxisColumns = (handleEditItem: (item: Prophylaxis) => 
     }
   },
   {
-    title: "Элемент профилактики", key: "item", render(item: Prophylaxis) {
+    title: t("inspections.prophylaxisItem"), key: "item", render(item: Prophylaxis) {
       return item?.item?.[`name_${locale}`]
     }
   },
   {
-    title: "Деталь профилактики", key: "detail", render(item: Prophylaxis) {
+    title: t("inspections.prophylaxisDetail"), key: "detail", render(item: Prophylaxis) {
       return item?.detail?.[`name_${locale}`]
     }
   },

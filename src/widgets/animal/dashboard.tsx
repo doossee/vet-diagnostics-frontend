@@ -10,12 +10,18 @@ import { UrineExamInfoTable } from "@/features/animals/components/info-tables/ur
 import { FecesExamInfoTable } from "@/features/animals/components/info-tables/feces-examp-info-table";
 import { ProphylaxisInfoTable } from "@/features/animals/components/info-tables/prophylaxis-info-table";
 import { PredictInfoTable } from "@/features/animals/components/info-tables/predict-info-table";
+import { useGetAnimal } from "@/entities/animals/services/animal-queries";
 
 export function AnimalDashboard({ id }: { id: string }) {
+  const { data } = useGetAnimal(id)
   const { setMany } = useSearchQueryParams();
   
   const handleOpenRoute = (route: string, createNew?: boolean) => {
-    setMany({ animalId: id, new: createNew }, route)
+    setMany({
+      animalId: id,
+      new: createNew,
+      animalTypeId: data?.animalTypeId
+    }, route)
   }
 
   return (

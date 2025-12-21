@@ -38,7 +38,9 @@ export function InfoTable<T>({ localeTitle, icon, hideCreateButton, createColumn
     <CardHeader>
       <div className="flex items-center justify-between">
         <CardTitle className="flex items-center gap-2">
-          {icon}
+          <div>
+            {icon}
+          </div>
           {t(localeTitle)}
         </CardTitle>
 

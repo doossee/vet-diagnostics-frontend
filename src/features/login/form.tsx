@@ -57,10 +57,9 @@ export function LoginForm() {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{"Имя пользователтя (Логин)"}</FormLabel> 
-                  {/* username */}
+                  <FormLabel>{t("inspections.username")}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Имя пользователтя (Логин)" {...field} />
+                    <Input placeholder={t("inspections.username")} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

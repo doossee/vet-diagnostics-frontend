@@ -60,7 +60,7 @@ export function AppSidebar() {
                 </div>
                 <div className="pt-1 flex flex-col gap-0.5 leading-none text-nowrap">
                   <span className="font-medium">VET-CRM</span>
-                  <span className="text-xs">Платформа ветеринарии</span>
+                  <span className="text-xs">{t('vetPlatform')}</span>
                 </div>
               </div>
             </SidebarMenuButton>
@@ -83,7 +83,7 @@ export function AppSidebar() {
                   <CollapsibleContent>
                     <SidebarMenuSub>
                       {item.items?.map((subItem: any, i: number) => (
-                        subItem.groupTitle ? <Divider label={subItem.groupTitle} key={`divider-${i}`} /> :
+                        subItem.groupTitle ? <Divider label={t(subItem.groupTitle)} key={`divider-${i}`} /> :
                         <SidebarMenuSubItem key={`${subItem.url}-${i}-${j}`}>
                           <SidebarMenuSubButton asChild>
                             <Link

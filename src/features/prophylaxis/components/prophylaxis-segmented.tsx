@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/shared/components/ui/tabs";
-import { PROPHYLAXIS_TYPES, PROPHYLAXIS_TYPES_ARRAY } from "@/entities/prophylaxis/utils/constants/prophylaxis-types";
+import { PROPHYLAXIS_TYPES } from "@/entities/prophylaxis/utils/constants/prophylaxis-types";
 import { useSearchQueryParams } from "@/shared/hooks/use-query-params";
 import { PROPHYLAXIS_QUERY_PARAM_KEYS } from "@/entities/prophylaxis/utils/constants/query-param-keys";
 import { useI18n } from "@/shared/hooks/use-i18n";
 
 export function ProphylaxisSegmented() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const { get, set, remove } = useSearchQueryParams()
   const [segmented, setSegmented] = useState<string>('all')
   
@@ -17,7 +17,7 @@ export function ProphylaxisSegmented() {
   const options = [
     { key: 'all', value: t("inspections.all") },
     ...Object.entries(PROPHYLAXIS_TYPES)
-      .map(([key, value]) => ({ key, value }))
+      .map(([key, value]) => ({ key, value: value[locale] }))
   ]
 
   const handleChangeSegmented = (value: string) => {

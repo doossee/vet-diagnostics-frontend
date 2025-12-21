@@ -12,11 +12,11 @@ export function useGetAnimalColors(params: Record<string, unknown>, enabled?: bo
   });
 }
 
-export function useGetAnimalColorsInfinite(search?: string) {
+export function useGetAnimalColorsInfinite(search?: string, animalTypeId?: string) {
   return useInfiniteQuery({
-    queryKey: [AnimalColorQueryKeys.ANIMAL_COLORS_SELECT, search],
+    queryKey: [AnimalColorQueryKeys.ANIMAL_COLORS_SELECT, search, animalTypeId],
     queryFn: (params) => animalColorControllerFindAll(params.pageParam) as Promise<PaginatedEntity<Color>>,
-    initialPageParam: { page: 1, perPage: 20, ...(search && { search }) },
+    initialPageParam: { page: 1, perPage: 20, ...(search && { search }), ...(animalTypeId && { animalTypeId }) },
     getNextPageParam: (lastPage) => {
       const nextPage = (lastPage?.meta?.currentPage ?? 0) + 1;
       const isLast = lastPage?.meta?.currentPage === lastPage?.meta?.lastPage;
@@ -26,6 +26,7 @@ export function useGetAnimalColorsInfinite(search?: string) {
             page: nextPage,
             perPage: 20,
             ...(search && { search }),
+            ...(animalTypeId && { animalTypeId }),
           }
         : null;
     }

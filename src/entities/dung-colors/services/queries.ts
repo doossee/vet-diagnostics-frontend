@@ -12,11 +12,11 @@ export function useGetDungColors(params: Record<string, unknown>, enabled?: bool
   });
 }
 
-export function useGetDungColorsInfinite(search?: string) {
+export function useGetDungColorsInfinite(search?: string, animalTypeId?: string) {
   return useInfiniteQuery({
-    queryKey: [DungColorQueryKeys.DUNG_COLORS, search],
+    queryKey: [DungColorQueryKeys.DUNG_COLORS_SELECT, search, animalTypeId],
     queryFn: (params) => fecesColorControllerFindAll(params.pageParam) as Promise<PaginatedEntity<FecesColor>>,
-    initialPageParam: { page: 1, perPage: 20, ...(search && { search }) },
+    initialPageParam: { page: 1, perPage: 20, ...(search && { search }), ...(animalTypeId && { animalTypeId }) },
     getNextPageParam: (lastPage) => {
       const nextPage = (lastPage?.meta?.currentPage ?? 0) + 1;
       const isLast = lastPage?.meta?.currentPage === lastPage?.meta?.lastPage;
@@ -26,6 +26,7 @@ export function useGetDungColorsInfinite(search?: string) {
             page: nextPage,
             perPage: 20,
             ...(search && { search }),
+            ...(animalTypeId && { animalTypeId }),
           }
         : null;
     },

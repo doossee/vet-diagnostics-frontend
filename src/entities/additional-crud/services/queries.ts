@@ -17,11 +17,11 @@ export function useGetDungConsistencies(params: Record<string, unknown>, enabled
   });
 }
 
-export function useGetDungConsistenciesInfinite(search?: string) {
+export function useGetDungConsistenciesInfinite(search?: string, animalTypeId?: string) {
   return useInfiniteQuery({
-    queryKey: [ADDITIONAL_CRUD_QUERY_KEYS.DUNG_CONSISTENCIES_SELECT, search],
+    queryKey: [ADDITIONAL_CRUD_QUERY_KEYS.DUNG_CONSISTENCIES_SELECT, search, animalTypeId],
     queryFn: (params) => fecesConsistencyControllerFindAll(params.pageParam) as Promise<PaginatedEntity<AdditionalCrudModel>>,
-    initialPageParam: { page: 1, perPage: 20, ...(search && { search }) },
+    initialPageParam: { page: 1, perPage: 20, ...(search && { search }), ...(animalTypeId && { animalTypeId }) },
     getNextPageParam: (lastPage) => {
       const nextPage = (lastPage?.meta?.currentPage ?? 0) + 1;
       const isLast = lastPage?.meta?.currentPage === lastPage?.meta?.lastPage;
@@ -31,6 +31,7 @@ export function useGetDungConsistenciesInfinite(search?: string) {
             page: nextPage,
             perPage: 20,
             ...(search && { search }),
+            ...(animalTypeId && { animalTypeId }),
           }
         : null;
     },
@@ -47,11 +48,11 @@ export function useGetDungSmells(params: Record<string, unknown>, enabled?: bool
   });
 }
 
-export function useGetDungSmellsInfinite(search?: string) {
+export function useGetDungSmellsInfinite(search?: string, animalTypeId?: string) {
   return useInfiniteQuery({
-    queryKey: [ADDITIONAL_CRUD_QUERY_KEYS.DUNG_SMELLS_SELECT, search],
+    queryKey: [ADDITIONAL_CRUD_QUERY_KEYS.DUNG_SMELLS_SELECT, search, animalTypeId],
     queryFn: (params) => fecesSmellControllerFindAll(params.pageParam) as Promise<PaginatedEntity<AdditionalCrudModel>>,
-    initialPageParam: { page: 1, perPage: 20, ...(search && { search }) },
+    initialPageParam: { page: 1, perPage: 20, ...(search && { search }), ...(animalTypeId && { animalTypeId }) },
     getNextPageParam: (lastPage) => {
       const nextPage = (lastPage?.meta?.currentPage ?? 0) + 1;
       const isLast = lastPage?.meta?.currentPage === lastPage?.meta?.lastPage;
@@ -61,6 +62,7 @@ export function useGetDungSmellsInfinite(search?: string) {
             page: nextPage,
             perPage: 20,
             ...(search && { search }),
+            ...(animalTypeId && { animalTypeId }),
           }
         : null;
     },
@@ -77,11 +79,11 @@ export function useGetDungForms(params: Record<string, unknown>, enabled?: boole
   });
 }
 
-export function useGetDungFormsInfinite(search?: string) {
+export function useGetDungFormsInfinite(search?: string, animalTypeId?: string) {
   return useInfiniteQuery({
-    queryKey: [ADDITIONAL_CRUD_QUERY_KEYS.DUNG_FORMS_SELECT, search],
+    queryKey: [ADDITIONAL_CRUD_QUERY_KEYS.DUNG_FORMS_SELECT, search, animalTypeId],
     queryFn: (params) => fecesFormControllerFindAll(params.pageParam) as Promise<PaginatedEntity<AdditionalCrudModel>>,
-    initialPageParam: { page: 1, perPage: 20, ...(search && { search }) },
+    initialPageParam: { page: 1, perPage: 20, ...(search && { search }), ...(animalTypeId && { animalTypeId }) },
     getNextPageParam: (lastPage) => {
       const nextPage = (lastPage?.meta?.currentPage ?? 0) + 1;
       const isLast = lastPage?.meta?.currentPage === lastPage?.meta?.lastPage;
@@ -91,6 +93,7 @@ export function useGetDungFormsInfinite(search?: string) {
             page: nextPage,
             perPage: 20,
             ...(search && { search }),
+            ...(animalTypeId && { animalTypeId }),
           }
         : null;
     },
@@ -109,11 +112,11 @@ export function useGetUrineConsistencies(params: Record<string, unknown>, enable
   });
 }
 
-export function useGetUrineConsistenciesInfinite(search?: string) {
+export function useGetUrineConsistenciesInfinite(search?: string, animalTypeId?: string) {
   return useInfiniteQuery({
-    queryKey: [ADDITIONAL_CRUD_QUERY_KEYS.URINE_CONSISTENCIES_SELECT, search],
+    queryKey: [ADDITIONAL_CRUD_QUERY_KEYS.URINE_CONSISTENCIES_SELECT, search, animalTypeId],
     queryFn: (params) => urineConsistencyControllerFindAll(params.pageParam) as Promise<PaginatedEntity<AdditionalCrudModel>>,
-    initialPageParam: { page: 1, perPage: 20, ...(search && { search }) },
+    initialPageParam: { page: 1, perPage: 20, ...(search && { search }), ...(animalTypeId && { animalTypeId }) },
     getNextPageParam: (lastPage) => {
       const nextPage = (lastPage?.meta?.currentPage ?? 0) + 1;
       const isLast = lastPage?.meta?.currentPage === lastPage?.meta?.lastPage;
@@ -123,6 +126,7 @@ export function useGetUrineConsistenciesInfinite(search?: string) {
             page: nextPage,
             perPage: 20,
             ...(search && { search }),
+            ...(animalTypeId && { animalTypeId }),
           }
         : null;
     },
@@ -139,11 +143,11 @@ export function useGetUrineSmells(params: Record<string, unknown>, enabled?: boo
   });
 }
 
-export function useGetUrineSmellsInfinite(search?: string) {
+export function useGetUrineSmellsInfinite(search?: string, animalTypeId?: string) {
   return useInfiniteQuery({
-    queryKey: [ADDITIONAL_CRUD_QUERY_KEYS.URINE_SMELLS_SELECT, search],
+    queryKey: [ADDITIONAL_CRUD_QUERY_KEYS.URINE_SMELLS_SELECT, search, animalTypeId],
     queryFn: (params) => urineSmellControllerFindAll(params.pageParam) as Promise<PaginatedEntity<AdditionalCrudModel>>,
-    initialPageParam: { page: 1, perPage: 20, ...(search && { search }) },
+    initialPageParam: { page: 1, perPage: 20, ...(search && { search }), ...(animalTypeId && { animalTypeId }) },
     getNextPageParam: (lastPage) => {
       const nextPage = (lastPage?.meta?.currentPage ?? 0) + 1;
       const isLast = lastPage?.meta?.currentPage === lastPage?.meta?.lastPage;
@@ -153,6 +157,7 @@ export function useGetUrineSmellsInfinite(search?: string) {
             page: nextPage,
             perPage: 20,
             ...(search && { search }),
+            ...(animalTypeId && { animalTypeId }),
           }
         : null;
     },
@@ -169,11 +174,11 @@ export function useGetUrineClarities(params: Record<string, unknown>, enabled?: 
   });
 }
 
-export function useGetUrineClaritiesInfinite(search?: string) {
+export function useGetUrineClaritiesInfinite(search?: string, animalTypeId?: string) {
   return useInfiniteQuery({
-    queryKey: [ADDITIONAL_CRUD_QUERY_KEYS.URINE_CLARITIES_SELECT, search],
+    queryKey: [ADDITIONAL_CRUD_QUERY_KEYS.URINE_CLARITIES_SELECT, search, animalTypeId],
     queryFn: (params) => urineClarityControllerFindAll(params.pageParam) as Promise<PaginatedEntity<AdditionalCrudModel>>,
-    initialPageParam: { page: 1, perPage: 20, ...(search && { search }) },
+    initialPageParam: { page: 1, perPage: 20, ...(search && { search }), ...(animalTypeId && { animalTypeId }) },
     getNextPageParam: (lastPage) => {
       const nextPage = (lastPage?.meta?.currentPage ?? 0) + 1;
       const isLast = lastPage?.meta?.currentPage === lastPage?.meta?.lastPage;
@@ -183,6 +188,7 @@ export function useGetUrineClaritiesInfinite(search?: string) {
             page: nextPage,
             perPage: 20,
             ...(search && { search }),
+            ...(animalTypeId && { animalTypeId }),
           }
         : null;
     },

@@ -6,8 +6,8 @@ import { Textarea } from "@/shared/components/ui/textarea";
 import { PROPHYLAXIS_TYPES } from "@/entities/prophylaxis/utils/constants/prophylaxis-types";
 import { ProphylaxisItemSelect } from "../prophylaxis-items/components/prophylaxis-item-select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
 import { ProphylaxisDetailSchema, createProphylaxisDetailSchema, prophylaxisDetailValues } from "./prophylaxis-detail.model";
+import { ObjectEntriesSelect } from "@/shared/components/object-entries-select";
 
 interface FormProps {
   defaultValues?: ProphylaxisDetailSchema;
@@ -15,7 +15,7 @@ interface FormProps {
 }
 
 export function ProphylaxisDetailsForm({ onSubmit, defaultValues }: FormProps) {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
 
   const form = useForm<ProphylaxisDetailSchema>({
     resolver: zodResolver(createProphylaxisDetailSchema(t)),
@@ -53,29 +53,13 @@ export function ProphylaxisDetailsForm({ onSubmit, defaultValues }: FormProps) {
             </FormItem>
           )}
         />
-        <FormField
+        <ObjectEntriesSelect
           name={"type" as any}
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("inspections.specificProphylaxis")}</FormLabel>
-              <FormControl>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <SelectTrigger>
-                    <SelectValue placeholder={t("inspections.specificProphylaxis")} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.entries(PROPHYLAXIS_TYPES).map(([key, value]) => (
-                      <SelectItem key={key} value={key}>
-                        {value}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          form={form}
+          locale={locale}
+          object={PROPHYLAXIS_TYPES}
+          label={t("inspections.specificProphylaxis")}
+          placeholder={t("inspections.specificProphylaxis")}
         />
         {type && <FormField
           name={"itemId"}

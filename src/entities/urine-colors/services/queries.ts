@@ -12,11 +12,11 @@ export function useGetUrineColors(params: Record<string, unknown>, enabled?: boo
   });
 }
 
-export function useGetUrineColorsInfinite(search?: string) {
+export function useGetUrineColorsInfinite(search?: string, animalTypeId?: string) {
   return useInfiniteQuery({
-    queryKey: [UrineColorQueryKeys.URINE_COLORS_SELECT, search],
+    queryKey: [UrineColorQueryKeys.URINE_COLORS_SELECT, search, animalTypeId],
     queryFn: (params) => urineColorControllerFindAll(params.pageParam) as Promise<PaginatedEntity<UrineColor>>,
-    initialPageParam: { page: 1, perPage: 20, ...(search && { search }) },
+    initialPageParam: { page: 1, perPage: 20, ...(search && { search }), ...(animalTypeId && { animalTypeId }) },
     getNextPageParam: (lastPage) => {
       const nextPage = (lastPage?.meta?.currentPage ?? 0) + 1;
       const isLast = lastPage?.meta?.currentPage === lastPage?.meta?.lastPage;
@@ -26,6 +26,7 @@ export function useGetUrineColorsInfinite(search?: string) {
             page: nextPage,
             perPage: 20,
             ...(search && { search }),
+            ...(animalTypeId && { animalTypeId }),
           }
         : null;
     },

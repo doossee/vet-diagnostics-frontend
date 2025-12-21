@@ -5,6 +5,7 @@ import { UrineSmell } from "@/shared/types";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { Autocomplete } from "@/shared/components/ui/autocomplete";
 import { useGetUrineSmellsInfinite } from "@/entities/additional-crud/services/queries";
+import { useSearchQueryParams } from "@/shared/hooks/use-query-params";
 
 interface Props {
   value?: unknown;
@@ -16,6 +17,8 @@ interface Props {
 
 export function UrineSmellsSelect({ value, placeholder, disabled, onChange, onRemove }: Props) {
   const { locale } = useI18n();
+  const { get } = useSearchQueryParams();
+  const animalTypeId = get("animalTypeId");
 
   return (
     <Autocomplete
@@ -24,7 +27,7 @@ export function UrineSmellsSelect({ value, placeholder, disabled, onChange, onRe
       defaultValue={value as UrineSmell}
       onSelect={(e: any) => onChange?.(e?.id)}
       placeholder={placeholder}
-      queryFn={useGetUrineSmellsInfinite}
+      queryFn={(search) => useGetUrineSmellsInfinite(search, animalTypeId || undefined)}
       getOptionLabel={item => item?.[`name_${locale}`]}
       // clientSearch={(search, item) =>
       //   searchUtil(search, item, ["id", "name"])

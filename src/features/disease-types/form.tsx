@@ -28,9 +28,9 @@ export function DiseaseTypeForm({ onSubmit, defaultValues }: DiseaseTypeFormProp
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Название вида заболевание RU</FormLabel>
+              <FormLabel>{t("inspections.diseaseTypeName")} RU</FormLabel>
               <FormControl>
-                <Textarea placeholder={"Название заболевание"} {...field} rows={3} />
+                <Textarea placeholder={t("inspections.diseaseTypeName")} {...field} rows={3} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -41,9 +41,9 @@ export function DiseaseTypeForm({ onSubmit, defaultValues }: DiseaseTypeFormProp
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Название вида заболевание UZ</FormLabel>
+              <FormLabel>{t("inspections.diseaseTypeName")} UZ</FormLabel>
               <FormControl>
-                <Textarea placeholder={"Название заболевание"} {...field} rows={3} />
+                <Textarea placeholder={t("inspections.diseaseTypeName")} {...field} rows={3} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -54,9 +54,9 @@ export function DiseaseTypeForm({ onSubmit, defaultValues }: DiseaseTypeFormProp
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Родительский вид заболевания</FormLabel>
+              <FormLabel>{t("inspections.parentDiseaseType")}</FormLabel>
               <FormControl>
-                <DiseaseTypeSelect placeholder={"Родительский заболевания"} value={field.value} onChange={field.onChange} />
+                <DiseaseTypeSelect placeholder={t("inspections.parentDiseaseType")} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>

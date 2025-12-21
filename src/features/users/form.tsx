@@ -1,22 +1,16 @@
 "use client";
 
 import { useEffect } from "react";
-// import { User } from "@/shared/types";
 import { useForm } from "react-hook-form";
-// import { GENDERS } from "@/shared/constants";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { Input } from "@/shared/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/shared/components/ui/button";
 import { Separator } from "@/shared/components/ui/separator";
-// import { DatePicker } from "@/shared/components/date-picker";
 import { UserSchema, createUserSchema, userValues } from "./user.model";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
-// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
 import { RegionSelect } from "../regions/components/region-select";
 import { DistrictSelect } from "../districts/components/district-select";
-// import { Switch } from "@/shared/components/ui/switch";
-// import { Label } from "@/shared/components/ui/label";
 
 interface UserFormProps {
   itemId?: string | null;
@@ -83,9 +77,9 @@ export function UserForm({ onSubmit, itemId, defaultValues }: UserFormProps) {
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Имя пользователтя (Логин)</FormLabel>
+                <FormLabel>{t("inspections.username")}</FormLabel>
                 <FormControl>
-                  <Input placeholder="Имя пользователтя (Логин)" {...field} />
+                  <Input placeholder={t("inspections.username")} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -96,27 +90,15 @@ export function UserForm({ onSubmit, itemId, defaultValues }: UserFormProps) {
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Электронная почта</FormLabel>
+                <FormLabel>{t("inspections.email")}</FormLabel>
                 <FormControl>
-                  <Input placeholder="Электронная почта" {...field} />
+                  <Input placeholder={t("inspections.email")} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          {/* <FormField
-            name="address"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("form.address")}</FormLabel>
-                <FormControl>
-                  <Input placeholder={t("form.address")} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
+
           <FormField
             name="phone"
             control={form.control}
@@ -129,43 +111,6 @@ export function UserForm({ onSubmit, itemId, defaultValues }: UserFormProps) {
               </FormItem>
             )}
           />
-          {/* <FormField
-            name="gender"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("form.gender")}</FormLabel>
-                <FormControl>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <SelectTrigger>
-                      <SelectValue placeholder={t("form.gender")} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {GENDERS.map((g) => (
-                        <SelectItem key={g.value} value={g.value}>
-                          {g[locale]}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
-          {/* <FormField
-            name="birthDate"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem className="flex flex-col pt-1.5 gap-1">
-                <FormLabel>{t("form.birthDate")}</FormLabel>
-                <FormControl>
-                  <DatePicker field={field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
 
           <FormField
             name={"regionId" as any}
@@ -194,22 +139,6 @@ export function UserForm({ onSubmit, itemId, defaultValues }: UserFormProps) {
               </FormItem>
             )}
           />
-
-          {/* <FormField
-            name="isActive"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <div className="flex items-center gap-3">
-                    <Switch id="isActiveItem" checked={field.value} onCheckedChange={field.onChange} >Accept terms and conditions</Switch>
-                    <Label htmlFor="isActiveItem" className="cursor-pointer">Accept terms and conditions</Label>
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
 
           {!itemId?.trim() && <>
             <Separator className="col-span-1 md:col-span-2" />

@@ -10,6 +10,7 @@ import { DatePicker } from "@/shared/components/date-picker";
 // import { AnimalSelect } from "../animals/components/animal-select";
 import { ProphylaxisItemSelect } from "../prophylaxis-items/components/prophylaxis-item-select";
 import { ProphylaxisDetailSelect } from "../prophylaxis-details/components/prophylaxis-detail-select";
+import { ObjectEntriesSelect } from "@/shared/components/object-entries-select";
 
 interface ProphylaxisFormProps {
   defaultValues?: ProphylaxisSchema;
@@ -17,7 +18,7 @@ interface ProphylaxisFormProps {
 }
 
 export function ProphylaxisForm({ onSubmit, defaultValues }: ProphylaxisFormProps) {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
 
   const form = useForm<ProphylaxisSchema>({
     resolver: zodResolver(createProphylaxisSchema(t)),
@@ -32,51 +33,22 @@ export function ProphylaxisForm({ onSubmit, defaultValues }: ProphylaxisFormProp
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 h-full">
-        {/* <FormField
-          name={"animalId"}
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("form.regionName")}</FormLabel>
-              <FormControl>
-                <AnimalSelect placeholder={t("form.regionName")} value={field.value} onChange={field.onChange} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
-        <FormField
+        <ObjectEntriesSelect
           name="type"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("inspections.specificProphylaxis")}</FormLabel>
-              <FormControl>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <SelectTrigger>
-                    <SelectValue placeholder={t("inspections.specificProphylaxis")} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.entries(PROPHYLAXIS_TYPES).map(([key, value]) => (
-                      <SelectItem key={key} value={key}>
-                        {value}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          form={form}
+          locale={locale}
+          object={PROPHYLAXIS_TYPES}
+          label={t("inspections.specificProphylaxis")}
+          placeholder={t("inspections.specificProphylaxis")}
         />
         {type && <FormField
           name={"itemId"}
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Элемент профилактики</FormLabel>
+              <FormLabel>{t("inspections.prophylaxisItem")}</FormLabel>
               <FormControl>
-                <ProphylaxisItemSelect placeholder={"Элемент профилактики"} value={field.value} onChange={field.onChange} type={type} />
+                <ProphylaxisItemSelect placeholder={t("inspections.prophylaxisItem")} value={field.value} onChange={field.onChange} type={type} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -87,9 +59,9 @@ export function ProphylaxisForm({ onSubmit, defaultValues }: ProphylaxisFormProp
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Деталь профилактики</FormLabel>
+              <FormLabel>{t("inspections.prophylaxisDetail")}</FormLabel>
               <FormControl>
-                <ProphylaxisDetailSelect placeholder={"Деталь профилактики"} value={field.value} onChange={field.onChange} itemId={itemId} />
+                <ProphylaxisDetailSelect placeholder={t("inspections.prophylaxisDetail")} value={field.value} onChange={field.onChange} itemId={itemId} />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -24,13 +24,14 @@ interface AutocompleteProps<T> {
   defaultValue?: T | string | number;
   onSelect?: (value: T | null) => void;
   onRemove?: () => void
-  queryFn: (search?: string | undefined) => UseInfiniteQueryResult<InfiniteData<PaginatedEntity<T>, unknown>, Error>;
+  queryFn: (search?: string | undefined, ...args: any[]) => UseInfiniteQueryResult<InfiniteData<PaginatedEntity<T>, unknown>, Error>;
   renderOption?: (option: T) => React.ReactNode;
   getOptionLabel?: (option: T) => string;
   getOptionId?: (option: T) => string;
   clientSearch?: (search: string, option: T) => boolean;
   customFilter?: (option: T) => boolean;
-  dependsOn?: unknown | null
+  dependsOn?: unknown | null;
+  queryParams?: Record<string, unknown>;
 }
 
 interface OptionItemProps<T> {
@@ -65,6 +66,7 @@ export function Autocomplete<T>({
   getOptionLabel = (option: any) => option.name || option.label || String(option),
   getOptionId = (option: any) => option.id || String(option),
   clientSearch,
+  queryParams,
 }: AutocompleteProps<T>) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -80,7 +82,9 @@ export function Autocomplete<T>({
 
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = queryFn(clientSearch ? undefined : search);
+  // Передаем queryParams как дополнительные аргументы в queryFn
+  const queryParamsArray = queryParams ? Object.values(queryParams).filter(v => v !== null && v !== undefined) : [];
+  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = queryFn(clientSearch ? undefined : search, ...queryParamsArray);
 
   const options = pageableToArray(data);
 

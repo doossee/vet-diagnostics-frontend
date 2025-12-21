@@ -9,7 +9,7 @@ export const createProphylaxisColumns = (handleEditItem: (item: Prophylaxis) => 
   {
     title: t("inspections.specificProphylaxis"), key: "type", render(item: Prophylaxis) {
       return <Badge className="text-sm" variant={PROPHYLAXIS_BADGE_COLORS[item.type] as any}>
-        {PROPHYLAXIS_TYPES[item.type]}
+        {PROPHYLAXIS_TYPES[item.type]?.[locale]}
       </Badge>
     }
   },

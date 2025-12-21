@@ -1,4 +1,5 @@
 {
+  "vetPlatform": "Veterinariya platformasi",
   "nav": {
     "management": "Boshqaruvlar",
     "animals": "Hayvonlar",
@@ -40,7 +41,13 @@
     "vaccines": "Vaksinalar",
     "generalInspections": "Klinik tekshiruvlar",
     "generalBloodTests": "Qonni morfologik tekshiruvi",
-    "bloodSerumTests": "Qon serum tekshiruvi"
+    "bloodSerumTests": "Qon serum tekshiruvi",
+
+    "animalSettings": "Hayvon sozlamalari",
+    "urineSettings": "Siydik sozlamalari",
+    "dungSettings": "Tezak sozlamalari",
+    "mapSettings": "Xarita sozlamalari",
+    "medicineSettings": "Meditsina sozlamalari"
   },
   "theme": {
     "light": "Yorug'",
@@ -292,10 +299,10 @@
     "prophylaxisItem": "Profilaktika elementi",
     "prophylaxisDetail": "Profilaktika tafsiloti",
     "diseaseTypeName": "Kasallik turi nomi",
-    "parentDiseaseType": "Ota kasallik turi",
+    "parentDiseaseType": "Kasallik turi kategoriyasi",
     "diseaseName": "Nomi",
     "diseases": "Kasalliklar",
-    "parentType": "Ota turi",
+    "parentType": "Turi kategoriyasi",
     "itemName": "Element nomi",
     "email": "Elektron pochta",
     "username": "Foydalanuvchi nomi (Login)",

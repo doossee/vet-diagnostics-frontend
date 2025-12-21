@@ -100,8 +100,13 @@ apiInstance.interceptors.response.use(
 
         return apiInstance(originalRequest);
       } catch (refreshError) {
-        
         processQueue(null, refreshError);
+
+        setAuthData(null, "ACCESS_TOKEN");
+        setAuthData(null, "REFRESH_TOKEN");
+        setAuthData(null, "USER_DATA");
+
+        location.href = "/login";
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;

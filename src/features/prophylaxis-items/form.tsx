@@ -8,6 +8,7 @@ import { PROPHYLAXIS_TYPES } from "@/entities/prophylaxis/utils/constants/prophy
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
 import { ProphylaxisItemSchema, createProphylaxisItemSchema, prophylaxisItemValues } from "./prophylaxis-item.model";
+import { ObjectEntriesSelect } from "@/shared/components/object-entries-select";
 
 interface FormProps {
   defaultValues?: ProphylaxisItemSchema;
@@ -15,7 +16,7 @@ interface FormProps {
 }
 
 export function ProphylaxisItemsForm({ onSubmit, defaultValues }: FormProps) {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
 
   const form = useForm<ProphylaxisItemSchema>({
     resolver: zodResolver(createProphylaxisItemSchema(t)),
@@ -30,9 +31,9 @@ export function ProphylaxisItemsForm({ onSubmit, defaultValues }: FormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Называние элемента RU</FormLabel>
+              <FormLabel>{ t("inspections.itemName")} RU</FormLabel>
               <FormControl>
-                <Textarea placeholder={"Называние элемента"} {...field} rows={3} />
+                <Textarea placeholder={ t("inspections.itemName")} {...field} rows={3} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -43,37 +44,21 @@ export function ProphylaxisItemsForm({ onSubmit, defaultValues }: FormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{"Называние элемента"} UZ</FormLabel>
+              <FormLabel>{ t("inspections.itemName")} UZ</FormLabel>
               <FormControl>
-                <Textarea placeholder={"Называние элемента"} {...field} rows={3} />
+                <Textarea placeholder={ t("inspections.itemName")} {...field} rows={3} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <FormField
+        <ObjectEntriesSelect
           name="type"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("inspections.specificProphylaxis")}</FormLabel>
-              <FormControl>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <SelectTrigger>
-                    <SelectValue placeholder={t("inspections.specificProphylaxis")} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.entries(PROPHYLAXIS_TYPES).map(([key, value]) => (
-                      <SelectItem key={key} value={key}>
-                        {value}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          form={form}
+          locale={locale}
+          object={PROPHYLAXIS_TYPES}
+          label={t("inspections.specificProphylaxis")}
+          placeholder={t("inspections.specificProphylaxis")}
         />
         <div className="flex-1 flex items-end">
           <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">

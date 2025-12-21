@@ -1,4 +1,5 @@
 {
+  "vetPlatform": "Платформа ветеринарии",
   "nav": {
     "management": "Управления",
     "animals": "Животные",
@@ -41,7 +42,13 @@
     "vaccines": "Вакцины",
     "generalInspections": "Клинические проверки",
     "generalBloodTests": "Исследование крови",
-    "bloodSerumTests": "Анализы сыворотки крови"
+    "bloodSerumTests": "Анализы сыворотки крови",
+
+    "animalSettings": "Настройки животных",
+    "urineSettings": "Настройки мочи",
+    "dungSettings": "Настройки кала",
+    "mapSettings": "Настройки карты",
+    "medicineSettings": "Настройки медицины"
   },
   "theme": {
     "light": "Светлая",

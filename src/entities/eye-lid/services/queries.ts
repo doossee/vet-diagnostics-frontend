@@ -12,15 +12,16 @@ export function useGetEyeLids(params: Record<string, unknown>, enabled?: boolean
   });
 }
 
-export function useGetEyeLidsInfinite(mucosaType?: MucosaType, search?: string) {
+export function useGetEyeLidsInfinite(mucosaType?: MucosaType, search?: string, animalTypeId?: string) {
   return useInfiniteQuery({
-    queryKey: [EyeLidQueryKeys.EYE_LIDS_SELECT, mucosaType, search],
+    queryKey: [EyeLidQueryKeys.EYE_LIDS_SELECT, mucosaType, search, animalTypeId],
     queryFn: (params) => mucosaAppearanceControllerFindAll(params.pageParam) as Promise<PaginatedEntity<MucosaAppearance>>,
     initialPageParam: {
       page: 1,
       perPage: 20, 
       ...(mucosaType && {mucosaType}),
-      ...(search && { search })
+      ...(search && { search }),
+      ...(animalTypeId && { animalTypeId })
     },
     getNextPageParam: (lastPage) => {
       const nextPage = (lastPage?.meta?.currentPage ?? 0) + 1;
@@ -32,6 +33,7 @@ export function useGetEyeLidsInfinite(mucosaType?: MucosaType, search?: string) 
             perPage: 20,
             ...(mucosaType && {mucosaType}),
             ...(search && { search }),
+            ...(animalTypeId && { animalTypeId }),
           }
         : null;
     },

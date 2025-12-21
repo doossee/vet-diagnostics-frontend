@@ -1,4 +1,4 @@
-import { ProphylaxisType } from "@/shared/types";
+import { LanguageLocales, ProphylaxisType } from "@/shared/types";
 
 export const PROPHYLAXIS_TYPES_ARRAY = [
   "DEWORMING",
@@ -6,10 +6,19 @@ export const PROPHYLAXIS_TYPES_ARRAY = [
   "VACCINE"
 ] as const
 
-export const PROPHYLAXIS_TYPES: Record<ProphylaxisType, string> = {
-  DEWORMING: "Дегельминтизация",
-  IMMUNIZATION: "Иммунизация",
-  VACCINE: "Вакцинация"
+export const PROPHYLAXIS_TYPES: Record<ProphylaxisType, Record<LanguageLocales, string>> = {
+  DEWORMING: {
+    ru: "Дегельминтизация",
+    uz: "Degelmintizatsiya"
+  },
+  IMMUNIZATION: {
+    ru: "Иммунизация",
+    uz: "Immunizatsiya"
+  },
+  VACCINE: {
+    ru: "Вакцинация",
+    uz: "Vaksinatsiya"
+  }
 }
 
 export const PROPHYLAXIS_BADGE_COLORS: Record<ProphylaxisType, string> = {

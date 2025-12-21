@@ -5,6 +5,7 @@ import { UrineColor } from "@/shared/types";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { Autocomplete } from "@/shared/components/ui/autocomplete";
 import { useGetUrineColorsInfinite } from "@/entities/urine-colors/services/queries";
+import { useSearchQueryParams } from "@/shared/hooks/use-query-params";
 
 interface Props {
   value?: unknown;
@@ -15,7 +16,9 @@ interface Props {
 }
 
 export function UrineColorSelect({ value, placeholder, disabled, onChange, onRemove }: Props) {
-  const { locale } = useI18n()
+  const { locale } = useI18n();
+  const { get } = useSearchQueryParams();
+  const animalTypeId = get("animalTypeId");
 
   return (
     <Autocomplete<UrineColor>
@@ -24,7 +27,7 @@ export function UrineColorSelect({ value, placeholder, disabled, onChange, onRem
       defaultValue={value as UrineColor}
       onSelect={(e: any) => onChange?.(e?.id)}
       placeholder={placeholder}
-      queryFn={useGetUrineColorsInfinite}
+      queryFn={(search) => useGetUrineColorsInfinite(search, animalTypeId || undefined)}
       getOptionLabel={item => item?.[`name_${locale}`]}
       // clientSearch={(search, item) =>
       //   searchUtil(search, item, ["id", "name"])

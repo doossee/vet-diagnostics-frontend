@@ -36,17 +36,17 @@ export function InfoTable<T>({ localeTitle, icon, hideCreateButton, createColumn
 
   return (<Card className="shadow-none rounded">
     <CardHeader>
-      <div className="flex items-center justify-between">
-        <CardTitle className="flex items-center gap-2">
+      <div className="flex items-center justify-between gap-4">
+        <CardTitle className="flex items-center gap-2 text-sm md:text-base">
           <div>
             {icon}
           </div>
           {t(localeTitle)}
         </CardTitle>
 
-        {!hideCreateButton && <Button onClick={() => onCreate?.()}>
+        {!hideCreateButton && <Button size={'sm'} onClick={() => onCreate?.()}>
           <ExternalLink />
-          {t("show")}
+          <span className="hidden md:inline">{t("show")}</span>
         </Button>}
       </div>
     </CardHeader>
@@ -64,13 +64,15 @@ export function InfoTable<T>({ localeTitle, icon, hideCreateButton, createColumn
             columns.map((row) => 
               <TableRow key={row.key}>
                 <TableCell>
-                  <b>{row.title}</b>
+                  <b className="whitespace-pre-line text-left">{row.title}</b>
                 </TableCell>
                 <TableCell>
                   <SkeletonWrapper loading={isLoading}>
-                    {
-                      data && (row.render ? row.render(data) : String(data?.[row.key as keyof T]))
-                    }
+                    <div className="text-right whitespace-pre-line ">
+                      {
+                        data && (row.render ? row.render(data) : String(data?.[row.key as keyof T]))
+                      }
+                    </div>
                   </SkeletonWrapper>
                 </TableCell>
               </TableRow>

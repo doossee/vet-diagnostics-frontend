@@ -19,7 +19,7 @@ export function BloodExamInfoTable({ id, onCreate }: Props) {
 
   return <InfoTable
     onCreate={handleOpen}
-    icon={<Syringe />}
+    icon={<Syringe className="size-5 md:size-6" />}
     localeTitle="nav.generalBloodTests"
     createColumns={createGeneralBloodTestColumns}
     queryFn={() => useGetLastGeneralBloodTest(id)}

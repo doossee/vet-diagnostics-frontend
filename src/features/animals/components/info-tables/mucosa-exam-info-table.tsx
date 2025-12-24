@@ -19,7 +19,7 @@ export function MucosaExamInfoTable({ id, onCreate }: Props) {
   
   return <InfoTable
     onCreate={handleOpen}
-    icon={<ScanEye />}
+    icon={<ScanEye className="size-5 md:size-6" />}
     localeTitle="nav.mucosaExams"
     createColumns={createMucosaExamColumns}
     queryFn={() => useGetLastMucosaExamByAnimal(id)}

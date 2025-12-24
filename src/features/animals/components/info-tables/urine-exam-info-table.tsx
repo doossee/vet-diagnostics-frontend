@@ -19,7 +19,7 @@ export function UrineExamInfoTable({ id, onCreate }: Props) {
   
   return <InfoTable
     onCreate={handleOpen}
-    icon={<Beaker />}
+    icon={<Beaker className="size-5 md:size-6" />}
     localeTitle="nav.urineTests"
     createColumns={createUrineTestColumns}
     queryFn={() => useGetLastUrineTestByAnimal(id)}

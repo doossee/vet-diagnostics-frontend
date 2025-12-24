@@ -19,7 +19,7 @@ export function ProphylaxisInfoTable({ id, onCreate }: Props) {
   
   return <InfoTable
     onCreate={handleOpen}
-    icon={<Activity />}
+    icon={<Activity className="size-5 md:size-6" />}
     localeTitle="nav.prophylaxis"
     createColumns={createProphylaxisColumns}
     queryFn={() => useGetLastProphylaxisByAnimal(id)}

@@ -19,7 +19,7 @@ export function FecesExamInfoTable({ id, onCreate }: Props) {
   
   return <InfoTable
     onCreate={handleOpen}
-    icon={<Shovel />}
+    icon={<Shovel className="size-5 md:size-6" />}
     localeTitle="nav.dungTests"
     createColumns={createDungTestColumns}
     queryFn={() => useGetLastDungTestByAnimal(id)}

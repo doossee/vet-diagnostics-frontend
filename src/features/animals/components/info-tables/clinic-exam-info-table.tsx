@@ -19,7 +19,7 @@ export function ClinicExamInfoTable({ id, onCreate }: Props) {
 
   return <InfoTable
     onCreate={handleOpen}
-    icon={<Stethoscope />}
+    icon={<Stethoscope className="size-5 md:size-6" />}
     localeTitle="animals.generalInspection"
     createColumns={createGeneralInspectionColumns}
     queryFn={() => useGetLastGeneralInspection(id)}

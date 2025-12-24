@@ -13,13 +13,14 @@ interface Props {
   disabled?: boolean;
   placeholder?: string;
   onRemove?: () => void;
+  animalTypeId?: string;
   onChange?: (value: unknown) => void;
 }
 
-export function AnimalColorSelect({ value, placeholder, disabled, min, onChange, onRemove }: Props) {
+export function AnimalColorSelect({ value, placeholder, animalTypeId, disabled, min, onChange, onRemove }: Props) {
   const { locale } = useI18n();
   const { get } = useSearchQueryParams();
-  const animalTypeId = get("animalTypeId");
+  const typeId = animalTypeId ?? get("animalTypeId");
 
   return (
     <Autocomplete<Color>
@@ -29,7 +30,7 @@ export function AnimalColorSelect({ value, placeholder, disabled, min, onChange,
       defaultValue={value as Color}
       placeholder={placeholder}
       onSelect={(e: any) => onChange?.(e?.id)}
-      queryFn={(search) => useGetAnimalColorsInfinite(search, animalTypeId || undefined)}
+      queryFn={(search) => useGetAnimalColorsInfinite(search, typeId ? String(typeId) : undefined)}
       getOptionLabel={item => item?.[`name_${locale}`]}
       // clientSearch={(search, item) =>
       //   searchUtil(search, item, ["id", "name"])

@@ -19,7 +19,7 @@ export function DiseaseInfoTable({ id, onCreate }: Props) {
 
   return <InfoTable
     onCreate={handleOpen}
-    icon={<ScanHeart />}
+    icon={<ScanHeart className="size-5 md:size-6" />}
     localeTitle="nav.diseases"
     createColumns={createDiseaseColumns}
     queryFn={() => useGetLastDisease(id)}

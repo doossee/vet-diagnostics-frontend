@@ -10,9 +10,9 @@ function escapeMarkdown(text: string) {
 
 export async function POST(request: Request) {
   try {
+    if(!BOT_TOKEN || !BOT_USER) return ''
     const body = await request.json()
-    // console.log(body);
-    
+
     const text = `
 🚨 *Новый отчёт об ошибке*
 
@@ -30,10 +30,6 @@ export async function POST(request: Request) {
 🌎 *Язык:* ${escapeMarkdown(body.lang)}
 
 🕓 *Дата:* ${escapeMarkdown(new Date().toLocaleString("ru-RU"))}`;
-// ━━━━━━━━━━━━━━━━━━
-// \`\`\`
-// ${escapeMarkdown(body.stack || "Без стека")}
-// \`\`\`
 
     await axios.post(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
       chat_id: BOT_USER,

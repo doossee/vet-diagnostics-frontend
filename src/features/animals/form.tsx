@@ -36,6 +36,8 @@ export function AnimalForm({ onSubmit, defaultValues, submitRightContent }: Anim
       : (animalValues as any),
   });
 
+  const animalTypeId = form.watch('animalTypeId');
+
   useEffect(() => {
     if((defaultValues as any)?.animalType) {
       setAnimalType((defaultValues as any)?.animalType)
@@ -134,7 +136,7 @@ export function AnimalForm({ onSubmit, defaultValues, submitRightContent }: Anim
               <FormItem>
                 <FormLabel>{t("animals.color")}</FormLabel>
                 <FormControl>
-                  <AnimalColorSelect placeholder={t("animals.color")} value={field.value} onChange={field.onChange} />
+                  <AnimalColorSelect animalTypeId={animalTypeId} placeholder={t("animals.color")} value={field.value} onChange={field.onChange} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

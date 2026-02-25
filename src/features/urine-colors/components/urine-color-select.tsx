@@ -29,6 +29,7 @@ export function UrineColorSelect({ value, placeholder, disabled, onChange, onRem
       placeholder={placeholder}
       queryFn={(search) => useGetUrineColorsInfinite(search, undefined)}
       getOptionLabel={item => item?.[`name_${locale}`]}
+      extraLabel={item => item?.animalType?.[`name_${locale}`]}
       // clientSearch={(search, item) =>
       //   searchUtil(search, item, ["id", "name"])
       // }

@@ -18,7 +18,7 @@ interface Props {
 export function UrineColorSelect({ value, placeholder, disabled, onChange, onRemove }: Props) {
   const { locale } = useI18n();
   const { get } = useSearchQueryParams();
-  const animalTypeId = get("animalTypeId");
+  // const animalTypeId = get("animalTypeId");
 
   return (
     <Autocomplete<UrineColor>
@@ -27,7 +27,7 @@ export function UrineColorSelect({ value, placeholder, disabled, onChange, onRem
       defaultValue={value as UrineColor}
       onSelect={(e: any) => onChange?.(e?.id)}
       placeholder={placeholder}
-      queryFn={(search) => useGetUrineColorsInfinite(search, animalTypeId || undefined)}
+      queryFn={(search) => useGetUrineColorsInfinite(search, undefined)}
       getOptionLabel={item => item?.[`name_${locale}`]}
       // clientSearch={(search, item) =>
       //   searchUtil(search, item, ["id", "name"])

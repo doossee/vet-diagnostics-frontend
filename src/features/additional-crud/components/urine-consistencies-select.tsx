@@ -18,7 +18,7 @@ interface Props {
 export function UrineConsistenciesSelect({ value, placeholder, disabled, onChange, onRemove }: Props) {
   const { locale } = useI18n();
   const { get } = useSearchQueryParams();
-  const animalTypeId = get("animalTypeId");
+  // const animalTypeId = get("animalTypeId");
 
   return (
     <Autocomplete
@@ -27,7 +27,7 @@ export function UrineConsistenciesSelect({ value, placeholder, disabled, onChang
       defaultValue={value as UrineConsistency}
       onSelect={(e: any) => onChange?.(e?.id)}
       placeholder={placeholder}
-      queryFn={(search) => useGetUrineConsistenciesInfinite(search, animalTypeId || undefined)}
+      queryFn={(search) => useGetUrineConsistenciesInfinite(search, undefined)}
       getOptionLabel={item => item?.[`name_${locale}`]}
       // clientSearch={(search, item) =>
       //   searchUtil(search, item, ["id", "name"])

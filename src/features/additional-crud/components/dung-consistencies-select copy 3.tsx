@@ -18,7 +18,7 @@ interface Props {
 export function DungConsistenciesSelect({ value, placeholder, disabled, onChange, onRemove }: Props) {
   const { locale } = useI18n();
   const { get } = useSearchQueryParams();
-  const animalTypeId = get("animalTypeId");
+  // const animalTypeId = get("animalTypeId");
 
   return (
     <Autocomplete
@@ -27,7 +27,7 @@ export function DungConsistenciesSelect({ value, placeholder, disabled, onChange
       defaultValue={value as FecesConsistency}
       onSelect={(e: any) => onChange?.(e?.id)}
       placeholder={placeholder}
-      queryFn={(search) => useGetDungConsistenciesInfinite(search, animalTypeId || undefined)}
+      queryFn={(search) => useGetDungConsistenciesInfinite(search, undefined)}
       getOptionLabel={item => item?.[`name_${locale}`]}
       // clientSearch={(search, item) =>
       //   searchUtil(search, item, ["id", "name"])

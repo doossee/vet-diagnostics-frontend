@@ -20,7 +20,7 @@ interface Props {
 export function AnimalColorSelect({ value, placeholder, animalTypeId, disabled, min, onChange, onRemove }: Props) {
   const { locale } = useI18n();
   const { get } = useSearchQueryParams();
-  const typeId = animalTypeId ?? get("animalTypeId");
+  // const typeId = animalTypeId ?? get("animalTypeId");
 
   return (
     <Autocomplete<Color>
@@ -30,7 +30,7 @@ export function AnimalColorSelect({ value, placeholder, animalTypeId, disabled, 
       defaultValue={value as Color}
       placeholder={placeholder}
       onSelect={(e: any) => onChange?.(e?.id)}
-      queryFn={(search) => useGetAnimalColorsInfinite(search, typeId ? String(typeId) : undefined)}
+      queryFn={(search) => useGetAnimalColorsInfinite(search, undefined)} // typeId ? String(typeId) : 
       getOptionLabel={item => item?.[`name_${locale}`]}
       // clientSearch={(search, item) =>
       //   searchUtil(search, item, ["id", "name"])

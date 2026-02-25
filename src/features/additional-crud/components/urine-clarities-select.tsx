@@ -27,7 +27,7 @@ export function UrineClaritiesSelect({ value, placeholder, disabled, onChange, o
       defaultValue={value as UrineClarity}
       onSelect={(e: any) => onChange?.(e?.id)}
       placeholder={placeholder}
-      queryFn={(search) => useGetUrineClaritiesInfinite(search, animalTypeId || undefined)}
+      queryFn={(search) => useGetUrineClaritiesInfinite(search, undefined)}
       getOptionLabel={item => item?.[`name_${locale}`]}
       // clientSearch={(search, item) =>
       //   searchUtil(search, item, ["id", "name"])

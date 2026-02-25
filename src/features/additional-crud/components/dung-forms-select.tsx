@@ -18,7 +18,7 @@ interface Props {
 export function DungFormsSelect({ value, placeholder, disabled, onChange, onRemove }: Props) {
   const { locale } = useI18n();
   const { get } = useSearchQueryParams();
-  const animalTypeId = get("animalTypeId");
+  // const animalTypeId = get("animalTypeId");
 
   return (
     <Autocomplete
@@ -27,7 +27,7 @@ export function DungFormsSelect({ value, placeholder, disabled, onChange, onRemo
       defaultValue={value as FecesForm}
       onSelect={(e: any) => onChange?.(e?.id)}
       placeholder={placeholder}
-      queryFn={(search) => useGetDungFormsInfinite(search, animalTypeId || undefined)}
+      queryFn={(search) => useGetDungFormsInfinite(search, undefined)}
       getOptionLabel={item => item?.[`name_${locale}`]}
       // clientSearch={(search, item) =>
       //   searchUtil(search, item, ["id", "name"])

@@ -18,7 +18,7 @@ interface Props {
 export function DungColorSelect({ value, placeholder, disabled, onChange, onRemove }: Props) {
   const { locale } = useI18n();
   const { get } = useSearchQueryParams();
-  const animalTypeId = get("animalTypeId");
+  // const animalTypeId = get("animalTypeId");
   
   return (
     <Autocomplete<FecesColor>
@@ -27,7 +27,7 @@ export function DungColorSelect({ value, placeholder, disabled, onChange, onRemo
       defaultValue={value as FecesColor}
       onSelect={(e: any) => onChange?.(e?.id)}
       placeholder={placeholder}
-      queryFn={(search) => useGetDungColorsInfinite(search, animalTypeId || undefined)}
+      queryFn={(search) => useGetDungColorsInfinite(search, undefined)}
       getOptionLabel={item => item?.[`name_${locale}`]}
       // clientSearch={(search, item) => 
       //   searchUtil(search, item, ["id", "name"])

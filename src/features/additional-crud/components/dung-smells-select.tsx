@@ -18,7 +18,7 @@ interface Props {
 export function DungSmellsSelect({ value, placeholder, disabled, onChange, onRemove }: Props) {
   const { locale } = useI18n();
   const { get } = useSearchQueryParams();
-  const animalTypeId = get("animalTypeId");
+  // const animalTypeId = get("animalTypeId");
 
   return (
     <Autocomplete
@@ -27,7 +27,7 @@ export function DungSmellsSelect({ value, placeholder, disabled, onChange, onRem
       defaultValue={value as FecesSmell}
       onSelect={(e: any) => onChange?.(e?.id)}
       placeholder={placeholder}
-      queryFn={(search) => useGetDungSmellsInfinite(search, animalTypeId || undefined)}
+      queryFn={(search) => useGetDungSmellsInfinite(search, undefined)}
       getOptionLabel={item => item?.[`name_${locale}`]}
     />
   );

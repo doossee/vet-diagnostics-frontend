@@ -29,6 +29,7 @@ export function DungConsistenciesSelect({ value, placeholder, disabled, onChange
       placeholder={placeholder}
       queryFn={(search) => useGetDungConsistenciesInfinite(search, undefined)}
       getOptionLabel={item => item?.[`name_${locale}`]}
+      extraLabel={item => item?.animalType?.[`name_${locale}`]}
       // clientSearch={(search, item) =>
       //   searchUtil(search, item, ["id", "name"])
       // }

@@ -29,6 +29,7 @@ export function UrineClaritiesSelect({ value, placeholder, disabled, onChange, o
       placeholder={placeholder}
       queryFn={(search) => useGetUrineClaritiesInfinite(search, undefined)}
       getOptionLabel={item => item?.[`name_${locale}`]}
+      extraLabel={item => item?.animalType?.[`name_${locale}`]}
       // clientSearch={(search, item) =>
       //   searchUtil(search, item, ["id", "name"])
       // }

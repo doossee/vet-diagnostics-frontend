@@ -32,6 +32,7 @@ export function AnimalColorSelect({ value, placeholder, animalTypeId, disabled, 
       onSelect={(e: any) => onChange?.(e?.id)}
       queryFn={(search) => useGetAnimalColorsInfinite(search, undefined)} // typeId ? String(typeId) : 
       getOptionLabel={item => item?.[`name_${locale}`]}
+      // extraLabel={item => item?.[`name_${locale}`]}
       // clientSearch={(search, item) =>
       //   searchUtil(search, item, ["id", "name"])
       // }

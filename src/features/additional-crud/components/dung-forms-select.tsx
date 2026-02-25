@@ -29,6 +29,7 @@ export function DungFormsSelect({ value, placeholder, disabled, onChange, onRemo
       placeholder={placeholder}
       queryFn={(search) => useGetDungFormsInfinite(search, undefined)}
       getOptionLabel={item => item?.[`name_${locale}`]}
+      extraLabel={item => item?.animalType?.[`name_${locale}`]}
       // clientSearch={(search, item) =>
       //   searchUtil(search, item, ["id", "name"])
       // }

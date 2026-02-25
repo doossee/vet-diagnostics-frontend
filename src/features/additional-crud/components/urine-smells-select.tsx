@@ -18,7 +18,7 @@ interface Props {
 export function UrineSmellsSelect({ value, placeholder, disabled, onChange, onRemove }: Props) {
   const { locale } = useI18n();
   const { get } = useSearchQueryParams();
-  const animalTypeId = get("animalTypeId");
+  // const animalTypeId = get("animalTypeId");
 
   return (
     <Autocomplete
@@ -29,6 +29,7 @@ export function UrineSmellsSelect({ value, placeholder, disabled, onChange, onRe
       placeholder={placeholder}
       queryFn={(search) => useGetUrineSmellsInfinite(search, undefined)}
       getOptionLabel={item => item?.[`name_${locale}`]}
+      extraLabel={item => item?.animalType?.[`name_${locale}`]}
       // clientSearch={(search, item) =>
       //   searchUtil(search, item, ["id", "name"])
       // }

@@ -61,11 +61,11 @@ export function ErrorSender() {
 
   useEffect(() => {
     window.addEventListener("error", handleError);
-    window.addEventListener("unhandledrejection", handleRejection);
+    // window.addEventListener("unhandledrejection", handleRejection);
 
     return () => {
       window.removeEventListener("error", handleError);
-      window.removeEventListener("unhandledrejection", handleRejection);
+      // window.removeEventListener("unhandledrejection", handleRejection);
     };
   }, []);
 

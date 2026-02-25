@@ -13,7 +13,10 @@ const nextConfig: NextConfig = {
       },
     ]
   },
-   typescript: { ignoreBuildErrors: true }
+  typescript: { ignoreBuildErrors: true },
+  experimental: {
+    optimizePackageImports: ['lucide-react']
+  }
 }
 
 export default withNextIntl(nextConfig)

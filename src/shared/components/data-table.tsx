@@ -40,10 +40,11 @@ interface DataTableProps<T> {
   disablePagination?: boolean;
   columns: DataTableColumn<T>[];
   filterQueryParamKeys?: Record<string, string>;
+  customFilters?: Record<string, string | number | boolean>;
   queryFunction: (params: Record<string, unknown>, enabled?: boolean) => UseQueryResult<PaginatedEntity<T>, Error>;
 }
 
-export function DataTable<T extends { id: any }>({ onRowClick, columns, topSlot, hideBottom, hideSearch, disablePagination, filterQueryParamKeys, queryFunction }: DataTableProps<T>) {
+export function DataTable<T extends { id: any }>({ onRowClick, columns, topSlot, hideBottom, hideSearch, disablePagination, customFilters, filterQueryParamKeys, queryFunction }: DataTableProps<T>) {
   const t = useTranslations();
   const isMobile = useIsMobile();
   const isClient = useIsClient();
@@ -86,6 +87,7 @@ export function DataTable<T extends { id: any }>({ onRowClick, columns, topSlot,
   const queryParams = useCallback(() => {
     return {
       ...sortingQuery,
+      ...customFilters,
 
       page: initialParams.page,
       perPage: initialParams.perPage,
@@ -176,11 +178,11 @@ export function DataTable<T extends { id: any }>({ onRowClick, columns, topSlot,
               <Card key={i} className={cn("shadow-none rounded p-0 bg-card border", !!onRowClick ? "cursor-pointer hover:bg-card" : "")} onClick={() => !!onRowClick && onRowClick(item, i)}>
                 <CardContent className="p-2 py-1 divide-y">
                   {columns.map((col, i) => (
-                    <div key={i} className="w-full p-2" onClick={col?.stopPropagationOnClick ? stopPropagation : () => {}} >
+                    <div key={i} className="w-full p-2" onClick={(col?.stopPropagationOnClick || col.key === "actions") ? stopPropagation : () => {}} >
                       <div className="flex w-full gap-2 items-start justify-between">
                         {!col.hideTitleInMobile && <b className="text-sm">{col.title}:</b>}
                         <SkeletonWrapper loading={isLoading}>
-                          {col.render ? col.render(item) : <span className="text-right!">{(item as any)[col.key]}</span>}
+                          {col.render ? col.render(item) : <span className="text-right!">{String((col.key as string).split(".").reduce((acc: any, key) => acc?.[key], item as any) ?? "")}</span>}
                         </SkeletonWrapper>
                       </div>
                     </div>

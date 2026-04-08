@@ -13,17 +13,19 @@ import { Table, TableBody, TableCell, TableRow } from "@/shared/components/ui/ta
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
 
 type Props<T> = {
+  data?: T | null
   icon: ReactNode
+  isLoading?: boolean
   localeTitle: string
   hideCreateButton?: boolean
   onCreate?: (createNew?: boolean) => void
-  queryFn: () => UseQueryResult<T | null, any>
+  queryFn?: () => UseQueryResult<T | null, any>
   createColumns: (fn1: any, fn2: any, t: any, locale: LanguageLocales) => any[],
 }
 
-export function InfoTable<T>({ localeTitle, icon, hideCreateButton, createColumns, queryFn, onCreate }: Props<T>) {
+export function InfoTable<T>({ localeTitle, icon, hideCreateButton, createColumns, data, isLoading, onCreate }: Props<T>) {
   const { t, locale } = useI18n();
-  const { data, isLoading } = queryFn();
+  // const { data, isLoading } = queryFn();
 
   const columns = useMemo(() =>
     createColumns(()=>{}, ()=>{}, t, locale)

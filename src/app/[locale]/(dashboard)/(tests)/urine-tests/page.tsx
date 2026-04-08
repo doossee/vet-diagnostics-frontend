@@ -20,6 +20,7 @@ export default function UrineTests() {
 
   const newAnimal = get(QUERY_PARAM_KEYS.NEW);
   const animalId = get(QUERY_PARAM_KEYS.ANIMAL_ID);
+  const sessionId = get(QUERY_PARAM_KEYS.SESSION_ID);
 
   const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<UrineExam, UrineTestSchema, UrineTestSchema>({
     dialogValue: !!newAnimal,
@@ -53,7 +54,7 @@ export default function UrineTests() {
         title={t(editedItem ? "inspections.editUrineTest" : "inspections.createUrineTest")}>
         <UrineTestForm
           onSubmit={onSubmit}
-          defaultValues={editedItem ? editedItem as any : animalId ? {...urineTestValues, animalId: String(animalId)} : undefined}
+          defaultValues={editedItem ? editedItem as any : animalId ? {...urineTestValues, sessionId, animalId: String(animalId)} : undefined}
         />
       </Modal>
     </div>

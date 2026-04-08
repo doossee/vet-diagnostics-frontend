@@ -15,7 +15,7 @@ export const createUrineTestColumns = (handleEditItem: (item: UrineExam) => void
     title: t("inspections.urineColor"),
     key: "urineColorId",
     render(item: UrineExam) {
-      return item.urineColor?.[`name_${locale}`] ?? '-';
+      return item.urineColor?.name?.[locale] ?? '-';
     },
   },
   
@@ -24,21 +24,21 @@ export const createUrineTestColumns = (handleEditItem: (item: UrineExam) => void
     title: t("inspections.clarity"),
     key: "urineClarityId",
     render(item: UrineExam) {
-      return item.urineClarity?.[`name_${locale}`] ?? '-';
+      return item.urineClarity?.name?.[locale] ?? '-';
     },
   },
   {
     title: t("inspections.consistency"),
     key: "urineConsistencyId",
     render(item: UrineExam) {
-      return item.urineConsistency?.[`name_${locale}`] ?? '-';
+      return item.urineConsistency?.name?.[locale] ?? '-';
     },
   },
   {
     title: t("inspections.smell"),
     key: "urineSmellId",
     render(item: UrineExam) {
-      return item.urineSmell?.[`name_${locale}`] ?? '-';
+      return item.urineSmell?.name?.[locale] ?? '-';
     },
   },
 

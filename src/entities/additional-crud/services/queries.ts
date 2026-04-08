@@ -4,7 +4,16 @@ import { ADDITIONAL_CRUD_QUERY_KEYS } from "../utils/constants/query-keys";
 
 import { AdditionalCrudModel, PaginatedEntity } from "@/shared/types";
 import { fecesConsistencyControllerFindAll, fecesSmellControllerFindAll, fecesFormControllerFindAll,
-  urineClarityControllerFindAll, urineConsistencyControllerFindAll, urineSmellControllerFindAll
+  urineClarityControllerFindAll, urineConsistencyControllerFindAll, urineSmellControllerFindAll,
+  animalSexControllerFindAll, bodyPositionControllerFindAll, bodyTypeControllerFindAll,
+  constitutionControllerFindAll, downTypeControllerFindAll, featherTypeControllerFindAll,
+  hairTypeControllerFindAll, lymphConsistencyControllerFindAll, lymphMobilityControllerFindAll,
+  lymphPainControllerFindAll, lymphShapeControllerFindAll, lymphSizeControllerFindAll,
+  lymphSurfaceControllerFindAll, lymphTempControllerFindAll, mucosaTypeControllerFindAll,
+  obesityTypeControllerFindAll, skinColorControllerFindAll, skinElasticityControllerFindAll,
+  skinHumidityControllerFindAll, skinPainControllerFindAll, skinSensitivityControllerFindAll,
+  skinSmellControllerFindAll, skinSurfaceControllerFindAll, skinTempControllerFindAll,
+  temperamentControllerFindAll, woolTypeControllerFindAll, rumenFluidStateControllerFindAll
  } from "@/shared/api/api-new";
 
 // DUNG
@@ -194,3 +203,236 @@ export function useGetUrineClaritiesInfinite(search?: string, animalTypeId?: str
     },
   });
 }
+
+// COMMON LOOKUPS (NO PAGINATION)
+// ==============================
+
+function useGetStaticAdditionalCrudQuery<TData>(
+  queryKey: string,
+  queryFn: () => Promise<TData>,
+  enabled?: boolean
+) {
+  return useQuery<TData, Error>({
+    queryKey: [queryKey],
+    queryFn,
+    enabled,
+    staleTime: Infinity,
+  });
+}
+
+export function useGetAnimalSexes(enabled?: boolean) {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.ANIMAL_SEXES,
+    () => animalSexControllerFindAll(),
+    enabled
+  );
+}
+
+export function useGetBodyPositions(enabled?: boolean) {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.BODY_POSITIONS,
+    () => bodyPositionControllerFindAll(),
+    enabled
+  );
+}
+
+export function useGetBodyTypes(enabled?: boolean) {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.BODY_TYPES,
+    () => bodyTypeControllerFindAll(),
+    enabled
+  );
+}
+
+export function useGetConstitutions(enabled?: boolean) {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.CONSTITUTIONS,
+    () => constitutionControllerFindAll(),
+    enabled
+  );
+}
+
+export function useGetDownTypes(enabled?: boolean) {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.DOWN_TYPES,
+    () => downTypeControllerFindAll(),
+    enabled
+  );
+}
+
+export function useGetFeatherTypes(enabled?: boolean) {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.FEATHER_TYPES,
+    () => featherTypeControllerFindAll(),
+    enabled
+  );
+}
+
+export function useGetHairTypes(enabled?: boolean) {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.HAIR_TYPES,
+    () => hairTypeControllerFindAll(),
+    enabled
+  );
+}
+
+export function useGetLymphConsistencies(enabled?: boolean) {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.LYMPH_CONSISTENCIES,
+    () => lymphConsistencyControllerFindAll(),
+    enabled
+  );
+}
+
+export function useGetLymphMobilities(enabled?: boolean) {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.LYMPH_MOBILITIES,
+    () => lymphMobilityControllerFindAll(),
+    enabled
+  );
+}
+
+export function useGetLymphPains(enabled?: boolean) {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.LYMPH_PAINS,
+    () => lymphPainControllerFindAll(),
+    enabled
+  );
+}
+
+export function useGetLymphShapes(enabled?: boolean) {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.LYMPH_SHAPES,
+    () => lymphShapeControllerFindAll(),
+    enabled
+  );
+}
+
+export function useGetLymphSizes(enabled?: boolean) {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.LYMPH_SIZES,
+    () => lymphSizeControllerFindAll(),
+    enabled
+  );
+}
+
+export function useGetLymphSurfaces(enabled?: boolean) {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.LYMPH_SURFACES,
+    () => lymphSurfaceControllerFindAll(),
+    enabled
+  );
+}
+
+export function useGetLymphTemps(enabled?: boolean) {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.LYMPH_TEMPS,
+    () => lymphTempControllerFindAll(),
+    enabled
+  );
+}
+
+export function useGetRumenFluidStates(enabled?: boolean) {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.RUMEN_FLUID_STATES,
+    () => rumenFluidStateControllerFindAll(),
+    enabled
+  );
+}
+
+export function useGetMucosaTypes(enabled?: boolean) {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.MUCOSA_TYPES,
+    () => mucosaTypeControllerFindAll(),
+    enabled
+  );
+}
+
+export function useGetObesityTypes(enabled?: boolean) {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.OBESITY_TYPES,
+    () => obesityTypeControllerFindAll(),
+    enabled
+  );
+}
+
+export function useGetSkinColors(enabled?: boolean) {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.SKIN_COLORS,
+    () => skinColorControllerFindAll(),
+    enabled
+  );
+}
+
+export function useGetSkinElasticities(enabled?: boolean) {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.SKIN_ELASTICITIES,
+    () => skinElasticityControllerFindAll(),
+    enabled
+  );
+}
+
+export function useGetSkinHumidities(enabled?: boolean) {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.SKIN_HUMIDITIES,
+    () => skinHumidityControllerFindAll(),
+    enabled
+  );
+}
+
+export function useGetSkinPains(enabled?: boolean) {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.SKIN_PAINS,
+    () => skinPainControllerFindAll(),
+    enabled
+  );
+}
+
+export function useGetSkinSensitivities(enabled?: boolean) {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.SKIN_SENSITIVITIES,
+    () => skinSensitivityControllerFindAll(),
+    enabled
+  );
+}
+
+export function useGetSkinSmells(enabled?: boolean) {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.SKIN_SMELLS,
+    () => skinSmellControllerFindAll(),
+    enabled
+  );
+}
+
+export function useGetSkinSurfaces(enabled?: boolean) {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.SKIN_SURFACES,
+    () => skinSurfaceControllerFindAll(),
+    enabled
+  );
+}
+
+export function useGetSkinTemps(enabled?: boolean) {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.SKIN_TEMPS,
+    () => skinTempControllerFindAll(),
+    enabled
+  );
+}
+
+export function useGetTemperaments(enabled?: boolean) {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.TEMPERAMENTS,
+    () => temperamentControllerFindAll(),
+    enabled
+  );
+}
+
+export function useGetWoolTypes(enabled?: boolean) {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.WOOL_TYPES,
+    () => woolTypeControllerFindAll(),
+    enabled
+  );
+}
+

@@ -16,14 +16,14 @@ export const createMucosaExamColumns = (handleEditItem: (item: MucosaExam) => vo
     title: t("inspections.mucosaAppearance"),
     key: "mucosaAppearance",
     render(item: MucosaExam) {
-      return item.mucosaAppearance?.[`name_${locale}`]
+      return item.mucosaAppearance?.name?.[locale]
     }
   },
   {
     title: t("inspections.mucosaType"),
     key: "mucosaType",
     render(item: MucosaExam) {
-      return MUCOSA_TYPES?.[item.mucosaType]?.[locale]
+      return item.mucosaType?.name?.[locale]
     }
   },
   {

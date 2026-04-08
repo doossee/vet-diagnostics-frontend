@@ -15,17 +15,22 @@ export const createProphylaxisColumns = (handleEditItem: (item: Prophylaxis) => 
   },
   {
     title: t("inspections.prophylaxisItem"), key: "item", render(item: Prophylaxis) {
-      return item?.item?.[`name_${locale}`]
+      return item?.item?.name?.[locale]
     }
   },
   {
     title: t("inspections.prophylaxisDetail"), key: "detail", render(item: Prophylaxis) {
-      return item?.detail?.[`name_${locale}`]
+      return item?.detail?.name?.[locale]
     }
   },
   {
     title: t("form.date"), key: "date", render(item: Prophylaxis) {
       return new Date(item.date).toLocaleDateString()
+    }
+  },
+  {
+    title: "Notes", key: "notes", render(item: Prophylaxis) {
+      return item.notes || "-"
     }
   },
   {

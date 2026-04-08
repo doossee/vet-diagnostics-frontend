@@ -2,26 +2,30 @@
 
 import { ScanHeart } from "lucide-react";
 
-import { InfoTable } from "./info-table";
+import { Disease } from "@/shared/types";
 import { routes } from "@/shared/constants/routes";
 import { createDiseaseColumns } from "@/entities/diseases";
-import { useGetLastDisease } from "@/entities/diseases/services/queries";
+
+import { InfoTable } from "./info-table";
 
 type Props = {
-  id: string
+  data?: Disease
+  isLoading?: boolean
   onCreate?: (route: string, createNew?: boolean) => void
 }
 
-export function DiseaseInfoTable({ id, onCreate }: Props) {
+export function DiseaseInfoTable({ data, isLoading, onCreate }: Props) {
   const handleOpen = (createNew?: boolean) => {
     onCreate?.(routes.DISEASES, createNew)
   }
 
   return <InfoTable
+    data={data}
     onCreate={handleOpen}
-    icon={<ScanHeart className="size-5 md:size-6" />}
+    isLoading={isLoading}
     localeTitle="nav.diseases"
     createColumns={createDiseaseColumns}
-    queryFn={() => useGetLastDisease(id)}
+    icon={<ScanHeart className="size-5 md:size-6" />}
+    // queryFn={() => useGetLastDisease(id)}
   />
 }

@@ -25,7 +25,7 @@ export function AnimalTypeTreeSelect({ value, placeholder, disabled, onChange, o
       defaultValue={value as AnimalType}
       onSelect={(e) => onChange?.(e?.id, e!)}
       placeholder={placeholder}
-      getOptionLabel={(option) => option[`name_${locale}`]}
+      getOptionLabel={(option) => option.name?.[locale]}
       queryFn={(parentId) => useGetAnimalTypesInfinite(parentId)}
     />
   );

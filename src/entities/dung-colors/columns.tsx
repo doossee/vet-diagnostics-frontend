@@ -3,12 +3,18 @@ import { Edit, Trash } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 
 export const createDungColorColumns = (handleEditItem: (item: FecesColor) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
-  { title: t("inspections.name"), key: `name_${locale}` },
+  {
+    title: t("inspections.name"),
+    key: "name",
+    render(item) {
+      return item.name?.[locale] ?? "-";
+    },
+  },
   {
     title: t("animals.animalType"),
     key: "animalType",
     render(item: FecesColor) {
-      return item?.animalType?.[`name_${locale}`]
+      return item?.animalType?.name?.[locale]
     }
   },
   {

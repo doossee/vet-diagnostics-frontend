@@ -3,12 +3,18 @@ import { DiseaseCategory, LanguageLocales } from "@/shared/types";
 import { Button } from "@/shared/components/ui/button";
 
 export const createDiseaseTypeColumns = (handleEditItem: (item: DiseaseCategory) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
-  { title: t("inspections.diseaseTypeName"), key: `name_${locale}` },
+  {
+    title: t("inspections.diseaseTypeName"),
+    key: "name",
+    render(item) {
+      return item.name?.[locale] ?? "-";
+    },
+  },
   {
     title: t("inspections.parentDiseaseType"),
     key: "parent",
     render(item: DiseaseCategory) {
-      return item.parent ? item.parent?.[`name_${locale}`] : '-'
+      return item.parent ? item.parent?.name?.[locale] : '-'
     }
   },
   {

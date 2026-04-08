@@ -2,9 +2,9 @@ import { useForm } from "react-hook-form";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/shared/components/ui/button";
+import { Textarea } from "@/shared/components/ui/textarea";
 import { ProphylaxisSchema, createProphylaxisSchema, prophylaxisValues } from "./prophylaxis.model";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
 import { PROPHYLAXIS_TYPES } from "@/entities/prophylaxis/utils/constants/prophylaxis-types";
 import { DatePicker } from "@/shared/components/date-picker";
 // import { AnimalSelect } from "../animals/components/animal-select";
@@ -75,6 +75,19 @@ export function ProphylaxisForm({ onSubmit, defaultValues }: ProphylaxisFormProp
               <FormLabel>{t("form.date")}</FormLabel>
               <FormControl>
                 <DatePicker field={field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+            )}
+        />
+        <FormField
+          name="notes"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Notes</FormLabel>
+              <FormControl>
+                <Textarea rows={4} className="resize-none" placeholder="Notes" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -5,11 +5,15 @@ import { Button } from "@/shared/components/ui/button";
 
 export const createProphylaxisDetailsColumns = (handleEditItem: (item: ProphylaxisDetail) => void, handleDelete: (id: number | string) => void, t: any, locale: LanguageLocales) => [
   {
-    title: t("inspections.name"), key: `name_${locale}`
+    title: t("inspections.name"),
+    key: "name",
+    render(item) {
+      return item.name?.[locale] ?? "-";
+    },
   },
   {
     title: t("form.type"), key: "item", render(item: ProphylaxisDetail) {
-      return item?.item?.[`name_${locale}`]
+      return item?.item?.name?.[locale]
     }
   },
   {

@@ -19,6 +19,7 @@ export default function DungTests() {
   const { get, setMany } = useSearchQueryParams();
   const newAnimal = get(QUERY_PARAM_KEYS.NEW);
   const animalId = get(QUERY_PARAM_KEYS.ANIMAL_ID);
+  const sessionId = get(QUERY_PARAM_KEYS.SESSION_ID);
 
   const { dialog, createButton, editedItem, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<FecesExam, DungTestSchema, DungTestSchema>({
     dialogValue: !!newAnimal,
@@ -51,7 +52,7 @@ export default function DungTests() {
         title={t(editedItem ? "inspections.editDungTest" : "inspections.createDungTest")}>
         <DungTestForm
           onSubmit={onSubmit}
-          defaultValues={editedItem ? editedItem as any : animalId ? {...dungTestValues, animalId: String(animalId)} : undefined}
+          defaultValues={editedItem ? editedItem as any : animalId ? {...dungTestValues, sessionId, animalId: String(animalId)} : undefined}
         />
       </Modal>
     </div>

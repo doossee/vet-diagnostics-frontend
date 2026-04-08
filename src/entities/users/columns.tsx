@@ -36,7 +36,7 @@ export const createUserColumns = (handleEditItem: (item: User) => void, handleDe
     key: "district",
     // sorting: "byDistrictId",
     render(item: User) {
-      return item.district?.[`name_${locale}`];
+      return item.district?.name?.[locale];
     },
   },
   {

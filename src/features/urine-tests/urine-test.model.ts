@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const urineTestValues = {
   animalId: undefined,
+  sessionId: undefined,
   urineColorId: undefined,
 
   urineSmellId: undefined,
@@ -26,6 +27,7 @@ export const urineTestValues = {
 export const createUrineTestSchema = (_: any) =>
   z.object({
     animalId: z.string(),
+    sessionId: z.string().optional(),
     urineColorId: z.string().optional(),
 
     urineSmellId: z.string().optional(),

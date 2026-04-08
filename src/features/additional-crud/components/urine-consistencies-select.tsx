@@ -28,8 +28,8 @@ export function UrineConsistenciesSelect({ value, placeholder, disabled, onChang
       onSelect={(e: any) => onChange?.(e?.id)}
       placeholder={placeholder}
       queryFn={(search) => useGetUrineConsistenciesInfinite(search, undefined)}
-      getOptionLabel={item => item?.[`name_${locale}`]}
-      extraLabel={item => item?.animalType?.[`name_${locale}`]}
+      getOptionLabel={item => item?.name?.[locale]}
+      extraLabel={item => item?.animalType?.name?.[locale]}
       // clientSearch={(search, item) =>
       //   searchUtil(search, item, ["id", "name"])
       // }

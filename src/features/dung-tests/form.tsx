@@ -13,7 +13,7 @@ import { DungColorSelect } from "../dung-colors/components/dung-color-select";
 import { DungTestSchema, createDungTestSchema, dungTestValues } from "./dung-test.model";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 import { DungFormsSelect } from "../additional-crud/components/dung-forms-select";
-import { DungConsistenciesSelect } from "../additional-crud/components/dung-consistencies-select copy 3";
+import { DungConsistenciesSelect } from "../additional-crud/components/dung-consistencies-select";
 import { DungSmellsSelect } from "../additional-crud/components/dung-smells-select";
 
 interface DungTestFormProps {

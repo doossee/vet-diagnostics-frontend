@@ -10,6 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { AnimalTypeTreeSelect } from "../animal-types/components/animal-type-tree-select";
 import { useEffect, useState } from "react";
 import { AnimalType } from "@/shared/types";
+import { Input } from "@/shared/components/ui/input";
 
 interface DungColorFormProps {
   defaultValues?: DungColorSchema;
@@ -35,7 +36,21 @@ export function DungColorForm({ onSubmit, defaultValues }: DungColorFormProps) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 h-full">
         <FormField
-          name="name_ru"
+          name="numericValue"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{"Значения"}</FormLabel>
+              <FormControl>
+                <Input type="number" placeholder={"Значения"} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          name="name.ru"
           control={form.control}
           render={({ field }) => (
             <FormItem>
@@ -48,7 +63,7 @@ export function DungColorForm({ onSubmit, defaultValues }: DungColorFormProps) {
           )}
         />
         <FormField
-          name="name_uz"
+          name="name.uz"
           control={form.control}
           render={({ field }) => (
             <FormItem>

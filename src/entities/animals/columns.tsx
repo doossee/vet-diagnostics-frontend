@@ -1,7 +1,7 @@
 import { Edit, Trash } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { Animal, LanguageLocales } from "@/shared/types";
-import { ANIMAL_GENDERS } from "./utils/constants/animal-genders";
+// import { ANIMAL_GENDERS } from "./utils/constants/animal-genders";
 
 export const createAnimalColumns = (handleEditItem: (item: Animal) => void, handleDelete: (id: number | string) => void, t: any, locale: LanguageLocales) => [
   { title: t("animals.name"), key: "animalNameCode" },
@@ -10,15 +10,27 @@ export const createAnimalColumns = (handleEditItem: (item: Animal) => void, hand
     key: "age",
     // sorting: "byBirthDate",
     render(item: Animal) {
-      return item.age;
-    },
+      if (!item.birthDate) return "-";
+
+      const birthDate = new Date(item.birthDate);
+      const today = new Date();
+
+      let age = today.getFullYear() - birthDate.getFullYear();
+
+      const m = today.getMonth() - birthDate.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+
+      return age;
+    }
   },
   {
     title: t("form.type"),
     key: "type",
     // sorting: "byTypeId",
     render(item: Animal) {
-      return item.animalType?.[`name_${locale}`];
+      return item.animalType?.name?.[locale];
     },
   },
   {
@@ -26,23 +38,23 @@ export const createAnimalColumns = (handleEditItem: (item: Animal) => void, hand
     key: "color",
     // sorting: "byColorId",
     render(item: Animal) {
-      return item.animalColor?.[`name_${locale}`];
+      return item.animalColor?.name?.[locale];
     },
   },
-  {
-    title: t("form.gender"),
-    key: "gender",
-    // sorting: "byGender",
-    render(item: Animal) {
-      return ANIMAL_GENDERS?.[item.sex]?.[locale];
-    },
-  },
+  // {
+  //   title: t("form.gender"),
+  //   key: "gender",
+  //   // sorting: "byGender",
+  //   render(item: Animal) {
+  //     return ANIMAL_GENDERS?.[item.sex]?.[locale];
+  //   },
+  // },
   {
     title: t("animals.breed"),
     key: "breed",
     // sorting: "byBreed",
     render(item: Animal) {
-      return item.animalBreed?.[`name_${locale}`];
+      return item.animalBreed?.name?.[locale];
     },
   },
   {

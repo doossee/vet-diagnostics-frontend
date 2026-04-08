@@ -26,7 +26,7 @@ export function DiseaseTypeSelect({ placeholder, value, disabled, onChange, onRe
       placeholder={placeholder}
       queryFn={search => useGetDiseaseTypesInfinite(undefined, search)}
       onSelect={(e: any) => onChange?.(e?.id)}
-      getOptionLabel={item => item?.[`name_${locale}`]}
+      getOptionLabel={item => item?.name?.[locale]}
       // clientSearch={(search, item) =>
       //   searchUtil(search, item, ["id", "name"])
       // }

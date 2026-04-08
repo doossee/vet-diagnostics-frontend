@@ -8,6 +8,7 @@ import { AdditionalCrudSchema, additionalCrudValues, createAdditionalCrudSchema 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 import { AnimalTypeTreeSelect } from "../animal-types/components/animal-type-tree-select";
 import { AnimalType } from "@/shared/types";
+import { Input } from "@/shared/components/ui/input";
 
 interface FormProps {
   nameTitle?: string
@@ -34,7 +35,21 @@ export function AdditionalCrudForm({ onSubmit, defaultValues }: FormProps) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 h-full">
         <FormField
-          name="name_ru"
+          name="numericValue"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{"Значения"}</FormLabel>
+              <FormControl>
+                <Input type="number" placeholder={"Значения"} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          name="name.ru"
           control={form.control}
           render={({ field }) => (
             <FormItem>
@@ -47,7 +62,7 @@ export function AdditionalCrudForm({ onSubmit, defaultValues }: FormProps) {
           )}
         />
         <FormField
-          name="name_uz"
+          name="name.uz"
           control={form.control}
           render={({ field }) => (
             <FormItem>

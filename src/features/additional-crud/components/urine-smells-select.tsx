@@ -28,8 +28,8 @@ export function UrineSmellsSelect({ value, placeholder, disabled, onChange, onRe
       onSelect={(e: any) => onChange?.(e?.id)}
       placeholder={placeholder}
       queryFn={(search) => useGetUrineSmellsInfinite(search, undefined)}
-      getOptionLabel={item => item?.[`name_${locale}`]}
-      extraLabel={item => item?.animalType?.[`name_${locale}`]}
+      getOptionLabel={item => item?.name?.[locale]}
+      extraLabel={item => item?.animalType?.name?.[locale]}
       // clientSearch={(search, item) =>
       //   searchUtil(search, item, ["id", "name"])
       // }

@@ -21,6 +21,7 @@ export default function GeneralInspections() {
 
   const newAnimal = get(QUERY_PARAM_KEYS.NEW);
   const animalId = get(QUERY_PARAM_KEYS.ANIMAL_ID);
+  const sessionId = get(QUERY_PARAM_KEYS.SESSION_ID);
 
   const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<ClinicalExam, GeneralInspectionSchema, GeneralInspectionSchema>({
     dialogValue: !!newAnimal,
@@ -32,7 +33,6 @@ export default function GeneralInspections() {
 
       setMany({
         [QUERY_PARAM_KEYS.NEW]: null,
-        // [QUERY_PARAM_KEYS.ANIMAL_ID]: animalId || null
       })
     }
   });
@@ -48,7 +48,7 @@ export default function GeneralInspections() {
         topSlot={createButton(t("inspections.createGeneralInspections"))} />
 
       <Modal open={dialog} onClose={handleClose} widthClassName="bg-card max-w-[900px]!" title={t(editedItem ? "inspections.editGeneralInspections" : "inspections.createGeneralInspections")}>
-        <GeneralInspectionForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : animalId ? { ...generalInspectionValues, animalId: String(animalId) } as any : undefined} />
+        <GeneralInspectionForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : animalId ? { ...generalInspectionValues, sessionId, animalId } as any : undefined} />
       </Modal>
     </div>
   );

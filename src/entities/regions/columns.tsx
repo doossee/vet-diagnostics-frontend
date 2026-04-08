@@ -3,7 +3,13 @@ import { Edit, Trash } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 
 export const createRegionColumns = (handleEditItem: (item: Region) => void, handleDelete: (id: number) => void, t: any, locale: LanguageLocales) => [
-  { title: t("form.regionName"), key: `name_${locale}` },
+  {
+    title: t("form.regionName"),
+    key: "name",
+    render(item) {
+      return item.name?.[locale] ?? "-";
+    },
+  },
   {
     title: t("regions.countOfDistricts"),
     key: "districts",

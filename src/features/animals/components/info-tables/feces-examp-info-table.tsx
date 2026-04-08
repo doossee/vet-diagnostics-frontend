@@ -2,26 +2,29 @@
 
 import { Shovel } from "lucide-react";
 
-import { InfoTable } from "./info-table";
+import { FecesExam } from "@/shared/types";
 import { routes } from "@/shared/constants/routes";
 import { createDungTestColumns } from "@/entities/dung-tests";
-import { useGetLastDungTestByAnimal } from "@/entities/dung-tests/services/queries";
+
+import { InfoTable } from "./info-table";
 
 type Props = {
-  id: string
+  isLoading?: boolean
+  data?: FecesExam | null
   onCreate?: (route: string, createNew?: boolean) => void
 }
 
-export function FecesExamInfoTable({ id, onCreate }: Props) {
+export function FecesExamInfoTable({ data, isLoading, onCreate }: Props) {
   const handleOpen = (createNew?: boolean) => {
     onCreate?.(routes.DUNG_TESTS, createNew)
   }
   
   return <InfoTable
+    data={data}
     onCreate={handleOpen}
-    icon={<Shovel className="size-5 md:size-6" />}
+    isLoading={isLoading}
     localeTitle="nav.dungTests"
     createColumns={createDungTestColumns}
-    queryFn={() => useGetLastDungTestByAnimal(id)}
+    icon={<Shovel className="size-5 md:size-6" />}
   />
 }

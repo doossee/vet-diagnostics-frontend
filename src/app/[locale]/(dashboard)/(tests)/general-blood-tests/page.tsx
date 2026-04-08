@@ -20,6 +20,7 @@ export default function GeneralBloodTests() {
 
   const newAnimal = get(QUERY_PARAM_KEYS.NEW);
   const animalId = get(QUERY_PARAM_KEYS.ANIMAL_ID);
+  const sessionId = get(QUERY_PARAM_KEYS.SESSION_ID);
 
   const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<BloodExam, GeneralBloodTestSchema, GeneralBloodTestSchema>({
     dialogValue: !!newAnimal,
@@ -45,8 +46,17 @@ export default function GeneralBloodTests() {
         queryFunction={useGetGeneralBloodTests}
         topSlot={createButton(t("inspections.createBloodTest"))} />
 
-      <Modal open={dialog} onClose={handleClose} widthClassName="max-w-[850px]!" title={t(editedItem ? "inspections.editBloodTest" : "inspections.createBloodTest")}>
-        <GeneralBloodTestForm onSubmit={onSubmit} animalId={animalId as string} defaultValues={editedItem ? editedItem : animalId ? {...generalBloodTestValues(String(animalId)), date: new Date()} : undefined} />
+      <Modal
+        open={dialog}
+        onClose={handleClose}
+        widthClassName="max-w-[850px]!"
+        title={t(editedItem ? "inspections.editBloodTest" : "inspections.createBloodTest")}>
+        <GeneralBloodTestForm
+          onSubmit={onSubmit}
+          animalId={animalId as string}
+          defaultValues={editedItem ? editedItem : animalId ?
+            {...generalBloodTestValues(String(animalId), String(sessionId)), date: new Date()}
+          : undefined} />
       </Modal>
     </div>
   );

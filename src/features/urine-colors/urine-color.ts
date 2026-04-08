@@ -1,15 +1,21 @@
 import { z } from "zod";
 
 export const urineColorValues = {
-  name_ru: "",
-  name_uz: "",
+  name: {
+    ru: "",
+    uz: "",
+  },
+  numericValue: 0,
   animalTypeId: undefined,
 };
 
 export const createUrineColorSchema = (t: any) =>
   z.object({
-    name_ru: z.string().min(1, t("required.colorNameRequired")),
-    name_uz: z.string().min(1, t("required.colorNameRequired")),
+    name: z.object({
+      ru: z.string().min(1, t("required.colorNameRequired")),
+      uz: z.string().min(1, t("required.colorNameRequired")),
+    }),
+    numericValue: z.coerce.number().min(0, "Значение не может быть отрицательным"),
     animalTypeId: z.string().min(1, "Выберите тип животного"),
   });
 

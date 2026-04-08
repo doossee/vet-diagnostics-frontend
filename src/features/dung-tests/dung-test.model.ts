@@ -1,24 +1,26 @@
 import { z } from "zod";
 
 export const dungTestValues = {
+  amount: 0,
+  undigestedFood: 0,
   animalId: undefined,
+  sessionId: undefined,
+  fecesFormId: undefined,
   fecesColorId: undefined,
   fecesSmellId: undefined,
   fecesConsistencyId: undefined,
-  fecesFormId: undefined,
-  amount: 0,
-  undigestedFood: 0,
 };
 
 export const createDungTestSchema = (_: any) =>
   z.object({
-    animalId: z.string(),
-    fecesColorId: z.string().optional(),
-    fecesSmellId: z.string().optional(),
-    fecesConsistencyId: z.string().optional(),
-    fecesFormId: z.string().optional(),
-    amount: z.coerce.number().optional(),
-    undigestedFood: z.coerce.number().optional(),
+    animalId: z.string().optional().nullable(),
+    sessionId: z.string().optional().nullable(),
+    fecesColorId: z.string().optional().nullable(),
+    fecesSmellId: z.string().optional().nullable(),
+    fecesConsistencyId: z.string().optional().nullable(),
+    fecesFormId: z.string().optional().nullable(),
+    amount: z.coerce.number().optional().nullable(),
+    undigestedFood: z.coerce.number().optional().nullable(),
   });
 
 export type DungTestSchema = z.infer<ReturnType<typeof createDungTestSchema>>;

@@ -3,13 +3,19 @@ import { LanguageLocales, VetStation } from "@/shared/types";
 import { Button } from "@/shared/components/ui/button";
 
 export const createVetStationColumns = (handleEditItem: (item: VetStation) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
-  { title: t("regions.vetStationName"), key: `name_${locale}` },
+  {
+    title: t("regions.vetStationName"),
+    key: "name",
+    render(item) {
+      return item.name?.[locale] ?? "-";
+    },
+  },
   { title: t("regions.vetStationAddress"), key: "address" },
   {
     title: t("form.districtName"),
     key: "district",
     render(item: VetStation) {
-      return item?.district?.[`name_${locale}`];
+      return item?.district?.name?.[locale];
     },
   },
   {

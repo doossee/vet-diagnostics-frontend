@@ -5,8 +5,7 @@
  * TableTap Backend API
  * OpenAPI spec version: 1.0
  */
-import { createInstance } from "./api-instance";
-import type { BodyType } from "./api-instance";
+import { createInstance } from "./orval-mutator";
 export interface LoginDto {
   /** User login username */
   username: string;
@@ -258,6 +257,8 @@ export interface ChangePasswordDto {
 
 export interface CreateBloodExamDto {
   animalId: string;
+  /** Medical session ID */
+  sessionId?: string;
   coe?: number;
   erythrocyteCount?: number;
   leukocyteCount?: number;
@@ -293,6 +294,10 @@ export interface CreateBloodExamDto {
   vitaminA?: number;
   vitaminB?: number;
   vitaminC?: number;
+  copper?: number;
+  cobalt?: number;
+  manganese?: number;
+  zinc?: number;
   conclusion?: string;
 }
 
@@ -300,6 +305,11 @@ export interface CreateBloodExamDto {
  * Animal ID
  */
 export type BloodExamEntityAnimalId = { [key: string]: unknown };
+
+/**
+ * Session ID
+ */
+export type BloodExamEntitySessionId = { [key: string]: unknown };
 
 /**
  * COE
@@ -477,6 +487,26 @@ export type BloodExamEntityVitaminB = { [key: string]: unknown };
 export type BloodExamEntityVitaminC = { [key: string]: unknown };
 
 /**
+ * Vitamin C
+ */
+export type BloodExamEntityCobalt = { [key: string]: unknown };
+
+/**
+ * Vitamin C
+ */
+export type BloodExamEntityCopper = { [key: string]: unknown };
+
+/**
+ * Vitamin C
+ */
+export type BloodExamEntityManganese = { [key: string]: unknown };
+
+/**
+ * Vitamin C
+ */
+export type BloodExamEntityZinc = { [key: string]: unknown };
+
+/**
  * Conclusion
  */
 export type BloodExamEntityConclusion = { [key: string]: unknown };
@@ -486,6 +516,8 @@ export interface BloodExamEntity {
   id: string;
   /** Animal ID */
   animalId: BloodExamEntityAnimalId;
+  /** Session ID */
+  sessionId?: BloodExamEntitySessionId;
   /** COE */
   coe?: BloodExamEntityCoe;
   /** Erythrocyte Count */
@@ -556,6 +588,14 @@ export interface BloodExamEntity {
   vitaminB?: BloodExamEntityVitaminB;
   /** Vitamin C */
   vitaminC?: BloodExamEntityVitaminC;
+  /** Vitamin C */
+  cobalt?: BloodExamEntityCobalt;
+  /** Vitamin C */
+  copper?: BloodExamEntityCopper;
+  /** Vitamin C */
+  manganese?: BloodExamEntityManganese;
+  /** Vitamin C */
+  zinc?: BloodExamEntityZinc;
   /** Conclusion */
   conclusion?: BloodExamEntityConclusion;
   /** Creation date */
@@ -573,6 +613,8 @@ export interface PaginatedBloodExamEntity {
 
 export interface UpdateBloodExamDto {
   animalId?: string;
+  /** Medical session ID */
+  sessionId?: string;
   coe?: number;
   erythrocyteCount?: number;
   leukocyteCount?: number;
@@ -608,255 +650,67 @@ export interface UpdateBloodExamDto {
   vitaminA?: number;
   vitaminB?: number;
   vitaminC?: number;
+  copper?: number;
+  cobalt?: number;
+  manganese?: number;
+  zinc?: number;
   conclusion?: string;
 }
 
-export type CreateClinicalExamDtoBodyType = (typeof CreateClinicalExamDtoBodyType)[keyof typeof CreateClinicalExamDtoBodyType];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateClinicalExamDtoBodyType = {
-  STRONG: "STRONG",
-  MEDIUM: "MEDIUM",
-  WEAK: "WEAK",
-} as const;
-
-export type CreateClinicalExamDtoObesity = (typeof CreateClinicalExamDtoObesity)[keyof typeof CreateClinicalExamDtoObesity];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateClinicalExamDtoObesity = {
-  HIGH: "HIGH",
-  MEDIUM: "MEDIUM",
-  LOW: "LOW",
-  CACHEXIA: "CACHEXIA",
-} as const;
-
-export type CreateClinicalExamDtoBodyPosition = (typeof CreateClinicalExamDtoBodyPosition)[keyof typeof CreateClinicalExamDtoBodyPosition];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateClinicalExamDtoBodyPosition = {
-  NATURAL: "NATURAL",
-  FORCED_STANDING: "FORCED_STANDING",
-  FORCED_LYING: "FORCED_LYING",
-  FORCED_SITTING: "FORCED_SITTING",
-  NON_THERAPEUTIC: "NON_THERAPEUTIC",
-  INVOLUNTARY: "INVOLUNTARY",
-  MANEGE: "MANEGE",
-  CIRCULAR: "CIRCULAR",
-  FORWARD: "FORWARD",
-  BACKWARD: "BACKWARD",
-  ROLLING: "ROLLING",
-} as const;
-
-export type CreateClinicalExamDtoConstitution = (typeof CreateClinicalExamDtoConstitution)[keyof typeof CreateClinicalExamDtoConstitution];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateClinicalExamDtoConstitution = {
-  LOOSE: "LOOSE",
-  DENSE: "DENSE",
-  HORSES: "HORSES",
-  BIRDS: "BIRDS",
-} as const;
-
-export type CreateClinicalExamDtoTemperament = (typeof CreateClinicalExamDtoTemperament)[keyof typeof CreateClinicalExamDtoTemperament];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateClinicalExamDtoTemperament = {
-  MELANCHOLIC: "MELANCHOLIC",
-  PHLEGMATIC: "PHLEGMATIC",
-} as const;
-
-export type CreateClinicalExamDtoWool = (typeof CreateClinicalExamDtoWool)[keyof typeof CreateClinicalExamDtoWool];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateClinicalExamDtoWool = {
-  EVEN: "EVEN",
-  UNEVEN: "UNEVEN",
-  LYING_FLAT: "LYING_FLAT",
-  SHINY: "SHINY",
-  MATTE: "MATTE",
-  NOT_FALLING: "NOT_FALLING",
-  DISHEVELED: "DISHEVELED",
-  MATTED: "MATTED",
-  BALD_PATCHES: "BALD_PATCHES",
-  THICK: "THICK",
-  SPARSE: "SPARSE",
-  PHYSIOLOGICAL_MOLT: "PHYSIOLOGICAL_MOLT",
-  PATHOLOGICAL_MOLT: "PATHOLOGICAL_MOLT",
-  FALLING: "FALLING",
-  NOT_FALLING_OUT: "NOT_FALLING_OUT",
-} as const;
-
-export type CreateClinicalExamDtoDown = (typeof CreateClinicalExamDtoDown)[keyof typeof CreateClinicalExamDtoDown];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateClinicalExamDtoDown = {
-  DENSE: "DENSE",
-  SPARSE: "SPARSE",
-  NONE: "NONE",
-  SOFT: "SOFT",
-  SMOOTH: "SMOOTH",
-  MATTE: "MATTE",
-  SHINY: "SHINY",
-  DRY: "DRY",
-  DUSTY: "DUSTY",
-  EVEN: "EVEN",
-  WHITE: "WHITE",
-  GRAY: "GRAY",
-  YELLOWISH: "YELLOWISH",
-  DARK: "DARK",
-  MOIST: "MOIST",
-} as const;
-
-export type CreateClinicalExamDtoHair = (typeof CreateClinicalExamDtoHair)[keyof typeof CreateClinicalExamDtoHair];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateClinicalExamDtoHair = {
-  COARSE: "COARSE",
-  SPARSE: "SPARSE",
-} as const;
-
-export type CreateClinicalExamDtoFeathers = (typeof CreateClinicalExamDtoFeathers)[keyof typeof CreateClinicalExamDtoFeathers];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateClinicalExamDtoFeathers = {
-  SHINY: "SHINY",
-  MATTE: "MATTE",
-  FULL: "FULL",
-  FALLEN: "FALLEN",
-  BROKEN: "BROKEN",
-} as const;
-
-export type CreateClinicalExamDtoSkinColor = (typeof CreateClinicalExamDtoSkinColor)[keyof typeof CreateClinicalExamDtoSkinColor];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateClinicalExamDtoSkinColor = {
-  PALE_VIOLET: "PALE_VIOLET",
-  PALE: "PALE",
-  RED: "RED",
-  BLUE: "BLUE",
-  YELLOW: "YELLOW",
-} as const;
-
-export type CreateClinicalExamDtoSkinHumidity = (typeof CreateClinicalExamDtoSkinHumidity)[keyof typeof CreateClinicalExamDtoSkinHumidity];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateClinicalExamDtoSkinHumidity = {
-  MODERATE: "MODERATE",
-  HYPERHIDROSIS: "HYPERHIDROSIS",
-  LOCAL_SWEAT: "LOCAL_SWEAT",
-  DRY: "DRY",
-} as const;
-
-export type CreateClinicalExamDtoSkinTemp = (typeof CreateClinicalExamDtoSkinTemp)[keyof typeof CreateClinicalExamDtoSkinTemp];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateClinicalExamDtoSkinTemp = {
-  GENERAL_HIGH: "GENERAL_HIGH",
-  LOCAL_HIGH: "LOCAL_HIGH",
-  GENERAL_LOW: "GENERAL_LOW",
-  LOCAL_LOW: "LOCAL_LOW",
-  UNEVEN: "UNEVEN",
-} as const;
-
-export type CreateClinicalExamDtoSkinElasticity = (typeof CreateClinicalExamDtoSkinElasticity)[keyof typeof CreateClinicalExamDtoSkinElasticity];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateClinicalExamDtoSkinElasticity = {
-  ELASTIC: "ELASTIC",
-  REDUCED: "REDUCED",
-  NONE: "NONE",
-} as const;
-
-export type CreateClinicalExamDtoLymphSize = (typeof CreateClinicalExamDtoLymphSize)[keyof typeof CreateClinicalExamDtoLymphSize];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateClinicalExamDtoLymphSize = {
-  NORMAL: "NORMAL",
-  ENLARGED: "ENLARGED",
-} as const;
-
-export type CreateClinicalExamDtoLymphShape = (typeof CreateClinicalExamDtoLymphShape)[keyof typeof CreateClinicalExamDtoLymphShape];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateClinicalExamDtoLymphShape = {
-  FLAT: "FLAT",
-  ROUND: "ROUND",
-  ENLARGED: "ENLARGED",
-  SWOLLEN: "SWOLLEN",
-} as const;
-
-export type CreateClinicalExamDtoLymphSurface = (typeof CreateClinicalExamDtoLymphSurface)[keyof typeof CreateClinicalExamDtoLymphSurface];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateClinicalExamDtoLymphSurface = {
-  SMOOTH: "SMOOTH",
-  ROUGH: "ROUGH",
-} as const;
-
-export type CreateClinicalExamDtoLymphConsistency = (typeof CreateClinicalExamDtoLymphConsistency)[keyof typeof CreateClinicalExamDtoLymphConsistency];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateClinicalExamDtoLymphConsistency = {
-  DENSE: "DENSE",
-  SOFT: "SOFT",
-  SPECIFIC: "SPECIFIC",
-} as const;
-
-export type CreateClinicalExamDtoLymphTemp = (typeof CreateClinicalExamDtoLymphTemp)[keyof typeof CreateClinicalExamDtoLymphTemp];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateClinicalExamDtoLymphTemp = {
-  NORMAL: "NORMAL",
-  ELEVATED: "ELEVATED",
-} as const;
-
-export type CreateClinicalExamDtoLymphPain = (typeof CreateClinicalExamDtoLymphPain)[keyof typeof CreateClinicalExamDtoLymphPain];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateClinicalExamDtoLymphPain = {
-  PAINLESS: "PAINLESS",
-  PAINFUL: "PAINFUL",
-} as const;
-
-export type CreateClinicalExamDtoLymphMobility = (typeof CreateClinicalExamDtoLymphMobility)[keyof typeof CreateClinicalExamDtoLymphMobility];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateClinicalExamDtoLymphMobility = {
-  MOBILE: "MOBILE",
-  LOW_MOBILITY: "LOW_MOBILITY",
-} as const;
-
 export interface CreateClinicalExamDto {
   animalId: string;
+  /** Medical session ID */
+  sessionId?: string;
+  /**
+   * @minimum 10
+   * @maximum 300
+   */
   pulse?: number;
+  /**
+   * @minimum 0
+   * @maximum 30
+   */
   rumination?: number;
+  /**
+   * @minimum 30
+   * @maximum 45
+   */
   temperature?: number;
+  /**
+   * @minimum 1
+   * @maximum 150
+   */
   respiratoryRate?: number;
-  bodyType?: CreateClinicalExamDtoBodyType;
-  obesity?: CreateClinicalExamDtoObesity;
-  bodyPosition?: CreateClinicalExamDtoBodyPosition;
-  constitution?: CreateClinicalExamDtoConstitution;
-  temperament?: CreateClinicalExamDtoTemperament;
-  wool?: CreateClinicalExamDtoWool;
-  down?: CreateClinicalExamDtoDown;
-  hair?: CreateClinicalExamDtoHair;
-  feathers?: CreateClinicalExamDtoFeathers;
-  skinColor?: CreateClinicalExamDtoSkinColor;
-  skinHumidity?: CreateClinicalExamDtoSkinHumidity;
-  skinSmell?: string;
-  skinTemp?: CreateClinicalExamDtoSkinTemp;
-  skinSurface?: string;
-  skinElasticity?: CreateClinicalExamDtoSkinElasticity;
-  skinSensitivity?: string;
-  skinPain?: string;
-  lymphSize?: CreateClinicalExamDtoLymphSize;
-  lymphShape?: CreateClinicalExamDtoLymphShape;
-  lymphSurface?: CreateClinicalExamDtoLymphSurface;
-  lymphConsistency?: CreateClinicalExamDtoLymphConsistency;
-  lymphTemp?: CreateClinicalExamDtoLymphTemp;
-  lymphPain?: CreateClinicalExamDtoLymphPain;
-  lymphMobility?: CreateClinicalExamDtoLymphMobility;
+  bodyTypeId?: string;
+  obesityId?: string;
+  bodyPositionId?: string;
+  constitutionId?: string;
+  temperamentId?: string;
+  woolId?: string;
+  downId?: string;
+  hairId?: string;
+  feathersId?: string;
+  skinColorId?: string;
+  skinHumidityId?: string;
+  skinSmellId?: string;
+  skinTempId?: string;
+  skinSurfaceId?: string;
+  skinElasticityId?: string;
+  skinSensitivityId?: string;
+  skinPainId?: string;
+  lymphSizeId?: string;
+  lymphShapeId?: string;
+  lymphSurfaceId?: string;
+  lymphConsistencyId?: string;
+  lymphTempId?: string;
+  lymphPainId?: string;
+  lymphMobilityId?: string;
 }
+
+/**
+ * Session ID
+ */
+export type ClinicalExamEntitySessionId = { [key: string]: unknown };
 
 /**
  * Pulse
@@ -878,306 +732,13 @@ export type ClinicalExamEntityTemperature = { [key: string]: unknown };
  */
 export type ClinicalExamEntityRespiratoryRate = { [key: string]: unknown };
 
-/**
- * Body Type
- */
-export type ClinicalExamEntityBodyType = (typeof ClinicalExamEntityBodyType)[keyof typeof ClinicalExamEntityBodyType];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ClinicalExamEntityBodyType = {
-  STRONG: "STRONG",
-  MEDIUM: "MEDIUM",
-  WEAK: "WEAK",
-} as const;
-
-/**
- * Obesity
- */
-export type ClinicalExamEntityObesity = (typeof ClinicalExamEntityObesity)[keyof typeof ClinicalExamEntityObesity];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ClinicalExamEntityObesity = {
-  HIGH: "HIGH",
-  MEDIUM: "MEDIUM",
-  LOW: "LOW",
-  CACHEXIA: "CACHEXIA",
-} as const;
-
-/**
- * Body Position
- */
-export type ClinicalExamEntityBodyPosition = (typeof ClinicalExamEntityBodyPosition)[keyof typeof ClinicalExamEntityBodyPosition];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ClinicalExamEntityBodyPosition = {
-  NATURAL: "NATURAL",
-  FORCED_STANDING: "FORCED_STANDING",
-  FORCED_LYING: "FORCED_LYING",
-  FORCED_SITTING: "FORCED_SITTING",
-  NON_THERAPEUTIC: "NON_THERAPEUTIC",
-  INVOLUNTARY: "INVOLUNTARY",
-  MANEGE: "MANEGE",
-  CIRCULAR: "CIRCULAR",
-  FORWARD: "FORWARD",
-  BACKWARD: "BACKWARD",
-  ROLLING: "ROLLING",
-} as const;
-
-/**
- * Constitution
- */
-export type ClinicalExamEntityConstitution = (typeof ClinicalExamEntityConstitution)[keyof typeof ClinicalExamEntityConstitution];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ClinicalExamEntityConstitution = {
-  LOOSE: "LOOSE",
-  DENSE: "DENSE",
-  HORSES: "HORSES",
-  BIRDS: "BIRDS",
-} as const;
-
-/**
- * Temperament
- */
-export type ClinicalExamEntityTemperament = (typeof ClinicalExamEntityTemperament)[keyof typeof ClinicalExamEntityTemperament];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ClinicalExamEntityTemperament = {
-  MELANCHOLIC: "MELANCHOLIC",
-  PHLEGMATIC: "PHLEGMATIC",
-} as const;
-
-/**
- * Wool Type
- */
-export type ClinicalExamEntityWool = (typeof ClinicalExamEntityWool)[keyof typeof ClinicalExamEntityWool];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ClinicalExamEntityWool = {
-  EVEN: "EVEN",
-  UNEVEN: "UNEVEN",
-  LYING_FLAT: "LYING_FLAT",
-  SHINY: "SHINY",
-  MATTE: "MATTE",
-  NOT_FALLING: "NOT_FALLING",
-  DISHEVELED: "DISHEVELED",
-  MATTED: "MATTED",
-  BALD_PATCHES: "BALD_PATCHES",
-  THICK: "THICK",
-  SPARSE: "SPARSE",
-  PHYSIOLOGICAL_MOLT: "PHYSIOLOGICAL_MOLT",
-  PATHOLOGICAL_MOLT: "PATHOLOGICAL_MOLT",
-  FALLING: "FALLING",
-  NOT_FALLING_OUT: "NOT_FALLING_OUT",
-} as const;
-
-/**
- * Down Type
- */
-export type ClinicalExamEntityDown = (typeof ClinicalExamEntityDown)[keyof typeof ClinicalExamEntityDown];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ClinicalExamEntityDown = {
-  DENSE: "DENSE",
-  SPARSE: "SPARSE",
-  NONE: "NONE",
-  SOFT: "SOFT",
-  SMOOTH: "SMOOTH",
-  MATTE: "MATTE",
-  SHINY: "SHINY",
-  DRY: "DRY",
-  DUSTY: "DUSTY",
-  EVEN: "EVEN",
-  WHITE: "WHITE",
-  GRAY: "GRAY",
-  YELLOWISH: "YELLOWISH",
-  DARK: "DARK",
-  MOIST: "MOIST",
-} as const;
-
-/**
- * Hair Type
- */
-export type ClinicalExamEntityHair = (typeof ClinicalExamEntityHair)[keyof typeof ClinicalExamEntityHair];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ClinicalExamEntityHair = {
-  COARSE: "COARSE",
-  SPARSE: "SPARSE",
-} as const;
-
-/**
- * Feather Type
- */
-export type ClinicalExamEntityFeathers = (typeof ClinicalExamEntityFeathers)[keyof typeof ClinicalExamEntityFeathers];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ClinicalExamEntityFeathers = {
-  SHINY: "SHINY",
-  MATTE: "MATTE",
-  FULL: "FULL",
-  FALLEN: "FALLEN",
-  BROKEN: "BROKEN",
-} as const;
-
-/**
- * Skin Color
- */
-export type ClinicalExamEntitySkinColor = (typeof ClinicalExamEntitySkinColor)[keyof typeof ClinicalExamEntitySkinColor];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ClinicalExamEntitySkinColor = {
-  PALE_VIOLET: "PALE_VIOLET",
-  PALE: "PALE",
-  RED: "RED",
-  BLUE: "BLUE",
-  YELLOW: "YELLOW",
-} as const;
-
-/**
- * Skin Humidity
- */
-export type ClinicalExamEntitySkinHumidity = (typeof ClinicalExamEntitySkinHumidity)[keyof typeof ClinicalExamEntitySkinHumidity];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ClinicalExamEntitySkinHumidity = {
-  MODERATE: "MODERATE",
-  HYPERHIDROSIS: "HYPERHIDROSIS",
-  LOCAL_SWEAT: "LOCAL_SWEAT",
-  DRY: "DRY",
-} as const;
-
-/**
- * Skin Smell
- */
-export type ClinicalExamEntitySkinSmell = { [key: string]: unknown };
-
-/**
- * Skin Temperature
- */
-export type ClinicalExamEntitySkinTemp = (typeof ClinicalExamEntitySkinTemp)[keyof typeof ClinicalExamEntitySkinTemp];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ClinicalExamEntitySkinTemp = {
-  GENERAL_HIGH: "GENERAL_HIGH",
-  LOCAL_HIGH: "LOCAL_HIGH",
-  GENERAL_LOW: "GENERAL_LOW",
-  LOCAL_LOW: "LOCAL_LOW",
-  UNEVEN: "UNEVEN",
-} as const;
-
-/**
- * Skin Surface
- */
-export type ClinicalExamEntitySkinSurface = { [key: string]: unknown };
-
-/**
- * Skin Elasticity
- */
-export type ClinicalExamEntitySkinElasticity = (typeof ClinicalExamEntitySkinElasticity)[keyof typeof ClinicalExamEntitySkinElasticity];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ClinicalExamEntitySkinElasticity = {
-  ELASTIC: "ELASTIC",
-  REDUCED: "REDUCED",
-  NONE: "NONE",
-} as const;
-
-/**
- * Skin Sensitivity
- */
-export type ClinicalExamEntitySkinSensitivity = { [key: string]: unknown };
-
-/**
- * Skin Pain
- */
-export type ClinicalExamEntitySkinPain = { [key: string]: unknown };
-
-/**
- * Lymph Size
- */
-export type ClinicalExamEntityLymphSize = (typeof ClinicalExamEntityLymphSize)[keyof typeof ClinicalExamEntityLymphSize];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ClinicalExamEntityLymphSize = {
-  NORMAL: "NORMAL",
-  ENLARGED: "ENLARGED",
-} as const;
-
-/**
- * Lymph Shape
- */
-export type ClinicalExamEntityLymphShape = (typeof ClinicalExamEntityLymphShape)[keyof typeof ClinicalExamEntityLymphShape];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ClinicalExamEntityLymphShape = {
-  FLAT: "FLAT",
-  ROUND: "ROUND",
-  ENLARGED: "ENLARGED",
-  SWOLLEN: "SWOLLEN",
-} as const;
-
-/**
- * Lymph Surface
- */
-export type ClinicalExamEntityLymphSurface = (typeof ClinicalExamEntityLymphSurface)[keyof typeof ClinicalExamEntityLymphSurface];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ClinicalExamEntityLymphSurface = {
-  SMOOTH: "SMOOTH",
-  ROUGH: "ROUGH",
-} as const;
-
-/**
- * Lymph Consistency
- */
-export type ClinicalExamEntityLymphConsistency = (typeof ClinicalExamEntityLymphConsistency)[keyof typeof ClinicalExamEntityLymphConsistency];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ClinicalExamEntityLymphConsistency = {
-  DENSE: "DENSE",
-  SOFT: "SOFT",
-  SPECIFIC: "SPECIFIC",
-} as const;
-
-/**
- * Lymph Temperature
- */
-export type ClinicalExamEntityLymphTemp = (typeof ClinicalExamEntityLymphTemp)[keyof typeof ClinicalExamEntityLymphTemp];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ClinicalExamEntityLymphTemp = {
-  NORMAL: "NORMAL",
-  ELEVATED: "ELEVATED",
-} as const;
-
-/**
- * Lymph Pain
- */
-export type ClinicalExamEntityLymphPain = (typeof ClinicalExamEntityLymphPain)[keyof typeof ClinicalExamEntityLymphPain];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ClinicalExamEntityLymphPain = {
-  PAINLESS: "PAINLESS",
-  PAINFUL: "PAINFUL",
-} as const;
-
-/**
- * Lymph Mobility
- */
-export type ClinicalExamEntityLymphMobility = (typeof ClinicalExamEntityLymphMobility)[keyof typeof ClinicalExamEntityLymphMobility];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ClinicalExamEntityLymphMobility = {
-  MOBILE: "MOBILE",
-  LOW_MOBILITY: "LOW_MOBILITY",
-} as const;
-
 export interface ClinicalExamEntity {
   /** Unique identifier */
   id: string;
   /** Animal ID */
   animalId: string;
+  /** Session ID */
+  sessionId?: ClinicalExamEntitySessionId;
   /** Pulse */
   pulse?: ClinicalExamEntityPulse;
   /** Rumination */
@@ -1186,54 +747,6 @@ export interface ClinicalExamEntity {
   temperature?: ClinicalExamEntityTemperature;
   /** Respiratory Rate */
   respiratoryRate?: ClinicalExamEntityRespiratoryRate;
-  /** Body Type */
-  bodyType?: ClinicalExamEntityBodyType;
-  /** Obesity */
-  obesity?: ClinicalExamEntityObesity;
-  /** Body Position */
-  bodyPosition?: ClinicalExamEntityBodyPosition;
-  /** Constitution */
-  constitution?: ClinicalExamEntityConstitution;
-  /** Temperament */
-  temperament?: ClinicalExamEntityTemperament;
-  /** Wool Type */
-  wool?: ClinicalExamEntityWool;
-  /** Down Type */
-  down?: ClinicalExamEntityDown;
-  /** Hair Type */
-  hair?: ClinicalExamEntityHair;
-  /** Feather Type */
-  feathers?: ClinicalExamEntityFeathers;
-  /** Skin Color */
-  skinColor?: ClinicalExamEntitySkinColor;
-  /** Skin Humidity */
-  skinHumidity?: ClinicalExamEntitySkinHumidity;
-  /** Skin Smell */
-  skinSmell?: ClinicalExamEntitySkinSmell;
-  /** Skin Temperature */
-  skinTemp?: ClinicalExamEntitySkinTemp;
-  /** Skin Surface */
-  skinSurface?: ClinicalExamEntitySkinSurface;
-  /** Skin Elasticity */
-  skinElasticity?: ClinicalExamEntitySkinElasticity;
-  /** Skin Sensitivity */
-  skinSensitivity?: ClinicalExamEntitySkinSensitivity;
-  /** Skin Pain */
-  skinPain?: ClinicalExamEntitySkinPain;
-  /** Lymph Size */
-  lymphSize?: ClinicalExamEntityLymphSize;
-  /** Lymph Shape */
-  lymphShape?: ClinicalExamEntityLymphShape;
-  /** Lymph Surface */
-  lymphSurface?: ClinicalExamEntityLymphSurface;
-  /** Lymph Consistency */
-  lymphConsistency?: ClinicalExamEntityLymphConsistency;
-  /** Lymph Temperature */
-  lymphTemp?: ClinicalExamEntityLymphTemp;
-  /** Lymph Pain */
-  lymphPain?: ClinicalExamEntityLymphPain;
-  /** Lymph Mobility */
-  lymphMobility?: ClinicalExamEntityLymphMobility;
   /** Creation date */
   createdAt: string;
   /** Last update date */
@@ -1247,255 +760,60 @@ export interface PaginatedClinicalExamEntity {
   meta: MetaDataEntity;
 }
 
-export type UpdateClinicalExamDtoBodyType = (typeof UpdateClinicalExamDtoBodyType)[keyof typeof UpdateClinicalExamDtoBodyType];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateClinicalExamDtoBodyType = {
-  STRONG: "STRONG",
-  MEDIUM: "MEDIUM",
-  WEAK: "WEAK",
-} as const;
-
-export type UpdateClinicalExamDtoObesity = (typeof UpdateClinicalExamDtoObesity)[keyof typeof UpdateClinicalExamDtoObesity];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateClinicalExamDtoObesity = {
-  HIGH: "HIGH",
-  MEDIUM: "MEDIUM",
-  LOW: "LOW",
-  CACHEXIA: "CACHEXIA",
-} as const;
-
-export type UpdateClinicalExamDtoBodyPosition = (typeof UpdateClinicalExamDtoBodyPosition)[keyof typeof UpdateClinicalExamDtoBodyPosition];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateClinicalExamDtoBodyPosition = {
-  NATURAL: "NATURAL",
-  FORCED_STANDING: "FORCED_STANDING",
-  FORCED_LYING: "FORCED_LYING",
-  FORCED_SITTING: "FORCED_SITTING",
-  NON_THERAPEUTIC: "NON_THERAPEUTIC",
-  INVOLUNTARY: "INVOLUNTARY",
-  MANEGE: "MANEGE",
-  CIRCULAR: "CIRCULAR",
-  FORWARD: "FORWARD",
-  BACKWARD: "BACKWARD",
-  ROLLING: "ROLLING",
-} as const;
-
-export type UpdateClinicalExamDtoConstitution = (typeof UpdateClinicalExamDtoConstitution)[keyof typeof UpdateClinicalExamDtoConstitution];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateClinicalExamDtoConstitution = {
-  LOOSE: "LOOSE",
-  DENSE: "DENSE",
-  HORSES: "HORSES",
-  BIRDS: "BIRDS",
-} as const;
-
-export type UpdateClinicalExamDtoTemperament = (typeof UpdateClinicalExamDtoTemperament)[keyof typeof UpdateClinicalExamDtoTemperament];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateClinicalExamDtoTemperament = {
-  MELANCHOLIC: "MELANCHOLIC",
-  PHLEGMATIC: "PHLEGMATIC",
-} as const;
-
-export type UpdateClinicalExamDtoWool = (typeof UpdateClinicalExamDtoWool)[keyof typeof UpdateClinicalExamDtoWool];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateClinicalExamDtoWool = {
-  EVEN: "EVEN",
-  UNEVEN: "UNEVEN",
-  LYING_FLAT: "LYING_FLAT",
-  SHINY: "SHINY",
-  MATTE: "MATTE",
-  NOT_FALLING: "NOT_FALLING",
-  DISHEVELED: "DISHEVELED",
-  MATTED: "MATTED",
-  BALD_PATCHES: "BALD_PATCHES",
-  THICK: "THICK",
-  SPARSE: "SPARSE",
-  PHYSIOLOGICAL_MOLT: "PHYSIOLOGICAL_MOLT",
-  PATHOLOGICAL_MOLT: "PATHOLOGICAL_MOLT",
-  FALLING: "FALLING",
-  NOT_FALLING_OUT: "NOT_FALLING_OUT",
-} as const;
-
-export type UpdateClinicalExamDtoDown = (typeof UpdateClinicalExamDtoDown)[keyof typeof UpdateClinicalExamDtoDown];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateClinicalExamDtoDown = {
-  DENSE: "DENSE",
-  SPARSE: "SPARSE",
-  NONE: "NONE",
-  SOFT: "SOFT",
-  SMOOTH: "SMOOTH",
-  MATTE: "MATTE",
-  SHINY: "SHINY",
-  DRY: "DRY",
-  DUSTY: "DUSTY",
-  EVEN: "EVEN",
-  WHITE: "WHITE",
-  GRAY: "GRAY",
-  YELLOWISH: "YELLOWISH",
-  DARK: "DARK",
-  MOIST: "MOIST",
-} as const;
-
-export type UpdateClinicalExamDtoHair = (typeof UpdateClinicalExamDtoHair)[keyof typeof UpdateClinicalExamDtoHair];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateClinicalExamDtoHair = {
-  COARSE: "COARSE",
-  SPARSE: "SPARSE",
-} as const;
-
-export type UpdateClinicalExamDtoFeathers = (typeof UpdateClinicalExamDtoFeathers)[keyof typeof UpdateClinicalExamDtoFeathers];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateClinicalExamDtoFeathers = {
-  SHINY: "SHINY",
-  MATTE: "MATTE",
-  FULL: "FULL",
-  FALLEN: "FALLEN",
-  BROKEN: "BROKEN",
-} as const;
-
-export type UpdateClinicalExamDtoSkinColor = (typeof UpdateClinicalExamDtoSkinColor)[keyof typeof UpdateClinicalExamDtoSkinColor];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateClinicalExamDtoSkinColor = {
-  PALE_VIOLET: "PALE_VIOLET",
-  PALE: "PALE",
-  RED: "RED",
-  BLUE: "BLUE",
-  YELLOW: "YELLOW",
-} as const;
-
-export type UpdateClinicalExamDtoSkinHumidity = (typeof UpdateClinicalExamDtoSkinHumidity)[keyof typeof UpdateClinicalExamDtoSkinHumidity];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateClinicalExamDtoSkinHumidity = {
-  MODERATE: "MODERATE",
-  HYPERHIDROSIS: "HYPERHIDROSIS",
-  LOCAL_SWEAT: "LOCAL_SWEAT",
-  DRY: "DRY",
-} as const;
-
-export type UpdateClinicalExamDtoSkinTemp = (typeof UpdateClinicalExamDtoSkinTemp)[keyof typeof UpdateClinicalExamDtoSkinTemp];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateClinicalExamDtoSkinTemp = {
-  GENERAL_HIGH: "GENERAL_HIGH",
-  LOCAL_HIGH: "LOCAL_HIGH",
-  GENERAL_LOW: "GENERAL_LOW",
-  LOCAL_LOW: "LOCAL_LOW",
-  UNEVEN: "UNEVEN",
-} as const;
-
-export type UpdateClinicalExamDtoSkinElasticity = (typeof UpdateClinicalExamDtoSkinElasticity)[keyof typeof UpdateClinicalExamDtoSkinElasticity];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateClinicalExamDtoSkinElasticity = {
-  ELASTIC: "ELASTIC",
-  REDUCED: "REDUCED",
-  NONE: "NONE",
-} as const;
-
-export type UpdateClinicalExamDtoLymphSize = (typeof UpdateClinicalExamDtoLymphSize)[keyof typeof UpdateClinicalExamDtoLymphSize];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateClinicalExamDtoLymphSize = {
-  NORMAL: "NORMAL",
-  ENLARGED: "ENLARGED",
-} as const;
-
-export type UpdateClinicalExamDtoLymphShape = (typeof UpdateClinicalExamDtoLymphShape)[keyof typeof UpdateClinicalExamDtoLymphShape];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateClinicalExamDtoLymphShape = {
-  FLAT: "FLAT",
-  ROUND: "ROUND",
-  ENLARGED: "ENLARGED",
-  SWOLLEN: "SWOLLEN",
-} as const;
-
-export type UpdateClinicalExamDtoLymphSurface = (typeof UpdateClinicalExamDtoLymphSurface)[keyof typeof UpdateClinicalExamDtoLymphSurface];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateClinicalExamDtoLymphSurface = {
-  SMOOTH: "SMOOTH",
-  ROUGH: "ROUGH",
-} as const;
-
-export type UpdateClinicalExamDtoLymphConsistency = (typeof UpdateClinicalExamDtoLymphConsistency)[keyof typeof UpdateClinicalExamDtoLymphConsistency];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateClinicalExamDtoLymphConsistency = {
-  DENSE: "DENSE",
-  SOFT: "SOFT",
-  SPECIFIC: "SPECIFIC",
-} as const;
-
-export type UpdateClinicalExamDtoLymphTemp = (typeof UpdateClinicalExamDtoLymphTemp)[keyof typeof UpdateClinicalExamDtoLymphTemp];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateClinicalExamDtoLymphTemp = {
-  NORMAL: "NORMAL",
-  ELEVATED: "ELEVATED",
-} as const;
-
-export type UpdateClinicalExamDtoLymphPain = (typeof UpdateClinicalExamDtoLymphPain)[keyof typeof UpdateClinicalExamDtoLymphPain];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateClinicalExamDtoLymphPain = {
-  PAINLESS: "PAINLESS",
-  PAINFUL: "PAINFUL",
-} as const;
-
-export type UpdateClinicalExamDtoLymphMobility = (typeof UpdateClinicalExamDtoLymphMobility)[keyof typeof UpdateClinicalExamDtoLymphMobility];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateClinicalExamDtoLymphMobility = {
-  MOBILE: "MOBILE",
-  LOW_MOBILITY: "LOW_MOBILITY",
-} as const;
-
 export interface UpdateClinicalExamDto {
   animalId?: string;
+  /** Medical session ID */
+  sessionId?: string;
+  /**
+   * @minimum 10
+   * @maximum 300
+   */
   pulse?: number;
+  /**
+   * @minimum 0
+   * @maximum 30
+   */
   rumination?: number;
+  /**
+   * @minimum 30
+   * @maximum 45
+   */
   temperature?: number;
+  /**
+   * @minimum 1
+   * @maximum 150
+   */
   respiratoryRate?: number;
-  bodyType?: UpdateClinicalExamDtoBodyType;
-  obesity?: UpdateClinicalExamDtoObesity;
-  bodyPosition?: UpdateClinicalExamDtoBodyPosition;
-  constitution?: UpdateClinicalExamDtoConstitution;
-  temperament?: UpdateClinicalExamDtoTemperament;
-  wool?: UpdateClinicalExamDtoWool;
-  down?: UpdateClinicalExamDtoDown;
-  hair?: UpdateClinicalExamDtoHair;
-  feathers?: UpdateClinicalExamDtoFeathers;
-  skinColor?: UpdateClinicalExamDtoSkinColor;
-  skinHumidity?: UpdateClinicalExamDtoSkinHumidity;
-  skinSmell?: string;
-  skinTemp?: UpdateClinicalExamDtoSkinTemp;
-  skinSurface?: string;
-  skinElasticity?: UpdateClinicalExamDtoSkinElasticity;
-  skinSensitivity?: string;
-  skinPain?: string;
-  lymphSize?: UpdateClinicalExamDtoLymphSize;
-  lymphShape?: UpdateClinicalExamDtoLymphShape;
-  lymphSurface?: UpdateClinicalExamDtoLymphSurface;
-  lymphConsistency?: UpdateClinicalExamDtoLymphConsistency;
-  lymphTemp?: UpdateClinicalExamDtoLymphTemp;
-  lymphPain?: UpdateClinicalExamDtoLymphPain;
-  lymphMobility?: UpdateClinicalExamDtoLymphMobility;
+  bodyTypeId?: string;
+  obesityId?: string;
+  bodyPositionId?: string;
+  constitutionId?: string;
+  temperamentId?: string;
+  woolId?: string;
+  downId?: string;
+  hairId?: string;
+  feathersId?: string;
+  skinColorId?: string;
+  skinHumidityId?: string;
+  skinSmellId?: string;
+  skinTempId?: string;
+  skinSurfaceId?: string;
+  skinElasticityId?: string;
+  skinSensitivityId?: string;
+  skinPainId?: string;
+  lymphSizeId?: string;
+  lymphShapeId?: string;
+  lymphSurfaceId?: string;
+  lymphConsistencyId?: string;
+  lymphTempId?: string;
+  lymphPainId?: string;
+  lymphMobilityId?: string;
 }
 
 export interface CreateFecesExamDto {
   animalId: string;
+  /** Medical session ID */
+  sessionId?: string;
   fecesColorId?: string;
   fecesSmellId?: string;
   fecesConsistencyId?: string;
@@ -1508,6 +826,11 @@ export interface CreateFecesExamDto {
  * Animal ID
  */
 export type FecesExamEntityAnimalId = { [key: string]: unknown };
+
+/**
+ * Session ID
+ */
+export type FecesExamEntitySessionId = { [key: string]: unknown };
 
 /**
  * Feces Color ID
@@ -1544,6 +867,8 @@ export interface FecesExamEntity {
   id: string;
   /** Animal ID */
   animalId: FecesExamEntityAnimalId;
+  /** Session ID */
+  sessionId?: FecesExamEntitySessionId;
   /** Feces Color ID */
   fecesColorId: FecesExamEntityFecesColorId;
   /** Feces Smell ID */
@@ -1571,6 +896,8 @@ export interface PaginatedFecesExamEntity {
 
 export interface UpdateFecesExamDto {
   animalId?: string;
+  /** Medical session ID */
+  sessionId?: string;
   fecesColorId?: string;
   fecesSmellId?: string;
   fecesConsistencyId?: string;
@@ -1579,39 +906,29 @@ export interface UpdateFecesExamDto {
   undigestedFood?: number;
 }
 
-export type CreateMucosaExamDtoMucosaType = (typeof CreateMucosaExamDtoMucosaType)[keyof typeof CreateMucosaExamDtoMucosaType];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateMucosaExamDtoMucosaType = {
-  ORAL: "ORAL",
-  NASAL: "NASAL",
-  OCULAR: "OCULAR",
-  REPRODUCTIVE: "REPRODUCTIVE",
-} as const;
-
 export interface CreateMucosaExamDto {
-  mucosaType: CreateMucosaExamDtoMucosaType;
+  /** Mucosa type lookup ID */
+  mucosaTypeId: string;
   animalId: string;
+  /** Medical session ID */
+  sessionId?: string;
   mucosaAppearanceId?: string;
 }
 
 /**
- * Mucosa Type
+ * Mucosa Type ID
  */
-export type MucosaExamEntityMucosaType = (typeof MucosaExamEntityMucosaType)[keyof typeof MucosaExamEntityMucosaType];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const MucosaExamEntityMucosaType = {
-  ORAL: "ORAL",
-  NASAL: "NASAL",
-  OCULAR: "OCULAR",
-  REPRODUCTIVE: "REPRODUCTIVE",
-} as const;
+export type MucosaExamEntityMucosaTypeId = { [key: string]: unknown };
 
 /**
  * Animal ID
  */
 export type MucosaExamEntityAnimalId = { [key: string]: unknown };
+
+/**
+ * Session ID
+ */
+export type MucosaExamEntitySessionId = { [key: string]: unknown };
 
 /**
  * Mucosa Appearance ID
@@ -1621,10 +938,12 @@ export type MucosaExamEntityMucosaAppearanceId = { [key: string]: unknown };
 export interface MucosaExamEntity {
   /** Unique identifier */
   id: string;
-  /** Mucosa Type */
-  mucosaType: MucosaExamEntityMucosaType;
+  /** Mucosa Type ID */
+  mucosaTypeId?: MucosaExamEntityMucosaTypeId;
   /** Animal ID */
   animalId: MucosaExamEntityAnimalId;
+  /** Session ID */
+  sessionId?: MucosaExamEntitySessionId;
   /** Mucosa Appearance ID */
   mucosaAppearanceId: MucosaExamEntityMucosaAppearanceId;
   /** Creation date */
@@ -1640,34 +959,19 @@ export interface PaginatedMucosaExamEntity {
   meta: MetaDataEntity;
 }
 
-export type UpdateMucosaExamDtoMucosaType = (typeof UpdateMucosaExamDtoMucosaType)[keyof typeof UpdateMucosaExamDtoMucosaType];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateMucosaExamDtoMucosaType = {
-  ORAL: "ORAL",
-  NASAL: "NASAL",
-  OCULAR: "OCULAR",
-  REPRODUCTIVE: "REPRODUCTIVE",
-} as const;
-
 export interface UpdateMucosaExamDto {
-  mucosaType?: UpdateMucosaExamDtoMucosaType;
+  /** Mucosa type lookup ID */
+  mucosaTypeId?: string;
   animalId?: string;
+  /** Medical session ID */
+  sessionId?: string;
   mucosaAppearanceId?: string;
 }
 
-export type CreateUrineExamDtoAnalysisType = (typeof CreateUrineExamDtoAnalysisType)[keyof typeof CreateUrineExamDtoAnalysisType];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateUrineExamDtoAnalysisType = {
-  LABORATORY: "LABORATORY",
-  MACROSCOPIC: "MACROSCOPIC",
-  MICROSCOPIC: "MICROSCOPIC",
-} as const;
-
 export interface CreateUrineExamDto {
-  analysisType: CreateUrineExamDtoAnalysisType;
   animalId: string;
+  /** Medical session ID */
+  sessionId?: string;
   urineColorId?: string;
   amount?: number;
   urineClarityId?: string;
@@ -1687,21 +991,14 @@ export interface CreateUrineExamDto {
 }
 
 /**
- * Analysis Type
- */
-export type UrineExamEntityAnalysisType = (typeof UrineExamEntityAnalysisType)[keyof typeof UrineExamEntityAnalysisType];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UrineExamEntityAnalysisType = {
-  LABORATORY: "LABORATORY",
-  MACROSCOPIC: "MACROSCOPIC",
-  MICROSCOPIC: "MICROSCOPIC",
-} as const;
-
-/**
  * Animal ID
  */
 export type UrineExamEntityAnimalId = { [key: string]: unknown };
+
+/**
+ * Session ID
+ */
+export type UrineExamEntitySessionId = { [key: string]: unknown };
 
 /**
  * Urine Color ID
@@ -1786,10 +1083,10 @@ export type UrineExamEntitySaltCrystals = { [key: string]: unknown };
 export interface UrineExamEntity {
   /** Unique identifier */
   id: string;
-  /** Analysis Type */
-  analysisType: UrineExamEntityAnalysisType;
   /** Animal ID */
   animalId: UrineExamEntityAnimalId;
+  /** Session ID */
+  sessionId?: UrineExamEntitySessionId;
   /** Urine Color ID */
   urineColorId: UrineExamEntityUrineColorId;
   /** Urine Smell ID */
@@ -1835,18 +1132,10 @@ export interface PaginatedUrineExamEntity {
   meta: MetaDataEntity;
 }
 
-export type UpdateUrineExamDtoAnalysisType = (typeof UpdateUrineExamDtoAnalysisType)[keyof typeof UpdateUrineExamDtoAnalysisType];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateUrineExamDtoAnalysisType = {
-  LABORATORY: "LABORATORY",
-  MACROSCOPIC: "MACROSCOPIC",
-  MICROSCOPIC: "MICROSCOPIC",
-} as const;
-
 export interface UpdateUrineExamDto {
-  analysisType?: UpdateUrineExamDtoAnalysisType;
   animalId?: string;
+  /** Medical session ID */
+  sessionId?: string;
   urineColorId?: string;
   amount?: number;
   urineClarityId?: string;
@@ -1865,22 +1154,34 @@ export interface UpdateUrineExamDto {
   saltCrystals?: number;
 }
 
+export interface NameDto {
+  /** Name in Russian */
+  ru: string;
+  /** Name in Uzbek */
+  uz: string;
+}
+
 export interface CreateUrineColorDto {
-  /** Name of the urine color in Russian */
-  name_ru: string;
-  /** Name of the urine color in Uzbek */
-  name_uz: string;
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
   /** Animal type ID */
   animalTypeId: string;
 }
 
+/**
+ * Localized name
+ */
+export type UrineColorEntityName = { [key: string]: unknown };
+
 export interface UrineColorEntity {
   /** Unique identifier */
   id: string;
-  /** Name in Russian */
-  name_ru: string;
-  /** Name in Uzbek */
-  name_uz: string;
+  /** Localized name */
+  name: UrineColorEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
   /** Animal Type ID */
   animalTypeId: string;
 }
@@ -1893,27 +1194,34 @@ export interface PaginatedUrineColorEntity {
 }
 
 export interface UpdateUrineColorDto {
-  /** Name of the urine color in Russian */
-  name_ru?: string;
-  /** Name of the urine color in Uzbek */
-  name_uz?: string;
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
   /** Animal type ID */
   animalTypeId?: string;
 }
 
 export interface CreateUrineSmellDto {
-  name_ru: string;
-  name_uz: string;
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
   animalTypeId: string;
 }
+
+/**
+ * Localized name
+ */
+export type UrineSmellEntityName = { [key: string]: unknown };
 
 export interface UrineSmellEntity {
   /** Unique identifier */
   id: string;
-  /** Name in Russian */
-  name_ru: string;
-  /** Name in Uzbek */
-  name_uz: string;
+  /** Localized name */
+  name: UrineSmellEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
   /** Animal Type ID */
   animalTypeId: string;
 }
@@ -1926,24 +1234,33 @@ export interface PaginatedUrineSmellEntity {
 }
 
 export interface UpdateUrineSmellDto {
-  name_ru?: string;
-  name_uz?: string;
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
   animalTypeId?: string;
 }
 
 export interface CreateUrineClarityDto {
-  name_ru: string;
-  name_uz: string;
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
   animalTypeId: string;
 }
+
+/**
+ * Localized name
+ */
+export type UrineClarityEntityName = { [key: string]: unknown };
 
 export interface UrineClarityEntity {
   /** Unique identifier */
   id: string;
-  /** Name in Russian */
-  name_ru: string;
-  /** Name in Uzbek */
-  name_uz: string;
+  /** Localized name */
+  name: UrineClarityEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
   /** Animal Type ID */
   animalTypeId: string;
 }
@@ -1956,24 +1273,33 @@ export interface PaginatedUrineClarityEntity {
 }
 
 export interface UpdateUrineClarityDto {
-  name_ru?: string;
-  name_uz?: string;
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
   animalTypeId?: string;
 }
 
 export interface CreateUrineConsistencyDto {
-  name_ru: string;
-  name_uz: string;
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
   animalTypeId: string;
 }
+
+/**
+ * Localized name
+ */
+export type UrineConsistencyEntityName = { [key: string]: unknown };
 
 export interface UrineConsistencyEntity {
   /** Unique identifier */
   id: string;
-  /** Name in Russian */
-  name_ru: string;
-  /** Name in Uzbek */
-  name_uz: string;
+  /** Localized name */
+  name: UrineConsistencyEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
   /** Animal Type ID */
   animalTypeId: string;
 }
@@ -1986,24 +1312,33 @@ export interface PaginatedUrineConsistencyEntity {
 }
 
 export interface UpdateUrineConsistencyDto {
-  name_ru?: string;
-  name_uz?: string;
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
   animalTypeId?: string;
 }
 
 export interface CreateFecesColorDto {
-  name_ru: string;
-  name_uz: string;
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
   animalTypeId: string;
 }
+
+/**
+ * Localized name
+ */
+export type FecesColorEntityName = { [key: string]: unknown };
 
 export interface FecesColorEntity {
   /** Unique identifier */
   id: string;
-  /** Name in Russian */
-  name_ru: string;
-  /** Name in Uzbek */
-  name_uz: string;
+  /** Localized name */
+  name: FecesColorEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
   /** Animal Type ID */
   animalTypeId: string;
 }
@@ -2016,24 +1351,33 @@ export interface PaginatedFecesColorEntity {
 }
 
 export interface UpdateFecesColorDto {
-  name_ru?: string;
-  name_uz?: string;
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
   animalTypeId?: string;
 }
 
 export interface CreateFecesSmellDto {
-  name_ru: string;
-  name_uz: string;
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
   animalTypeId: string;
 }
+
+/**
+ * Localized name
+ */
+export type FecesSmellEntityName = { [key: string]: unknown };
 
 export interface FecesSmellEntity {
   /** Unique identifier */
   id: string;
-  /** Name in Russian */
-  name_ru: string;
-  /** Name in Uzbek */
-  name_uz: string;
+  /** Localized name */
+  name: FecesSmellEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
   /** Animal Type ID */
   animalTypeId: string;
 }
@@ -2046,24 +1390,33 @@ export interface PaginatedFecesSmellEntity {
 }
 
 export interface UpdateFecesSmellDto {
-  name_ru?: string;
-  name_uz?: string;
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
   animalTypeId?: string;
 }
 
 export interface CreateFecesConsistencyDto {
-  name_ru: string;
-  name_uz: string;
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
   animalTypeId: string;
 }
+
+/**
+ * Localized name
+ */
+export type FecesConsistencyEntityName = { [key: string]: unknown };
 
 export interface FecesConsistencyEntity {
   /** Unique identifier */
   id: string;
-  /** Name in Russian */
-  name_ru: string;
-  /** Name in Uzbek */
-  name_uz: string;
+  /** Localized name */
+  name: FecesConsistencyEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
   /** Animal Type ID */
   animalTypeId: string;
 }
@@ -2076,24 +1429,33 @@ export interface PaginatedFecesConsistencyEntity {
 }
 
 export interface UpdateFecesConsistencyDto {
-  name_ru?: string;
-  name_uz?: string;
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
   animalTypeId?: string;
 }
 
 export interface CreateFecesFormDto {
-  name_ru: string;
-  name_uz: string;
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
   animalTypeId: string;
 }
+
+/**
+ * Localized name
+ */
+export type FecesFormEntityName = { [key: string]: unknown };
 
 export interface FecesFormEntity {
   /** Unique identifier */
   id: string;
-  /** Name in Russian */
-  name_ru: string;
-  /** Name in Uzbek */
-  name_uz: string;
+  /** Localized name */
+  name: FecesFormEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
   /** Animal Type ID */
   animalTypeId: string;
 }
@@ -2106,57 +1468,43 @@ export interface PaginatedFecesFormEntity {
 }
 
 export interface UpdateFecesFormDto {
-  name_ru?: string;
-  name_uz?: string;
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
   animalTypeId?: string;
 }
 
-/**
- * Type of mucosa
- */
-export type CreateMucosaAppearanceDtoMucosaType = (typeof CreateMucosaAppearanceDtoMucosaType)[keyof typeof CreateMucosaAppearanceDtoMucosaType];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateMucosaAppearanceDtoMucosaType = {
-  ORAL: "ORAL",
-  NASAL: "NASAL",
-  OCULAR: "OCULAR",
-  REPRODUCTIVE: "REPRODUCTIVE",
-} as const;
-
 export interface CreateMucosaAppearanceDto {
-  /** Name of the mucosa appearance in Russian */
-  name_ru: string;
-  /** Name of the mucosa appearance in Uzbek */
-  name_uz: string;
-  /** Type of mucosa */
-  mucosaType: CreateMucosaAppearanceDtoMucosaType;
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+  /** Mucosa type ID */
+  mucosaTypeId: string;
   /** Animal type ID */
   animalTypeId: string;
 }
 
 /**
- * Mucosa Type
+ * Localized name
  */
-export type MucosaAppearanceEntityMucosaType = (typeof MucosaAppearanceEntityMucosaType)[keyof typeof MucosaAppearanceEntityMucosaType];
+export type MucosaAppearanceEntityName = { [key: string]: unknown };
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const MucosaAppearanceEntityMucosaType = {
-  ORAL: "ORAL",
-  NASAL: "NASAL",
-  OCULAR: "OCULAR",
-  REPRODUCTIVE: "REPRODUCTIVE",
-} as const;
+/**
+ * Mucosa Type ID
+ */
+export type MucosaAppearanceEntityMucosaTypeId = { [key: string]: unknown };
 
 export interface MucosaAppearanceEntity {
   /** Unique identifier */
   id: string;
-  /** Name in Russian */
-  name_ru: string;
-  /** Name in Uzbek */
-  name_uz: string;
-  /** Mucosa Type */
-  mucosaType: MucosaAppearanceEntityMucosaType;
+  /** Localized name */
+  name: MucosaAppearanceEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+  /** Mucosa Type ID */
+  mucosaTypeId?: MucosaAppearanceEntityMucosaTypeId;
   /** Animal Type ID */
   animalTypeId: string;
 }
@@ -2168,51 +1516,1478 @@ export interface PaginatedMucosaAppearanceEntity {
   meta: MetaDataEntity;
 }
 
-/**
- * Type of mucosa
- */
-export type UpdateMucosaAppearanceDtoMucosaType = (typeof UpdateMucosaAppearanceDtoMucosaType)[keyof typeof UpdateMucosaAppearanceDtoMucosaType];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateMucosaAppearanceDtoMucosaType = {
-  ORAL: "ORAL",
-  NASAL: "NASAL",
-  OCULAR: "OCULAR",
-  REPRODUCTIVE: "REPRODUCTIVE",
-} as const;
-
 export interface UpdateMucosaAppearanceDto {
-  /** Name of the mucosa appearance in Russian */
-  name_ru?: string;
-  /** Name of the mucosa appearance in Uzbek */
-  name_uz?: string;
-  /** Type of mucosa */
-  mucosaType?: UpdateMucosaAppearanceDtoMucosaType;
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
+  /** Mucosa type ID */
+  mucosaTypeId?: string;
   /** Animal type ID */
   animalTypeId?: string;
 }
 
+export interface CreateMedicalSessionDto {
+  /** UUID of the animal being examined */
+  animalId: string;
+  /** UUID of the veterinarian conducting the examination */
+  veterinarianId?: string;
+  /** Date of the examination */
+  date?: string;
+  /** Notes about the session */
+  notes?: string;
+}
+
+/**
+ * Veterinarian ID
+ */
+export type MedicalSessionEntityVeterinarianId = { [key: string]: unknown };
+
+/**
+ * Session status
+ */
+export type MedicalSessionEntityStatus = (typeof MedicalSessionEntityStatus)[keyof typeof MedicalSessionEntityStatus];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const MedicalSessionEntityStatus = {
+  DRAFT: "DRAFT",
+  READY: "READY",
+  SUBMITTED: "SUBMITTED",
+} as const;
+
+/**
+ * Notes
+ */
+export type MedicalSessionEntityNotes = { [key: string]: unknown };
+
+export interface MedicalSessionEntity {
+  /** Unique identifier */
+  id: string;
+  /** Animal ID */
+  animalId: string;
+  /** Veterinarian ID */
+  veterinarianId?: MedicalSessionEntityVeterinarianId;
+  /** Date of examination */
+  date: string;
+  /** Session status */
+  status: MedicalSessionEntityStatus;
+  /** Notes */
+  notes?: MedicalSessionEntityNotes;
+  /** Creation date */
+  createdAt: string;
+  /** Last update date */
+  updatedAt: string;
+}
+
+export interface PaginatedMedicalSessionEntity {
+  /** Array of medical sessions */
+  data: MedicalSessionEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateMedicalSessionDto {
+  /** UUID of the animal being examined */
+  animalId?: string;
+  /** UUID of the veterinarian conducting the examination */
+  veterinarianId?: string;
+  /** Date of the examination */
+  date?: string;
+  /** Notes about the session */
+  notes?: string;
+}
+
+export interface CreateFeedbackDto {
+  predictionId: string;
+  veterinarianId: string;
+  /** Prediction accuracy rating (1-5) */
+  rating: number;
+  comment?: string;
+  /** Suggested correct disease ID */
+  suggestedDiseaseId?: string;
+}
+
+/**
+ * Feedback comment
+ */
+export type FeedbackEntityComment = { [key: string]: unknown };
+
+/**
+ * Suggested correct disease ID
+ */
+export type FeedbackEntitySuggestedDiseaseId = { [key: string]: unknown };
+
+export interface FeedbackEntity {
+  /** Unique identifier */
+  id: string;
+  /** Prediction ID */
+  predictionId: string;
+  /** Veterinarian ID */
+  veterinarianId: string;
+  /** Prediction accuracy rating (1-5) */
+  rating: number;
+  /** Feedback comment */
+  comment?: FeedbackEntityComment;
+  /** Suggested correct disease ID */
+  suggestedDiseaseId?: FeedbackEntitySuggestedDiseaseId;
+  /** Creation date */
+  createdAt: string;
+  /** Last update date */
+  updatedAt: string;
+}
+
+export interface PaginatedFeedbackEntity {
+  /** Array of feedbacks */
+  data: FeedbackEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateFeedbackDto {
+  predictionId?: string;
+  veterinarianId?: string;
+  /** Prediction accuracy rating (1-5) */
+  rating?: number;
+  comment?: string;
+  /** Suggested correct disease ID */
+  suggestedDiseaseId?: string;
+}
+
+export interface PredictDto {
+  /** Animal type UUID (one of 4 cattle types) */
+  animalTypeId: string;
+  /** Animal UUID (for tracking/alerts) */
+  animalId?: string;
+  /** Medical session UUID (for linking alerts) */
+  sessionId?: string;
+  /** 1. Pulse (beats/min) */
+  pulse?: number;
+  /** 2. Respiration (breaths/min) */
+  respiratoryRate?: number;
+  /** 3. Temperature (°C) */
+  temperature?: number;
+  /** 4. Erythrocytes (mln/mcl) */
+  erythrocyteCount?: number;
+  /** 5. Leukocytes (thous/mcl) */
+  leukocyteCount?: number;
+  /** 6. Thrombocytes (thous/mcl) */
+  thrombocyteCount?: number;
+  /** 7. ESR / COE (mm/h) */
+  coe?: number;
+  /** 8. Water (%) */
+  waterPercentage?: number;
+  /** 9. Dry residue (%) */
+  dryResidue?: number;
+  /** 10. Glutathione (mmol/l) */
+  glutathione?: number;
+  /** 11. Hemoglobin (g/l) */
+  hemoglobin?: number;
+  /** 12. Total protein (g/l) */
+  totalProtein?: number;
+  /** 13. Albumins (%) */
+  albumin?: number;
+  /** 14. Alpha-globulins (%) */
+  alphaGlobulin?: number;
+  /** 15. Beta-globulins (%) */
+  betaGlobulin?: number;
+  /** 16. Gamma-globulins (%) */
+  gammaGlobulin?: number;
+  /** 17. Residual nitrogen (mmol/l) */
+  residualNitrogen?: number;
+  /** 18. Urea (mmol/l) */
+  urea?: number;
+  /** 19. Uric acid (mmol/l) */
+  uricAcid?: number;
+  /** 20. Creatinine (mcmol/l) */
+  creatinine?: number;
+  /** 21. Alkaline reserve (vol% CO2) */
+  alkalineReserve?: number;
+  /** 22. Glucose (mmol/l) */
+  glucose?: number;
+  /** 23. Ketone bodies (g/l) */
+  ketoneBodies?: number;
+  /** 24. Total bilirubin (mcmol/l) */
+  totalBilirubin?: number;
+  /** 25. Direct bilirubin (mcmol/l) */
+  directBilirubin?: number;
+  /** 26. Total cholesterol (mmol/l) */
+  totalCholesterol?: number;
+  /** 27. Total lipids (g/l) */
+  totalLipids?: number;
+  /** 28. Phospholipids (g/l) */
+  phospholipids?: number;
+  /** 29. Lactic acid (mmol/l) */
+  lacticAcid?: number;
+  /** 30. Pyruvic acid (mmol/l) */
+  pyruvicAcid?: number;
+  /** 31. Citric acid (mmol/l) */
+  citricAcid?: number;
+  /** 32. Carotene (mcmol/l) */
+  carotene?: number;
+  /** 33. Vitamin A (mcmol/l) */
+  vitaminA?: number;
+  /** 34. Vitamin C (mcmol/l) */
+  vitaminC?: number;
+  /** 35. Total phosphorus (mmol/l) */
+  organicPhosphorus?: number;
+  /** 36. Total calcium (mmol/l) */
+  totalCalcium?: number;
+  /** 37. Creatine (mmol/l) */
+  creatine?: number;
+  /** 38. Copper (mmol/l) */
+  copper?: number;
+  /** 39. Zinc (mmol/l) */
+  zinc?: number;
+  /** 40. Manganese (mmol/l) */
+  manganese?: number;
+  /** 41. Cobalt (mmol/l) */
+  cobalt?: number;
+  /** 42. Urine color (numeric label) */
+  urineColor?: number;
+  /** 43. Urine smell (numeric label) */
+  urineSmell?: number;
+  /** 44. Urine clarity (numeric label) */
+  urineClarity?: number;
+  /** 45. Urine consistency (numeric label) */
+  urineConsistency?: number;
+  /** 46. Urine pH */
+  urinePh?: number;
+  /** 47. Ketone bodies / acetone (mmol/l) */
+  urineAcetone?: number;
+  /** 48. Protein (g/l) */
+  urineProtein?: number;
+  /** 49. Bilirubin (mcmol/l) */
+  urineBilirubin?: number;
+  /** 50. Urobilinogen (mcmol/l) */
+  urineUrobilinogen?: number;
+  /** 51. Sugar (mmol/l) */
+  urineSugar?: number;
+  /** 52. Leukocytes (count) */
+  urineLeukocytes?: number;
+  /** 53. Epithelium (count) */
+  urineEpithelium?: number;
+  /** 54. Microbial bodies (numeric label) */
+  urineMicrobialBodies?: number;
+  /** 55. Erythrocytes (count) */
+  urineErythrocytes?: number;
+  /** 56. Salt crystals (numeric label) */
+  urineSaltCrystals?: number;
+  /** 57. Amount (l/day) */
+  urineAmount?: number;
+  /** 58. Feces smell (numeric label) */
+  fecesSmell?: number;
+  /** 59. Feces color (numeric label) */
+  fecesColor?: number;
+  /** 60. Feces consistency (numeric label) */
+  fecesConsistency?: number;
+  /** 61. Feces form (numeric label) */
+  fecesForm?: number;
+  /** 62. Feces amount (kg) */
+  fecesAmount?: number;
+  /** 63. Undigested food (%) */
+  fecesUndigestedFood?: number;
+  /** 64. Oral mucosa (numeric label) */
+  mucosaOral?: number;
+  /** 65. Nasal mucosa (numeric label) */
+  mucosaNasal?: number;
+  /** 66. Ocular mucosa (numeric label) */
+  mucosaOcular?: number;
+  /** 67. Vaginal mucosa (numeric label) */
+  mucosaVaginal?: number;
+  /** 68. Rumination (chewing) */
+  rumination?: number;
+  /** 69. Obesity / excess weight (numeric label) */
+  obesity?: number;
+  /** 70. Body condition (numeric label) */
+  bodyType?: number;
+  /** 71. Body position (numeric label) */
+  bodyPosition?: number;
+  /** 72. Wool / hair condition (numeric label) */
+  wool?: number;
+  /** 73. Skin color (numeric label) */
+  skinColor?: number;
+  /** 74. Skin humidity (numeric label) */
+  skinHumidity?: number;
+  /** 75. Skin smell (numeric label) */
+  skinSmell?: number;
+  /** 76. Skin temperature (numeric label) */
+  skinTemp?: number;
+  /** 77. Skin surface (numeric label) */
+  skinSurface?: number;
+  /** 78. Skin elasticity (numeric label) */
+  skinElasticity?: number;
+  /** Skin sensitivity (numeric label) */
+  skinSensitivity?: number;
+  /** Skin pain (numeric label) */
+  skinPainValue?: number;
+  /** Rumen fluid state (numeric label) */
+  rumenFluidState?: number;
+  /** 79. Lymph node size (numeric label) */
+  lymphSize?: number;
+  /** 80. Lymph node shape (numeric label) */
+  lymphShape?: number;
+  /** 81. Lymph node surface (numeric label) */
+  lymphSurface?: number;
+  /** 82. Lymph node consistency (numeric label) */
+  lymphConsistency?: number;
+  /** 83. Lymph node temperature (numeric label) */
+  lymphTemp?: number;
+  /** 84. Lymph node pain (numeric label) */
+  lymphPain?: number;
+  /** 85. Lymph node mobility (numeric label) */
+  lymphMobility?: number;
+}
+
+/**
+ * Raw AI model output (disease predictions)
+ */
+export type PredictionResultEntityPredictions = { [key: string]: unknown };
+
+/**
+ * Overall severity (worst anomaly severity, or OK if none)
+ */
+export type PredictionResultEntityOverallSeverity = (typeof PredictionResultEntityOverallSeverity)[keyof typeof PredictionResultEntityOverallSeverity];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const PredictionResultEntityOverallSeverity = {
+  OK: "OK",
+  LOW: "LOW",
+  MEDIUM: "MEDIUM",
+  HIGH: "HIGH",
+  CRITICAL: "CRITICAL",
+} as const;
+
+export interface PredictionResultEntity {
+  /** Raw AI model output (disease predictions) */
+  predictions: PredictionResultEntityPredictions;
+  /** List of detected anomalies (values outside normal ranges) */
+  anomalies: AnomalyAlertEntity[];
+  /** Overall severity (worst anomaly severity, or OK if none) */
+  overallSeverity: PredictionResultEntityOverallSeverity;
+  /** Session UUID if linked */
+  sessionId?: string;
+}
+
+export interface TrendDataPointEntity {
+  /** Exam date */
+  date: string;
+  /** Parameter value at this date */
+  value: number;
+}
+
+/**
+ * Unit of measurement
+ */
+export type TrendEntityUnit = { [key: string]: unknown };
+
+/**
+ * Trend direction based on recent data
+ */
+export type TrendEntityTrend = (typeof TrendEntityTrend)[keyof typeof TrendEntityTrend];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const TrendEntityTrend = {
+  stable: "stable",
+  increasing: "increasing",
+  decreasing: "decreasing",
+} as const;
+
+export interface TrendEntity {
+  /** Parameter name */
+  parameter: string;
+  /** Unit of measurement */
+  unit?: TrendEntityUnit;
+  /** Data points ordered by date */
+  dataPoints: TrendDataPointEntity[];
+  /** Trend direction based on recent data */
+  trend: TrendEntityTrend;
+  /** Percentage change from first to last data point */
+  changePercent: number;
+}
+
+/**
+ * New alert status
+ */
+export type UpdateAlertDtoStatus = (typeof UpdateAlertDtoStatus)[keyof typeof UpdateAlertDtoStatus];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateAlertDtoStatus = {
+  ACKNOWLEDGED: "ACKNOWLEDGED",
+  RESOLVED: "RESOLVED",
+} as const;
+
+export interface UpdateAlertDto {
+  /** New alert status */
+  status: UpdateAlertDtoStatus;
+}
+
+export type AnomalyAlertEntitySeverity = (typeof AnomalyAlertEntitySeverity)[keyof typeof AnomalyAlertEntitySeverity];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AnomalyAlertEntitySeverity = {
+  LOW: "LOW",
+  MEDIUM: "MEDIUM",
+  HIGH: "HIGH",
+  CRITICAL: "CRITICAL",
+} as const;
+
+export type AnomalyAlertEntityStatus = (typeof AnomalyAlertEntityStatus)[keyof typeof AnomalyAlertEntityStatus];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AnomalyAlertEntityStatus = {
+  NEW: "NEW",
+  ACKNOWLEDGED: "ACKNOWLEDGED",
+  RESOLVED: "RESOLVED",
+} as const;
+
+export interface AnomalyAlertEntity {
+  /** Alert UUID */
+  id: string;
+  /** Animal UUID */
+  animalId: string;
+  /** Medical session UUID */
+  sessionId: string;
+  /** Parameter name that deviated */
+  parameter: string;
+  /** Actual measured value */
+  value: number;
+  /** Normal range minimum */
+  minNorm: number;
+  /** Normal range maximum */
+  maxNorm: number;
+  severity: AnomalyAlertEntitySeverity;
+  status: AnomalyAlertEntityStatus;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/**
+ * Active alerts breakdown by severity
+ */
+export type HealthSummaryEntityAlertsBySeverity = { [key: string]: unknown };
+
+/**
+ * Overall health status based on active alerts
+ */
+export type HealthSummaryEntityHealthStatus = (typeof HealthSummaryEntityHealthStatus)[keyof typeof HealthSummaryEntityHealthStatus];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const HealthSummaryEntityHealthStatus = {
+  HEALTHY: "HEALTHY",
+  ATTENTION: "ATTENTION",
+  WARNING: "WARNING",
+  CRITICAL: "CRITICAL",
+} as const;
+
+/**
+ * Date of the most recent session
+ */
+export type HealthSummaryEntityLastSessionDate = { [key: string]: unknown };
+
+export interface HealthSummaryEntity {
+  /** Animal UUID */
+  animalId: string;
+  /** Total active (unresolved) alerts */
+  activeAlerts: number;
+  /** Active alerts breakdown by severity */
+  alertsBySeverity: HealthSummaryEntityAlertsBySeverity;
+  /** Overall health status based on active alerts */
+  healthStatus: HealthSummaryEntityHealthStatus;
+  /** Date of the most recent session */
+  lastSessionDate?: HealthSummaryEntityLastSessionDate;
+  /** Total sessions count */
+  totalSessions: number;
+}
+
+export interface CreateReferenceRangeDto {
+  /** Animal type UUID */
+  animalTypeId: string;
+  /** Parameter name (e.g. "pulse", "hemoglobin") */
+  parameter: string;
+  /** Minimum normal value */
+  minValue: number;
+  /** Maximum normal value */
+  maxValue: number;
+  /** Unit of measurement */
+  unit?: string;
+}
+
+/**
+ * Unit of measurement
+ */
+export type ReferenceRangeEntityUnit = { [key: string]: unknown };
+
+export interface ReferenceRangeEntity {
+  /** Reference range UUID */
+  id: string;
+  /** Animal type UUID */
+  animalTypeId: string;
+  /** Parameter name */
+  parameter: string;
+  /** Minimum normal value */
+  minValue: number;
+  /** Maximum normal value */
+  maxValue: number;
+  /** Unit of measurement */
+  unit?: ReferenceRangeEntityUnit;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface UpdateReferenceRangeDto {
+  /** Animal type UUID */
+  animalTypeId?: string;
+  /** Parameter name (e.g. "pulse", "hemoglobin") */
+  parameter?: string;
+  /** Minimum normal value */
+  minValue?: number;
+  /** Maximum normal value */
+  maxValue?: number;
+  /** Unit of measurement */
+  unit?: string;
+}
+
+export interface CreateBodyPositionDto {
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+/**
+ * Localized name
+ */
+export type BodyPositionEntityName = { [key: string]: unknown };
+
+export interface BodyPositionEntity {
+  /** Unique identifier */
+  id: string;
+  /** Localized name */
+  name: BodyPositionEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+export interface PaginatedBodyPositionEntity {
+  /** Array of records */
+  data: BodyPositionEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateBodyPositionDto {
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
+}
+
+export interface CreateBodyTypeDto {
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+/**
+ * Localized name
+ */
+export type BodyTypeEntityName = { [key: string]: unknown };
+
+export interface BodyTypeEntity {
+  /** Unique identifier */
+  id: string;
+  /** Localized name */
+  name: BodyTypeEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+export interface PaginatedBodyTypeEntity {
+  /** Array of records */
+  data: BodyTypeEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateBodyTypeDto {
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
+}
+
+export interface CreateConstitutionDto {
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+/**
+ * Localized name
+ */
+export type ConstitutionEntityName = { [key: string]: unknown };
+
+export interface ConstitutionEntity {
+  /** Unique identifier */
+  id: string;
+  /** Localized name */
+  name: ConstitutionEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+export interface PaginatedConstitutionEntity {
+  /** Array of records */
+  data: ConstitutionEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateConstitutionDto {
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
+}
+
+export interface CreateDownTypeDto {
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+/**
+ * Localized name
+ */
+export type DownTypeEntityName = { [key: string]: unknown };
+
+export interface DownTypeEntity {
+  /** Unique identifier */
+  id: string;
+  /** Localized name */
+  name: DownTypeEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+export interface PaginatedDownTypeEntity {
+  /** Array of records */
+  data: DownTypeEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateDownTypeDto {
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
+}
+
+export interface CreateFeatherTypeDto {
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+/**
+ * Localized name
+ */
+export type FeatherTypeEntityName = { [key: string]: unknown };
+
+export interface FeatherTypeEntity {
+  /** Unique identifier */
+  id: string;
+  /** Localized name */
+  name: FeatherTypeEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+export interface PaginatedFeatherTypeEntity {
+  /** Array of records */
+  data: FeatherTypeEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateFeatherTypeDto {
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
+}
+
+export interface CreateHairTypeDto {
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+/**
+ * Localized name
+ */
+export type HairTypeEntityName = { [key: string]: unknown };
+
+export interface HairTypeEntity {
+  /** Unique identifier */
+  id: string;
+  /** Localized name */
+  name: HairTypeEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+export interface PaginatedHairTypeEntity {
+  /** Array of records */
+  data: HairTypeEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateHairTypeDto {
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
+}
+
+export interface CreateLymphConsistencyDto {
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+/**
+ * Localized name
+ */
+export type LymphConsistencyEntityName = { [key: string]: unknown };
+
+export interface LymphConsistencyEntity {
+  /** Unique identifier */
+  id: string;
+  /** Localized name */
+  name: LymphConsistencyEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+export interface PaginatedLymphConsistencyEntity {
+  /** Array of records */
+  data: LymphConsistencyEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateLymphConsistencyDto {
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
+}
+
+export interface CreateLymphMobilityDto {
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+/**
+ * Localized name
+ */
+export type LymphMobilityEntityName = { [key: string]: unknown };
+
+export interface LymphMobilityEntity {
+  /** Unique identifier */
+  id: string;
+  /** Localized name */
+  name: LymphMobilityEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+export interface PaginatedLymphMobilityEntity {
+  /** Array of records */
+  data: LymphMobilityEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateLymphMobilityDto {
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
+}
+
+export interface CreateLymphPainDto {
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+/**
+ * Localized name
+ */
+export type LymphPainEntityName = { [key: string]: unknown };
+
+export interface LymphPainEntity {
+  /** Unique identifier */
+  id: string;
+  /** Localized name */
+  name: LymphPainEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+export interface PaginatedLymphPainEntity {
+  /** Array of records */
+  data: LymphPainEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateLymphPainDto {
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
+}
+
+export interface CreateLymphShapeDto {
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+/**
+ * Localized name
+ */
+export type LymphShapeEntityName = { [key: string]: unknown };
+
+export interface LymphShapeEntity {
+  /** Unique identifier */
+  id: string;
+  /** Localized name */
+  name: LymphShapeEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+export interface PaginatedLymphShapeEntity {
+  /** Array of records */
+  data: LymphShapeEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateLymphShapeDto {
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
+}
+
+export interface CreateLymphSizeDto {
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+/**
+ * Localized name
+ */
+export type LymphSizeEntityName = { [key: string]: unknown };
+
+export interface LymphSizeEntity {
+  /** Unique identifier */
+  id: string;
+  /** Localized name */
+  name: LymphSizeEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+export interface PaginatedLymphSizeEntity {
+  /** Array of records */
+  data: LymphSizeEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateLymphSizeDto {
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
+}
+
+export interface CreateLymphSurfaceDto {
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+/**
+ * Localized name
+ */
+export type LymphSurfaceEntityName = { [key: string]: unknown };
+
+export interface LymphSurfaceEntity {
+  /** Unique identifier */
+  id: string;
+  /** Localized name */
+  name: LymphSurfaceEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+export interface PaginatedLymphSurfaceEntity {
+  /** Array of records */
+  data: LymphSurfaceEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateLymphSurfaceDto {
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
+}
+
+export interface CreateLymphTempDto {
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+/**
+ * Localized name
+ */
+export type LymphTempEntityName = { [key: string]: unknown };
+
+export interface LymphTempEntity {
+  /** Unique identifier */
+  id: string;
+  /** Localized name */
+  name: LymphTempEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+export interface PaginatedLymphTempEntity {
+  /** Array of records */
+  data: LymphTempEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateLymphTempDto {
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
+}
+
+export interface CreateRumenFluidStateDto {
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+/**
+ * Localized name
+ */
+export type RumenFluidStateEntityName = { [key: string]: unknown };
+
+export interface RumenFluidStateEntity {
+  /** Unique identifier */
+  id: string;
+  /** Localized name */
+  name: RumenFluidStateEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+export interface PaginatedRumenFluidStateEntity {
+  /** Array of records */
+  data: RumenFluidStateEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateRumenFluidStateDto {
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
+}
+
+export interface CreateMucosaTypeDto {
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+/**
+ * Localized name
+ */
+export type MucosaTypeEntityName = { [key: string]: unknown };
+
+export interface MucosaTypeEntity {
+  /** Unique identifier */
+  id: string;
+  /** Localized name */
+  name: MucosaTypeEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+export interface PaginatedMucosaTypeEntity {
+  /** Array of records */
+  data: MucosaTypeEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateMucosaTypeDto {
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
+}
+
+export interface CreateObesityTypeDto {
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+/**
+ * Localized name
+ */
+export type ObesityTypeEntityName = { [key: string]: unknown };
+
+export interface ObesityTypeEntity {
+  /** Unique identifier */
+  id: string;
+  /** Localized name */
+  name: ObesityTypeEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+export interface PaginatedObesityTypeEntity {
+  /** Array of records */
+  data: ObesityTypeEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateObesityTypeDto {
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
+}
+
+export interface CreateSkinColorDto {
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+/**
+ * Localized name
+ */
+export type SkinColorEntityName = { [key: string]: unknown };
+
+export interface SkinColorEntity {
+  /** Unique identifier */
+  id: string;
+  /** Localized name */
+  name: SkinColorEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+export interface PaginatedSkinColorEntity {
+  /** Array of records */
+  data: SkinColorEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateSkinColorDto {
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
+}
+
+export interface CreateSkinElasticityDto {
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+/**
+ * Localized name
+ */
+export type SkinElasticityEntityName = { [key: string]: unknown };
+
+export interface SkinElasticityEntity {
+  /** Unique identifier */
+  id: string;
+  /** Localized name */
+  name: SkinElasticityEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+export interface PaginatedSkinElasticityEntity {
+  /** Array of records */
+  data: SkinElasticityEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateSkinElasticityDto {
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
+}
+
+export interface CreateSkinHumidityDto {
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+/**
+ * Localized name
+ */
+export type SkinHumidityEntityName = { [key: string]: unknown };
+
+export interface SkinHumidityEntity {
+  /** Unique identifier */
+  id: string;
+  /** Localized name */
+  name: SkinHumidityEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+export interface PaginatedSkinHumidityEntity {
+  /** Array of records */
+  data: SkinHumidityEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateSkinHumidityDto {
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
+}
+
+export interface CreateSkinPainDto {
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+/**
+ * Localized name
+ */
+export type SkinPainEntityName = { [key: string]: unknown };
+
+export interface SkinPainEntity {
+  /** Unique identifier */
+  id: string;
+  /** Localized name */
+  name: SkinPainEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+export interface PaginatedSkinPainEntity {
+  /** Array of records */
+  data: SkinPainEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateSkinPainDto {
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
+}
+
+export interface CreateSkinSensitivityDto {
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+/**
+ * Localized name
+ */
+export type SkinSensitivityEntityName = { [key: string]: unknown };
+
+export interface SkinSensitivityEntity {
+  /** Unique identifier */
+  id: string;
+  /** Localized name */
+  name: SkinSensitivityEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+export interface PaginatedSkinSensitivityEntity {
+  /** Array of records */
+  data: SkinSensitivityEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateSkinSensitivityDto {
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
+}
+
+export interface CreateSkinSmellDto {
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+/**
+ * Localized name
+ */
+export type SkinSmellEntityName = { [key: string]: unknown };
+
+export interface SkinSmellEntity {
+  /** Unique identifier */
+  id: string;
+  /** Localized name */
+  name: SkinSmellEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+export interface PaginatedSkinSmellEntity {
+  /** Array of records */
+  data: SkinSmellEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateSkinSmellDto {
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
+}
+
+export interface CreateSkinSurfaceDto {
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+/**
+ * Localized name
+ */
+export type SkinSurfaceEntityName = { [key: string]: unknown };
+
+export interface SkinSurfaceEntity {
+  /** Unique identifier */
+  id: string;
+  /** Localized name */
+  name: SkinSurfaceEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+export interface PaginatedSkinSurfaceEntity {
+  /** Array of records */
+  data: SkinSurfaceEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateSkinSurfaceDto {
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
+}
+
+export interface CreateSkinTempDto {
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+/**
+ * Localized name
+ */
+export type SkinTempEntityName = { [key: string]: unknown };
+
+export interface SkinTempEntity {
+  /** Unique identifier */
+  id: string;
+  /** Localized name */
+  name: SkinTempEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+export interface PaginatedSkinTempEntity {
+  /** Array of records */
+  data: SkinTempEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateSkinTempDto {
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
+}
+
+export interface CreateTemperamentDto {
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+/**
+ * Localized name
+ */
+export type TemperamentEntityName = { [key: string]: unknown };
+
+export interface TemperamentEntity {
+  /** Unique identifier */
+  id: string;
+  /** Localized name */
+  name: TemperamentEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+export interface PaginatedTemperamentEntity {
+  /** Array of records */
+  data: TemperamentEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateTemperamentDto {
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
+}
+
+export interface CreateWoolTypeDto {
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+/**
+ * Localized name
+ */
+export type WoolTypeEntityName = { [key: string]: unknown };
+
+export interface WoolTypeEntity {
+  /** Unique identifier */
+  id: string;
+  /** Localized name */
+  name: WoolTypeEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+export interface PaginatedWoolTypeEntity {
+  /** Array of records */
+  data: WoolTypeEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateWoolTypeDto {
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
+}
+
 export interface CreateDiseaseDto {
-  name_ru: string;
-  name_uz: string;
+  /** Localized name */
+  name: NameDto;
   diseaseCategoryId: string;
 }
+
+/**
+ * Localized name
+ */
+export type DiseaseCategoryEntityName = { [key: string]: unknown };
 
 export type DiseaseCategoryEntityParentId = { [key: string]: unknown };
 
 export interface DiseaseCategoryEntity {
   id: string;
-  name_ru: string;
-  name_uz: string;
+  /** Localized name */
+  name: DiseaseCategoryEntityName;
   parentId?: DiseaseCategoryEntityParentId;
   parent?: DiseaseCategoryEntity;
   children?: DiseaseCategoryEntity[];
 }
 
+/**
+ * Localized name
+ */
+export type DiseaseEntityName = { [key: string]: unknown };
+
 export interface DiseaseEntity {
   id: string;
-  name_ru: string;
-  name_uz: string;
+  /** Localized name */
+  name: DiseaseEntityName;
   diseaseCategoryId: string;
   createdAt: string;
   updatedAt: string;
@@ -2225,18 +3000,20 @@ export interface PaginatedDiseaseEntity {
 }
 
 export interface UpdateDiseaseDto {
-  name_ru?: string;
-  name_uz?: string;
+  /** Localized name */
+  name?: NameDto;
   diseaseCategoryId?: string;
 }
 
 export interface CreateDiseaseCategoryDto {
-  /** Name in Russian */
-  name_ru: string;
-  /** Name in Uzbek */
-  name_uz: string;
+  /** Localized name */
+  name: NameDto;
   /** Parent category ID (for hierarchical structure) */
   parentId?: string;
+}
+
+export interface Object {
+  [key: string]: unknown;
 }
 
 export interface PaginatedDiseaseCategoryEntity {
@@ -2245,10 +3022,8 @@ export interface PaginatedDiseaseCategoryEntity {
 }
 
 export interface UpdateDiseaseCategoryDto {
-  /** Name in Russian */
-  name_ru?: string;
-  /** Name in Uzbek */
-  name_uz?: string;
+  /** Localized name */
+  name?: NameDto;
   /** Parent category ID (for hierarchical structure) */
   parentId?: string;
 }
@@ -2326,10 +3101,15 @@ export const CreateProphylaxisItemDtoType = {
 } as const;
 
 export interface CreateProphylaxisItemDto {
-  name_ru: string;
-  name_uz: string;
+  /** Localized name */
+  name: NameDto;
   type: CreateProphylaxisItemDtoType;
 }
+
+/**
+ * Localized name
+ */
+export type ProphylaxisItemEntityName = { [key: string]: unknown };
 
 export type ProphylaxisItemEntityType = (typeof ProphylaxisItemEntityType)[keyof typeof ProphylaxisItemEntityType];
 
@@ -2342,8 +3122,8 @@ export const ProphylaxisItemEntityType = {
 
 export interface ProphylaxisItemEntity {
   id: string;
-  name_ru: string;
-  name_uz: string;
+  /** Localized name */
+  name: ProphylaxisItemEntityName;
   type: ProphylaxisItemEntityType;
   createdAt: string;
   updatedAt: string;
@@ -2364,21 +3144,26 @@ export const UpdateProphylaxisItemDtoType = {
 } as const;
 
 export interface UpdateProphylaxisItemDto {
-  name_ru?: string;
-  name_uz?: string;
+  /** Localized name */
+  name?: NameDto;
   type?: UpdateProphylaxisItemDtoType;
 }
 
 export interface CreateProphylaxisDetailDto {
-  name_ru: string;
-  name_uz: string;
+  /** Localized name */
+  name: NameDto;
   itemId: string;
 }
 
+/**
+ * Localized name
+ */
+export type ProphylaxisDetailEntityName = { [key: string]: unknown };
+
 export interface ProphylaxisDetailEntity {
   id: string;
-  name_ru: string;
-  name_uz: string;
+  /** Localized name */
+  name: ProphylaxisDetailEntityName;
   itemId: string;
   createdAt: string;
   updatedAt: string;
@@ -2390,34 +3175,22 @@ export interface PaginatedProphylaxisDetailEntity {
 }
 
 export interface UpdateProphylaxisDetailDto {
-  name_ru?: string;
-  name_uz?: string;
+  /** Localized name */
+  name?: NameDto;
   itemId?: string;
 }
-
-/**
- * Sex of the animal
- */
-export type CreateAnimalDtoSex = (typeof CreateAnimalDtoSex)[keyof typeof CreateAnimalDtoSex];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateAnimalDtoSex = {
-  MALE: "MALE",
-  FEMALE: "FEMALE",
-  NEUTERED: "NEUTERED",
-  SPAYED: "SPAYED",
-  UNKNOWN: "UNKNOWN",
-} as const;
 
 export interface CreateAnimalDto {
   /** Date when the animal arrived */
   arrivalDate: string;
   /** Name or Code of the animal */
   animalNameCode: string;
-  /** Age of the animal in months */
-  age: number;
-  /** Sex of the animal */
-  sex: CreateAnimalDtoSex;
+  /** Birth year of the animal */
+  birthYear: number;
+  /** Birth month of the animal (1–12, day is ignored) */
+  birthMonth: number;
+  /** UUID of the animal sex lookup entry (auto-assigned from AnimalType if omitted) */
+  sexId?: string;
   /** UUID of the farmer who owns the animal */
   farmerId: string;
   /** UUID of the animal type */
@@ -2429,32 +3202,28 @@ export interface CreateAnimalDto {
 }
 
 /**
- * Sex of the animal
+ * ID of the sex lookup entry
  */
-export type AnimalEntitySex = (typeof AnimalEntitySex)[keyof typeof AnimalEntitySex];
+export type AnimalEntitySexId = { [key: string]: unknown };
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const AnimalEntitySex = {
-  MALE: "MALE",
-  FEMALE: "FEMALE",
-  NEUTERED: "NEUTERED",
-  SPAYED: "SPAYED",
-  UNKNOWN: "UNKNOWN",
-} as const;
+/**
+ * ID of the farmer
+ */
+export type AnimalEntityFarmerId = { [key: string]: unknown };
 
 export interface AnimalEntity {
   /** Unique identifier for the animal */
   id: string;
-  /** Name of the animal (in months) */
+  /** Name of the animal */
   animalNameCode: string;
   /** Date of arrival */
   arrivalDate: string;
-  /** Age of the animal (in months) */
-  age: number;
-  /** Sex of the animal */
-  sex: AnimalEntitySex;
+  /** Birth date (day always = 1, month precision only) */
+  birthDate: string;
+  /** ID of the sex lookup entry */
+  sexId?: AnimalEntitySexId;
   /** ID of the farmer */
-  farmerId: string;
+  farmerId: AnimalEntityFarmerId;
   /** ID of the animal type */
   animalTypeId: string;
   /** ID of the animal breed */
@@ -2472,29 +3241,17 @@ export interface PaginatedAnimalEntity {
   meta: MetaDataEntity;
 }
 
-/**
- * Sex of the animal
- */
-export type UpdateAnimalDtoSex = (typeof UpdateAnimalDtoSex)[keyof typeof UpdateAnimalDtoSex];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateAnimalDtoSex = {
-  MALE: "MALE",
-  FEMALE: "FEMALE",
-  NEUTERED: "NEUTERED",
-  SPAYED: "SPAYED",
-  UNKNOWN: "UNKNOWN",
-} as const;
-
 export interface UpdateAnimalDto {
   /** Date when the animal arrived */
   arrivalDate?: string;
   /** Name or Code of the animal */
   animalNameCode?: string;
-  /** Age of the animal in months */
-  age?: number;
-  /** Sex of the animal */
-  sex?: UpdateAnimalDtoSex;
+  /** Birth year of the animal */
+  birthYear?: number;
+  /** Birth month of the animal (1–12, day is ignored) */
+  birthMonth?: number;
+  /** UUID of the animal sex lookup entry (auto-assigned from AnimalType if omitted) */
+  sexId?: string;
   /** UUID of the farmer who owns the animal */
   farmerId?: string;
   /** UUID of the animal type */
@@ -2506,27 +3263,64 @@ export interface UpdateAnimalDto {
 }
 
 export interface CreateAnimalTypeDto {
-  /** Name of the animal type in Russian */
-  name_ru: string;
-  /** Name of the animal type in Uzbek */
-  name_uz: string;
+  /** Localized name */
+  name: NameDto;
   /** Parent animal type ID (for hierarchical types) */
   parentId?: string;
+  /** AI model key used to route predictions for this type (e.g. "buqa", "sigir") */
+  modelKey?: string;
+  /** Optional sex constraint — only animals of this sex match this type */
+  sexId?: string;
+  /** Minimum age in total months for this type (inclusive) */
+  minAgeMonths?: number;
+  /** Maximum age in total months for this type (inclusive, null = no upper bound) */
+  maxAgeMonths?: number;
 }
 
 /**
- * Parent animal type ID (for hierarchical types)
+ * Localized name
+ */
+export type AnimalTypeEntityName = { [key: string]: unknown };
+
+/**
+ * AI model key for prediction routing (leaf types only)
+ */
+export type AnimalTypeEntityModelKey = { [key: string]: unknown };
+
+/**
+ * Sex constraint ID — only animals of this sex belong to this type
+ */
+export type AnimalTypeEntitySexId = { [key: string]: unknown };
+
+/**
+ * Minimum animal age in total months (inclusive)
+ */
+export type AnimalTypeEntityMinAgeMonths = { [key: string]: unknown };
+
+/**
+ * Maximum animal age in total months (inclusive, null = no upper bound)
+ */
+export type AnimalTypeEntityMaxAgeMonths = { [key: string]: unknown };
+
+/**
+ * Parent animal type ID
  */
 export type AnimalTypeEntityParentId = { [key: string]: unknown };
 
 export interface AnimalTypeEntity {
   /** Unique identifier for the animal type */
   id: string;
-  /** Name of the animal type in Russian */
-  name_ru: string;
-  /** Name of the animal type in Uzbek */
-  name_uz: string;
-  /** Parent animal type ID (for hierarchical types) */
+  /** Localized name */
+  name: AnimalTypeEntityName;
+  /** AI model key for prediction routing (leaf types only) */
+  modelKey?: AnimalTypeEntityModelKey;
+  /** Sex constraint ID — only animals of this sex belong to this type */
+  sexId?: AnimalTypeEntitySexId;
+  /** Minimum animal age in total months (inclusive) */
+  minAgeMonths?: AnimalTypeEntityMinAgeMonths;
+  /** Maximum animal age in total months (inclusive, null = no upper bound) */
+  maxAgeMonths?: AnimalTypeEntityMaxAgeMonths;
+  /** Parent animal type ID */
   parentId?: AnimalTypeEntityParentId;
   /** Parent animal type details */
   parent?: AnimalTypeEntity;
@@ -2540,28 +3334,35 @@ export interface PaginatedAnimalTypeEntity {
 }
 
 export interface UpdateAnimalTypeDto {
-  /** Name of the animal type in Russian */
-  name_ru?: string;
-  /** Name of the animal type in Uzbek */
-  name_uz?: string;
+  /** Localized name */
+  name?: NameDto;
   /** Parent animal type ID (for hierarchical types) */
   parentId?: string;
+  /** AI model key used to route predictions for this type (e.g. "buqa", "sigir") */
+  modelKey?: string;
+  /** Optional sex constraint — only animals of this sex match this type */
+  sexId?: string;
+  /** Minimum age in total months for this type (inclusive) */
+  minAgeMonths?: number;
+  /** Maximum age in total months for this type (inclusive, null = no upper bound) */
+  maxAgeMonths?: number;
 }
 
 export interface CreateAnimalBreedDto {
-  /** Name of the breed in Russian */
-  name_ru: string;
-  /** Name of the breed in Uzbek */
-  name_uz: string;
+  /** Localized name */
+  name: NameDto;
 }
+
+/**
+ * Localized name
+ */
+export type AnimalBreedEntityName = { [key: string]: unknown };
 
 export interface AnimalBreedEntity {
   /** Unique identifier */
   id: string;
-  /** Name in Russian */
-  name_ru: string;
-  /** Name in Uzbek */
-  name_uz: string;
+  /** Localized name */
+  name: AnimalBreedEntityName;
 }
 
 export interface PaginatedAnimalBreedEntity {
@@ -2572,26 +3373,25 @@ export interface PaginatedAnimalBreedEntity {
 }
 
 export interface UpdateAnimalBreedDto {
-  /** Name of the breed in Russian */
-  name_ru?: string;
-  /** Name of the breed in Uzbek */
-  name_uz?: string;
+  /** Localized name */
+  name?: NameDto;
 }
 
 export interface CreateAnimalColorDto {
-  /** Name of the color in Russian */
-  name_ru: string;
-  /** Name of the color in Uzbek */
-  name_uz: string;
+  /** Localized name */
+  name: NameDto;
 }
+
+/**
+ * Localized name
+ */
+export type AnimalColorEntityName = { [key: string]: unknown };
 
 export interface AnimalColorEntity {
   /** Unique identifier */
   id: string;
-  /** Name in Russian */
-  name_ru: string;
-  /** Name in Uzbek */
-  name_uz: string;
+  /** Localized name */
+  name: AnimalColorEntityName;
 }
 
 export interface PaginatedAnimalColorEntity {
@@ -2602,37 +3402,74 @@ export interface PaginatedAnimalColorEntity {
 }
 
 export interface UpdateAnimalColorDto {
-  /** Name of the color in Russian */
-  name_ru?: string;
-  /** Name of the color in Uzbek */
-  name_uz?: string;
+  /** Localized name */
+  name?: NameDto;
+}
+
+export interface CreateAnimalSexDto {
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+/**
+ * Localized name
+ */
+export type AnimalSexEntityName = { [key: string]: unknown };
+
+export interface AnimalSexEntity {
+  /** Unique identifier */
+  id: string;
+  /** Localized name */
+  name: AnimalSexEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+export interface PaginatedAnimalSexEntity {
+  /** Array of records */
+  data: AnimalSexEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateAnimalSexDto {
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
 }
 
 export interface CreateRegionDto {
-  /** Name of the region in Russian */
-  name_ru: string;
-  /** Name of the region in Uzbek */
-  name_uz: string;
+  /** Localized name */
+  name: NameDto;
 }
+
+/**
+ * Localized name
+ */
+export type RegionEntityName = { [key: string]: unknown };
 
 export interface RegionEntity {
   /** Unique identifier for the region */
   id: number;
-  /** Name of the region in Russian */
-  name_ru: string;
-  /** Name of the region in Uzbek */
-  name_uz: string;
+  /** Localized name */
+  name: RegionEntityName;
   /** List of districts in this region */
   districts?: DistrictEntity[];
 }
 
+/**
+ * Localized name
+ */
+export type DistrictEntityName = { [key: string]: unknown };
+
 export interface DistrictEntity {
   /** Unique identifier for the district */
   id: string;
-  /** Name of the district in Russian */
-  name_ru: string;
-  /** Name of the district in Uzbek */
-  name_uz: string;
+  /** Localized name */
+  name: DistrictEntityName;
   /** ID of the parent region */
   regionId: number;
   /** Parent region details */
@@ -2647,17 +3484,13 @@ export interface PaginatedRegionEntity {
 }
 
 export interface UpdateRegionDto {
-  /** Name of the region in Russian */
-  name_ru?: string;
-  /** Name of the region in Uzbek */
-  name_uz?: string;
+  /** Localized name */
+  name?: NameDto;
 }
 
 export interface CreateDistrictDto {
-  /** Name of the district in Russian */
-  name_ru: string;
-  /** Name of the district in Uzbek */
-  name_uz: string;
+  /** Localized name */
+  name: NameDto;
   /** ID of the parent region */
   regionId: number;
 }
@@ -2670,32 +3503,31 @@ export interface PaginatedDistrictEntity {
 }
 
 export interface UpdateDistrictDto {
-  /** Name of the district in Russian */
-  name_ru?: string;
-  /** Name of the district in Uzbek */
-  name_uz?: string;
+  /** Localized name */
+  name?: NameDto;
   /** ID of the parent region */
   regionId?: number;
 }
 
 export interface CreateVetStationDto {
-  /** Name of the vet station in Russian */
-  name_ru: string;
-  /** Name of the vet station in Uzbek */
-  name_uz: string;
+  /** Localized name */
+  name: NameDto;
   /** Address of the vet station */
   address: string;
   /** ID of the district */
   districtId: string;
 }
 
+/**
+ * Localized name
+ */
+export type VetStationEntityName = { [key: string]: unknown };
+
 export interface VetStationEntity {
   /** Unique identifier for the vet station */
   id: string;
-  /** Name of the vet station in Russian */
-  name_ru: string;
-  /** Name of the vet station in Uzbek */
-  name_uz: string;
+  /** Localized name */
+  name: VetStationEntityName;
   /** Address of the vet station */
   address: string;
   /** ID of the district */
@@ -2716,10 +3548,8 @@ export interface PaginatedVetStationEntity {
 }
 
 export interface UpdateVetStationDto {
-  /** Name of the vet station in Russian */
-  name_ru?: string;
-  /** Name of the vet station in Uzbek */
-  name_uz?: string;
+  /** Localized name */
+  name?: NameDto;
   /** Address of the vet station */
   address?: string;
   /** ID of the district */
@@ -2794,6 +3624,7 @@ export type BloodExamControllerFindAllParams = {
   page?: number;
   perPage?: number;
   byId?: BloodExamControllerFindAllById;
+  animalId?: string;
 };
 
 export type BloodExamControllerFindAllById = (typeof BloodExamControllerFindAllById)[keyof typeof BloodExamControllerFindAllById];
@@ -2809,6 +3640,7 @@ export type ClinicalExamControllerFindAllParams = {
   page?: number;
   perPage?: number;
   byId?: ClinicalExamControllerFindAllById;
+  animalId?: string;
 };
 
 export type ClinicalExamControllerFindAllById = (typeof ClinicalExamControllerFindAllById)[keyof typeof ClinicalExamControllerFindAllById];
@@ -2824,6 +3656,7 @@ export type FecesExamControllerFindAllParams = {
   page?: number;
   perPage?: number;
   byId?: FecesExamControllerFindAllById;
+  animalId?: string;
 };
 
 export type FecesExamControllerFindAllById = (typeof FecesExamControllerFindAllById)[keyof typeof FecesExamControllerFindAllById];
@@ -2839,6 +3672,7 @@ export type MucosaExamControllerFindAllParams = {
   page?: number;
   perPage?: number;
   byId?: MucosaExamControllerFindAllById;
+  animalId?: string;
 };
 
 export type MucosaExamControllerFindAllById = (typeof MucosaExamControllerFindAllById)[keyof typeof MucosaExamControllerFindAllById];
@@ -2854,6 +3688,7 @@ export type UrineExamControllerFindAllParams = {
   page?: number;
   perPage?: number;
   byId?: UrineExamControllerFindAllById;
+  animalId?: string;
 };
 
 export type UrineExamControllerFindAllById = (typeof UrineExamControllerFindAllById)[keyof typeof UrineExamControllerFindAllById];
@@ -2869,6 +3704,10 @@ export type UrineColorControllerFindAllParams = {
   page?: number;
   perPage?: number;
   byId?: UrineColorControllerFindAllById;
+  /**
+   * Filter by animal type ID
+   */
+  animalTypeId?: string;
 };
 
 export type UrineColorControllerFindAllById = (typeof UrineColorControllerFindAllById)[keyof typeof UrineColorControllerFindAllById];
@@ -2884,6 +3723,10 @@ export type UrineSmellControllerFindAllParams = {
   page?: number;
   perPage?: number;
   byId?: UrineSmellControllerFindAllById;
+  /**
+   * Filter by animal type ID
+   */
+  animalTypeId?: string;
 };
 
 export type UrineSmellControllerFindAllById = (typeof UrineSmellControllerFindAllById)[keyof typeof UrineSmellControllerFindAllById];
@@ -2899,6 +3742,10 @@ export type UrineClarityControllerFindAllParams = {
   page?: number;
   perPage?: number;
   byId?: UrineClarityControllerFindAllById;
+  /**
+   * Filter by animal type ID
+   */
+  animalTypeId?: string;
 };
 
 export type UrineClarityControllerFindAllById = (typeof UrineClarityControllerFindAllById)[keyof typeof UrineClarityControllerFindAllById];
@@ -2914,6 +3761,10 @@ export type UrineConsistencyControllerFindAllParams = {
   page?: number;
   perPage?: number;
   byId?: UrineConsistencyControllerFindAllById;
+  /**
+   * Filter by animal type ID
+   */
+  animalTypeId?: string;
 };
 
 export type UrineConsistencyControllerFindAllById = (typeof UrineConsistencyControllerFindAllById)[keyof typeof UrineConsistencyControllerFindAllById];
@@ -2929,6 +3780,10 @@ export type FecesColorControllerFindAllParams = {
   page?: number;
   perPage?: number;
   byId?: FecesColorControllerFindAllById;
+  /**
+   * Filter by animal type ID
+   */
+  animalTypeId?: string;
 };
 
 export type FecesColorControllerFindAllById = (typeof FecesColorControllerFindAllById)[keyof typeof FecesColorControllerFindAllById];
@@ -2944,6 +3799,10 @@ export type FecesSmellControllerFindAllParams = {
   page?: number;
   perPage?: number;
   byId?: FecesSmellControllerFindAllById;
+  /**
+   * Filter by animal type ID
+   */
+  animalTypeId?: string;
 };
 
 export type FecesSmellControllerFindAllById = (typeof FecesSmellControllerFindAllById)[keyof typeof FecesSmellControllerFindAllById];
@@ -2959,6 +3818,10 @@ export type FecesConsistencyControllerFindAllParams = {
   page?: number;
   perPage?: number;
   byId?: FecesConsistencyControllerFindAllById;
+  /**
+   * Filter by animal type ID
+   */
+  animalTypeId?: string;
 };
 
 export type FecesConsistencyControllerFindAllById = (typeof FecesConsistencyControllerFindAllById)[keyof typeof FecesConsistencyControllerFindAllById];
@@ -2974,6 +3837,10 @@ export type FecesFormControllerFindAllParams = {
   page?: number;
   perPage?: number;
   byId?: FecesFormControllerFindAllById;
+  /**
+   * Filter by animal type ID
+   */
+  animalTypeId?: string;
 };
 
 export type FecesFormControllerFindAllById = (typeof FecesFormControllerFindAllById)[keyof typeof FecesFormControllerFindAllById];
@@ -2985,9 +3852,29 @@ export const FecesFormControllerFindAllById = {
 } as const;
 
 export type MucosaAppearanceControllerFindAllParams = {
-  search?: string;
+  /**
+   * Page number
+   */
   page?: number;
+  /**
+   * Items per page
+   */
   perPage?: number;
+  /**
+   * Search by name (Russian or Uzbek)
+   */
+  search?: string;
+  /**
+   * Filter by animal type ID
+   */
+  animalTypeId?: string;
+  /**
+   * Filter by mucosa type ID
+   */
+  mucosaTypeId?: string;
+  /**
+   * Sort order by ID
+   */
   byId?: MucosaAppearanceControllerFindAllById;
 };
 
@@ -2995,6 +3882,541 @@ export type MucosaAppearanceControllerFindAllById = (typeof MucosaAppearanceCont
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MucosaAppearanceControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type MedicalSessionControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: MedicalSessionControllerFindAllById;
+  /**
+   * Filter by animal ID
+   */
+  animalId?: string;
+  /**
+   * Filter by veterinarian ID
+   */
+  veterinarianId?: string;
+  /**
+   * Filter by session status
+   */
+  status?: MedicalSessionControllerFindAllStatus;
+};
+
+export type MedicalSessionControllerFindAllById = (typeof MedicalSessionControllerFindAllById)[keyof typeof MedicalSessionControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const MedicalSessionControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type MedicalSessionControllerFindAllStatus = (typeof MedicalSessionControllerFindAllStatus)[keyof typeof MedicalSessionControllerFindAllStatus];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const MedicalSessionControllerFindAllStatus = {
+  DRAFT: "DRAFT",
+  READY: "READY",
+  SUBMITTED: "SUBMITTED",
+} as const;
+
+export type FeedbackControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: FeedbackControllerFindAllById;
+  predictionId?: string;
+  veterinarianId?: string;
+};
+
+export type FeedbackControllerFindAllById = (typeof FeedbackControllerFindAllById)[keyof typeof FeedbackControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const FeedbackControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type AnomalyDetectionControllerGetTrendParams = {
+  /**
+   * Animal UUID to track trends for
+   */
+  animalId: string;
+  /**
+   * Parameter name to track (e.g. "pulse", "hemoglobin", "glucose")
+   */
+  parameter: string;
+  /**
+   * Start date (ISO 8601)
+   */
+  from?: string;
+  /**
+   * End date (ISO 8601)
+   */
+  to?: string;
+  /**
+   * Max number of data points to return (default 20)
+   */
+  limit?: number;
+};
+
+export type AnomalyDetectionControllerGetAlertsParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: AnomalyDetectionControllerGetAlertsById;
+  /**
+   * Filter by animal ID
+   */
+  animalId?: string;
+  /**
+   * Filter by session ID
+   */
+  sessionId?: string;
+  /**
+   * Filter by severity
+   */
+  severity?: AnomalyDetectionControllerGetAlertsSeverity;
+  /**
+   * Filter by status
+   */
+  status?: AnomalyDetectionControllerGetAlertsStatus;
+};
+
+export type AnomalyDetectionControllerGetAlertsById = (typeof AnomalyDetectionControllerGetAlertsById)[keyof typeof AnomalyDetectionControllerGetAlertsById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AnomalyDetectionControllerGetAlertsById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type AnomalyDetectionControllerGetAlertsSeverity = (typeof AnomalyDetectionControllerGetAlertsSeverity)[keyof typeof AnomalyDetectionControllerGetAlertsSeverity];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AnomalyDetectionControllerGetAlertsSeverity = {
+  LOW: "LOW",
+  MEDIUM: "MEDIUM",
+  HIGH: "HIGH",
+  CRITICAL: "CRITICAL",
+} as const;
+
+export type AnomalyDetectionControllerGetAlertsStatus = (typeof AnomalyDetectionControllerGetAlertsStatus)[keyof typeof AnomalyDetectionControllerGetAlertsStatus];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AnomalyDetectionControllerGetAlertsStatus = {
+  NEW: "NEW",
+  ACKNOWLEDGED: "ACKNOWLEDGED",
+  RESOLVED: "RESOLVED",
+} as const;
+
+export type ReferenceRangeControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: ReferenceRangeControllerFindAllById;
+  /**
+   * Filter by animal type ID
+   */
+  animalTypeId?: string;
+};
+
+export type ReferenceRangeControllerFindAllById = (typeof ReferenceRangeControllerFindAllById)[keyof typeof ReferenceRangeControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ReferenceRangeControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type BodyPositionControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: BodyPositionControllerFindAllById;
+};
+
+export type BodyPositionControllerFindAllById = (typeof BodyPositionControllerFindAllById)[keyof typeof BodyPositionControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const BodyPositionControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type BodyTypeControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: BodyTypeControllerFindAllById;
+};
+
+export type BodyTypeControllerFindAllById = (typeof BodyTypeControllerFindAllById)[keyof typeof BodyTypeControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const BodyTypeControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type ConstitutionControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: ConstitutionControllerFindAllById;
+};
+
+export type ConstitutionControllerFindAllById = (typeof ConstitutionControllerFindAllById)[keyof typeof ConstitutionControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ConstitutionControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type DownTypeControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: DownTypeControllerFindAllById;
+};
+
+export type DownTypeControllerFindAllById = (typeof DownTypeControllerFindAllById)[keyof typeof DownTypeControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DownTypeControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type FeatherTypeControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: FeatherTypeControllerFindAllById;
+};
+
+export type FeatherTypeControllerFindAllById = (typeof FeatherTypeControllerFindAllById)[keyof typeof FeatherTypeControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const FeatherTypeControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type HairTypeControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: HairTypeControllerFindAllById;
+};
+
+export type HairTypeControllerFindAllById = (typeof HairTypeControllerFindAllById)[keyof typeof HairTypeControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const HairTypeControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type LymphConsistencyControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: LymphConsistencyControllerFindAllById;
+};
+
+export type LymphConsistencyControllerFindAllById = (typeof LymphConsistencyControllerFindAllById)[keyof typeof LymphConsistencyControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const LymphConsistencyControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type LymphMobilityControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: LymphMobilityControllerFindAllById;
+};
+
+export type LymphMobilityControllerFindAllById = (typeof LymphMobilityControllerFindAllById)[keyof typeof LymphMobilityControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const LymphMobilityControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type LymphPainControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: LymphPainControllerFindAllById;
+};
+
+export type LymphPainControllerFindAllById = (typeof LymphPainControllerFindAllById)[keyof typeof LymphPainControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const LymphPainControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type LymphShapeControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: LymphShapeControllerFindAllById;
+};
+
+export type LymphShapeControllerFindAllById = (typeof LymphShapeControllerFindAllById)[keyof typeof LymphShapeControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const LymphShapeControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type LymphSizeControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: LymphSizeControllerFindAllById;
+};
+
+export type LymphSizeControllerFindAllById = (typeof LymphSizeControllerFindAllById)[keyof typeof LymphSizeControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const LymphSizeControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type LymphSurfaceControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: LymphSurfaceControllerFindAllById;
+};
+
+export type LymphSurfaceControllerFindAllById = (typeof LymphSurfaceControllerFindAllById)[keyof typeof LymphSurfaceControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const LymphSurfaceControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type LymphTempControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: LymphTempControllerFindAllById;
+};
+
+export type LymphTempControllerFindAllById = (typeof LymphTempControllerFindAllById)[keyof typeof LymphTempControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const LymphTempControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type RumenFluidStateControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: RumenFluidStateControllerFindAllById;
+};
+
+export type RumenFluidStateControllerFindAllById = (typeof RumenFluidStateControllerFindAllById)[keyof typeof RumenFluidStateControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RumenFluidStateControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type MucosaTypeControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: MucosaTypeControllerFindAllById;
+};
+
+export type MucosaTypeControllerFindAllById = (typeof MucosaTypeControllerFindAllById)[keyof typeof MucosaTypeControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const MucosaTypeControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type ObesityTypeControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: ObesityTypeControllerFindAllById;
+};
+
+export type ObesityTypeControllerFindAllById = (typeof ObesityTypeControllerFindAllById)[keyof typeof ObesityTypeControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ObesityTypeControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type SkinColorControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: SkinColorControllerFindAllById;
+};
+
+export type SkinColorControllerFindAllById = (typeof SkinColorControllerFindAllById)[keyof typeof SkinColorControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SkinColorControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type SkinElasticityControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: SkinElasticityControllerFindAllById;
+};
+
+export type SkinElasticityControllerFindAllById = (typeof SkinElasticityControllerFindAllById)[keyof typeof SkinElasticityControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SkinElasticityControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type SkinHumidityControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: SkinHumidityControllerFindAllById;
+};
+
+export type SkinHumidityControllerFindAllById = (typeof SkinHumidityControllerFindAllById)[keyof typeof SkinHumidityControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SkinHumidityControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type SkinPainControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: SkinPainControllerFindAllById;
+};
+
+export type SkinPainControllerFindAllById = (typeof SkinPainControllerFindAllById)[keyof typeof SkinPainControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SkinPainControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type SkinSensitivityControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: SkinSensitivityControllerFindAllById;
+};
+
+export type SkinSensitivityControllerFindAllById = (typeof SkinSensitivityControllerFindAllById)[keyof typeof SkinSensitivityControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SkinSensitivityControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type SkinSmellControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: SkinSmellControllerFindAllById;
+};
+
+export type SkinSmellControllerFindAllById = (typeof SkinSmellControllerFindAllById)[keyof typeof SkinSmellControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SkinSmellControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type SkinSurfaceControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: SkinSurfaceControllerFindAllById;
+};
+
+export type SkinSurfaceControllerFindAllById = (typeof SkinSurfaceControllerFindAllById)[keyof typeof SkinSurfaceControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SkinSurfaceControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type SkinTempControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: SkinTempControllerFindAllById;
+};
+
+export type SkinTempControllerFindAllById = (typeof SkinTempControllerFindAllById)[keyof typeof SkinTempControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SkinTempControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type TemperamentControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: TemperamentControllerFindAllById;
+};
+
+export type TemperamentControllerFindAllById = (typeof TemperamentControllerFindAllById)[keyof typeof TemperamentControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const TemperamentControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type WoolTypeControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: WoolTypeControllerFindAllById;
+};
+
+export type WoolTypeControllerFindAllById = (typeof WoolTypeControllerFindAllById)[keyof typeof WoolTypeControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const WoolTypeControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
@@ -3023,7 +4445,7 @@ export type DiseaseCategoryControllerFindAllParams = {
   /**
    * Filter by parent category ID
    */
-  parentId?: string;
+  parentId?: Object;
 };
 
 export type DiseaseCategoryControllerFindAllById = (typeof DiseaseCategoryControllerFindAllById)[keyof typeof DiseaseCategoryControllerFindAllById];
@@ -3100,7 +4522,10 @@ export type AnimalControllerFindAllParams = {
   byId?: AnimalControllerFindAllById;
   farmerId?: string;
   animalTypeId?: string;
-  sex?: AnimalControllerFindAllSex;
+  /**
+   * Filter by sex lookup ID
+   */
+  sexId?: string;
 };
 
 export type AnimalControllerFindAllById = (typeof AnimalControllerFindAllById)[keyof typeof AnimalControllerFindAllById];
@@ -3111,23 +4536,12 @@ export const AnimalControllerFindAllById = {
   desc: "desc",
 } as const;
 
-export type AnimalControllerFindAllSex = (typeof AnimalControllerFindAllSex)[keyof typeof AnimalControllerFindAllSex];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const AnimalControllerFindAllSex = {
-  MALE: "MALE",
-  FEMALE: "FEMALE",
-  NEUTERED: "NEUTERED",
-  SPAYED: "SPAYED",
-  UNKNOWN: "UNKNOWN",
-} as const;
-
 export type AnimalTypeControllerFindAllParams = {
   search?: string;
   page?: number;
   perPage?: number;
   byId?: AnimalTypeControllerFindAllById;
-  parentId?: string | null;
+  parentId?: Object;
 };
 
 export type AnimalTypeControllerFindAllById = (typeof AnimalTypeControllerFindAllById)[keyof typeof AnimalTypeControllerFindAllById];
@@ -3137,6 +4551,25 @@ export const AnimalTypeControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export type AnimalTypeControllerResolveAnimalTypeParams = {
+  /**
+   * UUID of the parent AnimalType (e.g. Qoramol)
+   */
+  parentId: string;
+  /**
+   * UUID of the sex lookup entry
+   */
+  sexId?: string;
+  /**
+   * Birth year
+   */
+  birthYear: number;
+  /**
+   * Birth month (1–12)
+   */
+  birthMonth: number;
+};
 
 export type AnimalBreedControllerFindAllParams = {
   search?: string;
@@ -3158,12 +4591,28 @@ export type AnimalColorControllerFindAllParams = {
   page?: number;
   perPage?: number;
   byId?: AnimalColorControllerFindAllById;
+  animalTypeId?: string;
 };
 
 export type AnimalColorControllerFindAllById = (typeof AnimalColorControllerFindAllById)[keyof typeof AnimalColorControllerFindAllById];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AnimalColorControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type AnimalSexControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: AnimalSexControllerFindAllById;
+};
+
+export type AnimalSexControllerFindAllById = (typeof AnimalSexControllerFindAllById)[keyof typeof AnimalSexControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AnimalSexControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
@@ -3221,1170 +4670,2422 @@ export const VetStationControllerFindAllById = {
   desc: "desc",
 } as const;
 
-type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
-
 /**
  * Authenticates users (SUPER_ADMIN, ADMIN, VETERINARIAN, FARMER) with username and password. Returns JWT access and refresh tokens.
  * @summary User login
  */
-export const authControllerLogin = (loginDto: BodyType<LoginDto>, options?: SecondParameter<typeof createInstance<AuthEntity>>) => {
-  return createInstance<AuthEntity>({ url: `/auth/login`, method: "POST", headers: { "Content-Type": "application/json" }, data: loginDto }, options);
+export const authControllerLogin = (loginDto: LoginDto) => {
+  return createInstance<AuthEntity>({ url: `/auth/login`, method: "POST", headers: { "Content-Type": "application/json" }, data: loginDto });
 };
 
 /**
  * Validates refresh token from Authorization header and issues new access and refresh tokens with token rotation. Old refresh token is automatically replaced. Send refresh token as Bearer token in Authorization header.
  * @summary Refresh access token
  */
-export const authControllerRefresh = (options?: SecondParameter<typeof createInstance<AuthEntity>>) => {
-  return createInstance<AuthEntity>({ url: `/auth/refresh`, method: "POST" }, options);
+export const authControllerRefresh = () => {
+  return createInstance<AuthEntity>({ url: `/auth/refresh`, method: "POST" });
 };
 
 /**
  * Revokes the current refresh token. Send refresh token as Bearer token in Authorization header.
  * @summary Logout (revoke current refresh token)
  */
-export const authControllerLogout = (options?: SecondParameter<typeof createInstance<void>>) => {
-  return createInstance<void>({ url: `/auth/logout`, method: "POST" }, options);
+export const authControllerLogout = () => {
+  return createInstance<void>({ url: `/auth/logout`, method: "POST" });
 };
 
 /**
  * Revokes all refresh tokens for the authenticated user. This logs out the user from all devices. Requires valid access token.
  * @summary Logout from all devices
  */
-export const authControllerLogoutAll = (options?: SecondParameter<typeof createInstance<void>>) => {
-  return createInstance<void>({ url: `/auth/logout-all`, method: "POST" }, options);
+export const authControllerLogoutAll = () => {
+  return createInstance<void>({ url: `/auth/logout-all`, method: "POST" });
 };
 
 /**
  * Creates a new staff user account (ADMIN role). Admin only.
  * @summary Create staff user
  */
-export const usersControllerCreate = (createUserDto: BodyType<CreateUserDto>, options?: SecondParameter<typeof createInstance<UserEntity>>) => {
-  return createInstance<UserEntity>({ url: `/users`, method: "POST", headers: { "Content-Type": "application/json" }, data: createUserDto }, options);
+export const usersControllerCreate = (createUserDto: CreateUserDto) => {
+  return createInstance<UserEntity>({ url: `/users`, method: "POST", headers: { "Content-Type": "application/json" }, data: createUserDto });
 };
 
 /**
  * Retrieve paginated list of all users with optional filters. Admin only.
  * @summary List all users
  */
-export const usersControllerFindAll = (params?: UsersControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedUsersEntity>>) => {
-  return createInstance<PaginatedUsersEntity>({ url: `/users`, method: "GET", params }, options);
+export const usersControllerFindAll = (params?: UsersControllerFindAllParams) => {
+  return createInstance<PaginatedUsersEntity>({ url: `/users`, method: "GET", params });
 };
 
 /**
  * Retrieve authenticated user profile information.
  * @summary Get current user profile
  */
-export const usersControllerGetMe = (options?: SecondParameter<typeof createInstance<UserEntity>>) => {
-  return createInstance<UserEntity>({ url: `/users/me`, method: "GET" }, options);
+export const usersControllerGetMe = () => {
+  return createInstance<UserEntity>({ url: `/users/me`, method: "GET" });
 };
 
 /**
  * Update authenticated user profile information.
  * @summary Update current user profile
  */
-export const usersControllerUpdateMe = (updateUserDto: BodyType<UpdateUserDto>, options?: SecondParameter<typeof createInstance<UserEntity>>) => {
-  return createInstance<UserEntity>({ url: `/users/me`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateUserDto }, options);
+export const usersControllerUpdateMe = (updateUserDto: UpdateUserDto) => {
+  return createInstance<UserEntity>({ url: `/users/me`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateUserDto });
 };
 
 /**
  * Change password for authenticated user.
  * @summary Change current user password
  */
-export const usersControllerChangeMyPassword = (changePasswordDto: BodyType<ChangePasswordDto>, options?: SecondParameter<typeof createInstance<UserEntity>>) => {
-  return createInstance<UserEntity>({ url: `/users/me/change-password`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: changePasswordDto }, options);
+export const usersControllerChangeMyPassword = (changePasswordDto: ChangePasswordDto) => {
+  return createInstance<UserEntity>({ url: `/users/me/change-password`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: changePasswordDto });
 };
 
 /**
  * Retrieve user details by ID. Admin only.
  * @summary Get user by ID
  */
-export const usersControllerFindOne = (id: string, options?: SecondParameter<typeof createInstance<UserEntity>>) => {
-  return createInstance<UserEntity>({ url: `/users/${id}`, method: "GET" }, options);
+export const usersControllerFindOne = (id: string) => {
+  return createInstance<UserEntity>({ url: `/users/${id}`, method: "GET" });
 };
 
 /**
  * Update user information by ID. Admin only.
  * @summary Update user
  */
-export const usersControllerUpdate = (id: string, updateUserDto: BodyType<UpdateUserDto>, options?: SecondParameter<typeof createInstance<UserEntity>>) => {
-  return createInstance<UserEntity>({ url: `/users/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateUserDto }, options);
+export const usersControllerUpdate = (id: string, updateUserDto: UpdateUserDto) => {
+  return createInstance<UserEntity>({ url: `/users/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateUserDto });
 };
 
 /**
  * Soft delete user by setting deletedAt timestamp. Admin only.
  * @summary Delete user (soft delete)
  */
-export const usersControllerRemove = (id: string, options?: SecondParameter<typeof createInstance<UserEntity>>) => {
-  return createInstance<UserEntity>({ url: `/users/${id}`, method: "DELETE" }, options);
+export const usersControllerRemove = (id: string) => {
+  return createInstance<UserEntity>({ url: `/users/${id}`, method: "DELETE" });
 };
 
 /**
  * Change password for any user by ID. Admin only.
  * @summary Change user password
  */
-export const usersControllerChangePassword = (id: string, changePasswordDto: BodyType<ChangePasswordDto>, options?: SecondParameter<typeof createInstance<UserEntity>>) => {
-  return createInstance<UserEntity>({ url: `/users/${id}/change-password`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: changePasswordDto }, options);
+export const usersControllerChangePassword = (id: string, changePasswordDto: ChangePasswordDto) => {
+  return createInstance<UserEntity>({ url: `/users/${id}/change-password`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: changePasswordDto });
 };
 
 /**
  * @summary Health check endpoint
  */
-export const healthControllerCheck = (options?: SecondParameter<typeof createInstance<HealthControllerCheck200>>) => {
-  return createInstance<HealthControllerCheck200>({ url: `/health`, method: "GET" }, options);
+export const healthControllerCheck = () => {
+  return createInstance<HealthControllerCheck200>({ url: `/health`, method: "GET" });
 };
 
 /**
  * Creates a new blood exam.
  * @summary Create blood exam
  */
-export const bloodExamControllerCreate = (createBloodExamDto: BodyType<CreateBloodExamDto>, options?: SecondParameter<typeof createInstance<BloodExamEntity>>) => {
-  return createInstance<BloodExamEntity>({ url: `/blood-exams`, method: "POST", headers: { "Content-Type": "application/json" }, data: createBloodExamDto }, options);
+export const bloodExamControllerCreate = (createBloodExamDto: CreateBloodExamDto) => {
+  return createInstance<BloodExamEntity>({ url: `/blood-exams`, method: "POST", headers: { "Content-Type": "application/json" }, data: createBloodExamDto });
 };
 
 /**
  * Retrieve paginated list of blood exams.
  * @summary List blood exams
  */
-export const bloodExamControllerFindAll = (params?: BloodExamControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedBloodExamEntity>>) => {
-  return createInstance<PaginatedBloodExamEntity>({ url: `/blood-exams`, method: "GET", params }, options);
+export const bloodExamControllerFindAll = (params?: BloodExamControllerFindAllParams) => {
+  return createInstance<PaginatedBloodExamEntity>({ url: `/blood-exams`, method: "GET", params });
 };
 
 /**
  * Retrieve the last blood exam for a specific animal.
  * @summary Get last blood exam by animal ID
  */
-export const bloodExamControllerFindLastByAnimalId = (animalId: string, options?: SecondParameter<typeof createInstance<BloodExamEntity>>) => {
-  return createInstance<BloodExamEntity>({ url: `/blood-exams/animal/${animalId}/last`, method: "GET" }, options);
+export const bloodExamControllerFindLastByAnimalId = (animalId: string) => {
+  return createInstance<BloodExamEntity>({ url: `/blood-exams/animal/${animalId}/last`, method: "GET" });
 };
 
 /**
  * Retrieve blood exam details.
  * @summary Get blood exam by ID
  */
-export const bloodExamControllerFindOne = (id: string, options?: SecondParameter<typeof createInstance<BloodExamEntity>>) => {
-  return createInstance<BloodExamEntity>({ url: `/blood-exams/${id}`, method: "GET" }, options);
+export const bloodExamControllerFindOne = (id: string) => {
+  return createInstance<BloodExamEntity>({ url: `/blood-exams/${id}`, method: "GET" });
 };
 
 /**
  * Update blood exam information by ID.
  * @summary Update blood exam
  */
-export const bloodExamControllerUpdate = (id: string, updateBloodExamDto: BodyType<UpdateBloodExamDto>, options?: SecondParameter<typeof createInstance<BloodExamEntity>>) => {
-  return createInstance<BloodExamEntity>({ url: `/blood-exams/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateBloodExamDto }, options);
+export const bloodExamControllerUpdate = (id: string, updateBloodExamDto: UpdateBloodExamDto) => {
+  return createInstance<BloodExamEntity>({ url: `/blood-exams/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateBloodExamDto });
 };
 
 /**
  * Delete blood exam by ID.
  * @summary Delete blood exam
  */
-export const bloodExamControllerDelete = (id: string, options?: SecondParameter<typeof createInstance<BloodExamEntity>>) => {
-  return createInstance<BloodExamEntity>({ url: `/blood-exams/${id}`, method: "DELETE" }, options);
+export const bloodExamControllerDelete = (id: string) => {
+  return createInstance<BloodExamEntity>({ url: `/blood-exams/${id}`, method: "DELETE" });
 };
 
 /**
  * Creates a new clinical exam.
  * @summary Create clinical exam
  */
-export const clinicalExamControllerCreate = (createClinicalExamDto: BodyType<CreateClinicalExamDto>, options?: SecondParameter<typeof createInstance<ClinicalExamEntity>>) => {
-  return createInstance<ClinicalExamEntity>({ url: `/clinical-exams`, method: "POST", headers: { "Content-Type": "application/json" }, data: createClinicalExamDto }, options);
+export const clinicalExamControllerCreate = (createClinicalExamDto: CreateClinicalExamDto) => {
+  return createInstance<ClinicalExamEntity>({ url: `/clinical-exams`, method: "POST", headers: { "Content-Type": "application/json" }, data: createClinicalExamDto });
 };
 
 /**
  * Retrieve paginated list of clinical exams.
  * @summary List clinical exams
  */
-export const clinicalExamControllerFindAll = (params?: ClinicalExamControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedClinicalExamEntity>>) => {
-  return createInstance<PaginatedClinicalExamEntity>({ url: `/clinical-exams`, method: "GET", params }, options);
+export const clinicalExamControllerFindAll = (params?: ClinicalExamControllerFindAllParams) => {
+  return createInstance<PaginatedClinicalExamEntity>({ url: `/clinical-exams`, method: "GET", params });
 };
 
 /**
  * Retrieve the last clinical exam for a specific animal.
  * @summary Get last clinical exam by animal ID
  */
-export const clinicalExamControllerFindLastByAnimalId = (animalId: string, options?: SecondParameter<typeof createInstance<ClinicalExamEntity>>) => {
-  return createInstance<ClinicalExamEntity>({ url: `/clinical-exams/animal/${animalId}/last`, method: "GET" }, options);
+export const clinicalExamControllerFindLastByAnimalId = (animalId: string) => {
+  return createInstance<ClinicalExamEntity>({ url: `/clinical-exams/animal/${animalId}/last`, method: "GET" });
 };
 
 /**
  * Retrieve clinical exam details.
  * @summary Get clinical exam by ID
  */
-export const clinicalExamControllerFindOne = (id: string, options?: SecondParameter<typeof createInstance<ClinicalExamEntity>>) => {
-  return createInstance<ClinicalExamEntity>({ url: `/clinical-exams/${id}`, method: "GET" }, options);
+export const clinicalExamControllerFindOne = (id: string) => {
+  return createInstance<ClinicalExamEntity>({ url: `/clinical-exams/${id}`, method: "GET" });
 };
 
 /**
  * Update clinical exam information by ID.
  * @summary Update clinical exam
  */
-export const clinicalExamControllerUpdate = (id: string, updateClinicalExamDto: BodyType<UpdateClinicalExamDto>, options?: SecondParameter<typeof createInstance<ClinicalExamEntity>>) => {
-  return createInstance<ClinicalExamEntity>({ url: `/clinical-exams/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateClinicalExamDto }, options);
+export const clinicalExamControllerUpdate = (id: string, updateClinicalExamDto: UpdateClinicalExamDto) => {
+  return createInstance<ClinicalExamEntity>({ url: `/clinical-exams/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateClinicalExamDto });
 };
 
 /**
  * Delete clinical exam by ID.
  * @summary Delete clinical exam
  */
-export const clinicalExamControllerDelete = (id: string, options?: SecondParameter<typeof createInstance<ClinicalExamEntity>>) => {
-  return createInstance<ClinicalExamEntity>({ url: `/clinical-exams/${id}`, method: "DELETE" }, options);
+export const clinicalExamControllerDelete = (id: string) => {
+  return createInstance<ClinicalExamEntity>({ url: `/clinical-exams/${id}`, method: "DELETE" });
 };
 
 /**
  * Creates a new feces exam.
  * @summary Create feces exam
  */
-export const fecesExamControllerCreate = (createFecesExamDto: BodyType<CreateFecesExamDto>, options?: SecondParameter<typeof createInstance<FecesExamEntity>>) => {
-  return createInstance<FecesExamEntity>({ url: `/feces-exams`, method: "POST", headers: { "Content-Type": "application/json" }, data: createFecesExamDto }, options);
+export const fecesExamControllerCreate = (createFecesExamDto: CreateFecesExamDto) => {
+  return createInstance<FecesExamEntity>({ url: `/feces-exams`, method: "POST", headers: { "Content-Type": "application/json" }, data: createFecesExamDto });
 };
 
 /**
  * Retrieve paginated list of feces exams.
  * @summary List feces exams
  */
-export const fecesExamControllerFindAll = (params?: FecesExamControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedFecesExamEntity>>) => {
-  return createInstance<PaginatedFecesExamEntity>({ url: `/feces-exams`, method: "GET", params }, options);
+export const fecesExamControllerFindAll = (params?: FecesExamControllerFindAllParams) => {
+  return createInstance<PaginatedFecesExamEntity>({ url: `/feces-exams`, method: "GET", params });
 };
 
 /**
  * Retrieve the last feces exam for a specific animal.
  * @summary Get last feces exam by animal ID
  */
-export const fecesExamControllerFindLastByAnimalId = (animalId: string, options?: SecondParameter<typeof createInstance<FecesExamEntity>>) => {
-  return createInstance<FecesExamEntity>({ url: `/feces-exams/animal/${animalId}/last`, method: "GET" }, options);
+export const fecesExamControllerFindLastByAnimalId = (animalId: string) => {
+  return createInstance<FecesExamEntity>({ url: `/feces-exams/animal/${animalId}/last`, method: "GET" });
 };
 
 /**
  * Retrieve feces exam details.
  * @summary Get feces exam by ID
  */
-export const fecesExamControllerFindOne = (id: string, options?: SecondParameter<typeof createInstance<FecesExamEntity>>) => {
-  return createInstance<FecesExamEntity>({ url: `/feces-exams/${id}`, method: "GET" }, options);
+export const fecesExamControllerFindOne = (id: string) => {
+  return createInstance<FecesExamEntity>({ url: `/feces-exams/${id}`, method: "GET" });
 };
 
 /**
  * Update feces exam information by ID.
  * @summary Update feces exam
  */
-export const fecesExamControllerUpdate = (id: string, updateFecesExamDto: BodyType<UpdateFecesExamDto>, options?: SecondParameter<typeof createInstance<FecesExamEntity>>) => {
-  return createInstance<FecesExamEntity>({ url: `/feces-exams/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateFecesExamDto }, options);
+export const fecesExamControllerUpdate = (id: string, updateFecesExamDto: UpdateFecesExamDto) => {
+  return createInstance<FecesExamEntity>({ url: `/feces-exams/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateFecesExamDto });
 };
 
 /**
  * Delete feces exam by ID.
  * @summary Delete feces exam
  */
-export const fecesExamControllerDelete = (id: string, options?: SecondParameter<typeof createInstance<FecesExamEntity>>) => {
-  return createInstance<FecesExamEntity>({ url: `/feces-exams/${id}`, method: "DELETE" }, options);
+export const fecesExamControllerDelete = (id: string) => {
+  return createInstance<FecesExamEntity>({ url: `/feces-exams/${id}`, method: "DELETE" });
 };
 
 /**
  * Creates a new mucosa exam.
  * @summary Create mucosa exam
  */
-export const mucosaExamControllerCreate = (createMucosaExamDto: BodyType<CreateMucosaExamDto>, options?: SecondParameter<typeof createInstance<MucosaExamEntity>>) => {
-  return createInstance<MucosaExamEntity>({ url: `/mucosa-exams`, method: "POST", headers: { "Content-Type": "application/json" }, data: createMucosaExamDto }, options);
+export const mucosaExamControllerCreate = (createMucosaExamDto: CreateMucosaExamDto) => {
+  return createInstance<MucosaExamEntity>({ url: `/mucosa-exams`, method: "POST", headers: { "Content-Type": "application/json" }, data: createMucosaExamDto });
 };
 
 /**
  * Retrieve paginated list of mucosa exams.
  * @summary List mucosa exams
  */
-export const mucosaExamControllerFindAll = (params?: MucosaExamControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedMucosaExamEntity>>) => {
-  return createInstance<PaginatedMucosaExamEntity>({ url: `/mucosa-exams`, method: "GET", params }, options);
+export const mucosaExamControllerFindAll = (params?: MucosaExamControllerFindAllParams) => {
+  return createInstance<PaginatedMucosaExamEntity>({ url: `/mucosa-exams`, method: "GET", params });
 };
 
 /**
  * Retrieve the last mucosa exam for a specific animal.
  * @summary Get last mucosa exam by animal ID
  */
-export const mucosaExamControllerFindLastByAnimalId = (animalId: string, options?: SecondParameter<typeof createInstance<MucosaExamEntity>>) => {
-  return createInstance<MucosaExamEntity>({ url: `/mucosa-exams/animal/${animalId}/last`, method: "GET" }, options);
+export const mucosaExamControllerFindLastByAnimalId = (animalId: string) => {
+  return createInstance<MucosaExamEntity>({ url: `/mucosa-exams/animal/${animalId}/last`, method: "GET" });
 };
 
 /**
  * Retrieve mucosa exam details.
  * @summary Get mucosa exam by ID
  */
-export const mucosaExamControllerFindOne = (id: string, options?: SecondParameter<typeof createInstance<MucosaExamEntity>>) => {
-  return createInstance<MucosaExamEntity>({ url: `/mucosa-exams/${id}`, method: "GET" }, options);
+export const mucosaExamControllerFindOne = (id: string) => {
+  return createInstance<MucosaExamEntity>({ url: `/mucosa-exams/${id}`, method: "GET" });
 };
 
 /**
  * Update mucosa exam information by ID.
  * @summary Update mucosa exam
  */
-export const mucosaExamControllerUpdate = (id: string, updateMucosaExamDto: BodyType<UpdateMucosaExamDto>, options?: SecondParameter<typeof createInstance<MucosaExamEntity>>) => {
-  return createInstance<MucosaExamEntity>({ url: `/mucosa-exams/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateMucosaExamDto }, options);
+export const mucosaExamControllerUpdate = (id: string, updateMucosaExamDto: UpdateMucosaExamDto) => {
+  return createInstance<MucosaExamEntity>({ url: `/mucosa-exams/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateMucosaExamDto });
 };
 
 /**
  * Delete mucosa exam by ID.
  * @summary Delete mucosa exam
  */
-export const mucosaExamControllerDelete = (id: string, options?: SecondParameter<typeof createInstance<MucosaExamEntity>>) => {
-  return createInstance<MucosaExamEntity>({ url: `/mucosa-exams/${id}`, method: "DELETE" }, options);
+export const mucosaExamControllerDelete = (id: string) => {
+  return createInstance<MucosaExamEntity>({ url: `/mucosa-exams/${id}`, method: "DELETE" });
 };
 
 /**
  * Creates a new urine exam.
  * @summary Create urine exam
  */
-export const urineExamControllerCreate = (createUrineExamDto: BodyType<CreateUrineExamDto>, options?: SecondParameter<typeof createInstance<UrineExamEntity>>) => {
-  return createInstance<UrineExamEntity>({ url: `/urine-exams`, method: "POST", headers: { "Content-Type": "application/json" }, data: createUrineExamDto }, options);
+export const urineExamControllerCreate = (createUrineExamDto: CreateUrineExamDto) => {
+  return createInstance<UrineExamEntity>({ url: `/urine-exams`, method: "POST", headers: { "Content-Type": "application/json" }, data: createUrineExamDto });
 };
 
 /**
  * Retrieve paginated list of urine exams.
  * @summary List urine exams
  */
-export const urineExamControllerFindAll = (params?: UrineExamControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedUrineExamEntity>>) => {
-  return createInstance<PaginatedUrineExamEntity>({ url: `/urine-exams`, method: "GET", params }, options);
+export const urineExamControllerFindAll = (params?: UrineExamControllerFindAllParams) => {
+  return createInstance<PaginatedUrineExamEntity>({ url: `/urine-exams`, method: "GET", params });
 };
 
 /**
  * Retrieve the last urine exam for a specific animal.
  * @summary Get last urine exam by animal ID
  */
-export const urineExamControllerFindLastByAnimalId = (animalId: string, options?: SecondParameter<typeof createInstance<UrineExamEntity>>) => {
-  return createInstance<UrineExamEntity>({ url: `/urine-exams/animal/${animalId}/last`, method: "GET" }, options);
+export const urineExamControllerFindLastByAnimalId = (animalId: string) => {
+  return createInstance<UrineExamEntity>({ url: `/urine-exams/animal/${animalId}/last`, method: "GET" });
 };
 
 /**
  * Retrieve urine exam details.
  * @summary Get urine exam by ID
  */
-export const urineExamControllerFindOne = (id: string, options?: SecondParameter<typeof createInstance<UrineExamEntity>>) => {
-  return createInstance<UrineExamEntity>({ url: `/urine-exams/${id}`, method: "GET" }, options);
+export const urineExamControllerFindOne = (id: string) => {
+  return createInstance<UrineExamEntity>({ url: `/urine-exams/${id}`, method: "GET" });
 };
 
 /**
  * Update urine exam information by ID.
  * @summary Update urine exam
  */
-export const urineExamControllerUpdate = (id: string, updateUrineExamDto: BodyType<UpdateUrineExamDto>, options?: SecondParameter<typeof createInstance<UrineExamEntity>>) => {
-  return createInstance<UrineExamEntity>({ url: `/urine-exams/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateUrineExamDto }, options);
+export const urineExamControllerUpdate = (id: string, updateUrineExamDto: UpdateUrineExamDto) => {
+  return createInstance<UrineExamEntity>({ url: `/urine-exams/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateUrineExamDto });
 };
 
 /**
  * Delete urine exam by ID.
  * @summary Delete urine exam
  */
-export const urineExamControllerDelete = (id: string, options?: SecondParameter<typeof createInstance<UrineExamEntity>>) => {
-  return createInstance<UrineExamEntity>({ url: `/urine-exams/${id}`, method: "DELETE" }, options);
+export const urineExamControllerDelete = (id: string) => {
+  return createInstance<UrineExamEntity>({ url: `/urine-exams/${id}`, method: "DELETE" });
 };
 
 /**
  * Creates a new urine color.
  * @summary Create urine color
  */
-export const urineColorControllerCreate = (createUrineColorDto: BodyType<CreateUrineColorDto>, options?: SecondParameter<typeof createInstance<UrineColorEntity>>) => {
-  return createInstance<UrineColorEntity>({ url: `/urine-colors`, method: "POST", headers: { "Content-Type": "application/json" }, data: createUrineColorDto }, options);
+export const urineColorControllerCreate = (createUrineColorDto: CreateUrineColorDto) => {
+  return createInstance<UrineColorEntity>({ url: `/urine-colors`, method: "POST", headers: { "Content-Type": "application/json" }, data: createUrineColorDto });
 };
 
 /**
  * Retrieve paginated list of urine colors.
  * @summary List urine colors
  */
-export const urineColorControllerFindAll = (params?: UrineColorControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedUrineColorEntity>>) => {
-  return createInstance<PaginatedUrineColorEntity>({ url: `/urine-colors`, method: "GET", params }, options);
+export const urineColorControllerFindAll = (params?: UrineColorControllerFindAllParams) => {
+  return createInstance<PaginatedUrineColorEntity>({ url: `/urine-colors`, method: "GET", params });
 };
 
 /**
  * Retrieve urine color details.
  * @summary Get urine color by ID
  */
-export const urineColorControllerFindOne = (id: string, options?: SecondParameter<typeof createInstance<UrineColorEntity>>) => {
-  return createInstance<UrineColorEntity>({ url: `/urine-colors/${id}`, method: "GET" }, options);
+export const urineColorControllerFindOne = (id: string) => {
+  return createInstance<UrineColorEntity>({ url: `/urine-colors/${id}`, method: "GET" });
 };
 
 /**
  * Update urine color information by ID.
  * @summary Update urine color
  */
-export const urineColorControllerUpdate = (id: string, updateUrineColorDto: BodyType<UpdateUrineColorDto>, options?: SecondParameter<typeof createInstance<UrineColorEntity>>) => {
-  return createInstance<UrineColorEntity>({ url: `/urine-colors/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateUrineColorDto }, options);
+export const urineColorControllerUpdate = (id: string, updateUrineColorDto: UpdateUrineColorDto) => {
+  return createInstance<UrineColorEntity>({ url: `/urine-colors/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateUrineColorDto });
 };
 
 /**
  * Delete urine color by ID.
  * @summary Delete urine color
  */
-export const urineColorControllerDelete = (id: string, options?: SecondParameter<typeof createInstance<UrineColorEntity>>) => {
-  return createInstance<UrineColorEntity>({ url: `/urine-colors/${id}`, method: "DELETE" }, options);
+export const urineColorControllerDelete = (id: string) => {
+  return createInstance<UrineColorEntity>({ url: `/urine-colors/${id}`, method: "DELETE" });
 };
 
 /**
  * Creates a new urine smell.
  * @summary Create urine smell
  */
-export const urineSmellControllerCreate = (createUrineSmellDto: BodyType<CreateUrineSmellDto>, options?: SecondParameter<typeof createInstance<UrineSmellEntity>>) => {
-  return createInstance<UrineSmellEntity>({ url: `/urine-smells`, method: "POST", headers: { "Content-Type": "application/json" }, data: createUrineSmellDto }, options);
+export const urineSmellControllerCreate = (createUrineSmellDto: CreateUrineSmellDto) => {
+  return createInstance<UrineSmellEntity>({ url: `/urine-smells`, method: "POST", headers: { "Content-Type": "application/json" }, data: createUrineSmellDto });
 };
 
 /**
  * Retrieve paginated list of urine smells.
  * @summary List urine smells
  */
-export const urineSmellControllerFindAll = (params?: UrineSmellControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedUrineSmellEntity>>) => {
-  return createInstance<PaginatedUrineSmellEntity>({ url: `/urine-smells`, method: "GET", params }, options);
+export const urineSmellControllerFindAll = (params?: UrineSmellControllerFindAllParams) => {
+  return createInstance<PaginatedUrineSmellEntity>({ url: `/urine-smells`, method: "GET", params });
 };
 
 /**
  * Retrieve urine smell details.
  * @summary Get urine smell by ID
  */
-export const urineSmellControllerFindOne = (id: string, options?: SecondParameter<typeof createInstance<UrineSmellEntity>>) => {
-  return createInstance<UrineSmellEntity>({ url: `/urine-smells/${id}`, method: "GET" }, options);
+export const urineSmellControllerFindOne = (id: string) => {
+  return createInstance<UrineSmellEntity>({ url: `/urine-smells/${id}`, method: "GET" });
 };
 
 /**
  * Update urine smell information by ID.
  * @summary Update urine smell
  */
-export const urineSmellControllerUpdate = (id: string, updateUrineSmellDto: BodyType<UpdateUrineSmellDto>, options?: SecondParameter<typeof createInstance<UrineSmellEntity>>) => {
-  return createInstance<UrineSmellEntity>({ url: `/urine-smells/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateUrineSmellDto }, options);
+export const urineSmellControllerUpdate = (id: string, updateUrineSmellDto: UpdateUrineSmellDto) => {
+  return createInstance<UrineSmellEntity>({ url: `/urine-smells/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateUrineSmellDto });
 };
 
 /**
  * Delete urine smell by ID.
  * @summary Delete urine smell
  */
-export const urineSmellControllerDelete = (id: string, options?: SecondParameter<typeof createInstance<UrineSmellEntity>>) => {
-  return createInstance<UrineSmellEntity>({ url: `/urine-smells/${id}`, method: "DELETE" }, options);
+export const urineSmellControllerDelete = (id: string) => {
+  return createInstance<UrineSmellEntity>({ url: `/urine-smells/${id}`, method: "DELETE" });
 };
 
 /**
  * Creates a new urine clarity.
  * @summary Create urine clarity
  */
-export const urineClarityControllerCreate = (createUrineClarityDto: BodyType<CreateUrineClarityDto>, options?: SecondParameter<typeof createInstance<UrineClarityEntity>>) => {
-  return createInstance<UrineClarityEntity>({ url: `/urine-clarities`, method: "POST", headers: { "Content-Type": "application/json" }, data: createUrineClarityDto }, options);
+export const urineClarityControllerCreate = (createUrineClarityDto: CreateUrineClarityDto) => {
+  return createInstance<UrineClarityEntity>({ url: `/urine-clarities`, method: "POST", headers: { "Content-Type": "application/json" }, data: createUrineClarityDto });
 };
 
 /**
  * Retrieve paginated list of urine clarities.
  * @summary List urine clarities
  */
-export const urineClarityControllerFindAll = (params?: UrineClarityControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedUrineClarityEntity>>) => {
-  return createInstance<PaginatedUrineClarityEntity>({ url: `/urine-clarities`, method: "GET", params }, options);
+export const urineClarityControllerFindAll = (params?: UrineClarityControllerFindAllParams) => {
+  return createInstance<PaginatedUrineClarityEntity>({ url: `/urine-clarities`, method: "GET", params });
 };
 
 /**
  * Retrieve urine clarity details.
  * @summary Get urine clarity by ID
  */
-export const urineClarityControllerFindOne = (id: string, options?: SecondParameter<typeof createInstance<UrineClarityEntity>>) => {
-  return createInstance<UrineClarityEntity>({ url: `/urine-clarities/${id}`, method: "GET" }, options);
+export const urineClarityControllerFindOne = (id: string) => {
+  return createInstance<UrineClarityEntity>({ url: `/urine-clarities/${id}`, method: "GET" });
 };
 
 /**
  * Update urine clarity information by ID.
  * @summary Update urine clarity
  */
-export const urineClarityControllerUpdate = (id: string, updateUrineClarityDto: BodyType<UpdateUrineClarityDto>, options?: SecondParameter<typeof createInstance<UrineClarityEntity>>) => {
-  return createInstance<UrineClarityEntity>({ url: `/urine-clarities/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateUrineClarityDto }, options);
+export const urineClarityControllerUpdate = (id: string, updateUrineClarityDto: UpdateUrineClarityDto) => {
+  return createInstance<UrineClarityEntity>({ url: `/urine-clarities/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateUrineClarityDto });
 };
 
 /**
  * Delete urine clarity by ID.
  * @summary Delete urine clarity
  */
-export const urineClarityControllerDelete = (id: string, options?: SecondParameter<typeof createInstance<UrineClarityEntity>>) => {
-  return createInstance<UrineClarityEntity>({ url: `/urine-clarities/${id}`, method: "DELETE" }, options);
+export const urineClarityControllerDelete = (id: string) => {
+  return createInstance<UrineClarityEntity>({ url: `/urine-clarities/${id}`, method: "DELETE" });
 };
 
 /**
  * Creates a new urine consistency.
  * @summary Create urine consistency
  */
-export const urineConsistencyControllerCreate = (createUrineConsistencyDto: BodyType<CreateUrineConsistencyDto>, options?: SecondParameter<typeof createInstance<UrineConsistencyEntity>>) => {
-  return createInstance<UrineConsistencyEntity>({ url: `/urine-consistencies`, method: "POST", headers: { "Content-Type": "application/json" }, data: createUrineConsistencyDto }, options);
+export const urineConsistencyControllerCreate = (createUrineConsistencyDto: CreateUrineConsistencyDto) => {
+  return createInstance<UrineConsistencyEntity>({ url: `/urine-consistencies`, method: "POST", headers: { "Content-Type": "application/json" }, data: createUrineConsistencyDto });
 };
 
 /**
  * Retrieve paginated list of urine consistencies.
  * @summary List urine consistencies
  */
-export const urineConsistencyControllerFindAll = (params?: UrineConsistencyControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedUrineConsistencyEntity>>) => {
-  return createInstance<PaginatedUrineConsistencyEntity>({ url: `/urine-consistencies`, method: "GET", params }, options);
+export const urineConsistencyControllerFindAll = (params?: UrineConsistencyControllerFindAllParams) => {
+  return createInstance<PaginatedUrineConsistencyEntity>({ url: `/urine-consistencies`, method: "GET", params });
 };
 
 /**
  * Retrieve urine consistency details.
  * @summary Get urine consistency by ID
  */
-export const urineConsistencyControllerFindOne = (id: string, options?: SecondParameter<typeof createInstance<UrineConsistencyEntity>>) => {
-  return createInstance<UrineConsistencyEntity>({ url: `/urine-consistencies/${id}`, method: "GET" }, options);
+export const urineConsistencyControllerFindOne = (id: string) => {
+  return createInstance<UrineConsistencyEntity>({ url: `/urine-consistencies/${id}`, method: "GET" });
 };
 
 /**
  * Update urine consistency information by ID.
  * @summary Update urine consistency
  */
-export const urineConsistencyControllerUpdate = (id: string, updateUrineConsistencyDto: BodyType<UpdateUrineConsistencyDto>, options?: SecondParameter<typeof createInstance<UrineConsistencyEntity>>) => {
-  return createInstance<UrineConsistencyEntity>({ url: `/urine-consistencies/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateUrineConsistencyDto }, options);
+export const urineConsistencyControllerUpdate = (id: string, updateUrineConsistencyDto: UpdateUrineConsistencyDto) => {
+  return createInstance<UrineConsistencyEntity>({ url: `/urine-consistencies/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateUrineConsistencyDto });
 };
 
 /**
  * Delete urine consistency by ID.
  * @summary Delete urine consistency
  */
-export const urineConsistencyControllerDelete = (id: string, options?: SecondParameter<typeof createInstance<UrineConsistencyEntity>>) => {
-  return createInstance<UrineConsistencyEntity>({ url: `/urine-consistencies/${id}`, method: "DELETE" }, options);
+export const urineConsistencyControllerDelete = (id: string) => {
+  return createInstance<UrineConsistencyEntity>({ url: `/urine-consistencies/${id}`, method: "DELETE" });
 };
 
 /**
  * Creates a new feces color.
  * @summary Create feces color
  */
-export const fecesColorControllerCreate = (createFecesColorDto: BodyType<CreateFecesColorDto>, options?: SecondParameter<typeof createInstance<FecesColorEntity>>) => {
-  return createInstance<FecesColorEntity>({ url: `/feces-colors`, method: "POST", headers: { "Content-Type": "application/json" }, data: createFecesColorDto }, options);
+export const fecesColorControllerCreate = (createFecesColorDto: CreateFecesColorDto) => {
+  return createInstance<FecesColorEntity>({ url: `/feces-colors`, method: "POST", headers: { "Content-Type": "application/json" }, data: createFecesColorDto });
 };
 
 /**
  * Retrieve paginated list of feces colors.
  * @summary List feces colors
  */
-export const fecesColorControllerFindAll = (params?: FecesColorControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedFecesColorEntity>>) => {
-  return createInstance<PaginatedFecesColorEntity>({ url: `/feces-colors`, method: "GET", params }, options);
+export const fecesColorControllerFindAll = (params?: FecesColorControllerFindAllParams) => {
+  return createInstance<PaginatedFecesColorEntity>({ url: `/feces-colors`, method: "GET", params });
 };
 
 /**
  * Retrieve feces color details.
  * @summary Get feces color by ID
  */
-export const fecesColorControllerFindOne = (id: string, options?: SecondParameter<typeof createInstance<FecesColorEntity>>) => {
-  return createInstance<FecesColorEntity>({ url: `/feces-colors/${id}`, method: "GET" }, options);
+export const fecesColorControllerFindOne = (id: string) => {
+  return createInstance<FecesColorEntity>({ url: `/feces-colors/${id}`, method: "GET" });
 };
 
 /**
  * Update feces color information by ID.
  * @summary Update feces color
  */
-export const fecesColorControllerUpdate = (id: string, updateFecesColorDto: BodyType<UpdateFecesColorDto>, options?: SecondParameter<typeof createInstance<FecesColorEntity>>) => {
-  return createInstance<FecesColorEntity>({ url: `/feces-colors/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateFecesColorDto }, options);
+export const fecesColorControllerUpdate = (id: string, updateFecesColorDto: UpdateFecesColorDto) => {
+  return createInstance<FecesColorEntity>({ url: `/feces-colors/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateFecesColorDto });
 };
 
 /**
  * Delete feces color by ID.
  * @summary Delete feces color
  */
-export const fecesColorControllerDelete = (id: string, options?: SecondParameter<typeof createInstance<FecesColorEntity>>) => {
-  return createInstance<FecesColorEntity>({ url: `/feces-colors/${id}`, method: "DELETE" }, options);
+export const fecesColorControllerDelete = (id: string) => {
+  return createInstance<FecesColorEntity>({ url: `/feces-colors/${id}`, method: "DELETE" });
 };
 
 /**
  * Creates a new feces smell.
  * @summary Create feces smell
  */
-export const fecesSmellControllerCreate = (createFecesSmellDto: BodyType<CreateFecesSmellDto>, options?: SecondParameter<typeof createInstance<FecesSmellEntity>>) => {
-  return createInstance<FecesSmellEntity>({ url: `/feces-smells`, method: "POST", headers: { "Content-Type": "application/json" }, data: createFecesSmellDto }, options);
+export const fecesSmellControllerCreate = (createFecesSmellDto: CreateFecesSmellDto) => {
+  return createInstance<FecesSmellEntity>({ url: `/feces-smells`, method: "POST", headers: { "Content-Type": "application/json" }, data: createFecesSmellDto });
 };
 
 /**
  * Retrieve paginated list of feces smells.
  * @summary List feces smells
  */
-export const fecesSmellControllerFindAll = (params?: FecesSmellControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedFecesSmellEntity>>) => {
-  return createInstance<PaginatedFecesSmellEntity>({ url: `/feces-smells`, method: "GET", params }, options);
+export const fecesSmellControllerFindAll = (params?: FecesSmellControllerFindAllParams) => {
+  return createInstance<PaginatedFecesSmellEntity>({ url: `/feces-smells`, method: "GET", params });
 };
 
 /**
  * Retrieve feces smell details.
  * @summary Get feces smell by ID
  */
-export const fecesSmellControllerFindOne = (id: string, options?: SecondParameter<typeof createInstance<FecesSmellEntity>>) => {
-  return createInstance<FecesSmellEntity>({ url: `/feces-smells/${id}`, method: "GET" }, options);
+export const fecesSmellControllerFindOne = (id: string) => {
+  return createInstance<FecesSmellEntity>({ url: `/feces-smells/${id}`, method: "GET" });
 };
 
 /**
  * Update feces smell information by ID.
  * @summary Update feces smell
  */
-export const fecesSmellControllerUpdate = (id: string, updateFecesSmellDto: BodyType<UpdateFecesSmellDto>, options?: SecondParameter<typeof createInstance<FecesSmellEntity>>) => {
-  return createInstance<FecesSmellEntity>({ url: `/feces-smells/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateFecesSmellDto }, options);
+export const fecesSmellControllerUpdate = (id: string, updateFecesSmellDto: UpdateFecesSmellDto) => {
+  return createInstance<FecesSmellEntity>({ url: `/feces-smells/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateFecesSmellDto });
 };
 
 /**
  * Delete feces smell by ID.
  * @summary Delete feces smell
  */
-export const fecesSmellControllerDelete = (id: string, options?: SecondParameter<typeof createInstance<FecesSmellEntity>>) => {
-  return createInstance<FecesSmellEntity>({ url: `/feces-smells/${id}`, method: "DELETE" }, options);
+export const fecesSmellControllerDelete = (id: string) => {
+  return createInstance<FecesSmellEntity>({ url: `/feces-smells/${id}`, method: "DELETE" });
 };
 
 /**
  * Creates a new feces consistency.
  * @summary Create feces consistency
  */
-export const fecesConsistencyControllerCreate = (createFecesConsistencyDto: BodyType<CreateFecesConsistencyDto>, options?: SecondParameter<typeof createInstance<FecesConsistencyEntity>>) => {
-  return createInstance<FecesConsistencyEntity>({ url: `/feces-consistencies`, method: "POST", headers: { "Content-Type": "application/json" }, data: createFecesConsistencyDto }, options);
+export const fecesConsistencyControllerCreate = (createFecesConsistencyDto: CreateFecesConsistencyDto) => {
+  return createInstance<FecesConsistencyEntity>({ url: `/feces-consistencies`, method: "POST", headers: { "Content-Type": "application/json" }, data: createFecesConsistencyDto });
 };
 
 /**
  * Retrieve paginated list of feces consistencies.
  * @summary List feces consistencies
  */
-export const fecesConsistencyControllerFindAll = (params?: FecesConsistencyControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedFecesConsistencyEntity>>) => {
-  return createInstance<PaginatedFecesConsistencyEntity>({ url: `/feces-consistencies`, method: "GET", params }, options);
+export const fecesConsistencyControllerFindAll = (params?: FecesConsistencyControllerFindAllParams) => {
+  return createInstance<PaginatedFecesConsistencyEntity>({ url: `/feces-consistencies`, method: "GET", params });
 };
 
 /**
  * Retrieve feces consistency details.
  * @summary Get feces consistency by ID
  */
-export const fecesConsistencyControllerFindOne = (id: string, options?: SecondParameter<typeof createInstance<FecesConsistencyEntity>>) => {
-  return createInstance<FecesConsistencyEntity>({ url: `/feces-consistencies/${id}`, method: "GET" }, options);
+export const fecesConsistencyControllerFindOne = (id: string) => {
+  return createInstance<FecesConsistencyEntity>({ url: `/feces-consistencies/${id}`, method: "GET" });
 };
 
 /**
  * Update feces consistency information by ID.
  * @summary Update feces consistency
  */
-export const fecesConsistencyControllerUpdate = (id: string, updateFecesConsistencyDto: BodyType<UpdateFecesConsistencyDto>, options?: SecondParameter<typeof createInstance<FecesConsistencyEntity>>) => {
-  return createInstance<FecesConsistencyEntity>({ url: `/feces-consistencies/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateFecesConsistencyDto }, options);
+export const fecesConsistencyControllerUpdate = (id: string, updateFecesConsistencyDto: UpdateFecesConsistencyDto) => {
+  return createInstance<FecesConsistencyEntity>({ url: `/feces-consistencies/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateFecesConsistencyDto });
 };
 
 /**
  * Delete feces consistency by ID.
  * @summary Delete feces consistency
  */
-export const fecesConsistencyControllerDelete = (id: string, options?: SecondParameter<typeof createInstance<FecesConsistencyEntity>>) => {
-  return createInstance<FecesConsistencyEntity>({ url: `/feces-consistencies/${id}`, method: "DELETE" }, options);
+export const fecesConsistencyControllerDelete = (id: string) => {
+  return createInstance<FecesConsistencyEntity>({ url: `/feces-consistencies/${id}`, method: "DELETE" });
 };
 
 /**
  * Creates a new feces form.
  * @summary Create feces form
  */
-export const fecesFormControllerCreate = (createFecesFormDto: BodyType<CreateFecesFormDto>, options?: SecondParameter<typeof createInstance<FecesFormEntity>>) => {
-  return createInstance<FecesFormEntity>({ url: `/feces-forms`, method: "POST", headers: { "Content-Type": "application/json" }, data: createFecesFormDto }, options);
+export const fecesFormControllerCreate = (createFecesFormDto: CreateFecesFormDto) => {
+  return createInstance<FecesFormEntity>({ url: `/feces-forms`, method: "POST", headers: { "Content-Type": "application/json" }, data: createFecesFormDto });
 };
 
 /**
  * Retrieve paginated list of feces forms.
  * @summary List feces forms
  */
-export const fecesFormControllerFindAll = (params?: FecesFormControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedFecesFormEntity>>) => {
-  return createInstance<PaginatedFecesFormEntity>({ url: `/feces-forms`, method: "GET", params }, options);
+export const fecesFormControllerFindAll = (params?: FecesFormControllerFindAllParams) => {
+  return createInstance<PaginatedFecesFormEntity>({ url: `/feces-forms`, method: "GET", params });
 };
 
 /**
  * Retrieve feces form details.
  * @summary Get feces form by ID
  */
-export const fecesFormControllerFindOne = (id: string, options?: SecondParameter<typeof createInstance<FecesFormEntity>>) => {
-  return createInstance<FecesFormEntity>({ url: `/feces-forms/${id}`, method: "GET" }, options);
+export const fecesFormControllerFindOne = (id: string) => {
+  return createInstance<FecesFormEntity>({ url: `/feces-forms/${id}`, method: "GET" });
 };
 
 /**
  * Update feces form information by ID.
  * @summary Update feces form
  */
-export const fecesFormControllerUpdate = (id: string, updateFecesFormDto: BodyType<UpdateFecesFormDto>, options?: SecondParameter<typeof createInstance<FecesFormEntity>>) => {
-  return createInstance<FecesFormEntity>({ url: `/feces-forms/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateFecesFormDto }, options);
+export const fecesFormControllerUpdate = (id: string, updateFecesFormDto: UpdateFecesFormDto) => {
+  return createInstance<FecesFormEntity>({ url: `/feces-forms/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateFecesFormDto });
 };
 
 /**
  * Delete feces form by ID.
  * @summary Delete feces form
  */
-export const fecesFormControllerDelete = (id: string, options?: SecondParameter<typeof createInstance<FecesFormEntity>>) => {
-  return createInstance<FecesFormEntity>({ url: `/feces-forms/${id}`, method: "DELETE" }, options);
+export const fecesFormControllerDelete = (id: string) => {
+  return createInstance<FecesFormEntity>({ url: `/feces-forms/${id}`, method: "DELETE" });
 };
 
 /**
  * Creates a new mucosa appearance.
  * @summary Create mucosa appearance
  */
-export const mucosaAppearanceControllerCreate = (createMucosaAppearanceDto: BodyType<CreateMucosaAppearanceDto>, options?: SecondParameter<typeof createInstance<MucosaAppearanceEntity>>) => {
-  return createInstance<MucosaAppearanceEntity>({ url: `/mucosa-appearances`, method: "POST", headers: { "Content-Type": "application/json" }, data: createMucosaAppearanceDto }, options);
+export const mucosaAppearanceControllerCreate = (createMucosaAppearanceDto: CreateMucosaAppearanceDto) => {
+  return createInstance<MucosaAppearanceEntity>({ url: `/mucosa-appearances`, method: "POST", headers: { "Content-Type": "application/json" }, data: createMucosaAppearanceDto });
 };
 
 /**
  * Retrieve paginated list of mucosa appearances.
  * @summary List mucosa appearances
  */
-export const mucosaAppearanceControllerFindAll = (params?: MucosaAppearanceControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedMucosaAppearanceEntity>>) => {
-  return createInstance<PaginatedMucosaAppearanceEntity>({ url: `/mucosa-appearances`, method: "GET", params }, options);
+export const mucosaAppearanceControllerFindAll = (params?: MucosaAppearanceControllerFindAllParams) => {
+  return createInstance<PaginatedMucosaAppearanceEntity>({ url: `/mucosa-appearances`, method: "GET", params });
 };
 
 /**
  * Retrieve mucosa appearance details.
  * @summary Get mucosa appearance by ID
  */
-export const mucosaAppearanceControllerFindOne = (id: string, options?: SecondParameter<typeof createInstance<MucosaAppearanceEntity>>) => {
-  return createInstance<MucosaAppearanceEntity>({ url: `/mucosa-appearances/${id}`, method: "GET" }, options);
+export const mucosaAppearanceControllerFindOne = (id: string) => {
+  return createInstance<MucosaAppearanceEntity>({ url: `/mucosa-appearances/${id}`, method: "GET" });
 };
 
 /**
  * Update mucosa appearance information by ID.
  * @summary Update mucosa appearance
  */
-export const mucosaAppearanceControllerUpdate = (id: string, updateMucosaAppearanceDto: BodyType<UpdateMucosaAppearanceDto>, options?: SecondParameter<typeof createInstance<MucosaAppearanceEntity>>) => {
-  return createInstance<MucosaAppearanceEntity>({ url: `/mucosa-appearances/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateMucosaAppearanceDto }, options);
+export const mucosaAppearanceControllerUpdate = (id: string, updateMucosaAppearanceDto: UpdateMucosaAppearanceDto) => {
+  return createInstance<MucosaAppearanceEntity>({ url: `/mucosa-appearances/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateMucosaAppearanceDto });
 };
 
 /**
  * Delete mucosa appearance by ID.
  * @summary Delete mucosa appearance
  */
-export const mucosaAppearanceControllerDelete = (id: string, options?: SecondParameter<typeof createInstance<MucosaAppearanceEntity>>) => {
-  return createInstance<MucosaAppearanceEntity>({ url: `/mucosa-appearances/${id}`, method: "DELETE" }, options);
+export const mucosaAppearanceControllerDelete = (id: string) => {
+  return createInstance<MucosaAppearanceEntity>({ url: `/mucosa-appearances/${id}`, method: "DELETE" });
+};
+
+/**
+ * Creates a new medical session for an animal.
+ * @summary Create medical session
+ */
+export const medicalSessionControllerCreate = (createMedicalSessionDto: CreateMedicalSessionDto) => {
+  return createInstance<MedicalSessionEntity>({ url: `/medical-sessions`, method: "POST", headers: { "Content-Type": "application/json" }, data: createMedicalSessionDto });
+};
+
+/**
+ * Retrieve paginated list of medical sessions.
+ * @summary List medical sessions
+ */
+export const medicalSessionControllerFindAll = (params?: MedicalSessionControllerFindAllParams) => {
+  return createInstance<PaginatedMedicalSessionEntity>({ url: `/medical-sessions`, method: "GET", params });
+};
+
+/**
+ * Retrieve medical session with all exams and prediction details.
+ * @summary Get medical session by ID
+ */
+export const medicalSessionControllerFindOne = (id: string) => {
+  return createInstance<MedicalSessionEntity>({ url: `/medical-sessions/${id}`, method: "GET" });
+};
+
+/**
+ * Update medical session status or notes.
+ * @summary Update medical session
+ */
+export const medicalSessionControllerUpdate = (id: string, updateMedicalSessionDto: UpdateMedicalSessionDto) => {
+  return createInstance<MedicalSessionEntity>({ url: `/medical-sessions/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateMedicalSessionDto });
+};
+
+/**
+ * Delete medical session by ID.
+ * @summary Delete medical session
+ */
+export const medicalSessionControllerDelete = (id: string) => {
+  return createInstance<MedicalSessionEntity>({ url: `/medical-sessions/${id}`, method: "DELETE" });
+};
+
+/**
+ * Submits the session to the AI model and stores the prediction result.
+ * @summary Submit medical session for AI prediction
+ */
+export const medicalSessionControllerSubmit = (id: string) => {
+  return createInstance<MedicalSessionEntity>({ url: `/medical-sessions/${id}/submit`, method: "POST" });
+};
+
+/**
+ * Leave feedback on an AI prediction result.
+ * @summary Create feedback
+ */
+export const feedbackControllerCreate = (createFeedbackDto: CreateFeedbackDto) => {
+  return createInstance<FeedbackEntity>({ url: `/feedbacks`, method: "POST", headers: { "Content-Type": "application/json" }, data: createFeedbackDto });
+};
+
+/**
+ * Retrieve paginated list of feedbacks.
+ * @summary List feedbacks
+ */
+export const feedbackControllerFindAll = (params?: FeedbackControllerFindAllParams) => {
+  return createInstance<PaginatedFeedbackEntity>({ url: `/feedbacks`, method: "GET", params });
+};
+
+/**
+ * Retrieve feedback details.
+ * @summary Get feedback by ID
+ */
+export const feedbackControllerFindOne = (id: string) => {
+  return createInstance<FeedbackEntity>({ url: `/feedbacks/${id}`, method: "GET" });
+};
+
+/**
+ * Update feedback rating, comment, or suggested disease.
+ * @summary Update feedback
+ */
+export const feedbackControllerUpdate = (id: string, updateFeedbackDto: UpdateFeedbackDto) => {
+  return createInstance<FeedbackEntity>({ url: `/feedbacks/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateFeedbackDto });
+};
+
+/**
+ * Delete feedback by ID.
+ * @summary Delete feedback
+ */
+export const feedbackControllerDelete = (id: string) => {
+  return createInstance<FeedbackEntity>({ url: `/feedbacks/${id}`, method: "DELETE" });
+};
+
+/**
+ * Sends 85 features to the ML model for one of 4 cattle types. Returns disease predictions (116 possible diseases), detected anomalies, and overall severity. Automatically creates alert records if animalId and sessionId are provided.
+ * @summary Run AI prediction with anomaly detection
+ */
+export const anomalyDetectionControllerPredict = (predictDto: PredictDto) => {
+  return createInstance<PredictionResultEntity>({ url: `/anomaly-detection/predict`, method: "POST", headers: { "Content-Type": "application/json" }, data: predictDto });
+};
+
+/**
+ * Returns historical values of a specific parameter (e.g. hemoglobin, glucose) for an animal over time. Calculates trend direction (stable/increasing/decreasing) and percentage change.
+ * @summary Get parameter trend for an animal
+ */
+export const anomalyDetectionControllerGetTrend = (params: AnomalyDetectionControllerGetTrendParams) => {
+  return createInstance<TrendEntity>({ url: `/anomaly-detection/trends`, method: "GET", params });
+};
+
+/**
+ * Paginated list of anomaly alerts with optional filters by animal, session, severity, and status.
+ * @summary List anomaly alerts
+ */
+export const anomalyDetectionControllerGetAlerts = (params?: AnomalyDetectionControllerGetAlertsParams) => {
+  return createInstance<void>({ url: `/anomaly-detection/alerts`, method: "GET", params });
+};
+
+/**
+ * Acknowledge or resolve an anomaly alert.
+ * @summary Update alert status
+ */
+export const anomalyDetectionControllerUpdateAlert = (id: string, updateAlertDto: UpdateAlertDto) => {
+  return createInstance<AnomalyAlertEntity>({ url: `/anomaly-detection/alerts/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateAlertDto });
+};
+
+/**
+ * Returns active alert counts by severity, overall health status (HEALTHY/ATTENTION/WARNING/CRITICAL), and session statistics.
+ * @summary Get animal health summary
+ */
+export const anomalyDetectionControllerGetHealthSummary = (animalId: string) => {
+  return createInstance<HealthSummaryEntity>({ url: `/anomaly-detection/animals/${animalId}/health-summary`, method: "GET" });
+};
+
+/**
+ * Define a normal min/max range for a parameter for a specific animal type. Used by the anomaly detection system to identify deviations.
+ * @summary Create reference range
+ */
+export const referenceRangeControllerCreate = (createReferenceRangeDto: CreateReferenceRangeDto) => {
+  return createInstance<ReferenceRangeEntity>({ url: `/reference-ranges`, method: "POST", headers: { "Content-Type": "application/json" }, data: createReferenceRangeDto });
+};
+
+/**
+ * Paginated list of reference ranges, filterable by animal type.
+ * @summary List reference ranges
+ */
+export const referenceRangeControllerFindAll = (params?: ReferenceRangeControllerFindAllParams) => {
+  return createInstance<void>({ url: `/reference-ranges`, method: "GET", params });
+};
+
+/**
+ * @summary Get reference range by ID
+ */
+export const referenceRangeControllerFindOne = (id: string) => {
+  return createInstance<ReferenceRangeEntity>({ url: `/reference-ranges/${id}`, method: "GET" });
+};
+
+/**
+ * @summary Update reference range
+ */
+export const referenceRangeControllerUpdate = (id: string, updateReferenceRangeDto: UpdateReferenceRangeDto) => {
+  return createInstance<ReferenceRangeEntity>({ url: `/reference-ranges/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateReferenceRangeDto });
+};
+
+/**
+ * @summary Delete reference range
+ */
+export const referenceRangeControllerDelete = (id: string) => {
+  return createInstance<void>({ url: `/reference-ranges/${id}`, method: "DELETE" });
+};
+
+/**
+ * Creates a new lookup record.
+ * @summary Create body-positions
+ */
+export const bodyPositionControllerCreate = (createBodyPositionDto: CreateBodyPositionDto) => {
+  return createInstance<BodyPositionEntity>({ url: `/body-positions`, method: "POST", headers: { "Content-Type": "application/json" }, data: createBodyPositionDto });
+};
+
+/**
+ * Retrieve paginated list of lookup records.
+ * @summary List body-positions
+ */
+export const bodyPositionControllerFindAll = (params?: BodyPositionControllerFindAllParams) => {
+  return createInstance<PaginatedBodyPositionEntity>({ url: `/body-positions`, method: "GET", params });
+};
+
+/**
+ * Retrieve lookup record details.
+ * @summary Get body-positions by ID
+ */
+export const bodyPositionControllerFindOne = (id: string) => {
+  return createInstance<BodyPositionEntity>({ url: `/body-positions/${id}`, method: "GET" });
+};
+
+/**
+ * Update lookup record by ID.
+ * @summary Update body-positions
+ */
+export const bodyPositionControllerUpdate = (id: string, updateBodyPositionDto: UpdateBodyPositionDto) => {
+  return createInstance<BodyPositionEntity>({ url: `/body-positions/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateBodyPositionDto });
+};
+
+/**
+ * Delete lookup record by ID.
+ * @summary Delete body-positions
+ */
+export const bodyPositionControllerDelete = (id: string) => {
+  return createInstance<BodyPositionEntity>({ url: `/body-positions/${id}`, method: "DELETE" });
+};
+
+/**
+ * Creates a new lookup record.
+ * @summary Create body-types
+ */
+export const bodyTypeControllerCreate = (createBodyTypeDto: CreateBodyTypeDto) => {
+  return createInstance<BodyTypeEntity>({ url: `/body-types`, method: "POST", headers: { "Content-Type": "application/json" }, data: createBodyTypeDto });
+};
+
+/**
+ * Retrieve paginated list of lookup records.
+ * @summary List body-types
+ */
+export const bodyTypeControllerFindAll = (params?: BodyTypeControllerFindAllParams) => {
+  return createInstance<PaginatedBodyTypeEntity>({ url: `/body-types`, method: "GET", params });
+};
+
+/**
+ * Retrieve lookup record details.
+ * @summary Get body-types by ID
+ */
+export const bodyTypeControllerFindOne = (id: string) => {
+  return createInstance<BodyTypeEntity>({ url: `/body-types/${id}`, method: "GET" });
+};
+
+/**
+ * Update lookup record by ID.
+ * @summary Update body-types
+ */
+export const bodyTypeControllerUpdate = (id: string, updateBodyTypeDto: UpdateBodyTypeDto) => {
+  return createInstance<BodyTypeEntity>({ url: `/body-types/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateBodyTypeDto });
+};
+
+/**
+ * Delete lookup record by ID.
+ * @summary Delete body-types
+ */
+export const bodyTypeControllerDelete = (id: string) => {
+  return createInstance<BodyTypeEntity>({ url: `/body-types/${id}`, method: "DELETE" });
+};
+
+/**
+ * Creates a new lookup record.
+ * @summary Create constitutions
+ */
+export const constitutionControllerCreate = (createConstitutionDto: CreateConstitutionDto) => {
+  return createInstance<ConstitutionEntity>({ url: `/constitutions`, method: "POST", headers: { "Content-Type": "application/json" }, data: createConstitutionDto });
+};
+
+/**
+ * Retrieve paginated list of lookup records.
+ * @summary List constitutions
+ */
+export const constitutionControllerFindAll = (params?: ConstitutionControllerFindAllParams) => {
+  return createInstance<PaginatedConstitutionEntity>({ url: `/constitutions`, method: "GET", params });
+};
+
+/**
+ * Retrieve lookup record details.
+ * @summary Get constitutions by ID
+ */
+export const constitutionControllerFindOne = (id: string) => {
+  return createInstance<ConstitutionEntity>({ url: `/constitutions/${id}`, method: "GET" });
+};
+
+/**
+ * Update lookup record by ID.
+ * @summary Update constitutions
+ */
+export const constitutionControllerUpdate = (id: string, updateConstitutionDto: UpdateConstitutionDto) => {
+  return createInstance<ConstitutionEntity>({ url: `/constitutions/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateConstitutionDto });
+};
+
+/**
+ * Delete lookup record by ID.
+ * @summary Delete constitutions
+ */
+export const constitutionControllerDelete = (id: string) => {
+  return createInstance<ConstitutionEntity>({ url: `/constitutions/${id}`, method: "DELETE" });
+};
+
+/**
+ * Creates a new lookup record.
+ * @summary Create down-types
+ */
+export const downTypeControllerCreate = (createDownTypeDto: CreateDownTypeDto) => {
+  return createInstance<DownTypeEntity>({ url: `/down-types`, method: "POST", headers: { "Content-Type": "application/json" }, data: createDownTypeDto });
+};
+
+/**
+ * Retrieve paginated list of lookup records.
+ * @summary List down-types
+ */
+export const downTypeControllerFindAll = (params?: DownTypeControllerFindAllParams) => {
+  return createInstance<PaginatedDownTypeEntity>({ url: `/down-types`, method: "GET", params });
+};
+
+/**
+ * Retrieve lookup record details.
+ * @summary Get down-types by ID
+ */
+export const downTypeControllerFindOne = (id: string) => {
+  return createInstance<DownTypeEntity>({ url: `/down-types/${id}`, method: "GET" });
+};
+
+/**
+ * Update lookup record by ID.
+ * @summary Update down-types
+ */
+export const downTypeControllerUpdate = (id: string, updateDownTypeDto: UpdateDownTypeDto) => {
+  return createInstance<DownTypeEntity>({ url: `/down-types/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateDownTypeDto });
+};
+
+/**
+ * Delete lookup record by ID.
+ * @summary Delete down-types
+ */
+export const downTypeControllerDelete = (id: string) => {
+  return createInstance<DownTypeEntity>({ url: `/down-types/${id}`, method: "DELETE" });
+};
+
+/**
+ * Creates a new lookup record.
+ * @summary Create feather-types
+ */
+export const featherTypeControllerCreate = (createFeatherTypeDto: CreateFeatherTypeDto) => {
+  return createInstance<FeatherTypeEntity>({ url: `/feather-types`, method: "POST", headers: { "Content-Type": "application/json" }, data: createFeatherTypeDto });
+};
+
+/**
+ * Retrieve paginated list of lookup records.
+ * @summary List feather-types
+ */
+export const featherTypeControllerFindAll = (params?: FeatherTypeControllerFindAllParams) => {
+  return createInstance<PaginatedFeatherTypeEntity>({ url: `/feather-types`, method: "GET", params });
+};
+
+/**
+ * Retrieve lookup record details.
+ * @summary Get feather-types by ID
+ */
+export const featherTypeControllerFindOne = (id: string) => {
+  return createInstance<FeatherTypeEntity>({ url: `/feather-types/${id}`, method: "GET" });
+};
+
+/**
+ * Update lookup record by ID.
+ * @summary Update feather-types
+ */
+export const featherTypeControllerUpdate = (id: string, updateFeatherTypeDto: UpdateFeatherTypeDto) => {
+  return createInstance<FeatherTypeEntity>({ url: `/feather-types/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateFeatherTypeDto });
+};
+
+/**
+ * Delete lookup record by ID.
+ * @summary Delete feather-types
+ */
+export const featherTypeControllerDelete = (id: string) => {
+  return createInstance<FeatherTypeEntity>({ url: `/feather-types/${id}`, method: "DELETE" });
+};
+
+/**
+ * Creates a new lookup record.
+ * @summary Create hair-types
+ */
+export const hairTypeControllerCreate = (createHairTypeDto: CreateHairTypeDto) => {
+  return createInstance<HairTypeEntity>({ url: `/hair-types`, method: "POST", headers: { "Content-Type": "application/json" }, data: createHairTypeDto });
+};
+
+/**
+ * Retrieve paginated list of lookup records.
+ * @summary List hair-types
+ */
+export const hairTypeControllerFindAll = (params?: HairTypeControllerFindAllParams) => {
+  return createInstance<PaginatedHairTypeEntity>({ url: `/hair-types`, method: "GET", params });
+};
+
+/**
+ * Retrieve lookup record details.
+ * @summary Get hair-types by ID
+ */
+export const hairTypeControllerFindOne = (id: string) => {
+  return createInstance<HairTypeEntity>({ url: `/hair-types/${id}`, method: "GET" });
+};
+
+/**
+ * Update lookup record by ID.
+ * @summary Update hair-types
+ */
+export const hairTypeControllerUpdate = (id: string, updateHairTypeDto: UpdateHairTypeDto) => {
+  return createInstance<HairTypeEntity>({ url: `/hair-types/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateHairTypeDto });
+};
+
+/**
+ * Delete lookup record by ID.
+ * @summary Delete hair-types
+ */
+export const hairTypeControllerDelete = (id: string) => {
+  return createInstance<HairTypeEntity>({ url: `/hair-types/${id}`, method: "DELETE" });
+};
+
+/**
+ * Creates a new lookup record.
+ * @summary Create lymph-consistencies
+ */
+export const lymphConsistencyControllerCreate = (createLymphConsistencyDto: CreateLymphConsistencyDto) => {
+  return createInstance<LymphConsistencyEntity>({ url: `/lymph-consistencies`, method: "POST", headers: { "Content-Type": "application/json" }, data: createLymphConsistencyDto });
+};
+
+/**
+ * Retrieve paginated list of lookup records.
+ * @summary List lymph-consistencies
+ */
+export const lymphConsistencyControllerFindAll = (params?: LymphConsistencyControllerFindAllParams) => {
+  return createInstance<PaginatedLymphConsistencyEntity>({ url: `/lymph-consistencies`, method: "GET", params });
+};
+
+/**
+ * Retrieve lookup record details.
+ * @summary Get lymph-consistencies by ID
+ */
+export const lymphConsistencyControllerFindOne = (id: string) => {
+  return createInstance<LymphConsistencyEntity>({ url: `/lymph-consistencies/${id}`, method: "GET" });
+};
+
+/**
+ * Update lookup record by ID.
+ * @summary Update lymph-consistencies
+ */
+export const lymphConsistencyControllerUpdate = (id: string, updateLymphConsistencyDto: UpdateLymphConsistencyDto) => {
+  return createInstance<LymphConsistencyEntity>({ url: `/lymph-consistencies/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateLymphConsistencyDto });
+};
+
+/**
+ * Delete lookup record by ID.
+ * @summary Delete lymph-consistencies
+ */
+export const lymphConsistencyControllerDelete = (id: string) => {
+  return createInstance<LymphConsistencyEntity>({ url: `/lymph-consistencies/${id}`, method: "DELETE" });
+};
+
+/**
+ * Creates a new lookup record.
+ * @summary Create lymph-mobilities
+ */
+export const lymphMobilityControllerCreate = (createLymphMobilityDto: CreateLymphMobilityDto) => {
+  return createInstance<LymphMobilityEntity>({ url: `/lymph-mobilities`, method: "POST", headers: { "Content-Type": "application/json" }, data: createLymphMobilityDto });
+};
+
+/**
+ * Retrieve paginated list of lookup records.
+ * @summary List lymph-mobilities
+ */
+export const lymphMobilityControllerFindAll = (params?: LymphMobilityControllerFindAllParams) => {
+  return createInstance<PaginatedLymphMobilityEntity>({ url: `/lymph-mobilities`, method: "GET", params });
+};
+
+/**
+ * Retrieve lookup record details.
+ * @summary Get lymph-mobilities by ID
+ */
+export const lymphMobilityControllerFindOne = (id: string) => {
+  return createInstance<LymphMobilityEntity>({ url: `/lymph-mobilities/${id}`, method: "GET" });
+};
+
+/**
+ * Update lookup record by ID.
+ * @summary Update lymph-mobilities
+ */
+export const lymphMobilityControllerUpdate = (id: string, updateLymphMobilityDto: UpdateLymphMobilityDto) => {
+  return createInstance<LymphMobilityEntity>({ url: `/lymph-mobilities/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateLymphMobilityDto });
+};
+
+/**
+ * Delete lookup record by ID.
+ * @summary Delete lymph-mobilities
+ */
+export const lymphMobilityControllerDelete = (id: string) => {
+  return createInstance<LymphMobilityEntity>({ url: `/lymph-mobilities/${id}`, method: "DELETE" });
+};
+
+/**
+ * Creates a new lookup record.
+ * @summary Create lymph-pains
+ */
+export const lymphPainControllerCreate = (createLymphPainDto: CreateLymphPainDto) => {
+  return createInstance<LymphPainEntity>({ url: `/lymph-pains`, method: "POST", headers: { "Content-Type": "application/json" }, data: createLymphPainDto });
+};
+
+/**
+ * Retrieve paginated list of lookup records.
+ * @summary List lymph-pains
+ */
+export const lymphPainControllerFindAll = (params?: LymphPainControllerFindAllParams) => {
+  return createInstance<PaginatedLymphPainEntity>({ url: `/lymph-pains`, method: "GET", params });
+};
+
+/**
+ * Retrieve lookup record details.
+ * @summary Get lymph-pains by ID
+ */
+export const lymphPainControllerFindOne = (id: string) => {
+  return createInstance<LymphPainEntity>({ url: `/lymph-pains/${id}`, method: "GET" });
+};
+
+/**
+ * Update lookup record by ID.
+ * @summary Update lymph-pains
+ */
+export const lymphPainControllerUpdate = (id: string, updateLymphPainDto: UpdateLymphPainDto) => {
+  return createInstance<LymphPainEntity>({ url: `/lymph-pains/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateLymphPainDto });
+};
+
+/**
+ * Delete lookup record by ID.
+ * @summary Delete lymph-pains
+ */
+export const lymphPainControllerDelete = (id: string) => {
+  return createInstance<LymphPainEntity>({ url: `/lymph-pains/${id}`, method: "DELETE" });
+};
+
+/**
+ * Creates a new lookup record.
+ * @summary Create lymph-shapes
+ */
+export const lymphShapeControllerCreate = (createLymphShapeDto: CreateLymphShapeDto) => {
+  return createInstance<LymphShapeEntity>({ url: `/lymph-shapes`, method: "POST", headers: { "Content-Type": "application/json" }, data: createLymphShapeDto });
+};
+
+/**
+ * Retrieve paginated list of lookup records.
+ * @summary List lymph-shapes
+ */
+export const lymphShapeControllerFindAll = (params?: LymphShapeControllerFindAllParams) => {
+  return createInstance<PaginatedLymphShapeEntity>({ url: `/lymph-shapes`, method: "GET", params });
+};
+
+/**
+ * Retrieve lookup record details.
+ * @summary Get lymph-shapes by ID
+ */
+export const lymphShapeControllerFindOne = (id: string) => {
+  return createInstance<LymphShapeEntity>({ url: `/lymph-shapes/${id}`, method: "GET" });
+};
+
+/**
+ * Update lookup record by ID.
+ * @summary Update lymph-shapes
+ */
+export const lymphShapeControllerUpdate = (id: string, updateLymphShapeDto: UpdateLymphShapeDto) => {
+  return createInstance<LymphShapeEntity>({ url: `/lymph-shapes/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateLymphShapeDto });
+};
+
+/**
+ * Delete lookup record by ID.
+ * @summary Delete lymph-shapes
+ */
+export const lymphShapeControllerDelete = (id: string) => {
+  return createInstance<LymphShapeEntity>({ url: `/lymph-shapes/${id}`, method: "DELETE" });
+};
+
+/**
+ * Creates a new lookup record.
+ * @summary Create lymph-sizes
+ */
+export const lymphSizeControllerCreate = (createLymphSizeDto: CreateLymphSizeDto) => {
+  return createInstance<LymphSizeEntity>({ url: `/lymph-sizes`, method: "POST", headers: { "Content-Type": "application/json" }, data: createLymphSizeDto });
+};
+
+/**
+ * Retrieve paginated list of lookup records.
+ * @summary List lymph-sizes
+ */
+export const lymphSizeControllerFindAll = (params?: LymphSizeControllerFindAllParams) => {
+  return createInstance<PaginatedLymphSizeEntity>({ url: `/lymph-sizes`, method: "GET", params });
+};
+
+/**
+ * Retrieve lookup record details.
+ * @summary Get lymph-sizes by ID
+ */
+export const lymphSizeControllerFindOne = (id: string) => {
+  return createInstance<LymphSizeEntity>({ url: `/lymph-sizes/${id}`, method: "GET" });
+};
+
+/**
+ * Update lookup record by ID.
+ * @summary Update lymph-sizes
+ */
+export const lymphSizeControllerUpdate = (id: string, updateLymphSizeDto: UpdateLymphSizeDto) => {
+  return createInstance<LymphSizeEntity>({ url: `/lymph-sizes/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateLymphSizeDto });
+};
+
+/**
+ * Delete lookup record by ID.
+ * @summary Delete lymph-sizes
+ */
+export const lymphSizeControllerDelete = (id: string) => {
+  return createInstance<LymphSizeEntity>({ url: `/lymph-sizes/${id}`, method: "DELETE" });
+};
+
+/**
+ * Creates a new lookup record.
+ * @summary Create lymph-surfaces
+ */
+export const lymphSurfaceControllerCreate = (createLymphSurfaceDto: CreateLymphSurfaceDto) => {
+  return createInstance<LymphSurfaceEntity>({ url: `/lymph-surfaces`, method: "POST", headers: { "Content-Type": "application/json" }, data: createLymphSurfaceDto });
+};
+
+/**
+ * Retrieve paginated list of lookup records.
+ * @summary List lymph-surfaces
+ */
+export const lymphSurfaceControllerFindAll = (params?: LymphSurfaceControllerFindAllParams) => {
+  return createInstance<PaginatedLymphSurfaceEntity>({ url: `/lymph-surfaces`, method: "GET", params });
+};
+
+/**
+ * Retrieve lookup record details.
+ * @summary Get lymph-surfaces by ID
+ */
+export const lymphSurfaceControllerFindOne = (id: string) => {
+  return createInstance<LymphSurfaceEntity>({ url: `/lymph-surfaces/${id}`, method: "GET" });
+};
+
+/**
+ * Update lookup record by ID.
+ * @summary Update lymph-surfaces
+ */
+export const lymphSurfaceControllerUpdate = (id: string, updateLymphSurfaceDto: UpdateLymphSurfaceDto) => {
+  return createInstance<LymphSurfaceEntity>({ url: `/lymph-surfaces/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateLymphSurfaceDto });
+};
+
+/**
+ * Delete lookup record by ID.
+ * @summary Delete lymph-surfaces
+ */
+export const lymphSurfaceControllerDelete = (id: string) => {
+  return createInstance<LymphSurfaceEntity>({ url: `/lymph-surfaces/${id}`, method: "DELETE" });
+};
+
+/**
+ * Creates a new lookup record.
+ * @summary Create lymph-temps
+ */
+export const lymphTempControllerCreate = (createLymphTempDto: CreateLymphTempDto) => {
+  return createInstance<LymphTempEntity>({ url: `/lymph-temps`, method: "POST", headers: { "Content-Type": "application/json" }, data: createLymphTempDto });
+};
+
+/**
+ * Retrieve paginated list of lookup records.
+ * @summary List lymph-temps
+ */
+export const lymphTempControllerFindAll = (params?: LymphTempControllerFindAllParams) => {
+  return createInstance<PaginatedLymphTempEntity>({ url: `/lymph-temps`, method: "GET", params });
+};
+
+/**
+ * Retrieve lookup record details.
+ * @summary Get lymph-temps by ID
+ */
+export const lymphTempControllerFindOne = (id: string) => {
+  return createInstance<LymphTempEntity>({ url: `/lymph-temps/${id}`, method: "GET" });
+};
+
+/**
+ * Update lookup record by ID.
+ * @summary Update lymph-temps
+ */
+export const lymphTempControllerUpdate = (id: string, updateLymphTempDto: UpdateLymphTempDto) => {
+  return createInstance<LymphTempEntity>({ url: `/lymph-temps/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateLymphTempDto });
+};
+
+/**
+ * Delete lookup record by ID.
+ * @summary Delete lymph-temps
+ */
+export const lymphTempControllerDelete = (id: string) => {
+  return createInstance<LymphTempEntity>({ url: `/lymph-temps/${id}`, method: "DELETE" });
+};
+
+/**
+ * Creates a new lookup record.
+ * @summary Create rumen-fluid-states
+ */
+export const rumenFluidStateControllerCreate = (createRumenFluidStateDto: CreateRumenFluidStateDto) => {
+  return createInstance<RumenFluidStateEntity>({ url: `/rumen-fluid-states`, method: "POST", headers: { "Content-Type": "application/json" }, data: createRumenFluidStateDto });
+};
+
+/**
+ * Retrieve paginated list of lookup records.
+ * @summary List rumen-fluid-states
+ */
+export const rumenFluidStateControllerFindAll = (params?: RumenFluidStateControllerFindAllParams) => {
+  return createInstance<PaginatedRumenFluidStateEntity>({ url: `/rumen-fluid-states`, method: "GET", params });
+};
+
+/**
+ * Retrieve lookup record details.
+ * @summary Get rumen-fluid-states by ID
+ */
+export const rumenFluidStateControllerFindOne = (id: string) => {
+  return createInstance<RumenFluidStateEntity>({ url: `/rumen-fluid-states/${id}`, method: "GET" });
+};
+
+/**
+ * Update lookup record by ID.
+ * @summary Update rumen-fluid-states
+ */
+export const rumenFluidStateControllerUpdate = (id: string, updateRumenFluidStateDto: UpdateRumenFluidStateDto) => {
+  return createInstance<RumenFluidStateEntity>({ url: `/rumen-fluid-states/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateRumenFluidStateDto });
+};
+
+/**
+ * Delete lookup record by ID.
+ * @summary Delete rumen-fluid-states
+ */
+export const rumenFluidStateControllerDelete = (id: string) => {
+  return createInstance<RumenFluidStateEntity>({ url: `/rumen-fluid-states/${id}`, method: "DELETE" });
+};
+
+/**
+ * Creates a new lookup record.
+ * @summary Create mucosa-types
+ */
+export const mucosaTypeControllerCreate = (createMucosaTypeDto: CreateMucosaTypeDto) => {
+  return createInstance<MucosaTypeEntity>({ url: `/mucosa-types`, method: "POST", headers: { "Content-Type": "application/json" }, data: createMucosaTypeDto });
+};
+
+/**
+ * Retrieve paginated list of lookup records.
+ * @summary List mucosa-types
+ */
+export const mucosaTypeControllerFindAll = (params?: MucosaTypeControllerFindAllParams) => {
+  return createInstance<PaginatedMucosaTypeEntity>({ url: `/mucosa-types`, method: "GET", params });
+};
+
+/**
+ * Retrieve lookup record details.
+ * @summary Get mucosa-types by ID
+ */
+export const mucosaTypeControllerFindOne = (id: string) => {
+  return createInstance<MucosaTypeEntity>({ url: `/mucosa-types/${id}`, method: "GET" });
+};
+
+/**
+ * Update lookup record by ID.
+ * @summary Update mucosa-types
+ */
+export const mucosaTypeControllerUpdate = (id: string, updateMucosaTypeDto: UpdateMucosaTypeDto) => {
+  return createInstance<MucosaTypeEntity>({ url: `/mucosa-types/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateMucosaTypeDto });
+};
+
+/**
+ * Delete lookup record by ID.
+ * @summary Delete mucosa-types
+ */
+export const mucosaTypeControllerDelete = (id: string) => {
+  return createInstance<MucosaTypeEntity>({ url: `/mucosa-types/${id}`, method: "DELETE" });
+};
+
+/**
+ * Creates a new lookup record.
+ * @summary Create obesity-types
+ */
+export const obesityTypeControllerCreate = (createObesityTypeDto: CreateObesityTypeDto) => {
+  return createInstance<ObesityTypeEntity>({ url: `/obesity-types`, method: "POST", headers: { "Content-Type": "application/json" }, data: createObesityTypeDto });
+};
+
+/**
+ * Retrieve paginated list of lookup records.
+ * @summary List obesity-types
+ */
+export const obesityTypeControllerFindAll = (params?: ObesityTypeControllerFindAllParams) => {
+  return createInstance<PaginatedObesityTypeEntity>({ url: `/obesity-types`, method: "GET", params });
+};
+
+/**
+ * Retrieve lookup record details.
+ * @summary Get obesity-types by ID
+ */
+export const obesityTypeControllerFindOne = (id: string) => {
+  return createInstance<ObesityTypeEntity>({ url: `/obesity-types/${id}`, method: "GET" });
+};
+
+/**
+ * Update lookup record by ID.
+ * @summary Update obesity-types
+ */
+export const obesityTypeControllerUpdate = (id: string, updateObesityTypeDto: UpdateObesityTypeDto) => {
+  return createInstance<ObesityTypeEntity>({ url: `/obesity-types/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateObesityTypeDto });
+};
+
+/**
+ * Delete lookup record by ID.
+ * @summary Delete obesity-types
+ */
+export const obesityTypeControllerDelete = (id: string) => {
+  return createInstance<ObesityTypeEntity>({ url: `/obesity-types/${id}`, method: "DELETE" });
+};
+
+/**
+ * Creates a new lookup record.
+ * @summary Create skin-colors
+ */
+export const skinColorControllerCreate = (createSkinColorDto: CreateSkinColorDto) => {
+  return createInstance<SkinColorEntity>({ url: `/skin-colors`, method: "POST", headers: { "Content-Type": "application/json" }, data: createSkinColorDto });
+};
+
+/**
+ * Retrieve paginated list of lookup records.
+ * @summary List skin-colors
+ */
+export const skinColorControllerFindAll = (params?: SkinColorControllerFindAllParams) => {
+  return createInstance<PaginatedSkinColorEntity>({ url: `/skin-colors`, method: "GET", params });
+};
+
+/**
+ * Retrieve lookup record details.
+ * @summary Get skin-colors by ID
+ */
+export const skinColorControllerFindOne = (id: string) => {
+  return createInstance<SkinColorEntity>({ url: `/skin-colors/${id}`, method: "GET" });
+};
+
+/**
+ * Update lookup record by ID.
+ * @summary Update skin-colors
+ */
+export const skinColorControllerUpdate = (id: string, updateSkinColorDto: UpdateSkinColorDto) => {
+  return createInstance<SkinColorEntity>({ url: `/skin-colors/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateSkinColorDto });
+};
+
+/**
+ * Delete lookup record by ID.
+ * @summary Delete skin-colors
+ */
+export const skinColorControllerDelete = (id: string) => {
+  return createInstance<SkinColorEntity>({ url: `/skin-colors/${id}`, method: "DELETE" });
+};
+
+/**
+ * Creates a new lookup record.
+ * @summary Create skin-elasticities
+ */
+export const skinElasticityControllerCreate = (createSkinElasticityDto: CreateSkinElasticityDto) => {
+  return createInstance<SkinElasticityEntity>({ url: `/skin-elasticities`, method: "POST", headers: { "Content-Type": "application/json" }, data: createSkinElasticityDto });
+};
+
+/**
+ * Retrieve paginated list of lookup records.
+ * @summary List skin-elasticities
+ */
+export const skinElasticityControllerFindAll = (params?: SkinElasticityControllerFindAllParams) => {
+  return createInstance<PaginatedSkinElasticityEntity>({ url: `/skin-elasticities`, method: "GET", params });
+};
+
+/**
+ * Retrieve lookup record details.
+ * @summary Get skin-elasticities by ID
+ */
+export const skinElasticityControllerFindOne = (id: string) => {
+  return createInstance<SkinElasticityEntity>({ url: `/skin-elasticities/${id}`, method: "GET" });
+};
+
+/**
+ * Update lookup record by ID.
+ * @summary Update skin-elasticities
+ */
+export const skinElasticityControllerUpdate = (id: string, updateSkinElasticityDto: UpdateSkinElasticityDto) => {
+  return createInstance<SkinElasticityEntity>({ url: `/skin-elasticities/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateSkinElasticityDto });
+};
+
+/**
+ * Delete lookup record by ID.
+ * @summary Delete skin-elasticities
+ */
+export const skinElasticityControllerDelete = (id: string) => {
+  return createInstance<SkinElasticityEntity>({ url: `/skin-elasticities/${id}`, method: "DELETE" });
+};
+
+/**
+ * Creates a new lookup record.
+ * @summary Create skin-humidities
+ */
+export const skinHumidityControllerCreate = (createSkinHumidityDto: CreateSkinHumidityDto) => {
+  return createInstance<SkinHumidityEntity>({ url: `/skin-humidities`, method: "POST", headers: { "Content-Type": "application/json" }, data: createSkinHumidityDto });
+};
+
+/**
+ * Retrieve paginated list of lookup records.
+ * @summary List skin-humidities
+ */
+export const skinHumidityControllerFindAll = (params?: SkinHumidityControllerFindAllParams) => {
+  return createInstance<PaginatedSkinHumidityEntity>({ url: `/skin-humidities`, method: "GET", params });
+};
+
+/**
+ * Retrieve lookup record details.
+ * @summary Get skin-humidities by ID
+ */
+export const skinHumidityControllerFindOne = (id: string) => {
+  return createInstance<SkinHumidityEntity>({ url: `/skin-humidities/${id}`, method: "GET" });
+};
+
+/**
+ * Update lookup record by ID.
+ * @summary Update skin-humidities
+ */
+export const skinHumidityControllerUpdate = (id: string, updateSkinHumidityDto: UpdateSkinHumidityDto) => {
+  return createInstance<SkinHumidityEntity>({ url: `/skin-humidities/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateSkinHumidityDto });
+};
+
+/**
+ * Delete lookup record by ID.
+ * @summary Delete skin-humidities
+ */
+export const skinHumidityControllerDelete = (id: string) => {
+  return createInstance<SkinHumidityEntity>({ url: `/skin-humidities/${id}`, method: "DELETE" });
+};
+
+/**
+ * Creates a new lookup record.
+ * @summary Create skin-pains
+ */
+export const skinPainControllerCreate = (createSkinPainDto: CreateSkinPainDto) => {
+  return createInstance<SkinPainEntity>({ url: `/skin-pains`, method: "POST", headers: { "Content-Type": "application/json" }, data: createSkinPainDto });
+};
+
+/**
+ * Retrieve paginated list of lookup records.
+ * @summary List skin-pains
+ */
+export const skinPainControllerFindAll = (params?: SkinPainControllerFindAllParams) => {
+  return createInstance<PaginatedSkinPainEntity>({ url: `/skin-pains`, method: "GET", params });
+};
+
+/**
+ * Retrieve lookup record details.
+ * @summary Get skin-pains by ID
+ */
+export const skinPainControllerFindOne = (id: string) => {
+  return createInstance<SkinPainEntity>({ url: `/skin-pains/${id}`, method: "GET" });
+};
+
+/**
+ * Update lookup record by ID.
+ * @summary Update skin-pains
+ */
+export const skinPainControllerUpdate = (id: string, updateSkinPainDto: UpdateSkinPainDto) => {
+  return createInstance<SkinPainEntity>({ url: `/skin-pains/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateSkinPainDto });
+};
+
+/**
+ * Delete lookup record by ID.
+ * @summary Delete skin-pains
+ */
+export const skinPainControllerDelete = (id: string) => {
+  return createInstance<SkinPainEntity>({ url: `/skin-pains/${id}`, method: "DELETE" });
+};
+
+/**
+ * Creates a new lookup record.
+ * @summary Create skin-sensitivities
+ */
+export const skinSensitivityControllerCreate = (createSkinSensitivityDto: CreateSkinSensitivityDto) => {
+  return createInstance<SkinSensitivityEntity>({ url: `/skin-sensitivities`, method: "POST", headers: { "Content-Type": "application/json" }, data: createSkinSensitivityDto });
+};
+
+/**
+ * Retrieve paginated list of lookup records.
+ * @summary List skin-sensitivities
+ */
+export const skinSensitivityControllerFindAll = (params?: SkinSensitivityControllerFindAllParams) => {
+  return createInstance<PaginatedSkinSensitivityEntity>({ url: `/skin-sensitivities`, method: "GET", params });
+};
+
+/**
+ * Retrieve lookup record details.
+ * @summary Get skin-sensitivities by ID
+ */
+export const skinSensitivityControllerFindOne = (id: string) => {
+  return createInstance<SkinSensitivityEntity>({ url: `/skin-sensitivities/${id}`, method: "GET" });
+};
+
+/**
+ * Update lookup record by ID.
+ * @summary Update skin-sensitivities
+ */
+export const skinSensitivityControllerUpdate = (id: string, updateSkinSensitivityDto: UpdateSkinSensitivityDto) => {
+  return createInstance<SkinSensitivityEntity>({ url: `/skin-sensitivities/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateSkinSensitivityDto });
+};
+
+/**
+ * Delete lookup record by ID.
+ * @summary Delete skin-sensitivities
+ */
+export const skinSensitivityControllerDelete = (id: string) => {
+  return createInstance<SkinSensitivityEntity>({ url: `/skin-sensitivities/${id}`, method: "DELETE" });
+};
+
+/**
+ * Creates a new lookup record.
+ * @summary Create skin-smells
+ */
+export const skinSmellControllerCreate = (createSkinSmellDto: CreateSkinSmellDto) => {
+  return createInstance<SkinSmellEntity>({ url: `/skin-smells`, method: "POST", headers: { "Content-Type": "application/json" }, data: createSkinSmellDto });
+};
+
+/**
+ * Retrieve paginated list of lookup records.
+ * @summary List skin-smells
+ */
+export const skinSmellControllerFindAll = (params?: SkinSmellControllerFindAllParams) => {
+  return createInstance<PaginatedSkinSmellEntity>({ url: `/skin-smells`, method: "GET", params });
+};
+
+/**
+ * Retrieve lookup record details.
+ * @summary Get skin-smells by ID
+ */
+export const skinSmellControllerFindOne = (id: string) => {
+  return createInstance<SkinSmellEntity>({ url: `/skin-smells/${id}`, method: "GET" });
+};
+
+/**
+ * Update lookup record by ID.
+ * @summary Update skin-smells
+ */
+export const skinSmellControllerUpdate = (id: string, updateSkinSmellDto: UpdateSkinSmellDto) => {
+  return createInstance<SkinSmellEntity>({ url: `/skin-smells/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateSkinSmellDto });
+};
+
+/**
+ * Delete lookup record by ID.
+ * @summary Delete skin-smells
+ */
+export const skinSmellControllerDelete = (id: string) => {
+  return createInstance<SkinSmellEntity>({ url: `/skin-smells/${id}`, method: "DELETE" });
+};
+
+/**
+ * Creates a new lookup record.
+ * @summary Create skin-surfaces
+ */
+export const skinSurfaceControllerCreate = (createSkinSurfaceDto: CreateSkinSurfaceDto) => {
+  return createInstance<SkinSurfaceEntity>({ url: `/skin-surfaces`, method: "POST", headers: { "Content-Type": "application/json" }, data: createSkinSurfaceDto });
+};
+
+/**
+ * Retrieve paginated list of lookup records.
+ * @summary List skin-surfaces
+ */
+export const skinSurfaceControllerFindAll = (params?: SkinSurfaceControllerFindAllParams) => {
+  return createInstance<PaginatedSkinSurfaceEntity>({ url: `/skin-surfaces`, method: "GET", params });
+};
+
+/**
+ * Retrieve lookup record details.
+ * @summary Get skin-surfaces by ID
+ */
+export const skinSurfaceControllerFindOne = (id: string) => {
+  return createInstance<SkinSurfaceEntity>({ url: `/skin-surfaces/${id}`, method: "GET" });
+};
+
+/**
+ * Update lookup record by ID.
+ * @summary Update skin-surfaces
+ */
+export const skinSurfaceControllerUpdate = (id: string, updateSkinSurfaceDto: UpdateSkinSurfaceDto) => {
+  return createInstance<SkinSurfaceEntity>({ url: `/skin-surfaces/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateSkinSurfaceDto });
+};
+
+/**
+ * Delete lookup record by ID.
+ * @summary Delete skin-surfaces
+ */
+export const skinSurfaceControllerDelete = (id: string) => {
+  return createInstance<SkinSurfaceEntity>({ url: `/skin-surfaces/${id}`, method: "DELETE" });
+};
+
+/**
+ * Creates a new lookup record.
+ * @summary Create skin-temps
+ */
+export const skinTempControllerCreate = (createSkinTempDto: CreateSkinTempDto) => {
+  return createInstance<SkinTempEntity>({ url: `/skin-temps`, method: "POST", headers: { "Content-Type": "application/json" }, data: createSkinTempDto });
+};
+
+/**
+ * Retrieve paginated list of lookup records.
+ * @summary List skin-temps
+ */
+export const skinTempControllerFindAll = (params?: SkinTempControllerFindAllParams) => {
+  return createInstance<PaginatedSkinTempEntity>({ url: `/skin-temps`, method: "GET", params });
+};
+
+/**
+ * Retrieve lookup record details.
+ * @summary Get skin-temps by ID
+ */
+export const skinTempControllerFindOne = (id: string) => {
+  return createInstance<SkinTempEntity>({ url: `/skin-temps/${id}`, method: "GET" });
+};
+
+/**
+ * Update lookup record by ID.
+ * @summary Update skin-temps
+ */
+export const skinTempControllerUpdate = (id: string, updateSkinTempDto: UpdateSkinTempDto) => {
+  return createInstance<SkinTempEntity>({ url: `/skin-temps/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateSkinTempDto });
+};
+
+/**
+ * Delete lookup record by ID.
+ * @summary Delete skin-temps
+ */
+export const skinTempControllerDelete = (id: string) => {
+  return createInstance<SkinTempEntity>({ url: `/skin-temps/${id}`, method: "DELETE" });
+};
+
+/**
+ * Creates a new lookup record.
+ * @summary Create temperaments
+ */
+export const temperamentControllerCreate = (createTemperamentDto: CreateTemperamentDto) => {
+  return createInstance<TemperamentEntity>({ url: `/temperaments`, method: "POST", headers: { "Content-Type": "application/json" }, data: createTemperamentDto });
+};
+
+/**
+ * Retrieve paginated list of lookup records.
+ * @summary List temperaments
+ */
+export const temperamentControllerFindAll = (params?: TemperamentControllerFindAllParams) => {
+  return createInstance<PaginatedTemperamentEntity>({ url: `/temperaments`, method: "GET", params });
+};
+
+/**
+ * Retrieve lookup record details.
+ * @summary Get temperaments by ID
+ */
+export const temperamentControllerFindOne = (id: string) => {
+  return createInstance<TemperamentEntity>({ url: `/temperaments/${id}`, method: "GET" });
+};
+
+/**
+ * Update lookup record by ID.
+ * @summary Update temperaments
+ */
+export const temperamentControllerUpdate = (id: string, updateTemperamentDto: UpdateTemperamentDto) => {
+  return createInstance<TemperamentEntity>({ url: `/temperaments/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateTemperamentDto });
+};
+
+/**
+ * Delete lookup record by ID.
+ * @summary Delete temperaments
+ */
+export const temperamentControllerDelete = (id: string) => {
+  return createInstance<TemperamentEntity>({ url: `/temperaments/${id}`, method: "DELETE" });
+};
+
+/**
+ * Creates a new lookup record.
+ * @summary Create wool-types
+ */
+export const woolTypeControllerCreate = (createWoolTypeDto: CreateWoolTypeDto) => {
+  return createInstance<WoolTypeEntity>({ url: `/wool-types`, method: "POST", headers: { "Content-Type": "application/json" }, data: createWoolTypeDto });
+};
+
+/**
+ * Retrieve paginated list of lookup records.
+ * @summary List wool-types
+ */
+export const woolTypeControllerFindAll = (params?: WoolTypeControllerFindAllParams) => {
+  return createInstance<PaginatedWoolTypeEntity>({ url: `/wool-types`, method: "GET", params });
+};
+
+/**
+ * Retrieve lookup record details.
+ * @summary Get wool-types by ID
+ */
+export const woolTypeControllerFindOne = (id: string) => {
+  return createInstance<WoolTypeEntity>({ url: `/wool-types/${id}`, method: "GET" });
+};
+
+/**
+ * Update lookup record by ID.
+ * @summary Update wool-types
+ */
+export const woolTypeControllerUpdate = (id: string, updateWoolTypeDto: UpdateWoolTypeDto) => {
+  return createInstance<WoolTypeEntity>({ url: `/wool-types/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateWoolTypeDto });
+};
+
+/**
+ * Delete lookup record by ID.
+ * @summary Delete wool-types
+ */
+export const woolTypeControllerDelete = (id: string) => {
+  return createInstance<WoolTypeEntity>({ url: `/wool-types/${id}`, method: "DELETE" });
 };
 
 /**
  * @summary Create disease
  */
-export const diseaseControllerCreate = (createDiseaseDto: BodyType<CreateDiseaseDto>, options?: SecondParameter<typeof createInstance<DiseaseEntity>>) => {
-  return createInstance<DiseaseEntity>({ url: `/diseases`, method: "POST", headers: { "Content-Type": "application/json" }, data: createDiseaseDto }, options);
+export const diseaseControllerCreate = (createDiseaseDto: CreateDiseaseDto) => {
+  return createInstance<DiseaseEntity>({ url: `/diseases`, method: "POST", headers: { "Content-Type": "application/json" }, data: createDiseaseDto });
 };
 
 /**
  * @summary List diseases
  */
-export const diseaseControllerFindAll = (params?: DiseaseControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedDiseaseEntity>>) => {
-  return createInstance<PaginatedDiseaseEntity>({ url: `/diseases`, method: "GET", params }, options);
+export const diseaseControllerFindAll = (params?: DiseaseControllerFindAllParams) => {
+  return createInstance<PaginatedDiseaseEntity>({ url: `/diseases`, method: "GET", params });
 };
 
 /**
  * @summary Get disease by ID
  */
-export const diseaseControllerFindOne = (id: string, options?: SecondParameter<typeof createInstance<DiseaseEntity>>) => {
-  return createInstance<DiseaseEntity>({ url: `/diseases/${id}`, method: "GET" }, options);
+export const diseaseControllerFindOne = (id: string) => {
+  return createInstance<DiseaseEntity>({ url: `/diseases/${id}`, method: "GET" });
 };
 
 /**
  * @summary Update disease
  */
-export const diseaseControllerUpdate = (id: string, updateDiseaseDto: BodyType<UpdateDiseaseDto>, options?: SecondParameter<typeof createInstance<DiseaseEntity>>) => {
-  return createInstance<DiseaseEntity>({ url: `/diseases/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateDiseaseDto }, options);
+export const diseaseControllerUpdate = (id: string, updateDiseaseDto: UpdateDiseaseDto) => {
+  return createInstance<DiseaseEntity>({ url: `/diseases/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateDiseaseDto });
 };
 
 /**
  * @summary Delete disease
  */
-export const diseaseControllerDelete = (id: string, options?: SecondParameter<typeof createInstance<DiseaseEntity>>) => {
-  return createInstance<DiseaseEntity>({ url: `/diseases/${id}`, method: "DELETE" }, options);
+export const diseaseControllerDelete = (id: string) => {
+  return createInstance<DiseaseEntity>({ url: `/diseases/${id}`, method: "DELETE" });
 };
 
 /**
  * @summary Create disease category
  */
-export const diseaseCategoryControllerCreate = (createDiseaseCategoryDto: BodyType<CreateDiseaseCategoryDto>, options?: SecondParameter<typeof createInstance<DiseaseCategoryEntity>>) => {
-  return createInstance<DiseaseCategoryEntity>({ url: `/disease-categories`, method: "POST", headers: { "Content-Type": "application/json" }, data: createDiseaseCategoryDto }, options);
+export const diseaseCategoryControllerCreate = (createDiseaseCategoryDto: CreateDiseaseCategoryDto) => {
+  return createInstance<DiseaseCategoryEntity>({ url: `/disease-categories`, method: "POST", headers: { "Content-Type": "application/json" }, data: createDiseaseCategoryDto });
 };
 
 /**
  * @summary List disease categories
  */
-export const diseaseCategoryControllerFindAll = (params?: DiseaseCategoryControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedDiseaseCategoryEntity>>) => {
-  return createInstance<PaginatedDiseaseCategoryEntity>({ url: `/disease-categories`, method: "GET", params }, options);
+export const diseaseCategoryControllerFindAll = (params?: DiseaseCategoryControllerFindAllParams) => {
+  return createInstance<PaginatedDiseaseCategoryEntity>({ url: `/disease-categories`, method: "GET", params });
 };
 
 /**
  * @summary Get disease category by ID
  */
-export const diseaseCategoryControllerFindOne = (id: string, options?: SecondParameter<typeof createInstance<DiseaseCategoryEntity>>) => {
-  return createInstance<DiseaseCategoryEntity>({ url: `/disease-categories/${id}`, method: "GET" }, options);
+export const diseaseCategoryControllerFindOne = (id: string) => {
+  return createInstance<DiseaseCategoryEntity>({ url: `/disease-categories/${id}`, method: "GET" });
 };
 
 /**
  * @summary Update disease category
  */
-export const diseaseCategoryControllerUpdate = (id: string, updateDiseaseCategoryDto: BodyType<UpdateDiseaseCategoryDto>, options?: SecondParameter<typeof createInstance<DiseaseCategoryEntity>>) => {
-  return createInstance<DiseaseCategoryEntity>({ url: `/disease-categories/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateDiseaseCategoryDto }, options);
+export const diseaseCategoryControllerUpdate = (id: string, updateDiseaseCategoryDto: UpdateDiseaseCategoryDto) => {
+  return createInstance<DiseaseCategoryEntity>({ url: `/disease-categories/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateDiseaseCategoryDto });
 };
 
 /**
  * @summary Delete disease category
  */
-export const diseaseCategoryControllerDelete = (id: string, options?: SecondParameter<typeof createInstance<DiseaseCategoryEntity>>) => {
-  return createInstance<DiseaseCategoryEntity>({ url: `/disease-categories/${id}`, method: "DELETE" }, options);
+export const diseaseCategoryControllerDelete = (id: string) => {
+  return createInstance<DiseaseCategoryEntity>({ url: `/disease-categories/${id}`, method: "DELETE" });
 };
 
 /**
  * @summary Create prophylaxis record
  */
-export const prophylaxisControllerCreate = (createProphylaxisDto: BodyType<CreateProphylaxisDto>, options?: SecondParameter<typeof createInstance<ProphylaxisEntity>>) => {
-  return createInstance<ProphylaxisEntity>({ url: `/prophylaxis`, method: "POST", headers: { "Content-Type": "application/json" }, data: createProphylaxisDto }, options);
+export const prophylaxisControllerCreate = (createProphylaxisDto: CreateProphylaxisDto) => {
+  return createInstance<ProphylaxisEntity>({ url: `/prophylaxis`, method: "POST", headers: { "Content-Type": "application/json" }, data: createProphylaxisDto });
 };
 
 /**
  * @summary List prophylaxis records
  */
-export const prophylaxisControllerFindAll = (params?: ProphylaxisControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedProphylaxisEntity>>) => {
-  return createInstance<PaginatedProphylaxisEntity>({ url: `/prophylaxis`, method: "GET", params }, options);
+export const prophylaxisControllerFindAll = (params?: ProphylaxisControllerFindAllParams) => {
+  return createInstance<PaginatedProphylaxisEntity>({ url: `/prophylaxis`, method: "GET", params });
 };
 
 /**
  * Retrieve the last prophylaxis record for a specific animal.
  * @summary Get last prophylaxis by animal ID
  */
-export const prophylaxisControllerFindLastByAnimalId = (animalId: string, options?: SecondParameter<typeof createInstance<ProphylaxisEntity>>) => {
-  return createInstance<ProphylaxisEntity>({ url: `/prophylaxis/animal/${animalId}/last`, method: "GET" }, options);
+export const prophylaxisControllerFindLastByAnimalId = (animalId: string) => {
+  return createInstance<ProphylaxisEntity>({ url: `/prophylaxis/animal/${animalId}/last`, method: "GET" });
 };
 
 /**
  * @summary Get prophylaxis by ID
  */
-export const prophylaxisControllerFindOne = (id: string, options?: SecondParameter<typeof createInstance<ProphylaxisEntity>>) => {
-  return createInstance<ProphylaxisEntity>({ url: `/prophylaxis/${id}`, method: "GET" }, options);
+export const prophylaxisControllerFindOne = (id: string) => {
+  return createInstance<ProphylaxisEntity>({ url: `/prophylaxis/${id}`, method: "GET" });
 };
 
 /**
  * @summary Update prophylaxis
  */
-export const prophylaxisControllerUpdate = (id: string, updateProphylaxisDto: BodyType<UpdateProphylaxisDto>, options?: SecondParameter<typeof createInstance<ProphylaxisEntity>>) => {
-  return createInstance<ProphylaxisEntity>({ url: `/prophylaxis/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateProphylaxisDto }, options);
+export const prophylaxisControllerUpdate = (id: string, updateProphylaxisDto: UpdateProphylaxisDto) => {
+  return createInstance<ProphylaxisEntity>({ url: `/prophylaxis/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateProphylaxisDto });
 };
 
 /**
  * @summary Delete prophylaxis
  */
-export const prophylaxisControllerDelete = (id: string, options?: SecondParameter<typeof createInstance<ProphylaxisEntity>>) => {
-  return createInstance<ProphylaxisEntity>({ url: `/prophylaxis/${id}`, method: "DELETE" }, options);
+export const prophylaxisControllerDelete = (id: string) => {
+  return createInstance<ProphylaxisEntity>({ url: `/prophylaxis/${id}`, method: "DELETE" });
 };
 
 /**
  * @summary Create prophylaxis item
  */
-export const prophylaxisItemControllerCreate = (createProphylaxisItemDto: BodyType<CreateProphylaxisItemDto>, options?: SecondParameter<typeof createInstance<ProphylaxisItemEntity>>) => {
-  return createInstance<ProphylaxisItemEntity>({ url: `/prophylaxis-items`, method: "POST", headers: { "Content-Type": "application/json" }, data: createProphylaxisItemDto }, options);
+export const prophylaxisItemControllerCreate = (createProphylaxisItemDto: CreateProphylaxisItemDto) => {
+  return createInstance<ProphylaxisItemEntity>({ url: `/prophylaxis-items`, method: "POST", headers: { "Content-Type": "application/json" }, data: createProphylaxisItemDto });
 };
 
 /**
  * @summary List prophylaxis items
  */
-export const prophylaxisItemControllerFindAll = (params?: ProphylaxisItemControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedProphylaxisItemEntity>>) => {
-  return createInstance<PaginatedProphylaxisItemEntity>({ url: `/prophylaxis-items`, method: "GET", params }, options);
+export const prophylaxisItemControllerFindAll = (params?: ProphylaxisItemControllerFindAllParams) => {
+  return createInstance<PaginatedProphylaxisItemEntity>({ url: `/prophylaxis-items`, method: "GET", params });
 };
 
 /**
  * @summary Get prophylaxis item by ID
  */
-export const prophylaxisItemControllerFindOne = (id: string, options?: SecondParameter<typeof createInstance<ProphylaxisItemEntity>>) => {
-  return createInstance<ProphylaxisItemEntity>({ url: `/prophylaxis-items/${id}`, method: "GET" }, options);
+export const prophylaxisItemControllerFindOne = (id: string) => {
+  return createInstance<ProphylaxisItemEntity>({ url: `/prophylaxis-items/${id}`, method: "GET" });
 };
 
 /**
  * @summary Update prophylaxis item
  */
-export const prophylaxisItemControllerUpdate = (id: string, updateProphylaxisItemDto: BodyType<UpdateProphylaxisItemDto>, options?: SecondParameter<typeof createInstance<ProphylaxisItemEntity>>) => {
-  return createInstance<ProphylaxisItemEntity>({ url: `/prophylaxis-items/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateProphylaxisItemDto }, options);
+export const prophylaxisItemControllerUpdate = (id: string, updateProphylaxisItemDto: UpdateProphylaxisItemDto) => {
+  return createInstance<ProphylaxisItemEntity>({ url: `/prophylaxis-items/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateProphylaxisItemDto });
 };
 
 /**
  * @summary Delete prophylaxis item
  */
-export const prophylaxisItemControllerDelete = (id: string, options?: SecondParameter<typeof createInstance<ProphylaxisItemEntity>>) => {
-  return createInstance<ProphylaxisItemEntity>({ url: `/prophylaxis-items/${id}`, method: "DELETE" }, options);
+export const prophylaxisItemControllerDelete = (id: string) => {
+  return createInstance<ProphylaxisItemEntity>({ url: `/prophylaxis-items/${id}`, method: "DELETE" });
 };
 
 /**
  * @summary Create prophylaxis detail
  */
-export const prophylaxisDetailControllerCreate = (createProphylaxisDetailDto: BodyType<CreateProphylaxisDetailDto>, options?: SecondParameter<typeof createInstance<ProphylaxisDetailEntity>>) => {
-  return createInstance<ProphylaxisDetailEntity>({ url: `/prophylaxis-details`, method: "POST", headers: { "Content-Type": "application/json" }, data: createProphylaxisDetailDto }, options);
+export const prophylaxisDetailControllerCreate = (createProphylaxisDetailDto: CreateProphylaxisDetailDto) => {
+  return createInstance<ProphylaxisDetailEntity>({ url: `/prophylaxis-details`, method: "POST", headers: { "Content-Type": "application/json" }, data: createProphylaxisDetailDto });
 };
 
 /**
  * @summary List prophylaxis details
  */
-export const prophylaxisDetailControllerFindAll = (params?: ProphylaxisDetailControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedProphylaxisDetailEntity>>) => {
-  return createInstance<PaginatedProphylaxisDetailEntity>({ url: `/prophylaxis-details`, method: "GET", params }, options);
+export const prophylaxisDetailControllerFindAll = (params?: ProphylaxisDetailControllerFindAllParams) => {
+  return createInstance<PaginatedProphylaxisDetailEntity>({ url: `/prophylaxis-details`, method: "GET", params });
 };
 
 /**
  * @summary Get prophylaxis detail by ID
  */
-export const prophylaxisDetailControllerFindOne = (id: string, options?: SecondParameter<typeof createInstance<ProphylaxisDetailEntity>>) => {
-  return createInstance<ProphylaxisDetailEntity>({ url: `/prophylaxis-details/${id}`, method: "GET" }, options);
+export const prophylaxisDetailControllerFindOne = (id: string) => {
+  return createInstance<ProphylaxisDetailEntity>({ url: `/prophylaxis-details/${id}`, method: "GET" });
 };
 
 /**
  * @summary Update prophylaxis detail
  */
-export const prophylaxisDetailControllerUpdate = (id: string, updateProphylaxisDetailDto: BodyType<UpdateProphylaxisDetailDto>, options?: SecondParameter<typeof createInstance<ProphylaxisDetailEntity>>) => {
-  return createInstance<ProphylaxisDetailEntity>({ url: `/prophylaxis-details/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateProphylaxisDetailDto }, options);
+export const prophylaxisDetailControllerUpdate = (id: string, updateProphylaxisDetailDto: UpdateProphylaxisDetailDto) => {
+  return createInstance<ProphylaxisDetailEntity>({ url: `/prophylaxis-details/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateProphylaxisDetailDto });
 };
 
 /**
  * @summary Delete prophylaxis detail
  */
-export const prophylaxisDetailControllerDelete = (id: string, options?: SecondParameter<typeof createInstance<ProphylaxisDetailEntity>>) => {
-  return createInstance<ProphylaxisDetailEntity>({ url: `/prophylaxis-details/${id}`, method: "DELETE" }, options);
+export const prophylaxisDetailControllerDelete = (id: string) => {
+  return createInstance<ProphylaxisDetailEntity>({ url: `/prophylaxis-details/${id}`, method: "DELETE" });
 };
 
 /**
  * @summary Create animal
  */
-export const animalControllerCreate = (createAnimalDto: BodyType<CreateAnimalDto>, options?: SecondParameter<typeof createInstance<AnimalEntity>>) => {
-  return createInstance<AnimalEntity>({ url: `/animals`, method: "POST", headers: { "Content-Type": "application/json" }, data: createAnimalDto }, options);
+export const animalControllerCreate = (createAnimalDto: CreateAnimalDto) => {
+  return createInstance<AnimalEntity>({ url: `/animals`, method: "POST", headers: { "Content-Type": "application/json" }, data: createAnimalDto });
 };
 
 /**
  * @summary List animals
  */
-export const animalControllerFindAll = (params?: AnimalControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedAnimalEntity>>) => {
-  return createInstance<PaginatedAnimalEntity>({ url: `/animals`, method: "GET", params }, options);
+export const animalControllerFindAll = (params?: AnimalControllerFindAllParams) => {
+  return createInstance<PaginatedAnimalEntity>({ url: `/animals`, method: "GET", params });
 };
 
 /**
  * @summary Get animal by ID
  */
-export const animalControllerFindOne = (id: string, options?: SecondParameter<typeof createInstance<AnimalEntity>>) => {
-  return createInstance<AnimalEntity>({ url: `/animals/${id}`, method: "GET" }, options);
-};
-
-
-export const animalControllerFindPredict = (id: string, options?: SecondParameter<typeof createInstance<AnimalEntity>>) => {
-  return createInstance<Record<number, number>>({ url: `/animals/predict/${id}`, method: "GET" }, options);
+export const animalControllerFindOne = (id: string) => {
+  return createInstance<AnimalEntity>({ url: `/animals/${id}`, method: "GET" });
 };
 
 /**
  * @summary Update animal
  */
-export const animalControllerUpdate = (id: string, updateAnimalDto: BodyType<UpdateAnimalDto>, options?: SecondParameter<typeof createInstance<AnimalEntity>>) => {
-  return createInstance<AnimalEntity>({ url: `/animals/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateAnimalDto }, options);
+export const animalControllerUpdate = (id: string, updateAnimalDto: UpdateAnimalDto) => {
+  return createInstance<AnimalEntity>({ url: `/animals/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateAnimalDto });
 };
 
 /**
  * @summary Delete animal
  */
-export const animalControllerDelete = (id: string, options?: SecondParameter<typeof createInstance<AnimalEntity>>) => {
-  return createInstance<AnimalEntity>({ url: `/animals/${id}`, method: "DELETE" }, options);
+export const animalControllerDelete = (id: string) => {
+  return createInstance<AnimalEntity>({ url: `/animals/${id}`, method: "DELETE" });
+};
+
+/**
+ * @summary Get animal by ID
+ */
+export const animalControllerFindPredict = (id: string) => {
+  return createInstance<AnimalEntity>({ url: `/animals/predict/${id}`, method: "GET" });
 };
 
 /**
  * @summary Create animal type
  */
-export const animalTypeControllerCreate = (createAnimalTypeDto: BodyType<CreateAnimalTypeDto>, options?: SecondParameter<typeof createInstance<AnimalTypeEntity>>) => {
-  return createInstance<AnimalTypeEntity>({ url: `/animal-types`, method: "POST", headers: { "Content-Type": "application/json" }, data: createAnimalTypeDto }, options);
+export const animalTypeControllerCreate = (createAnimalTypeDto: CreateAnimalTypeDto) => {
+  return createInstance<AnimalTypeEntity>({ url: `/animal-types`, method: "POST", headers: { "Content-Type": "application/json" }, data: createAnimalTypeDto });
 };
 
 /**
  * @summary List animal types
  */
-export const animalTypeControllerFindAll = (params?: AnimalTypeControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedAnimalTypeEntity>>) => {
-  return createInstance<any>({ url: `/animal-types`, method: "GET", params }, options);
+export const animalTypeControllerFindAll = (params?: AnimalTypeControllerFindAllParams) => {
+  return createInstance<PaginatedAnimalTypeEntity>({ url: `/animal-types`, method: "GET", params });
+};
+
+/**
+ * @summary Resolve leaf AnimalType from parent + sex + birth month/year
+ */
+export const animalTypeControllerResolveAnimalType = (params: AnimalTypeControllerResolveAnimalTypeParams) => {
+  return createInstance<AnimalTypeEntity>({ url: `/animal-types/resolve`, method: "GET", params });
 };
 
 /**
  * @summary Get animal type by ID
  */
-export const animalTypeControllerFindOne = (id: string, options?: SecondParameter<typeof createInstance<AnimalTypeEntity>>) => {
-  return createInstance<AnimalTypeEntity>({ url: `/animal-types/${id}`, method: "GET" }, options);
+export const animalTypeControllerFindOne = (id: string) => {
+  return createInstance<AnimalTypeEntity>({ url: `/animal-types/${id}`, method: "GET" });
 };
 
 /**
  * @summary Update animal type
  */
-export const animalTypeControllerUpdate = (id: string, updateAnimalTypeDto: BodyType<UpdateAnimalTypeDto>, options?: SecondParameter<typeof createInstance<AnimalTypeEntity>>) => {
-  return createInstance<AnimalTypeEntity>({ url: `/animal-types/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateAnimalTypeDto }, options);
+export const animalTypeControllerUpdate = (id: string, updateAnimalTypeDto: UpdateAnimalTypeDto) => {
+  return createInstance<AnimalTypeEntity>({ url: `/animal-types/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateAnimalTypeDto });
 };
 
 /**
  * @summary Delete animal type
  */
-export const animalTypeControllerDelete = (id: string, options?: SecondParameter<typeof createInstance<AnimalTypeEntity>>) => {
-  return createInstance<AnimalTypeEntity>({ url: `/animal-types/${id}`, method: "DELETE" }, options);
+export const animalTypeControllerDelete = (id: string) => {
+  return createInstance<AnimalTypeEntity>({ url: `/animal-types/${id}`, method: "DELETE" });
 };
 
 /**
  * @summary Create breed
  */
-export const animalBreedControllerCreate = (createAnimalBreedDto: BodyType<CreateAnimalBreedDto>, options?: SecondParameter<typeof createInstance<AnimalBreedEntity>>) => {
-  return createInstance<AnimalBreedEntity>({ url: `/breeds`, method: "POST", headers: { "Content-Type": "application/json" }, data: createAnimalBreedDto }, options);
+export const animalBreedControllerCreate = (createAnimalBreedDto: CreateAnimalBreedDto) => {
+  return createInstance<AnimalBreedEntity>({ url: `/breeds`, method: "POST", headers: { "Content-Type": "application/json" }, data: createAnimalBreedDto });
 };
 
 /**
  * @summary List breeds
  */
-export const animalBreedControllerFindAll = (params?: AnimalBreedControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedAnimalBreedEntity>>) => {
-  return createInstance<PaginatedAnimalBreedEntity>({ url: `/breeds`, method: "GET", params }, options);
+export const animalBreedControllerFindAll = (params?: AnimalBreedControllerFindAllParams) => {
+  return createInstance<PaginatedAnimalBreedEntity>({ url: `/breeds`, method: "GET", params });
 };
 
 /**
  * @summary Get breed by ID
  */
-export const animalBreedControllerFindOne = (id: string, options?: SecondParameter<typeof createInstance<AnimalBreedEntity>>) => {
-  return createInstance<AnimalBreedEntity>({ url: `/breeds/${id}`, method: "GET" }, options);
+export const animalBreedControllerFindOne = (id: string) => {
+  return createInstance<AnimalBreedEntity>({ url: `/breeds/${id}`, method: "GET" });
 };
 
 /**
  * @summary Update breed
  */
-export const animalBreedControllerUpdate = (id: string, updateAnimalBreedDto: BodyType<UpdateAnimalBreedDto>, options?: SecondParameter<typeof createInstance<AnimalBreedEntity>>) => {
-  return createInstance<AnimalBreedEntity>({ url: `/breeds/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateAnimalBreedDto }, options);
+export const animalBreedControllerUpdate = (id: string, updateAnimalBreedDto: UpdateAnimalBreedDto) => {
+  return createInstance<AnimalBreedEntity>({ url: `/breeds/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateAnimalBreedDto });
 };
 
 /**
  * @summary Delete breed
  */
-export const animalBreedControllerDelete = (id: string, options?: SecondParameter<typeof createInstance<AnimalBreedEntity>>) => {
-  return createInstance<AnimalBreedEntity>({ url: `/breeds/${id}`, method: "DELETE" }, options);
+export const animalBreedControllerDelete = (id: string) => {
+  return createInstance<AnimalBreedEntity>({ url: `/breeds/${id}`, method: "DELETE" });
 };
 
 /**
  * Creates a new color.
  * @summary Create color
  */
-export const animalColorControllerCreate = (createAnimalColorDto: BodyType<CreateAnimalColorDto>, options?: SecondParameter<typeof createInstance<AnimalColorEntity>>) => {
-  return createInstance<AnimalColorEntity>({ url: `/colors`, method: "POST", headers: { "Content-Type": "application/json" }, data: createAnimalColorDto }, options);
+export const animalColorControllerCreate = (createAnimalColorDto: CreateAnimalColorDto) => {
+  return createInstance<AnimalColorEntity>({ url: `/colors`, method: "POST", headers: { "Content-Type": "application/json" }, data: createAnimalColorDto });
 };
 
 /**
  * Retrieve paginated list of colors.
  * @summary List colors
  */
-export const animalColorControllerFindAll = (params?: AnimalColorControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedAnimalColorEntity>>) => {
-  return createInstance<PaginatedAnimalColorEntity>({ url: `/colors`, method: "GET", params }, options);
+export const animalColorControllerFindAll = (params?: AnimalColorControllerFindAllParams) => {
+  return createInstance<PaginatedAnimalColorEntity>({ url: `/colors`, method: "GET", params });
 };
 
 /**
  * Retrieve color details.
  * @summary Get color by ID
  */
-export const animalColorControllerFindOne = (id: string, options?: SecondParameter<typeof createInstance<AnimalColorEntity>>) => {
-  return createInstance<AnimalColorEntity>({ url: `/colors/${id}`, method: "GET" }, options);
+export const animalColorControllerFindOne = (id: string) => {
+  return createInstance<AnimalColorEntity>({ url: `/colors/${id}`, method: "GET" });
 };
 
 /**
  * Update color information by ID.
  * @summary Update color
  */
-export const animalColorControllerUpdate = (id: string, updateAnimalColorDto: BodyType<UpdateAnimalColorDto>, options?: SecondParameter<typeof createInstance<AnimalColorEntity>>) => {
-  return createInstance<AnimalColorEntity>({ url: `/colors/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateAnimalColorDto }, options);
+export const animalColorControllerUpdate = (id: string, updateAnimalColorDto: UpdateAnimalColorDto) => {
+  return createInstance<AnimalColorEntity>({ url: `/colors/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateAnimalColorDto });
 };
 
 /**
  * Delete color by ID.
  * @summary Delete color
  */
-export const animalColorControllerDelete = (id: string, options?: SecondParameter<typeof createInstance<AnimalColorEntity>>) => {
-  return createInstance<AnimalColorEntity>({ url: `/colors/${id}`, method: "DELETE" }, options);
+export const animalColorControllerDelete = (id: string) => {
+  return createInstance<AnimalColorEntity>({ url: `/colors/${id}`, method: "DELETE" });
+};
+
+/**
+ * Creates a new lookup record.
+ * @summary Create animal-sexes
+ */
+export const animalSexControllerCreate = (createAnimalSexDto: CreateAnimalSexDto) => {
+  return createInstance<AnimalSexEntity>({ url: `/animal-sexes`, method: "POST", headers: { "Content-Type": "application/json" }, data: createAnimalSexDto });
+};
+
+/**
+ * Retrieve paginated list of lookup records.
+ * @summary List animal-sexes
+ */
+export const animalSexControllerFindAll = (params?: AnimalSexControllerFindAllParams) => {
+  return createInstance<PaginatedAnimalSexEntity>({ url: `/animal-sexes`, method: "GET", params });
+};
+
+/**
+ * Retrieve lookup record details.
+ * @summary Get animal-sexes by ID
+ */
+export const animalSexControllerFindOne = (id: string) => {
+  return createInstance<AnimalSexEntity>({ url: `/animal-sexes/${id}`, method: "GET" });
+};
+
+/**
+ * Update lookup record by ID.
+ * @summary Update animal-sexes
+ */
+export const animalSexControllerUpdate = (id: string, updateAnimalSexDto: UpdateAnimalSexDto) => {
+  return createInstance<AnimalSexEntity>({ url: `/animal-sexes/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateAnimalSexDto });
+};
+
+/**
+ * Delete lookup record by ID.
+ * @summary Delete animal-sexes
+ */
+export const animalSexControllerDelete = (id: string) => {
+  return createInstance<AnimalSexEntity>({ url: `/animal-sexes/${id}`, method: "DELETE" });
 };
 
 /**
  * Creates a new region with Russian and Uzbek names.
  * @summary Create region
  */
-export const regionControllerCreate = (createRegionDto: BodyType<CreateRegionDto>, options?: SecondParameter<typeof createInstance<RegionEntity>>) => {
-  return createInstance<RegionEntity>({ url: `/regions`, method: "POST", headers: { "Content-Type": "application/json" }, data: createRegionDto }, options);
+export const regionControllerCreate = (createRegionDto: CreateRegionDto) => {
+  return createInstance<RegionEntity>({ url: `/regions`, method: "POST", headers: { "Content-Type": "application/json" }, data: createRegionDto });
 };
 
 /**
  * Retrieve paginated list of regions with nested districts.
  * @summary List regions
  */
-export const regionControllerFindAll = (params?: RegionControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedRegionEntity>>) => {
-  return createInstance<PaginatedRegionEntity>({ url: `/regions`, method: "GET", params }, options);
+export const regionControllerFindAll = (params?: RegionControllerFindAllParams) => {
+  return createInstance<PaginatedRegionEntity>({ url: `/regions`, method: "GET", params });
 };
 
 /**
  * Retrieve region details with nested districts.
  * @summary Get region by ID
  */
-export const regionControllerFindOne = (id: number, options?: SecondParameter<typeof createInstance<RegionEntity>>) => {
-  return createInstance<RegionEntity>({ url: `/regions/${id}`, method: "GET" }, options);
+export const regionControllerFindOne = (id: number) => {
+  return createInstance<RegionEntity>({ url: `/regions/${id}`, method: "GET" });
 };
 
 /**
  * Update region information by ID.
  * @summary Update region
  */
-export const regionControllerUpdate = (id: number, updateRegionDto: BodyType<UpdateRegionDto>, options?: SecondParameter<typeof createInstance<RegionEntity>>) => {
-  return createInstance<RegionEntity>({ url: `/regions/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateRegionDto }, options);
+export const regionControllerUpdate = (id: number, updateRegionDto: UpdateRegionDto) => {
+  return createInstance<RegionEntity>({ url: `/regions/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateRegionDto });
 };
 
 /**
  * Delete region by ID.
  * @summary Delete region
  */
-export const regionControllerDelete = (id: number, options?: SecondParameter<typeof createInstance<RegionEntity>>) => {
-  return createInstance<RegionEntity>({ url: `/regions/${id}`, method: "DELETE" }, options);
+export const regionControllerDelete = (id: number) => {
+  return createInstance<RegionEntity>({ url: `/regions/${id}`, method: "DELETE" });
 };
 
 /**
  * Creates a new district with Russian and Uzbek names.
  * @summary Create district
  */
-export const districtControllerCreate = (createDistrictDto: BodyType<CreateDistrictDto>, options?: SecondParameter<typeof createInstance<DistrictEntity>>) => {
-  return createInstance<DistrictEntity>({ url: `/districts`, method: "POST", headers: { "Content-Type": "application/json" }, data: createDistrictDto }, options);
+export const districtControllerCreate = (createDistrictDto: CreateDistrictDto) => {
+  return createInstance<DistrictEntity>({ url: `/districts`, method: "POST", headers: { "Content-Type": "application/json" }, data: createDistrictDto });
 };
 
 /**
  * Retrieve paginated list of districts with optional region filter.
  * @summary List districts
  */
-export const districtControllerFindAll = (params?: DistrictControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedDistrictEntity>>) => {
-  return createInstance<PaginatedDistrictEntity>({ url: `/districts`, method: "GET", params }, options);
+export const districtControllerFindAll = (params?: DistrictControllerFindAllParams) => {
+  return createInstance<PaginatedDistrictEntity>({ url: `/districts`, method: "GET", params });
 };
 
 /**
  * Retrieve district details with nested region.
  * @summary Get district by ID
  */
-export const districtControllerFindOne = (id: string, options?: SecondParameter<typeof createInstance<DistrictEntity>>) => {
-  return createInstance<DistrictEntity>({ url: `/districts/${id}`, method: "GET" }, options);
+export const districtControllerFindOne = (id: string) => {
+  return createInstance<DistrictEntity>({ url: `/districts/${id}`, method: "GET" });
 };
 
 /**
  * Update district information by ID.
  * @summary Update district
  */
-export const districtControllerUpdate = (id: string, updateDistrictDto: BodyType<UpdateDistrictDto>, options?: SecondParameter<typeof createInstance<DistrictEntity>>) => {
-  return createInstance<DistrictEntity>({ url: `/districts/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateDistrictDto }, options);
+export const districtControllerUpdate = (id: string, updateDistrictDto: UpdateDistrictDto) => {
+  return createInstance<DistrictEntity>({ url: `/districts/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateDistrictDto });
 };
 
 /**
  * Delete district by ID.
  * @summary Delete district
  */
-export const districtControllerDelete = (id: string, options?: SecondParameter<typeof createInstance<DistrictEntity>>) => {
-  return createInstance<DistrictEntity>({ url: `/districts/${id}`, method: "DELETE" }, options);
+export const districtControllerDelete = (id: string) => {
+  return createInstance<DistrictEntity>({ url: `/districts/${id}`, method: "DELETE" });
 };
 
 /**
  * Creates a new vet station.
  * @summary Create vet station
  */
-export const vetStationControllerCreate = (createVetStationDto: BodyType<CreateVetStationDto>, options?: SecondParameter<typeof createInstance<VetStationEntity>>) => {
-  return createInstance<VetStationEntity>({ url: `/vet-stations`, method: "POST", headers: { "Content-Type": "application/json" }, data: createVetStationDto }, options);
+export const vetStationControllerCreate = (createVetStationDto: CreateVetStationDto) => {
+  return createInstance<VetStationEntity>({ url: `/vet-stations`, method: "POST", headers: { "Content-Type": "application/json" }, data: createVetStationDto });
 };
 
 /**
  * Retrieve paginated list of vet stations.
  * @summary List vet stations
  */
-export const vetStationControllerFindAll = (params?: VetStationControllerFindAllParams, options?: SecondParameter<typeof createInstance<PaginatedVetStationEntity>>) => {
-  return createInstance<PaginatedVetStationEntity>({ url: `/vet-stations`, method: "GET", params }, options);
+export const vetStationControllerFindAll = (params?: VetStationControllerFindAllParams) => {
+  return createInstance<PaginatedVetStationEntity>({ url: `/vet-stations`, method: "GET", params });
 };
 
 /**
  * Retrieve vet station details.
  * @summary Get vet station by ID
  */
-export const vetStationControllerFindOne = (id: string, options?: SecondParameter<typeof createInstance<VetStationEntity>>) => {
-  return createInstance<VetStationEntity>({ url: `/vet-stations/${id}`, method: "GET" }, options);
+export const vetStationControllerFindOne = (id: string) => {
+  return createInstance<VetStationEntity>({ url: `/vet-stations/${id}`, method: "GET" });
 };
 
 /**
  * Update vet station information by ID.
  * @summary Update vet station
  */
-export const vetStationControllerUpdate = (id: string, updateVetStationDto: BodyType<UpdateVetStationDto>, options?: SecondParameter<typeof createInstance<VetStationEntity>>) => {
-  return createInstance<VetStationEntity>({ url: `/vet-stations/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateVetStationDto }, options);
+export const vetStationControllerUpdate = (id: string, updateVetStationDto: UpdateVetStationDto) => {
+  return createInstance<VetStationEntity>({ url: `/vet-stations/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateVetStationDto });
 };
 
 /**
  * Delete vet station by ID.
  * @summary Delete vet station
  */
-export const vetStationControllerDelete = (id: string, options?: SecondParameter<typeof createInstance<VetStationEntity>>) => {
-  return createInstance<VetStationEntity>({ url: `/vet-stations/${id}`, method: "DELETE" }, options);
+export const vetStationControllerDelete = (id: string) => {
+  return createInstance<VetStationEntity>({ url: `/vet-stations/${id}`, method: "DELETE" });
 };
 
 export type AuthControllerLoginResult = NonNullable<Awaited<ReturnType<typeof authControllerLogin>>>;
@@ -4476,6 +7177,157 @@ export type MucosaAppearanceControllerFindAllResult = NonNullable<Awaited<Return
 export type MucosaAppearanceControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof mucosaAppearanceControllerFindOne>>>;
 export type MucosaAppearanceControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof mucosaAppearanceControllerUpdate>>>;
 export type MucosaAppearanceControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof mucosaAppearanceControllerDelete>>>;
+export type MedicalSessionControllerCreateResult = NonNullable<Awaited<ReturnType<typeof medicalSessionControllerCreate>>>;
+export type MedicalSessionControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof medicalSessionControllerFindAll>>>;
+export type MedicalSessionControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof medicalSessionControllerFindOne>>>;
+export type MedicalSessionControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof medicalSessionControllerUpdate>>>;
+export type MedicalSessionControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof medicalSessionControllerDelete>>>;
+export type MedicalSessionControllerSubmitResult = NonNullable<Awaited<ReturnType<typeof medicalSessionControllerSubmit>>>;
+export type FeedbackControllerCreateResult = NonNullable<Awaited<ReturnType<typeof feedbackControllerCreate>>>;
+export type FeedbackControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof feedbackControllerFindAll>>>;
+export type FeedbackControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof feedbackControllerFindOne>>>;
+export type FeedbackControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof feedbackControllerUpdate>>>;
+export type FeedbackControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof feedbackControllerDelete>>>;
+export type AnomalyDetectionControllerPredictResult = NonNullable<Awaited<ReturnType<typeof anomalyDetectionControllerPredict>>>;
+export type AnomalyDetectionControllerGetTrendResult = NonNullable<Awaited<ReturnType<typeof anomalyDetectionControllerGetTrend>>>;
+export type AnomalyDetectionControllerGetAlertsResult = NonNullable<Awaited<ReturnType<typeof anomalyDetectionControllerGetAlerts>>>;
+export type AnomalyDetectionControllerUpdateAlertResult = NonNullable<Awaited<ReturnType<typeof anomalyDetectionControllerUpdateAlert>>>;
+export type AnomalyDetectionControllerGetHealthSummaryResult = NonNullable<Awaited<ReturnType<typeof anomalyDetectionControllerGetHealthSummary>>>;
+export type ReferenceRangeControllerCreateResult = NonNullable<Awaited<ReturnType<typeof referenceRangeControllerCreate>>>;
+export type ReferenceRangeControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof referenceRangeControllerFindAll>>>;
+export type ReferenceRangeControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof referenceRangeControllerFindOne>>>;
+export type ReferenceRangeControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof referenceRangeControllerUpdate>>>;
+export type ReferenceRangeControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof referenceRangeControllerDelete>>>;
+export type BodyPositionControllerCreateResult = NonNullable<Awaited<ReturnType<typeof bodyPositionControllerCreate>>>;
+export type BodyPositionControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof bodyPositionControllerFindAll>>>;
+export type BodyPositionControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof bodyPositionControllerFindOne>>>;
+export type BodyPositionControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof bodyPositionControllerUpdate>>>;
+export type BodyPositionControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof bodyPositionControllerDelete>>>;
+export type BodyTypeControllerCreateResult = NonNullable<Awaited<ReturnType<typeof bodyTypeControllerCreate>>>;
+export type BodyTypeControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof bodyTypeControllerFindAll>>>;
+export type BodyTypeControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof bodyTypeControllerFindOne>>>;
+export type BodyTypeControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof bodyTypeControllerUpdate>>>;
+export type BodyTypeControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof bodyTypeControllerDelete>>>;
+export type ConstitutionControllerCreateResult = NonNullable<Awaited<ReturnType<typeof constitutionControllerCreate>>>;
+export type ConstitutionControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof constitutionControllerFindAll>>>;
+export type ConstitutionControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof constitutionControllerFindOne>>>;
+export type ConstitutionControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof constitutionControllerUpdate>>>;
+export type ConstitutionControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof constitutionControllerDelete>>>;
+export type DownTypeControllerCreateResult = NonNullable<Awaited<ReturnType<typeof downTypeControllerCreate>>>;
+export type DownTypeControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof downTypeControllerFindAll>>>;
+export type DownTypeControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof downTypeControllerFindOne>>>;
+export type DownTypeControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof downTypeControllerUpdate>>>;
+export type DownTypeControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof downTypeControllerDelete>>>;
+export type FeatherTypeControllerCreateResult = NonNullable<Awaited<ReturnType<typeof featherTypeControllerCreate>>>;
+export type FeatherTypeControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof featherTypeControllerFindAll>>>;
+export type FeatherTypeControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof featherTypeControllerFindOne>>>;
+export type FeatherTypeControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof featherTypeControllerUpdate>>>;
+export type FeatherTypeControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof featherTypeControllerDelete>>>;
+export type HairTypeControllerCreateResult = NonNullable<Awaited<ReturnType<typeof hairTypeControllerCreate>>>;
+export type HairTypeControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof hairTypeControllerFindAll>>>;
+export type HairTypeControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof hairTypeControllerFindOne>>>;
+export type HairTypeControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof hairTypeControllerUpdate>>>;
+export type HairTypeControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof hairTypeControllerDelete>>>;
+export type LymphConsistencyControllerCreateResult = NonNullable<Awaited<ReturnType<typeof lymphConsistencyControllerCreate>>>;
+export type LymphConsistencyControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof lymphConsistencyControllerFindAll>>>;
+export type LymphConsistencyControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof lymphConsistencyControllerFindOne>>>;
+export type LymphConsistencyControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof lymphConsistencyControllerUpdate>>>;
+export type LymphConsistencyControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof lymphConsistencyControllerDelete>>>;
+export type LymphMobilityControllerCreateResult = NonNullable<Awaited<ReturnType<typeof lymphMobilityControllerCreate>>>;
+export type LymphMobilityControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof lymphMobilityControllerFindAll>>>;
+export type LymphMobilityControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof lymphMobilityControllerFindOne>>>;
+export type LymphMobilityControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof lymphMobilityControllerUpdate>>>;
+export type LymphMobilityControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof lymphMobilityControllerDelete>>>;
+export type LymphPainControllerCreateResult = NonNullable<Awaited<ReturnType<typeof lymphPainControllerCreate>>>;
+export type LymphPainControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof lymphPainControllerFindAll>>>;
+export type LymphPainControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof lymphPainControllerFindOne>>>;
+export type LymphPainControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof lymphPainControllerUpdate>>>;
+export type LymphPainControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof lymphPainControllerDelete>>>;
+export type LymphShapeControllerCreateResult = NonNullable<Awaited<ReturnType<typeof lymphShapeControllerCreate>>>;
+export type LymphShapeControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof lymphShapeControllerFindAll>>>;
+export type LymphShapeControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof lymphShapeControllerFindOne>>>;
+export type LymphShapeControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof lymphShapeControllerUpdate>>>;
+export type LymphShapeControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof lymphShapeControllerDelete>>>;
+export type LymphSizeControllerCreateResult = NonNullable<Awaited<ReturnType<typeof lymphSizeControllerCreate>>>;
+export type LymphSizeControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof lymphSizeControllerFindAll>>>;
+export type LymphSizeControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof lymphSizeControllerFindOne>>>;
+export type LymphSizeControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof lymphSizeControllerUpdate>>>;
+export type LymphSizeControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof lymphSizeControllerDelete>>>;
+export type LymphSurfaceControllerCreateResult = NonNullable<Awaited<ReturnType<typeof lymphSurfaceControllerCreate>>>;
+export type LymphSurfaceControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof lymphSurfaceControllerFindAll>>>;
+export type LymphSurfaceControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof lymphSurfaceControllerFindOne>>>;
+export type LymphSurfaceControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof lymphSurfaceControllerUpdate>>>;
+export type LymphSurfaceControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof lymphSurfaceControllerDelete>>>;
+export type LymphTempControllerCreateResult = NonNullable<Awaited<ReturnType<typeof lymphTempControllerCreate>>>;
+export type LymphTempControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof lymphTempControllerFindAll>>>;
+export type LymphTempControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof lymphTempControllerFindOne>>>;
+export type LymphTempControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof lymphTempControllerUpdate>>>;
+export type LymphTempControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof lymphTempControllerDelete>>>;
+export type RumenFluidStateControllerCreateResult = NonNullable<Awaited<ReturnType<typeof rumenFluidStateControllerCreate>>>;
+export type RumenFluidStateControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof rumenFluidStateControllerFindAll>>>;
+export type RumenFluidStateControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof rumenFluidStateControllerFindOne>>>;
+export type RumenFluidStateControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof rumenFluidStateControllerUpdate>>>;
+export type RumenFluidStateControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof rumenFluidStateControllerDelete>>>;
+export type MucosaTypeControllerCreateResult = NonNullable<Awaited<ReturnType<typeof mucosaTypeControllerCreate>>>;
+export type MucosaTypeControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof mucosaTypeControllerFindAll>>>;
+export type MucosaTypeControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof mucosaTypeControllerFindOne>>>;
+export type MucosaTypeControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof mucosaTypeControllerUpdate>>>;
+export type MucosaTypeControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof mucosaTypeControllerDelete>>>;
+export type ObesityTypeControllerCreateResult = NonNullable<Awaited<ReturnType<typeof obesityTypeControllerCreate>>>;
+export type ObesityTypeControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof obesityTypeControllerFindAll>>>;
+export type ObesityTypeControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof obesityTypeControllerFindOne>>>;
+export type ObesityTypeControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof obesityTypeControllerUpdate>>>;
+export type ObesityTypeControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof obesityTypeControllerDelete>>>;
+export type SkinColorControllerCreateResult = NonNullable<Awaited<ReturnType<typeof skinColorControllerCreate>>>;
+export type SkinColorControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof skinColorControllerFindAll>>>;
+export type SkinColorControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof skinColorControllerFindOne>>>;
+export type SkinColorControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof skinColorControllerUpdate>>>;
+export type SkinColorControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof skinColorControllerDelete>>>;
+export type SkinElasticityControllerCreateResult = NonNullable<Awaited<ReturnType<typeof skinElasticityControllerCreate>>>;
+export type SkinElasticityControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof skinElasticityControllerFindAll>>>;
+export type SkinElasticityControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof skinElasticityControllerFindOne>>>;
+export type SkinElasticityControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof skinElasticityControllerUpdate>>>;
+export type SkinElasticityControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof skinElasticityControllerDelete>>>;
+export type SkinHumidityControllerCreateResult = NonNullable<Awaited<ReturnType<typeof skinHumidityControllerCreate>>>;
+export type SkinHumidityControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof skinHumidityControllerFindAll>>>;
+export type SkinHumidityControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof skinHumidityControllerFindOne>>>;
+export type SkinHumidityControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof skinHumidityControllerUpdate>>>;
+export type SkinHumidityControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof skinHumidityControllerDelete>>>;
+export type SkinPainControllerCreateResult = NonNullable<Awaited<ReturnType<typeof skinPainControllerCreate>>>;
+export type SkinPainControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof skinPainControllerFindAll>>>;
+export type SkinPainControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof skinPainControllerFindOne>>>;
+export type SkinPainControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof skinPainControllerUpdate>>>;
+export type SkinPainControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof skinPainControllerDelete>>>;
+export type SkinSensitivityControllerCreateResult = NonNullable<Awaited<ReturnType<typeof skinSensitivityControllerCreate>>>;
+export type SkinSensitivityControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof skinSensitivityControllerFindAll>>>;
+export type SkinSensitivityControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof skinSensitivityControllerFindOne>>>;
+export type SkinSensitivityControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof skinSensitivityControllerUpdate>>>;
+export type SkinSensitivityControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof skinSensitivityControllerDelete>>>;
+export type SkinSmellControllerCreateResult = NonNullable<Awaited<ReturnType<typeof skinSmellControllerCreate>>>;
+export type SkinSmellControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof skinSmellControllerFindAll>>>;
+export type SkinSmellControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof skinSmellControllerFindOne>>>;
+export type SkinSmellControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof skinSmellControllerUpdate>>>;
+export type SkinSmellControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof skinSmellControllerDelete>>>;
+export type SkinSurfaceControllerCreateResult = NonNullable<Awaited<ReturnType<typeof skinSurfaceControllerCreate>>>;
+export type SkinSurfaceControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof skinSurfaceControllerFindAll>>>;
+export type SkinSurfaceControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof skinSurfaceControllerFindOne>>>;
+export type SkinSurfaceControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof skinSurfaceControllerUpdate>>>;
+export type SkinSurfaceControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof skinSurfaceControllerDelete>>>;
+export type SkinTempControllerCreateResult = NonNullable<Awaited<ReturnType<typeof skinTempControllerCreate>>>;
+export type SkinTempControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof skinTempControllerFindAll>>>;
+export type SkinTempControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof skinTempControllerFindOne>>>;
+export type SkinTempControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof skinTempControllerUpdate>>>;
+export type SkinTempControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof skinTempControllerDelete>>>;
+export type TemperamentControllerCreateResult = NonNullable<Awaited<ReturnType<typeof temperamentControllerCreate>>>;
+export type TemperamentControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof temperamentControllerFindAll>>>;
+export type TemperamentControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof temperamentControllerFindOne>>>;
+export type TemperamentControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof temperamentControllerUpdate>>>;
+export type TemperamentControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof temperamentControllerDelete>>>;
+export type WoolTypeControllerCreateResult = NonNullable<Awaited<ReturnType<typeof woolTypeControllerCreate>>>;
+export type WoolTypeControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof woolTypeControllerFindAll>>>;
+export type WoolTypeControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof woolTypeControllerFindOne>>>;
+export type WoolTypeControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof woolTypeControllerUpdate>>>;
+export type WoolTypeControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof woolTypeControllerDelete>>>;
 export type DiseaseControllerCreateResult = NonNullable<Awaited<ReturnType<typeof diseaseControllerCreate>>>;
 export type DiseaseControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof diseaseControllerFindAll>>>;
 export type DiseaseControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof diseaseControllerFindOne>>>;
@@ -4507,8 +7359,10 @@ export type AnimalControllerFindAllResult = NonNullable<Awaited<ReturnType<typeo
 export type AnimalControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof animalControllerFindOne>>>;
 export type AnimalControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof animalControllerUpdate>>>;
 export type AnimalControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof animalControllerDelete>>>;
+export type AnimalControllerFindPredictResult = NonNullable<Awaited<ReturnType<typeof animalControllerFindPredict>>>;
 export type AnimalTypeControllerCreateResult = NonNullable<Awaited<ReturnType<typeof animalTypeControllerCreate>>>;
 export type AnimalTypeControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof animalTypeControllerFindAll>>>;
+export type AnimalTypeControllerResolveAnimalTypeResult = NonNullable<Awaited<ReturnType<typeof animalTypeControllerResolveAnimalType>>>;
 export type AnimalTypeControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof animalTypeControllerFindOne>>>;
 export type AnimalTypeControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof animalTypeControllerUpdate>>>;
 export type AnimalTypeControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof animalTypeControllerDelete>>>;
@@ -4522,6 +7376,11 @@ export type AnimalColorControllerFindAllResult = NonNullable<Awaited<ReturnType<
 export type AnimalColorControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof animalColorControllerFindOne>>>;
 export type AnimalColorControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof animalColorControllerUpdate>>>;
 export type AnimalColorControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof animalColorControllerDelete>>>;
+export type AnimalSexControllerCreateResult = NonNullable<Awaited<ReturnType<typeof animalSexControllerCreate>>>;
+export type AnimalSexControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof animalSexControllerFindAll>>>;
+export type AnimalSexControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof animalSexControllerFindOne>>>;
+export type AnimalSexControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof animalSexControllerUpdate>>>;
+export type AnimalSexControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof animalSexControllerDelete>>>;
 export type RegionControllerCreateResult = NonNullable<Awaited<ReturnType<typeof regionControllerCreate>>>;
 export type RegionControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof regionControllerFindAll>>>;
 export type RegionControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof regionControllerFindOne>>>;

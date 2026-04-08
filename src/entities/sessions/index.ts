@@ -1,0 +1,1 @@
+export { createMedicalSessionsColumns } from "./columns";

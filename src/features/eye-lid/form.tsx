@@ -3,13 +3,13 @@ import { useI18n } from "@/shared/hooks/use-i18n";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/shared/components/ui/button";
 import { Textarea } from "@/shared/components/ui/textarea";
-import { MUCOSA_TYPES } from "@/entities/eye-lid/utils/constants/mucosa-types";
-import { ObjectEntriesSelect } from "@/shared/components/object-entries-select";
 import { EyeLidSchema, createEyeLidSchema, eyeLidValues } from "./eye-lid.model";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 import { AnimalTypeTreeSelect } from "../animal-types/components/animal-type-tree-select";
 import { useEffect, useState } from "react";
 import { AnimalType } from "@/shared/types";
+import { MucosaTypesSelect } from "../additional-crud/components/mucosa-types-select";
+import { Input } from "@/shared/components/ui/input";
 
 interface EyeLidFormProps {
   defaultValues?: EyeLidSchema;
@@ -35,6 +35,20 @@ export function EyeLidForm({ onSubmit, defaultValues }: EyeLidFormProps) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 h-full">
         <FormField
+          name="numericValue"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{"Значения"}</FormLabel>
+              <FormControl>
+                <Input type="number" placeholder={"Значения"} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
           name="animalTypeId"
           control={form.control}
           render={({ field }) => (
@@ -48,7 +62,7 @@ export function EyeLidForm({ onSubmit, defaultValues }: EyeLidFormProps) {
           )}
         />
         <FormField
-          name="name_ru"
+          name="name.ru"
           control={form.control}
           render={({ field }) => (
             <FormItem>
@@ -61,7 +75,7 @@ export function EyeLidForm({ onSubmit, defaultValues }: EyeLidFormProps) {
           )}
         />
         <FormField
-          name="name_uz"
+          name="name.uz"
           control={form.control}
           render={({ field }) => (
             <FormItem>
@@ -73,13 +87,18 @@ export function EyeLidForm({ onSubmit, defaultValues }: EyeLidFormProps) {
             </FormItem>
           )}
         />
-        <ObjectEntriesSelect
-          form={form}
-          locale={locale}
-          name="mucosaType"
-          object={MUCOSA_TYPES}
-          label={t("inspections.mucosaType")}
-          placeholder={t("inspections.mucosaType")}
+        <FormField
+          name="mucosaTypeId"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("inspections.mucosaType")}</FormLabel>
+              <FormControl>
+                <MucosaTypesSelect placeholder={t("inspections.mucosaType")} value={field.value} onChange={field.onChange} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
         <div className="flex-1 flex items-end">
           <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">

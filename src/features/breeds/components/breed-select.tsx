@@ -27,7 +27,7 @@ export function BreedSelect({ placeholder, value, disabled, min, onChange, onRem
       onSelect={(e: any) => onChange?.(e?.id)}
       placeholder={placeholder}
       queryFn={useGetBreedsInfinite}
-      getOptionLabel={item => item?.[`name_${locale}`]}
+      getOptionLabel={item => item?.name?.[locale]}
       // clientSearch={(search, item) =>
       //   searchUtil(search, item, ["id", "name"])
       // }

@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { useForm } from "react-hook-form";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { Input } from "@/shared/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,45 +9,64 @@ import { DatePicker } from "@/shared/components/date-picker";
 import { BreedSelect } from "../breeds/components/breed-select";
 import { AnimalSchema, animalValues, createAnimalSchema } from "./animal.model";
 import { AnimalColorSelect } from "../animal-colors/components/animal-color-select";
-import { ANIMAL_GENDERS } from "@/entities/animals/utils/constants/animal-genders";
 import { AnimalTypeTreeSelect } from "../animal-types/components/animal-type-tree-select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
-import { AnimalType } from "@/shared/types";
+import { Animal, AnimalType } from "@/shared/types";
+import { AnimalSexSelect } from "../additional-crud/components/animal-sex-select";
 
 interface AnimalFormProps {
   showFarmer: boolean;
-  defaultValues?: AnimalSchema;
+  defaultValues?: AnimalSchema | Animal;
   submitRightContent?: ReactNode;
   onSubmit: (values: AnimalSchema) => void;
 }
 
-export function AnimalForm({ onSubmit, defaultValues, submitRightContent }: AnimalFormProps) {
-  const { t, locale } = useI18n();
-  const [animalType, setAnimalType] = useState<AnimalType|null>(null);
-  
+const toMonthInputValue = (year?: number | null, month?: number | null) => {
+  if (!year || !month) return "";
+  return `${year}-${String(month).padStart(2, "0")}`;
+};
+
+export function AnimalForm({ onSubmit, defaultValues, submitRightContent, showFarmer: _showFarmer }: AnimalFormProps) {
+  const { t } = useI18n();
+  const [animalType, setAnimalType] = useState<AnimalType | null>(null);
+
+  const resolvedDefaultValues = useMemo(() => {
+    if (!defaultValues) return animalValues as any;
+
+    const birthDate = (defaultValues as any)?.birthDate ? new Date((defaultValues as any).birthDate) : null;
+
+    return {
+      ...animalValues,
+      ...defaultValues,
+      arrivalDate: defaultValues.arrivalDate ? new Date(defaultValues.arrivalDate as any) : null,
+      birthYear: (defaultValues as any)?.birthYear ?? (birthDate ? birthDate.getFullYear() : animalValues.birthYear),
+      birthMonth: (defaultValues as any)?.birthMonth ?? (birthDate ? birthDate.getMonth() + 1 : animalValues.birthMonth),
+      sexId: (defaultValues as any)?.sexId ?? null,
+      farmerId: (defaultValues as any)?.farmerId ?? null,
+    };
+  }, [defaultValues]);
+
   const form = useForm<AnimalSchema>({
     resolver: zodResolver(createAnimalSchema(t)),
-    defaultValues: defaultValues
-      ? {
-          ...defaultValues,
-          arrivalDate: new Date(defaultValues.arrivalDate),
-        }
-      : (animalValues as any),
+    defaultValues: resolvedDefaultValues,
   });
 
   useEffect(() => {
-    if((defaultValues as any)?.animalType) {
-      setAnimalType((defaultValues as any)?.animalType)
+    form.reset(resolvedDefaultValues);
+  }, [form, resolvedDefaultValues]);
+
+  useEffect(() => {
+    if ((defaultValues as any)?.animalType) {
+      setAnimalType((defaultValues as any).animalType);
     }
   }, [defaultValues]);
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 h-full">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormField
-            name={"animalTypeId"}
+            name="animalTypeId"
             control={form.control}
             render={({ field }) => (
               <FormItem>
@@ -67,7 +86,7 @@ export function AnimalForm({ onSubmit, defaultValues, submitRightContent }: Anim
               <FormItem>
                 <FormLabel>{t("animals.name")}</FormLabel>
                 <FormControl>
-                  <Input placeholder={t("animals.name")} value={value} onChange={(v) => onChange(v.target.value)} {...other} />
+                  <Input placeholder={t("animals.name")} value={value} onChange={(event) => onChange(event.target.value)} {...other} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -87,15 +106,15 @@ export function AnimalForm({ onSubmit, defaultValues, submitRightContent }: Anim
               </FormItem>
             )}
           />
-
+          
           <FormField
-            name="age"
+            name="sexId"
             control={form.control}
-            render={({ field: { value, onChange, ...other } }) => (
+            render={({ field }) => (
               <FormItem>
-                <FormLabel>{t("animals.age")}</FormLabel>
+                <FormLabel>{t("form.gender")}</FormLabel>
                 <FormControl>
-                  <Input type="number" placeholder={t("animals.age")} value={value} onChange={(v) => onChange(+v.target.value)} {...other} />
+                  <AnimalSexSelect placeholder={t("form.gender")} value={field.value} onChange={field.onChange} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -103,24 +122,29 @@ export function AnimalForm({ onSubmit, defaultValues, submitRightContent }: Anim
           />
 
           <FormField
-            name="sex"
+            name="birthMonth"
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t("form.gender")}</FormLabel>
+                <FormLabel>Birth month</FormLabel>
                 <FormControl>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <SelectTrigger>
-                      <SelectValue placeholder={t("form.gender")} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Object.entries(ANIMAL_GENDERS).map(([key, value]) => (
-                        <SelectItem key={key} value={key}>
-                          {value[locale]}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <Input
+                    type="month"
+                    value={toMonthInputValue(form.watch("birthYear"), field.value)}
+                    max={toMonthInputValue(new Date().getFullYear(), new Date().getMonth() + 1)}
+                    onChange={(event) => {
+                      const [year, month] = event.target.value.split("-");
+
+                      if (!year || !month) {
+                        field.onChange(undefined);
+                        form.setValue("birthYear", undefined as never, { shouldValidate: true, shouldDirty: true });
+                        return;
+                      }
+
+                      form.setValue("birthYear", Number(year), { shouldValidate: true, shouldDirty: true });
+                      field.onChange(Number(month));
+                    }}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -145,7 +169,7 @@ export function AnimalForm({ onSubmit, defaultValues, submitRightContent }: Anim
             name="arrivalDate"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="flex flex-col pt-1.5 gap-1">
+              <FormItem className="flex flex-col gap-1 pt-1.5">
                 <FormLabel>{t("animals.arrivalDate")}</FormLabel>
                 <FormControl>
                   <DatePicker field={field} />
@@ -154,22 +178,8 @@ export function AnimalForm({ onSubmit, defaultValues, submitRightContent }: Anim
               </FormItem>
             )}
           />
-
-          {/* {showFarmer && <FormField
-            name="farmerId"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("form.farmer")}</FormLabel>
-                <FormControl>
-                  <FarmerSelect value={field.value} onChange={field.onChange} placeholder={t("form.farmer")}  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />} */}
         </div>
-        <div className="flex-1 flex items-end w-full">
+        <div className="flex flex-1 items-end w-full">
           <div className={clsx("grid place-items-end gap-4 w-full", submitRightContent ? "grid-cols-2" : "")}>
             <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">
               {t(form.formState.isSubmitting ? "form.submitting" : "form.submit")}

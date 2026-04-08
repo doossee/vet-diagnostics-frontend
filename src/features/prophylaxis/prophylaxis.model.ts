@@ -6,7 +6,8 @@ export const prophylaxisValues = {
   animalId: undefined,
   itemId: undefined,
   detailId: undefined,
-  date: undefined
+  date: undefined,
+  notes: "",
 };
 
 export const createProphylaxisSchema = (_: any) =>
@@ -21,6 +22,8 @@ export const createProphylaxisSchema = (_: any) =>
     itemId: z.string().min(1, "Выберите препарат"),
 
     detailId: z.string().optional(),
+
+    notes: z.string(),
 
     date: z.date({
       required_error: "Выберите дату проведения",

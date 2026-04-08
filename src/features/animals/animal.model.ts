@@ -1,60 +1,74 @@
-import { ANIMAL_GENDERS_ARRAY } from "@/entities/animals/utils/constants/animal-genders";
 import { z } from "zod";
 
 export const animalValues = {
-  age: 0,
   farmerId: null,
   arrivalDate: null,
+  birthYear: new Date().getFullYear(),
+  birthMonth: new Date().getMonth() + 1,
   animalTypeId: null,
   animalNameCode: "",
   animalBreedId: null,
   animalColorId: null,
-  sex: ANIMAL_GENDERS_ARRAY[0],
+  sexId: null,
 };
 
 export const createAnimalSchema = (_: any) =>
   z.object({
-    animalNameCode: z.string({
-      required_error: "Название кличку животного",
-      invalid_type_error: "Название животного должна быть строкой",
-    })
-    .min(1, { message: "Название животного не может быть пустой" })
-    .trim(),
-
-    age: z
-      .number({
-        required_error: "Укажите возраст животного",
-        invalid_type_error: "Возраст животного должен быть числом",
+    animalNameCode: z
+      .string({
+        required_error: "Animal name is required",
+        invalid_type_error: "Animal name must be a string",
       })
+      .min(1, { message: "Animal name cannot be empty" })
+      .trim(),
+
+    birthYear: z
+      .number({
+        required_error: "Birth year is required",
+        invalid_type_error: "Birth year must be a number",
+      })
+      .int()
+      .min(1900, {
+        message: "Birth year is invalid",
+      })
+      .max(new Date().getFullYear(), {
+        message: "Birth year cannot be in the future",
+      }),
+
+    birthMonth: z
+      .number({
+        required_error: "Birth month is required",
+        invalid_type_error: "Birth month must be a number",
+      })
+      .int()
       .min(1, {
-        message: "Возраст животного должен быть больше 0",
+        message: "Birth month is invalid",
+      })
+      .max(12, {
+        message: "Birth month is invalid",
       }),
 
     animalColorId: z.string({
-      required_error: "Укажите цвет животного",
-      invalid_type_error: "Цвет животного должен быть строкой",
+      required_error: "Animal color is required",
+      invalid_type_error: "Animal color must be a string",
     }),
 
     animalTypeId: z.string({
-      required_error: "Укажите тип животного",
-      invalid_type_error: "Тип животного должен быть строкой",
+      required_error: "Animal type is required",
+      invalid_type_error: "Animal type must be a string",
     }),
 
     animalBreedId: z.string({
-      required_error: "Укажите породу животного",
-      invalid_type_error: "Порода животного должна быть строкой",
+      required_error: "Animal breed is required",
+      invalid_type_error: "Animal breed must be a string",
     }),
 
     arrivalDate: z.date({
-      required_error: "Укажите дату поступления",
-      invalid_type_error: "Дата поступления указана некорректно",
+      required_error: "Arrival date is required",
+      invalid_type_error: "Arrival date is invalid",
     }),
 
-    sex: z.enum(ANIMAL_GENDERS_ARRAY, {
-      required_error: "Укажите пол животного",
-      invalid_type_error: "Пол животного указан некорректно",
-    }),
-
+    sexId: z.string().nullable().optional(),
     farmerId: z.string().nullable(),
   });
 

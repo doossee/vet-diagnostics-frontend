@@ -3,7 +3,13 @@ import { Edit, Trash } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 
 export const createBreedColumns = (handleEditItem: (item: Breed) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
-  { title: t("management.breedName"), key: `name_${locale}` },
+  {
+    title: t("management.breedName"),
+    key: "name",
+    render(item) {
+      return item.name?.[locale] ?? "-";
+    },
+  },
   {
     title: t("table.actions"),
     key: "actions",

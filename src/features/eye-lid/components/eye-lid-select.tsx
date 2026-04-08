@@ -9,14 +9,14 @@ import { useSearchQueryParams } from "@/shared/hooks/use-query-params";
 
 interface Props {
   value?: unknown;
-  type?: MucosaType
+  typeId?: string;
   disabled?: boolean;
   placeholder?: string;
   onRemove?: () => void;
   onChange?: (value: unknown) => void;
 }
 
-export function EyeLidSelect({ value, placeholder, disabled, type, onChange, onRemove }: Props) {
+export function EyeLidSelect({ value, placeholder, disabled, typeId, onChange, onRemove }: Props) {
   const { locale } = useI18n();
   const { get } = useSearchQueryParams();
   const animalTypeId = get("animalTypeId");
@@ -27,9 +27,9 @@ export function EyeLidSelect({ value, placeholder, disabled, type, onChange, onR
       disabled={disabled}
       defaultValue={value as MucosaAppearance}
       placeholder={placeholder}
-      queryFn={(search) => useGetEyeLidsInfinite(type, search, animalTypeId || undefined)}
+      queryFn={(search) => useGetEyeLidsInfinite(typeId, search, animalTypeId as string)}
       onSelect={(e: any) => onChange?.(e?.id)}
-      getOptionLabel={item => item?.[`name_${locale}`]}
+      getOptionLabel={item => item?.name?.[locale]}
       // clientSearch={(search, item) =>
       //   searchUtil(search, item, ["id", "name"])
       // }

@@ -1,0 +1,6178 @@
+openapi: 3.0.0
+paths:
+  /:
+    get:
+      operationId: AppController_getHello
+      parameters: []
+      responses:
+        "200":
+          description: ""
+      tags:
+        - App
+  /auth/login:
+    post:
+      operationId: AuthController_login
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthEntity"
+      tags:
+        - auth
+  /auth/refresh:
+    post:
+      operationId: AuthController_refresh
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RefreshTokenDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthEntity"
+      tags:
+        - auth
+  /users:
+    post:
+      operationId: UsersController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserEntity"
+      tags:
+        - users
+    get:
+      operationId: UsersController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: gender
+          required: false
+          in: query
+          description: Filter by user gender (MALE or FEMALE)
+          schema:
+            enum:
+              - MALE
+              - FEMALE
+            type: string
+        - name: role
+          required: false
+          in: query
+          description: Filter by user role (e.g., ADMIN, USER)
+          schema:
+            enum:
+              - ADMIN
+              - VETERINARIAN
+              - FARMER
+            type: string
+        - name: birthDate
+          required: false
+          in: query
+          description: Filter by user birth date in ISO format
+          schema:
+            format: date-time
+            example: "1990-01-01T00:00:00.000Z"
+            type: string
+        - name: districtId
+          required: false
+          in: query
+          description: Filter by district ID
+          schema:
+            example: 10
+            type: number
+        - name: regionId
+          required: false
+          in: query
+          description: Filter by region ID
+          schema:
+            example: 5
+            type: number
+        - name: createdDate
+          required: false
+          in: query
+          description: Filter by user creation date in ISO format
+          schema:
+            format: date-time
+            example: "2024-01-01T00:00:00.000Z"
+            type: string
+        - name: byBirthDate
+          required: false
+          in: query
+          description: Sort by birth date (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: byGender
+          required: false
+          in: query
+          description: Sort by gender (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: byRole
+          required: false
+          in: query
+          description: Sort by role (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: byDistrictId
+          required: false
+          in: query
+          description: Sort by district ID (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: byRegionId
+          required: false
+          in: query
+          description: Sort by region ID (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: byCreatedDate
+          required: false
+          in: query
+          description: Sort by creation date (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedUsersEntity"
+      tags:
+        - users
+  /users/{id}:
+    get:
+      operationId: UsersController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserEntity"
+      tags:
+        - users
+    patch:
+      operationId: UsersController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserEntity"
+      tags:
+        - users
+    delete:
+      operationId: UsersController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserEntity"
+      tags:
+        - users
+  /veterinarians:
+    post:
+      operationId: VeterinariansController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VeterinarianEntity"
+      tags:
+        - veterinarians
+    get:
+      operationId: VeterinariansController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: gender
+          required: false
+          in: query
+          description: Filter by user gender (MALE or FEMALE)
+          schema:
+            enum:
+              - MALE
+              - FEMALE
+            type: string
+        - name: role
+          required: false
+          in: query
+          description: Filter by user role (e.g., ADMIN, USER)
+          schema:
+            enum:
+              - ADMIN
+              - VETERINARIAN
+              - FARMER
+            type: string
+        - name: birthDate
+          required: false
+          in: query
+          description: Filter by user birth date in ISO format
+          schema:
+            format: date-time
+            example: "1990-01-01T00:00:00.000Z"
+            type: string
+        - name: districtId
+          required: false
+          in: query
+          description: Filter by district ID
+          schema:
+            example: 10
+            type: number
+        - name: regionId
+          required: false
+          in: query
+          description: Filter by region ID
+          schema:
+            example: 5
+            type: number
+        - name: createdDate
+          required: false
+          in: query
+          description: Filter by user creation date in ISO format
+          schema:
+            format: date-time
+            example: "2024-01-01T00:00:00.000Z"
+            type: string
+        - name: byBirthDate
+          required: false
+          in: query
+          description: Sort by birth date (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: byGender
+          required: false
+          in: query
+          description: Sort by gender (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: byRole
+          required: false
+          in: query
+          description: Sort by role (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: byDistrictId
+          required: false
+          in: query
+          description: Sort by district ID (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: byRegionId
+          required: false
+          in: query
+          description: Sort by region ID (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: byCreatedDate
+          required: false
+          in: query
+          description: Sort by creation date (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedVeterinariansEntity"
+      tags:
+        - veterinarians
+  /veterinarians/{id}:
+    get:
+      operationId: VeterinariansController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VeterinarianEntity"
+      tags:
+        - veterinarians
+    patch:
+      operationId: VeterinariansController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VeterinarianEntity"
+      tags:
+        - veterinarians
+    delete:
+      operationId: VeterinariansController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserEntity"
+      tags:
+        - veterinarians
+  /farmers:
+    post:
+      operationId: FarmersController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateFarmerDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FarmerEntity"
+      tags:
+        - farmers
+    get:
+      operationId: FarmersController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: gender
+          required: false
+          in: query
+          description: Filter by user gender (MALE or FEMALE)
+          schema:
+            enum:
+              - MALE
+              - FEMALE
+            type: string
+        - name: role
+          required: false
+          in: query
+          description: Filter by user role (e.g., ADMIN, USER)
+          schema:
+            enum:
+              - ADMIN
+              - VETERINARIAN
+              - FARMER
+            type: string
+        - name: birthDate
+          required: false
+          in: query
+          description: Filter by user birth date in ISO format
+          schema:
+            format: date-time
+            example: "1990-01-01T00:00:00.000Z"
+            type: string
+        - name: districtId
+          required: false
+          in: query
+          description: Filter by district ID
+          schema:
+            example: 10
+            type: number
+        - name: regionId
+          required: false
+          in: query
+          description: Filter by region ID
+          schema:
+            example: 5
+            type: number
+        - name: createdDate
+          required: false
+          in: query
+          description: Filter by user creation date in ISO format
+          schema:
+            format: date-time
+            example: "2024-01-01T00:00:00.000Z"
+            type: string
+        - name: byBirthDate
+          required: false
+          in: query
+          description: Sort by birth date (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: byGender
+          required: false
+          in: query
+          description: Sort by gender (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: byRole
+          required: false
+          in: query
+          description: Sort by role (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: byDistrictId
+          required: false
+          in: query
+          description: Sort by district ID (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: byRegionId
+          required: false
+          in: query
+          description: Sort by region ID (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: byCreatedDate
+          required: false
+          in: query
+          description: Sort by creation date (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: veterinarianId
+          required: false
+          in: query
+          description: Filter by veterinarian ID
+          schema:
+            example: 15
+            type: number
+        - name: byVeterinarianId
+          required: false
+          in: query
+          description: Sort by veterinarian ID (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedFarmersEntity"
+      tags:
+        - farmers
+  /farmers/{id}:
+    get:
+      operationId: FarmersController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FarmerEntity"
+      tags:
+        - farmers
+    patch:
+      operationId: FarmersController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateFarmerDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FarmerEntity"
+      tags:
+        - farmers
+    delete:
+      operationId: FarmersController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserEntity"
+      tags:
+        - farmers
+  /animals:
+    post:
+      operationId: AnimalsController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAnimalDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnimalEntity"
+      tags:
+        - animals
+    get:
+      operationId: AnimalsController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: farmerId
+          required: false
+          in: query
+          description: Filter by farmer ID
+          schema:
+            example: 10
+            type: number
+        - name: typeId
+          required: false
+          in: query
+          description: Filter by animal type ID
+          schema:
+            example: 3
+            type: number
+        - name: gender
+          required: false
+          in: query
+          description: Filter by animal gender (MALE or FEMALE)
+          schema:
+            enum:
+              - MALE
+              - FEMALE
+            type: string
+        - name: breedId
+          required: false
+          in: query
+          description: Filter by animal breedId
+          schema:
+            type: number
+        - name: birthDate
+          required: false
+          in: query
+          description: Filter by animal birth date in ISO format
+          schema:
+            format: date-time
+            example: "2020-01-01T00:00:00.000Z"
+            type: string
+        - name: colorId
+          required: false
+          in: query
+          description: Filter by color ID
+          schema:
+            example: 2
+            type: number
+        - name: createdDate
+          required: false
+          in: query
+          description: Filter by creation date in ISO format
+          schema:
+            format: date-time
+            example: "2024-01-01T00:00:00.000Z"
+            type: string
+        - name: byFarmedId
+          required: false
+          in: query
+          description: Sort by farmer ID (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: byTypeId
+          required: false
+          in: query
+          description: Sort by type ID (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: byGender
+          required: false
+          in: query
+          description: Sort by gender (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: byBreedId
+          required: false
+          in: query
+          description: Sort by breed (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: byBirthDate
+          required: false
+          in: query
+          description: Sort by birth date (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: byColorId
+          required: false
+          in: query
+          description: Sort by color ID (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: byCreatedDate
+          required: false
+          in: query
+          description: Sort by creation date (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnimalEntity"
+      tags:
+        - animals
+  /animals/{id}:
+    get:
+      operationId: AnimalsController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnimalEntity"
+      tags:
+        - animals
+    patch:
+      operationId: AnimalsController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateAnimalDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnimalEntity"
+      tags:
+        - animals
+    delete:
+      operationId: AnimalsController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnimalEntity"
+      tags:
+        - animals
+  /vaccines:
+    post:
+      operationId: VaccinesController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateVaccineDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaccineEntity"
+      tags:
+        - vaccines
+    get:
+      operationId: VaccinesController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: date
+          required: false
+          in: query
+          description: Filter by vaccine date in ISO format
+          schema:
+            format: date-time
+            example: "2024-01-01T00:00:00.000Z"
+            type: string
+        - name: typeId
+          required: false
+          in: query
+          description: Filter by vaccine type ID
+          schema:
+            example: 4
+            type: number
+        - name: animalId
+          required: false
+          in: query
+          description: Filter by animal ID
+          schema:
+            example: 15
+            type: number
+        - name: createdDate
+          required: false
+          in: query
+          description: Filter by creation date in ISO format
+          schema:
+            format: date-time
+            example: "2024-01-01T00:00:00.000Z"
+            type: string
+        - name: byDate
+          required: false
+          in: query
+          description: Sort by vaccine date (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: byTypeId
+          required: false
+          in: query
+          description: Sort by vaccine type ID (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: byAnimalId
+          required: false
+          in: query
+          description: Sort by animal ID (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: byCreatedDate
+          required: false
+          in: query
+          description: Sort by creation date (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaccineEntity"
+      tags:
+        - vaccines
+  /vaccines/{id}:
+    get:
+      operationId: VaccinesController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaccineEntity"
+      tags:
+        - vaccines
+    patch:
+      operationId: VaccinesController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateVaccineDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaccineEntity"
+      tags:
+        - vaccines
+    delete:
+      operationId: VaccinesController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaccineEntity"
+      tags:
+        - vaccines
+  /regions:
+    post:
+      operationId: RegionsController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateRegionDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegionEntity"
+      tags:
+        - regions
+    get:
+      operationId: RegionsController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedRegionsEntity"
+      tags:
+        - regions
+  /regions/{id}:
+    get:
+      operationId: RegionsController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegionEntity"
+      tags:
+        - regions
+    patch:
+      operationId: RegionsController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateRegionDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegionEntity"
+      tags:
+        - regions
+    delete:
+      operationId: RegionsController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegionEntity"
+      tags:
+        - regions
+  /districts:
+    post:
+      operationId: DistrictsController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDistrictDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DistrictEntity"
+      tags:
+        - districts
+    get:
+      operationId: DistrictsController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedDistrictsEntity"
+      tags:
+        - districts
+  /districts/{id}:
+    get:
+      operationId: DistrictsController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DistrictEntity"
+      tags:
+        - districts
+    patch:
+      operationId: DistrictsController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateDistrictDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DistrictEntity"
+      tags:
+        - districts
+    delete:
+      operationId: DistrictsController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DistrictEntity"
+      tags:
+        - districts
+  /vet-stations:
+    post:
+      operationId: VetStationsController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateVetStationDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VetStationEntity"
+      tags:
+        - vet-stations
+    get:
+      operationId: VetStationsController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedVetStationsEntity"
+      tags:
+        - vet-stations
+  /vet-stations/{id}:
+    get:
+      operationId: VetStationsController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VetStationEntity"
+      tags:
+        - vet-stations
+    patch:
+      operationId: VetStationsController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateVetStationDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VetStationEntity"
+      tags:
+        - vet-stations
+    delete:
+      operationId: VetStationsController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VetStationEntity"
+      tags:
+        - vet-stations
+  /animal-types:
+    post:
+      operationId: AnimalTypesController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAnimalTypeDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnimalTypeEntity"
+      tags:
+        - animal-types
+    get:
+      operationId: AnimalTypesController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedAnimalTypesEntity"
+      tags:
+        - animal-types
+  /animal-types/{id}:
+    get:
+      operationId: AnimalTypesController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnimalTypeEntity"
+      tags:
+        - animal-types
+    patch:
+      operationId: AnimalTypesController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateAnimalTypeDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnimalTypeEntity"
+      tags:
+        - animal-types
+    delete:
+      operationId: AnimalTypesController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnimalTypeEntity"
+      tags:
+        - animal-types
+  /colors:
+    post:
+      operationId: ColorsController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateColorDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ColorEntity"
+      tags:
+        - colors
+    get:
+      operationId: ColorsController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedColorsEntity"
+      tags:
+        - colors
+  /colors/{id}:
+    get:
+      operationId: ColorsController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ColorEntity"
+      tags:
+        - colors
+    patch:
+      operationId: ColorsController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateColorDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ColorEntity"
+      tags:
+        - colors
+    delete:
+      operationId: ColorsController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ColorEntity"
+      tags:
+        - colors
+  /urine-colors:
+    post:
+      operationId: UrineColorsController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUrineColorDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UrineColorEntity"
+      tags:
+        - urine-colors
+    get:
+      operationId: UrineColorsController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedUrineColorsEntity"
+      tags:
+        - urine-colors
+  /urine-colors/{id}:
+    get:
+      operationId: UrineColorsController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UrineColorEntity"
+      tags:
+        - urine-colors
+    patch:
+      operationId: UrineColorsController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUrineColorDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UrineColorEntity"
+      tags:
+        - urine-colors
+    delete:
+      operationId: UrineColorsController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UrineColorEntity"
+      tags:
+        - urine-colors
+  /dung-colors:
+    post:
+      operationId: DungColorsController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDungColorDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DungColorEntity"
+      tags:
+        - dung-colors
+    get:
+      operationId: DungColorsController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedDungColorsEntity"
+      tags:
+        - dung-colors
+  /dung-colors/{id}:
+    get:
+      operationId: DungColorsController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DungColorEntity"
+      tags:
+        - dung-colors
+    patch:
+      operationId: DungColorsController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateDungColorDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DungColorEntity"
+      tags:
+        - dung-colors
+    delete:
+      operationId: DungColorsController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DungColorEntity"
+      tags:
+        - dung-colors
+  /leather-covers:
+    post:
+      operationId: LeatherCoversController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateLeatherCoverDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeatherCoverEntity"
+      tags:
+        - leather-covers
+    get:
+      operationId: LeatherCoversController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedLeatherCoversEntity"
+      tags:
+        - leather-covers
+  /leather-covers/{id}:
+    get:
+      operationId: LeatherCoversController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeatherCoverEntity"
+      tags:
+        - leather-covers
+    patch:
+      operationId: LeatherCoversController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateLeatherCoverDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeatherCoverEntity"
+      tags:
+        - leather-covers
+    delete:
+      operationId: LeatherCoversController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeatherCoverEntity"
+      tags:
+        - leather-covers
+  /eyelids:
+    post:
+      operationId: EyelidsController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateEyelidDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EyelidEntity"
+      tags:
+        - eyelids
+    get:
+      operationId: EyelidsController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedEyelidsEntity"
+      tags:
+        - eyelids
+  /eyelids/{id}:
+    get:
+      operationId: EyelidsController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EyelidEntity"
+      tags:
+        - eyelids
+    patch:
+      operationId: EyelidsController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateEyelidDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EyelidEntity"
+      tags:
+        - eyelids
+    delete:
+      operationId: EyelidsController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EyelidEntity"
+      tags:
+        - eyelids
+  /vaccine-types:
+    post:
+      operationId: VaccineTypesController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateVaccineTypeDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaccineTypeEntity"
+      tags:
+        - vaccine-types
+    get:
+      operationId: VaccineTypesController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedVaccineTypesEntity"
+      tags:
+        - vaccine-types
+  /vaccine-types/{id}:
+    get:
+      operationId: VaccineTypesController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaccineTypeEntity"
+      tags:
+        - vaccine-types
+    patch:
+      operationId: VaccineTypesController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateVaccineTypeDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaccineTypeEntity"
+      tags:
+        - vaccine-types
+    delete:
+      operationId: VaccineTypesController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaccineTypeEntity"
+      tags:
+        - vaccine-types
+  /disease-types:
+    post:
+      operationId: DiseaseTypesController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDiseaseTypeDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DiseaseTypeEntity"
+      tags:
+        - disease-types
+    get:
+      operationId: DiseaseTypesController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedDiseaseTypesEntity"
+      tags:
+        - disease-types
+  /disease-types/{id}:
+    get:
+      operationId: DiseaseTypesController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DiseaseTypeEntity"
+      tags:
+        - disease-types
+    patch:
+      operationId: DiseaseTypesController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateDiseaseTypeDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DiseaseTypeEntity"
+      tags:
+        - disease-types
+    delete:
+      operationId: DiseaseTypesController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DiseaseTypeEntity"
+      tags:
+        - disease-types
+  /breeds:
+    post:
+      operationId: BreedsController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateBreedDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BreedEntity"
+      tags:
+        - breeds
+    get:
+      operationId: BreedsController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedBreedsEntity"
+      tags:
+        - breeds
+  /breeds/{id}:
+    get:
+      operationId: BreedsController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BreedEntity"
+      tags:
+        - breeds
+    patch:
+      operationId: BreedsController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateBreedDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BreedEntity"
+      tags:
+        - breeds
+    delete:
+      operationId: BreedsController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BreedEntity"
+      tags:
+        - breeds
+  /general-inspections:
+    post:
+      operationId: GeneralInspectionController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateGeneralInspectionDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralInspectionEntity"
+      tags:
+        - general-inspections
+    get:
+      operationId: GeneralInspectionController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: animalId
+          required: false
+          in: query
+          description: Filter by animal id
+          schema:
+            example: 1
+            type: number
+        - name: createdDate
+          required: false
+          in: query
+          description: Filter by user creation date in ISO format
+          schema:
+            format: date-time
+            example: "2024-01-01T00:00:00.000Z"
+            type: string
+        - name: byCreatedDate
+          required: false
+          in: query
+          description: Sort by creation date (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedGeneralInspectionEntity"
+      tags:
+        - general-inspections
+  /general-inspections/{id}:
+    get:
+      operationId: GeneralInspectionController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralInspectionEntity"
+      tags:
+        - general-inspections
+    patch:
+      operationId: GeneralInspectionController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateGeneralInspectionDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralInspectionEntity"
+      tags:
+        - general-inspections
+    delete:
+      operationId: GeneralInspectionController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralInspectionEntity"
+      tags:
+        - general-inspections
+  /inspections:
+    post:
+      operationId: InspectionsController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateInspectionDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InspectionEntity"
+      tags:
+        - inspections
+    get:
+      operationId: InspectionsController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: animalId
+          required: false
+          in: query
+          description: Filter by animal id
+          schema:
+            example: 1
+            type: number
+        - name: createdDate
+          required: false
+          in: query
+          description: Filter by user creation date in ISO format
+          schema:
+            format: date-time
+            example: "2024-01-01T00:00:00.000Z"
+            type: string
+        - name: byCreatedDate
+          required: false
+          in: query
+          description: Sort by creation date (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedInspectionEntity"
+      tags:
+        - inspections
+  /inspections/{id}:
+    get:
+      operationId: InspectionsController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InspectionEntity"
+      tags:
+        - inspections
+    patch:
+      operationId: InspectionsController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateInspectionDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InspectionEntity"
+      tags:
+        - inspections
+    delete:
+      operationId: InspectionsController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InspectionEntity"
+      tags:
+        - inspections
+  /diseases:
+    post:
+      operationId: DiseasesController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDiseaseDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DiseaseEntity"
+      tags:
+        - diseases
+    get:
+      operationId: DiseasesController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: animalId
+          required: false
+          in: query
+          description: Filter by animal id
+          schema:
+            example: 1
+            type: number
+        - name: createdDate
+          required: false
+          in: query
+          description: Filter by user creation date in ISO format
+          schema:
+            format: date-time
+            example: "2024-01-01T00:00:00.000Z"
+            type: string
+        - name: byCreatedDate
+          required: false
+          in: query
+          description: Sort by creation date (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedDiseaseEntity"
+      tags:
+        - diseases
+  /diseases/{id}:
+    get:
+      operationId: DiseasesController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DiseaseEntity"
+      tags:
+        - diseases
+    patch:
+      operationId: DiseasesController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateDiseaseDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DiseaseEntity"
+      tags:
+        - diseases
+    delete:
+      operationId: DiseasesController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DiseaseEntity"
+      tags:
+        - diseases
+  /general-blood-tests:
+    post:
+      operationId: GeneralBloodTestController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateGeneralBloodTestDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralBloodTestEntity"
+      tags:
+        - general-blood-tests
+    get:
+      operationId: GeneralBloodTestController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: animalId
+          required: false
+          in: query
+          description: Filter by animal id
+          schema:
+            example: 1
+            type: number
+        - name: createdDate
+          required: false
+          in: query
+          description: Filter by user creation date in ISO format
+          schema:
+            format: date-time
+            example: "2024-01-01T00:00:00.000Z"
+            type: string
+        - name: byCreatedDate
+          required: false
+          in: query
+          description: Sort by creation date (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedGeneralBloodTestEntity"
+      tags:
+        - general-blood-tests
+  /general-blood-tests/{id}:
+    get:
+      operationId: GeneralBloodTestController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralBloodTestEntity"
+      tags:
+        - general-blood-tests
+    patch:
+      operationId: GeneralBloodTestController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateGeneralBloodTestDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralBloodTestEntity"
+      tags:
+        - general-blood-tests
+    delete:
+      operationId: GeneralBloodTestController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralBloodTestEntity"
+      tags:
+        - general-blood-tests
+  /blood-serum-tests:
+    post:
+      operationId: BloodSerumTestsController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateBloodSerumTestDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BloodSerumTestEntity"
+      tags:
+        - blood-serum-tests
+    get:
+      operationId: BloodSerumTestsController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: animalId
+          required: false
+          in: query
+          description: Filter by animal id
+          schema:
+            example: 1
+            type: number
+        - name: createdDate
+          required: false
+          in: query
+          description: Filter by user creation date in ISO format
+          schema:
+            format: date-time
+            example: "2024-01-01T00:00:00.000Z"
+            type: string
+        - name: byCreatedDate
+          required: false
+          in: query
+          description: Sort by creation date (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedBloodSerumTestEntity"
+      tags:
+        - blood-serum-tests
+  /blood-serum-tests/{id}:
+    get:
+      operationId: BloodSerumTestsController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BloodSerumTestEntity"
+      tags:
+        - blood-serum-tests
+    patch:
+      operationId: BloodSerumTestsController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateBloodSerumTestDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BloodSerumTestEntity"
+      tags:
+        - blood-serum-tests
+    delete:
+      operationId: BloodSerumTestsController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BloodSerumTestEntity"
+      tags:
+        - blood-serum-tests
+  /urine-tests:
+    post:
+      operationId: UrineTestsController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUrineTestDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UrineTestEntity"
+      tags:
+        - urine-tests
+    get:
+      operationId: UrineTestsController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: animalId
+          required: false
+          in: query
+          description: Filter by animal id
+          schema:
+            example: 1
+            type: number
+        - name: createdDate
+          required: false
+          in: query
+          description: Filter by user creation date in ISO format
+          schema:
+            format: date-time
+            example: "2024-01-01T00:00:00.000Z"
+            type: string
+        - name: byCreatedDate
+          required: false
+          in: query
+          description: Sort by creation date (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedUrineTestEntity"
+      tags:
+        - urine-tests
+  /urine-tests/{id}:
+    get:
+      operationId: UrineTestsController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UrineTestEntity"
+      tags:
+        - urine-tests
+    patch:
+      operationId: UrineTestsController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUrineTestDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UrineTestEntity"
+      tags:
+        - urine-tests
+    delete:
+      operationId: UrineTestsController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UrineTestEntity"
+      tags:
+        - urine-tests
+  /dung-tests:
+    post:
+      operationId: DungTestsController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDungTestDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DungTestEntity"
+      tags:
+        - dung-tests
+    get:
+      operationId: DungTestsController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: animalId
+          required: false
+          in: query
+          description: Filter by animal id
+          schema:
+            example: 1
+            type: number
+        - name: createdDate
+          required: false
+          in: query
+          description: Filter by user creation date in ISO format
+          schema:
+            format: date-time
+            example: "2024-01-01T00:00:00.000Z"
+            type: string
+        - name: byCreatedDate
+          required: false
+          in: query
+          description: Sort by creation date (ASC or DESC)
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedDungTestEntity"
+      tags:
+        - dung-tests
+  /dung-tests/{id}:
+    get:
+      operationId: DungTestsController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DungTestEntity"
+      tags:
+        - dung-tests
+    patch:
+      operationId: DungTestsController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateDungTestDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DungTestEntity"
+      tags:
+        - dung-tests
+    delete:
+      operationId: DungTestsController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DungTestEntity"
+      tags:
+        - dung-tests
+info:
+  title: dr-ikramov
+  description: The dr-ikramov API description
+  version: "0.1"
+  contact: {}
+tags: []
+servers:
+  - url: /
+components:
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+  schemas:
+    AuthDto:
+      type: object
+      properties:
+        phone:
+          type: string
+          example: "+998901234567"
+        password:
+          type: string
+          example: 123qazwsx
+      required:
+        - phone
+        - password
+    AuthEntity:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          readOnly: true
+        refreshToken:
+          type: string
+          readOnly: true
+        userId:
+          type: number
+          readOnly: true
+        userRole:
+          type: string
+          readOnly: true
+        veterinarianId:
+          type: number
+          readOnly: true
+        farmerId:
+          type: number
+          readOnly: true
+      required:
+        - accessToken
+        - refreshToken
+        - userId
+        - userRole
+        - veterinarianId
+        - farmerId
+    RefreshTokenDto:
+      type: object
+      properties:
+        refreshToken:
+          type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTczMzIzMTAyNCwiZXhwIjoxNzMzODM1ODI0fQ.DNcX3QHIowkFxfw88Nh6pMXJNSqNPlZBYsf6uSW96dk
+      required:
+        - refreshToken
+    CreateUserDto:
+      type: object
+      properties:
+        phone:
+          type: string
+          description: The user's phone number in international format
+          example: "+998901234567"
+        password:
+          type: string
+          description: The user's password (hashed)
+          example: 123qazwsx
+        firstName:
+          type: string
+          description: The user's first name
+          example: John
+        lastName:
+          type: string
+          description: The user's last name
+          example: Doe
+        middleName:
+          type: string
+          description: The user's middle name
+          example: Smith
+          nullable: true
+        gender:
+          type: string
+          description: The user's gender
+          enum:
+            - MALE
+            - FEMALE
+          nullable: true
+          example: MALE
+        birthDate:
+          type: object
+          description: The user's birthdate
+          example: "2000-01-01"
+          nullable: true
+        districtId:
+          type: number
+          description: The identifier of the user's district
+          example: 101
+        address:
+          type: string
+          description: The user's residential address
+          example: 123 Main St, Springfield
+          nullable: true
+        role:
+          type: string
+          description: The user's role in the system
+          enum:
+            - ADMIN
+            - VETERINARIAN
+            - FARMER
+          example: ADMIN
+      required:
+        - phone
+        - password
+        - firstName
+        - lastName
+        - districtId
+        - role
+    UserEntity:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identifier of the user
+          example: 1
+        phone:
+          type: string
+          description: User's phone number
+          example: "+1234567890"
+        firstName:
+          type: string
+          description: First name of the user
+          example: John
+        lastName:
+          type: string
+          description: Last name of the user
+          example: Doe
+        middleName:
+          type: string
+          description: Middle name of the user
+          example: Smith
+        gender:
+          type: string
+          description: Gender of the user
+          enum:
+            - MALE
+            - FEMALE
+          example: MALE
+        birthDate:
+          type: string
+          description: User's birthdate
+          example: "2000-01-01"
+        districtId:
+          type: number
+          description: District identifier associated with the user
+          example: 101
+        address:
+          type: string
+          description: Residential address of the user
+          example: 123 Main St, Springfield
+        role:
+          type: string
+          description: User's role in the system
+          enum:
+            - ADMIN
+            - VETERINARIAN
+            - FARMER
+          example: ADMIN
+        createdAt:
+          type: string
+          description: Record creation timestamp
+          example: "2024-01-01T00:00:00.000Z"
+        updatedAt:
+          type: string
+          description: Record last update timestamp
+          example: "2024-01-10T00:00:00.000Z"
+      required:
+        - id
+        - phone
+        - firstName
+        - lastName
+        - gender
+        - birthDate
+        - districtId
+        - address
+        - role
+        - createdAt
+        - updatedAt
+    MetaDateEntity:
+      type: object
+      properties:
+        total:
+          type: number
+          example: 50
+        lastPage:
+          type: number
+          example: 5
+        currentPage:
+          type: number
+          example: 1
+        perPage:
+          type: number
+          example: 10
+        prev:
+          type: number
+          example: null
+        next:
+          type: number
+          example: 2
+      required:
+        - total
+        - lastPage
+        - currentPage
+        - perPage
+        - prev
+        - next
+    PaginatedUsersEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserEntity"
+        meta:
+          $ref: "#/components/schemas/MetaDateEntity"
+      required:
+        - data
+        - meta
+    UpdateUserDto:
+      type: object
+      properties:
+        phone:
+          type: string
+          description: The user's phone number in international format
+          example: "+998901234567"
+        password:
+          type: string
+          description: The user's password (hashed)
+          example: 123qazwsx
+        firstName:
+          type: string
+          description: The user's first name
+          example: John
+        lastName:
+          type: string
+          description: The user's last name
+          example: Doe
+        middleName:
+          type: string
+          description: The user's middle name
+          example: Smith
+          nullable: true
+        gender:
+          type: string
+          description: The user's gender
+          enum:
+            - MALE
+            - FEMALE
+          nullable: true
+          example: MALE
+        birthDate:
+          type: object
+          description: The user's birthdate
+          example: "2000-01-01"
+          nullable: true
+        districtId:
+          type: number
+          description: The identifier of the user's district
+          example: 101
+        address:
+          type: string
+          description: The user's residential address
+          example: 123 Main St, Springfield
+          nullable: true
+        role:
+          type: string
+          description: The user's role in the system
+          enum:
+            - ADMIN
+            - VETERINARIAN
+            - FARMER
+          example: ADMIN
+    VeterinarianEntity:
+      type: object
+      properties:
+        userPtrId:
+          type: number
+          description: Unique identifier of the veterinarian that points to user
+          example: -2
+        user:
+          description: User data associated with the veterinarian
+          allOf:
+            - $ref: "#/components/schemas/UserEntity"
+      required:
+        - userPtrId
+        - user
+    PaginatedVeterinariansEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/VeterinarianEntity"
+        meta:
+          $ref: "#/components/schemas/MetaDateEntity"
+      required:
+        - data
+        - meta
+    CreateFarmerDto:
+      type: object
+      properties:
+        phone:
+          type: string
+          description: The user's phone number in international format
+          example: "+998901234566"
+        password:
+          type: string
+          description: The user's password (hashed)
+          example: hashed_password_string
+        firstName:
+          type: string
+          description: The user's first name
+          example: John
+        lastName:
+          type: string
+          description: The user's last name
+          example: Doe
+        middleName:
+          type: string
+          description: The user's middle name
+          example: Smith
+          nullable: true
+        gender:
+          type: string
+          description: The user's gender
+          enum:
+            - MALE
+            - FEMALE
+          nullable: true
+          example: MALE
+        birthDate:
+          type: object
+          description: The user's birthdate
+          example: "1999-01-01"
+          nullable: true
+        districtId:
+          type: number
+          description: The identifier of the user's district
+          example: 100
+        address:
+          type: string
+          description: The user's residential address
+          example: 122 Main St, Springfield
+          nullable: true
+        veterinarianId:
+          type: number
+          description: The identifier of the user's district
+          example: 9
+      required:
+        - phone
+        - password
+        - firstName
+        - lastName
+        - districtId
+        - veterinarianId
+    FarmerEntity:
+      type: object
+      properties:
+        userPtrId:
+          type: number
+          description: Unique identifier of the farmer that points to user
+          example: 1
+        user:
+          description: User data associated with the farmer
+          allOf:
+            - $ref: "#/components/schemas/UserEntity"
+        veterinarianId:
+          type: number
+          description: Veterinarian ID associated with the farmer
+          example: 15
+        veterinarian:
+          description: Veterinarian data associated with the farmer
+          allOf:
+            - $ref: "#/components/schemas/VeterinarianEntity"
+      required:
+        - userPtrId
+        - user
+        - veterinarianId
+        - veterinarian
+    PaginatedFarmersEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/FarmerEntity"
+        meta:
+          $ref: "#/components/schemas/MetaDateEntity"
+      required:
+        - data
+        - meta
+    UpdateFarmerDto:
+      type: object
+      properties:
+        phone:
+          type: string
+          description: The user's phone number in international format
+          example: "+998901234566"
+        password:
+          type: string
+          description: The user's password (hashed)
+          example: hashed_password_string
+        firstName:
+          type: string
+          description: The user's first name
+          example: John
+        lastName:
+          type: string
+          description: The user's last name
+          example: Doe
+        middleName:
+          type: string
+          description: The user's middle name
+          example: Smith
+          nullable: true
+        gender:
+          type: string
+          description: The user's gender
+          enum:
+            - MALE
+            - FEMALE
+          nullable: true
+          example: MALE
+        birthDate:
+          type: object
+          description: The user's birthdate
+          example: "1999-01-01"
+          nullable: true
+        districtId:
+          type: number
+          description: The identifier of the user's district
+          example: 100
+        address:
+          type: string
+          description: The user's residential address
+          example: 122 Main St, Springfield
+          nullable: true
+        veterinarianId:
+          type: number
+          description: The identifier of the user's district
+          example: 9
+    CreateAnimalDto:
+      type: object
+      properties:
+        arrivalDate:
+          type: string
+          description: Date when the animal arrived
+          example: "2023-12-11T00:00:00Z"
+          format: date-time
+        farmerId:
+          type: number
+          description: ID of the farmer who owns the animal
+          example: 1
+        typeId:
+          type: number
+          description: ID representing the type of the animal
+          example: 5
+        nameOrCode:
+          type: string
+          description: Name or code of the animal
+          example: Bella
+          maxLength: 50
+          minLength: 1
+        gender:
+          type: string
+          description: Gender of the animal
+          example: MALE
+          enum:
+            - MALE
+            - FEMALE
+        breedId:
+          type: number
+          description: Breed of the animal
+          example: 1
+        birthDate:
+          type: string
+          description: Birth date of the animal
+          example: "2023-01-01T00:00:00Z"
+          format: date-time
+        weight:
+          type: number
+          description: Weight of the animal in kilograms
+          example: 150.5
+        colorId:
+          type: number
+          description: ID of the color representing the animal
+          example: 3
+      required:
+        - arrivalDate
+        - farmerId
+        - typeId
+        - nameOrCode
+        - gender
+        - breedId
+        - birthDate
+        - weight
+        - colorId
+    AnimalEntity:
+      type: object
+      properties:
+        nameOrCode:
+          type: string
+          description: Name of the animal
+          example: Bella
+        id:
+          type: number
+          description: Unique identifier of the animal
+          example: 1
+        idCode:
+          type: string
+          description: Unique identification code for the animal
+          example: A123456789
+        arrivalDate:
+          type: string
+          description: The date the animal arrived
+          example: "2023-12-11T00:00:00Z"
+          format: date-time
+        farmerId:
+          type: number
+          description: ID of the farmer associated with the animal
+          example: 42
+        typeId:
+          type: number
+          description: ID of the type of the animal
+          example: 5
+        gender:
+          type: string
+          description: Gender of the animal
+          example: MALE
+          enum:
+            - MALE
+            - FEMALE
+        breedId:
+          type: number
+          description: Breed of the animal
+          example: 1
+        birthDate:
+          type: string
+          description: Birth date of the animal
+          example: "2023-01-01T00:00:00Z"
+          format: date-time
+        weight:
+          type: number
+          description: Weight of the animal in kilograms
+          example: 150.5
+        address:
+          type: string
+          description: Address where the animal is located
+          example: 123 Farm Street
+        colorId:
+          type: number
+          description: ID of the color associated with the animal
+          example: 3
+        createdAt:
+          type: string
+          description: Date when the animal record was created
+          example: "2023-12-01T00:00:00Z"
+          format: date-time
+        updatedAt:
+          type: string
+          description: Date when the animal record was last updated
+          example: "2023-12-10T00:00:00Z"
+          format: date-time
+      required:
+        - nameOrCode
+        - id
+        - idCode
+        - arrivalDate
+        - farmerId
+        - typeId
+        - gender
+        - breedId
+        - birthDate
+        - weight
+        - address
+        - colorId
+        - createdAt
+        - updatedAt
+    UpdateAnimalDto:
+      type: object
+      properties:
+        arrivalDate:
+          type: string
+          description: Date when the animal arrived
+          example: "2023-12-11T00:00:00Z"
+          format: date-time
+        farmerId:
+          type: number
+          description: ID of the farmer who owns the animal
+          example: 1
+        typeId:
+          type: number
+          description: ID representing the type of the animal
+          example: 5
+        nameOrCode:
+          type: string
+          description: Name or code of the animal
+          example: Bella
+          maxLength: 50
+          minLength: 1
+        gender:
+          type: string
+          description: Gender of the animal
+          example: MALE
+          enum:
+            - MALE
+            - FEMALE
+        breedId:
+          type: number
+          description: Breed of the animal
+          example: 1
+        birthDate:
+          type: string
+          description: Birth date of the animal
+          example: "2023-01-01T00:00:00Z"
+          format: date-time
+        weight:
+          type: number
+          description: Weight of the animal in kilograms
+          example: 150.5
+        colorId:
+          type: number
+          description: ID of the color representing the animal
+          example: 3
+    CreateVaccineDto:
+      type: object
+      properties:
+        date:
+          type: string
+          description: The date when the vaccine was administered
+          example: "2023-12-11T00:00:00Z"
+          format: date-time
+        typeId:
+          type: number
+          description: ID of the vaccine type
+          example: 2
+        animalId:
+          type: number
+          description: ID of the animal that received the vaccine
+          example: 10
+      required:
+        - date
+        - typeId
+        - animalId
+    VaccineEntity:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identifier of the vaccine
+          example: 1
+        date:
+          type: string
+          description: Date when the vaccine was administered
+          example: "2023-12-11T00:00:00Z"
+          format: date-time
+        typeId:
+          type: number
+          description: ID of the vaccine type
+          example: 2
+        animalId:
+          type: number
+          description: ID of the animal that received the vaccine
+          example: 10
+        createdAt:
+          type: string
+          description: Date when the vaccine record was created
+          example: "2023-12-01T00:00:00Z"
+          format: date-time
+        updatedAt:
+          type: string
+          description: Date when the vaccine record was last updated
+          example: "2023-12-10T00:00:00Z"
+          format: date-time
+      required:
+        - id
+        - date
+        - typeId
+        - animalId
+        - createdAt
+        - updatedAt
+    UpdateVaccineDto:
+      type: object
+      properties:
+        date:
+          type: string
+          description: The date when the vaccine was administered
+          example: "2023-12-11T00:00:00Z"
+          format: date-time
+        typeId:
+          type: number
+          description: ID of the vaccine type
+          example: 2
+        animalId:
+          type: number
+          description: ID of the animal that received the vaccine
+          example: 10
+    CreateRegionDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the region
+          example: North
+      required:
+        - name
+    RegionEntity:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identifier of the region
+          example: 1
+        name:
+          type: string
+          description: Name of the region
+          example: Tashkent Region
+      required:
+        - id
+        - name
+    PaginatedRegionsEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/RegionEntity"
+        meta:
+          $ref: "#/components/schemas/MetaDateEntity"
+      required:
+        - data
+        - meta
+    UpdateRegionDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the region
+          example: North
+    CreateDistrictDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the district
+          example: Downtown
+        regionId:
+          type: number
+          description: The ID of the region
+          example: 1
+      required:
+        - name
+        - regionId
+    DistrictEntity:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identifier of the district
+          example: 1
+        name:
+          type: string
+          description: Name of the district
+          example: Tashkent District
+        regionId:
+          type: number
+          description: Region identifier associated with the district
+          example: 2
+      required:
+        - id
+        - name
+        - regionId
+    PaginatedDistrictsEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/DistrictEntity"
+        meta:
+          $ref: "#/components/schemas/MetaDateEntity"
+      required:
+        - data
+        - meta
+    UpdateDistrictDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the district
+          example: Downtown
+        regionId:
+          type: number
+          description: The ID of the region
+          example: 1
+    CreateVetStationDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the vet station
+          example: Downtown Vet Station
+        address:
+          type: string
+          description: The address of the vet station
+          example: 123 Main St
+        districtId:
+          type: number
+          description: The ID of the district
+          example: 1
+      required:
+        - name
+        - address
+        - districtId
+    VetStationEntity:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identifier of the veterinary station
+          example: 1
+        name:
+          type: string
+          description: Name of the veterinary station
+          example: Central Vet Station
+        address:
+          type: string
+          description: Address of the veterinary station
+          example: 123 Vet Street, Tashkent
+        districtId:
+          type: number
+          description: District identifier associated with the veterinary station
+          example: 2
+        createdAt:
+          type: string
+          description: Timestamp when the record was created
+          example: "2023-12-01T00:00:00Z"
+          format: date-time
+        updatedAt:
+          type: string
+          description: Timestamp when the record was last updated
+          example: "2023-12-10T00:00:00Z"
+          format: date-time
+      required:
+        - id
+        - name
+        - address
+        - districtId
+        - createdAt
+        - updatedAt
+    PaginatedVetStationsEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/VetStationEntity"
+        meta:
+          $ref: "#/components/schemas/MetaDateEntity"
+      required:
+        - data
+        - meta
+    UpdateVetStationDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the vet station
+          example: Downtown Vet Station
+        address:
+          type: string
+          description: The address of the vet station
+          example: 123 Main St
+        districtId:
+          type: number
+          description: The ID of the district
+          example: 1
+    CreateAnimalTypeDto:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+        - name
+    AnimalTypeEntity:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identifier of the animal type
+          example: 1
+        name:
+          type: string
+          description: Name of the animal type
+          example: Cattle
+      required:
+        - id
+        - name
+    PaginatedAnimalTypesEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/AnimalTypeEntity"
+        meta:
+          $ref: "#/components/schemas/MetaDateEntity"
+      required:
+        - data
+        - meta
+    UpdateAnimalTypeDto:
+      type: object
+      properties:
+        name:
+          type: string
+    CreateColorDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the color
+          example: Red
+        hex:
+          type: string
+          description: The hex code of the color
+          example: "#FF0000"
+      required:
+        - name
+        - hex
+    ColorEntity:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identifier of the color
+          example: 1
+        name:
+          type: string
+          description: Name of the color
+          example: Brown
+        hex:
+          type: string
+          description: Hex code representing the color
+          example: "#A52A2A"
+      required:
+        - id
+        - name
+        - hex
+    PaginatedColorsEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/ColorEntity"
+        meta:
+          $ref: "#/components/schemas/MetaDateEntity"
+      required:
+        - data
+        - meta
+    UpdateColorDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the color
+          example: Red
+        hex:
+          type: string
+          description: The hex code of the color
+          example: "#FF0000"
+    CreateUrineColorDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the urine color
+          example: Yellow
+      required:
+        - name
+    UrineColorEntity:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identifier of the urine color
+          example: 1
+        name:
+          type: string
+          description: Name of the urine color
+          example: Clear
+      required:
+        - id
+        - name
+    PaginatedUrineColorsEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/UrineColorEntity"
+        meta:
+          $ref: "#/components/schemas/MetaDateEntity"
+      required:
+        - data
+        - meta
+    UpdateUrineColorDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the urine color
+          example: Yellow
+    CreateDungColorDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the dung color
+          example: Brown
+      required:
+        - name
+    DungColorEntity:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identifier of the stool color
+          example: 1
+        name:
+          type: string
+          description: Name of the stool color
+          example: Yellow
+      required:
+        - id
+        - name
+    PaginatedDungColorsEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/DungColorEntity"
+        meta:
+          $ref: "#/components/schemas/MetaDateEntity"
+      required:
+        - data
+        - meta
+    UpdateDungColorDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the dung color
+          example: Brown
+    CreateLeatherCoverDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the leather cover
+          example: Example
+      required:
+        - name
+    LeatherCoverEntity:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identifier of the stool color
+          example: 1
+        name:
+          type: string
+          description: Name of the leather cover
+          example: Example
+      required:
+        - id
+        - name
+    PaginatedLeatherCoversEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/LeatherCoverEntity"
+        meta:
+          $ref: "#/components/schemas/MetaDateEntity"
+      required:
+        - data
+        - meta
+    UpdateLeatherCoverDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the leather cover
+          example: Example
+    CreateEyelidDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the eyelid
+          example: Example
+      required:
+        - name
+    EyelidEntity:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identifier of the stool color
+          example: 1
+        name:
+          type: string
+          description: Name of the eyelid
+          example: Example
+      required:
+        - id
+        - name
+    PaginatedEyelidsEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/EyelidEntity"
+        meta:
+          $ref: "#/components/schemas/MetaDateEntity"
+      required:
+        - data
+        - meta
+    UpdateEyelidDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the eyelid
+          example: Example
+    CreateVaccineTypeDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the vaccine type
+          example: Flu Vaccine
+      required:
+        - name
+    VaccineTypeEntity:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identifier of the vaccine type
+          example: 1
+        name:
+          type: string
+          description: Name of the vaccine type
+          example: Rabies Vaccine
+      required:
+        - id
+        - name
+    PaginatedVaccineTypesEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/VaccineTypeEntity"
+        meta:
+          $ref: "#/components/schemas/MetaDateEntity"
+      required:
+        - data
+        - meta
+    UpdateVaccineTypeDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the vaccine type
+          example: Flu Vaccine
+    CreateDiseaseTypeDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the disease type
+          example: Flu
+      required:
+        - name
+    DiseaseTypeEntity:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identifier of the disease type
+          example: 1
+        name:
+          type: string
+          description: Name of the disease type
+          example: Foot-and-Mouth Disease
+      required:
+        - id
+        - name
+    PaginatedDiseaseTypesEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/DiseaseTypeEntity"
+        meta:
+          $ref: "#/components/schemas/MetaDateEntity"
+      required:
+        - data
+        - meta
+    UpdateDiseaseTypeDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the disease type
+          example: Flu
+    CreateBreedDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the breed
+          example: Angus
+        parentId:
+          type: number
+          description: The ID of the parent breed
+          example: 1
+      required:
+        - name
+    BreedEntity:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identifier of the color
+          example: 1
+        name:
+          type: string
+          description: Name of the color
+          example: Brown
+        parentId:
+          type: number
+          description: ID of the parent breed
+          example: 1
+      required:
+        - id
+        - name
+    PaginatedBreedsEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/BreedEntity"
+        meta:
+          $ref: "#/components/schemas/MetaDateEntity"
+      required:
+        - data
+        - meta
+    UpdateBreedDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the breed
+          example: Angus
+        parentId:
+          type: number
+          description: The ID of the parent breed
+          example: 1
+    CreateGeneralInspectionDto:
+      type: object
+      properties:
+        animalId:
+          type: number
+          description: The ID of the animal undergoing the general inspection.
+          example: 101
+        bodyType:
+          type: string
+          description: The body type of the animal.
+          enum:
+            - WEAK
+            - MEDIUM
+            - STRONG
+          example: MEDIUM
+        bodyStructure:
+          type: string
+          description: The body structure of the animal.
+          enum:
+            - COARSE
+            - SLIM
+            - DENSE
+            - WEAK
+          example: COARSE
+        bodyPosition:
+          type: string
+          description: The body position of the animal.
+          enum:
+            - NATURAL
+            - FORCED
+            - FORCED_STANDING
+            - FORCED_LYING
+            - FORCED_SITTING
+            - NON_THERAPEUTIC
+          example: FORCED
+        obesity:
+          type: string
+          description: The obesity level/type of the animal.
+          enum:
+            - HIGH
+            - MEDIUM
+            - LOW
+            - LEAN
+            - CACHEXIA
+          example: CACHEXIA
+        character:
+          type: string
+          description: The customer type associated with the animal.
+          enum:
+            - MOBILE
+            - CALM
+          example: CALM
+        leatherCoverId:
+          type: number
+          description: The ID representing the leather cover of the animal.
+          example: 3
+        eyelidId:
+          type: number
+          description: The ID representing the eyelid of the animal.
+          example: 3
+        colorId:
+          type: number
+          description: The ID representing the color of the animal.
+          example: 3
+        temperature:
+          type: number
+          description: The body temperature of the animal (in degrees Celsius).
+          example: 38.5
+        pulse:
+          type: number
+          description: The pulse rate of the animal (beats per minute).
+          example: 72
+        respiratoryRate:
+          type: number
+          description: The respiratory rate of the animal (breaths per minute).
+          example: 20
+        rumination:
+          type: number
+          description: The rumination rate of the animal (chews per minute).
+          example: 60
+        conclusion:
+          type: string
+          description: A summary or conclusion based on the test results.
+          example: No abnormalities detected.
+      required:
+        - animalId
+        - bodyType
+        - bodyStructure
+        - bodyPosition
+        - obesity
+        - character
+        - leatherCoverId
+        - eyelidId
+        - colorId
+        - temperature
+        - pulse
+        - respiratoryRate
+        - rumination
+        - conclusion
+    GeneralInspectionEntity:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identifier of the general inspection
+          example: 1
+        animalId:
+          type: number
+          description: Animal ID associated with the inspection
+          example: 101
+        bodyType:
+          type: string
+          description: Body type of the animal
+          enum:
+            - WEAK
+            - MEDIUM
+            - STRONG
+        bodyStructure:
+          type: string
+          description: Body structure of the animal
+          enum:
+            - COARSE
+            - SLIM
+            - DENSE
+            - WEAK
+        bodyPosition:
+          type: string
+          description: Body position of the animal
+          enum:
+            - NATURAL
+            - FORCED
+            - FORCED_STANDING
+            - FORCED_LYING
+            - FORCED_SITTING
+            - NON_THERAPEUTIC
+        obesity:
+          type: string
+          description: Obesity type of the animal
+          enum:
+            - HIGH
+            - MEDIUM
+            - LOW
+            - LEAN
+            - CACHEXIA
+        character:
+          type: string
+          description: Customer type
+          enum:
+            - MOBILE
+            - CALM
+        leatherCoverId:
+          type: number
+          description: Leather cover ID of the animal
+          example: 5
+        eyelidId:
+          type: number
+          description: Eyelid ID of the animal
+          example: 8
+        colorId:
+          type: number
+          description: Color ID of the animal
+          example: 3
+        createdAt:
+          type: string
+          description: Creation timestamp
+          example: "2023-12-11T00:00:00Z"
+          format: date-time
+        updatedAt:
+          type: string
+          description: Last update timestamp
+          example: "2023-12-12T00:00:00Z"
+          format: date-time
+      required:
+        - id
+        - animalId
+        - bodyType
+        - bodyStructure
+        - bodyPosition
+        - obesity
+        - character
+        - leatherCoverId
+        - eyelidId
+        - colorId
+        - createdAt
+        - updatedAt
+    PaginatedGeneralInspectionEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/GeneralInspectionEntity"
+        meta:
+          $ref: "#/components/schemas/MetaDateEntity"
+      required:
+        - data
+        - meta
+    UpdateGeneralInspectionDto:
+      type: object
+      properties:
+        animalId:
+          type: number
+          description: The ID of the animal undergoing the general inspection.
+          example: 101
+        bodyType:
+          type: string
+          description: The body type of the animal.
+          enum:
+            - WEAK
+            - MEDIUM
+            - STRONG
+          example: MEDIUM
+        bodyStructure:
+          type: string
+          description: The body structure of the animal.
+          enum:
+            - COARSE
+            - SLIM
+            - DENSE
+            - WEAK
+          example: COARSE
+        bodyPosition:
+          type: string
+          description: The body position of the animal.
+          enum:
+            - NATURAL
+            - FORCED
+            - FORCED_STANDING
+            - FORCED_LYING
+            - FORCED_SITTING
+            - NON_THERAPEUTIC
+          example: FORCED
+        obesity:
+          type: string
+          description: The obesity level/type of the animal.
+          enum:
+            - HIGH
+            - MEDIUM
+            - LOW
+            - LEAN
+            - CACHEXIA
+          example: CACHEXIA
+        character:
+          type: string
+          description: The customer type associated with the animal.
+          enum:
+            - MOBILE
+            - CALM
+          example: CALM
+        leatherCoverId:
+          type: number
+          description: The ID representing the leather cover of the animal.
+          example: 3
+        eyelidId:
+          type: number
+          description: The ID representing the eyelid of the animal.
+          example: 3
+        colorId:
+          type: number
+          description: The ID representing the color of the animal.
+          example: 3
+        temperature:
+          type: number
+          description: The body temperature of the animal (in degrees Celsius).
+          example: 38.5
+        pulse:
+          type: number
+          description: The pulse rate of the animal (beats per minute).
+          example: 72
+        respiratoryRate:
+          type: number
+          description: The respiratory rate of the animal (breaths per minute).
+          example: 20
+        rumination:
+          type: number
+          description: The rumination rate of the animal (chews per minute).
+          example: 60
+        conclusion:
+          type: string
+          description: A summary or conclusion based on the test results.
+          example: No abnormalities detected.
+    CreateInspectionDto:
+      type: object
+      properties:
+        animalId:
+          type: number
+          description: The ID of the animal being inspected. This field is optional.
+          example: 101
+        diseaseId:
+          type: number
+          description: >-
+            The ID of the disease associated with the inspection. This field is
+            optional.
+          example: 202
+        generalInspectionId:
+          type: number
+          description: The ID of the general inspection record. This field is optional.
+          example: 303
+        temperature:
+          type: number
+          description: The body temperature of the animal (in degrees Celsius).
+          example: 38.5
+        pulse:
+          type: number
+          description: The pulse rate of the animal (beats per minute).
+          example: 72
+        respiratoryRate:
+          type: number
+          description: The respiratory rate of the animal (breaths per minute).
+          example: 20
+        rumination:
+          type: number
+          description: The rumination rate of the animal (chews per minute).
+          example: 60
+        type:
+          type: string
+          description: The type of the inspection.
+          enum:
+            - MORNING
+            - EVENING
+            - DISEASE
+            - GENERAL
+          example: GENERAL
+        conclusion:
+          type: string
+          description: A summary or conclusion based on the test results.
+          example: No abnormalities detected.
+      required:
+        - animalId
+        - diseaseId
+        - generalInspectionId
+        - temperature
+        - pulse
+        - respiratoryRate
+        - rumination
+        - type
+        - conclusion
+    InspectionEntity:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identifier of the inspection
+          example: 1
+        animalId:
+          type: number
+          description: Animal ID associated with the inspection
+          example: 10
+        diseaseId:
+          type: number
+          description: Disease ID associated with the inspection
+          example: 10
+        generalInspectionId:
+          type: number
+          description: General inspection ID
+          example: 15
+        temperature:
+          type: number
+          description: Temperature of the animal during inspection
+          example: 38.5
+        pulse:
+          type: number
+          description: Pulse rate of the animal during inspection
+          example: 72
+        respiratoryRate:
+          type: number
+          description: Respiratory rate of the animal during inspection
+          example: 20
+        rumination:
+          type: number
+          description: Rumination count of the animal
+          example: 5
+        type:
+          type: string
+          description: Body type of the animal
+          enum:
+            - MORNING
+            - EVENING
+            - DISEASE
+            - GENERAL
+        conclusion:
+          type: string
+          description: Conclusion of the blood test results (optional)
+          example: Normal parameters
+        createdAt:
+          type: string
+          description: Creation timestamp
+          example: "2023-12-11T00:00:00Z"
+          format: date-time
+        updatedAt:
+          type: string
+          description: Last update timestamp
+          example: "2023-12-12T00:00:00Z"
+          format: date-time
+      required:
+        - id
+        - animalId
+        - diseaseId
+        - generalInspectionId
+        - temperature
+        - pulse
+        - respiratoryRate
+        - rumination
+        - type
+        - createdAt
+        - updatedAt
+    PaginatedInspectionEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/InspectionEntity"
+        meta:
+          $ref: "#/components/schemas/MetaDateEntity"
+      required:
+        - data
+        - meta
+    UpdateInspectionDto:
+      type: object
+      properties:
+        animalId:
+          type: number
+          description: The ID of the animal being inspected. This field is optional.
+          example: 101
+        diseaseId:
+          type: number
+          description: >-
+            The ID of the disease associated with the inspection. This field is
+            optional.
+          example: 202
+        generalInspectionId:
+          type: number
+          description: The ID of the general inspection record. This field is optional.
+          example: 303
+        temperature:
+          type: number
+          description: The body temperature of the animal (in degrees Celsius).
+          example: 38.5
+        pulse:
+          type: number
+          description: The pulse rate of the animal (beats per minute).
+          example: 72
+        respiratoryRate:
+          type: number
+          description: The respiratory rate of the animal (breaths per minute).
+          example: 20
+        rumination:
+          type: number
+          description: The rumination rate of the animal (chews per minute).
+          example: 60
+        type:
+          type: string
+          description: The type of the inspection.
+          enum:
+            - MORNING
+            - EVENING
+            - DISEASE
+            - GENERAL
+          example: GENERAL
+        conclusion:
+          type: string
+          description: A summary or conclusion based on the test results.
+          example: No abnormalities detected.
+    CreateDiseaseDto:
+      type: object
+      properties:
+        animalId:
+          type: number
+          description: The ID of the animal associated with the disease record.
+          example: 101
+        typeId:
+          type: number
+          description: The type ID of the disease (e.g., bacterial, viral, parasitic).
+          example: 3
+        startTime:
+          type: string
+          description: The date and time when the disease started.
+          example: "2024-12-01T08:30:00Z"
+        endTime:
+          type: string
+          description: The date and time when the disease ended or is expected to end.
+          example: "2024-12-14T18:00:00Z"
+        conclusion:
+          type: string
+          description: >-
+            Optional conclusion or summary of the disease (e.g., diagnosis,
+            recovery notes).
+          example: The animal has fully recovered after treatment.
+      required:
+        - animalId
+        - typeId
+        - startTime
+        - endTime
+        - conclusion
+    DiseaseEntity:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identifier of the disease
+          example: 1
+        animalId:
+          type: number
+          description: Animal ID associated with the disease
+          example: 101
+        typeId:
+          type: number
+          description: Disease type ID
+          example: 2
+        startTime:
+          type: string
+          description: Start time of the disease
+          example: "2023-12-01T00:00:00Z"
+          format: date-time
+        endTime:
+          type: string
+          description: End time of the disease
+          example: "2023-12-10T00:00:00Z"
+          format: date-time
+        conclusion:
+          type: string
+          description: Conclusion or remarks about the disease
+          example: Recovered fully
+        createdAt:
+          format: date-time
+          type: string
+          description: The date and time when the disease was created.
+          example: "2024-12-14T09:15:30Z"
+        updatedAt:
+          format: date-time
+          type: string
+          description: The date and time when the disease was last updated.
+          example: "2024-12-14T10:00:00Z"
+      required:
+        - id
+        - animalId
+        - typeId
+        - startTime
+        - endTime
+        - conclusion
+        - createdAt
+        - updatedAt
+    PaginatedDiseaseEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/DiseaseEntity"
+        meta:
+          $ref: "#/components/schemas/MetaDateEntity"
+      required:
+        - data
+        - meta
+    UpdateDiseaseDto:
+      type: object
+      properties:
+        animalId:
+          type: number
+          description: The ID of the animal associated with the disease record.
+          example: 101
+        typeId:
+          type: number
+          description: The type ID of the disease (e.g., bacterial, viral, parasitic).
+          example: 3
+        startTime:
+          type: string
+          description: The date and time when the disease started.
+          example: "2024-12-01T08:30:00Z"
+        endTime:
+          type: string
+          description: The date and time when the disease ended or is expected to end.
+          example: "2024-12-14T18:00:00Z"
+        conclusion:
+          type: string
+          description: >-
+            Optional conclusion or summary of the disease (e.g., diagnosis,
+            recovery notes).
+          example: The animal has fully recovered after treatment.
+    CreateGeneralBloodTestDto:
+      type: object
+      properties:
+        date:
+          format: date-time
+          type: string
+          description: The date when the blood test was conducted.
+          example: "2024-12-14"
+        conclusion:
+          type: string
+          description: A summary or conclusion based on the test results.
+          example: No abnormalities detected.
+        erythrocyteCount:
+          type: number
+          description: >-
+            The count of erythrocytes (red blood cells) measured in millions per
+            microliter.
+          example: 5.2
+        leukocyteCount:
+          type: number
+          description: >-
+            The count of leukocytes (white blood cells) measured in thousands
+            per microliter.
+          example: 6.8
+        thrombocyteCount:
+          type: number
+          description: >-
+            The count of thrombocytes (platelets) measured in thousands per
+            microliter.
+          example: 250
+        coe:
+          type: number
+          description: >-
+            The COE (Erythrocyte Sedimentation Rate), measured in millimeters
+            per hour.
+          example: 10
+        waterPercentage:
+          type: number
+          description: The percentage of water in the blood sample.
+          example: 60.5
+        dryResiduePercentage:
+          type: number
+          description: The percentage of dry residue in the blood sample.
+          example: 39.5
+        hemoglobin:
+          type: number
+          description: >-
+            The hemoglobin concentration in the blood, measured in grams per
+            deciliter.
+          example: 14.8
+        glutathione:
+          type: number
+          description: >-
+            The concentration of glutathione in the blood, measured in
+            milligrams per deciliter.
+          example: 1.2
+        animalId:
+          type: number
+          description: The ID of the animal the general blood test is associated with.
+          example: 101
+      required:
+        - date
+        - conclusion
+        - erythrocyteCount
+        - leukocyteCount
+        - thrombocyteCount
+        - coe
+        - waterPercentage
+        - dryResiduePercentage
+        - hemoglobin
+        - glutathione
+        - animalId
+    GeneralBloodTestEntity:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identifier of the blood test
+          example: 1
+        date:
+          type: string
+          description: Date of the blood test
+          example: "2023-12-11T00:00:00Z"
+          format: date-time
+        conclusion:
+          type: string
+          description: Conclusion of the blood test results (optional)
+          example: Normal parameters
+        erythrocyteCount:
+          type: number
+          description: Erythrocyte count (optional)
+          example: 5.5
+        leukocyteCount:
+          type: number
+          description: Leukocyte count (optional)
+          example: 12
+        thrombocyteCount:
+          type: number
+          description: Thrombocyte count (optional)
+          example: 200
+        coe:
+          type: number
+          description: Coefficient of erythrocytes (COE) (optional)
+          example: 1.2
+        waterPercentage:
+          type: number
+          description: Percentage of water in the blood (optional)
+          example: 60
+        dryResiduePercentage:
+          type: number
+          description: Percentage of dry residue in the blood (optional)
+          example: 40
+        hemoglobin:
+          type: number
+          description: Hemoglobin level (optional)
+          example: 15
+        glutathione:
+          type: number
+          description: Glutathione level (optional)
+          example: 0.8
+        animalId:
+          type: number
+          description: ID of the animal associated with the blood test
+          example: 101
+        createdAt:
+          type: string
+          description: Creation timestamp
+          example: "2023-12-11T00:00:00Z"
+          format: date-time
+        updatedAt:
+          type: string
+          description: Last update timestamp
+          example: "2023-12-12T00:00:00Z"
+          format: date-time
+      required:
+        - id
+        - date
+        - animalId
+        - createdAt
+        - updatedAt
+    PaginatedGeneralBloodTestEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/GeneralBloodTestEntity"
+        meta:
+          $ref: "#/components/schemas/MetaDateEntity"
+      required:
+        - data
+        - meta
+    UpdateGeneralBloodTestDto:
+      type: object
+      properties:
+        date:
+          format: date-time
+          type: string
+          description: The date when the blood test was conducted.
+          example: "2024-12-14"
+        conclusion:
+          type: string
+          description: A summary or conclusion based on the test results.
+          example: No abnormalities detected.
+        erythrocyteCount:
+          type: number
+          description: >-
+            The count of erythrocytes (red blood cells) measured in millions per
+            microliter.
+          example: 5.2
+        leukocyteCount:
+          type: number
+          description: >-
+            The count of leukocytes (white blood cells) measured in thousands
+            per microliter.
+          example: 6.8
+        thrombocyteCount:
+          type: number
+          description: >-
+            The count of thrombocytes (platelets) measured in thousands per
+            microliter.
+          example: 250
+        coe:
+          type: number
+          description: >-
+            The COE (Erythrocyte Sedimentation Rate), measured in millimeters
+            per hour.
+          example: 10
+        waterPercentage:
+          type: number
+          description: The percentage of water in the blood sample.
+          example: 60.5
+        dryResiduePercentage:
+          type: number
+          description: The percentage of dry residue in the blood sample.
+          example: 39.5
+        hemoglobin:
+          type: number
+          description: >-
+            The hemoglobin concentration in the blood, measured in grams per
+            deciliter.
+          example: 14.8
+        glutathione:
+          type: number
+          description: >-
+            The concentration of glutathione in the blood, measured in
+            milligrams per deciliter.
+          example: 1.2
+        animalId:
+          type: number
+          description: The ID of the animal the general blood test is associated with.
+          example: 101
+    CreateBloodSerumTestDto:
+      type: object
+      properties:
+        totalProtein:
+          type: number
+          description: The total protein level in the blood serum (g/dL).
+          example: 7.2
+        totalCalcium:
+          type: number
+          description: The total calcium level in the blood serum (mg/dL).
+          example: 9.5
+        organicPhosphorus:
+          type: number
+          description: The level of organic phosphorus in the blood serum (mg/dL).
+          example: 3.5
+        albumen:
+          type: number
+          description: The albumen concentration in the blood serum (g/dL).
+          example: 4
+        alphaGlobulin:
+          type: number
+          description: The alpha-globulin concentration in the blood serum (g/dL).
+          example: 1.2
+        betaGlobulin:
+          type: number
+          description: The beta-globulin concentration in the blood serum (g/dL).
+          example: 1
+        gammaGlobulin:
+          type: number
+          description: The gamma-globulin concentration in the blood serum (g/dL).
+          example: 0.8
+        creatine:
+          type: number
+          description: The creatine level in the blood serum (mg/dL).
+          example: 1
+        alkalineReserve:
+          type: number
+          description: The alkaline reserve in the blood serum (mmol/L).
+          example: 22
+        glucose:
+          type: number
+          description: The glucose level in the blood serum (mg/dL).
+          example: 90
+        totalBilirubin:
+          type: number
+          description: The total bilirubin level in the blood serum (mg/dL).
+          example: 0.8
+        cholesterol:
+          type: number
+          description: The cholesterol level in the blood serum (mg/dL).
+          example: 180
+        totalLipids:
+          type: number
+          description: The total lipid concentration in the blood serum (mg/dL).
+          example: 600
+        vitaminA:
+          type: number
+          description: The vitamin A concentration in the blood serum (µg/dL).
+          example: 60
+        vitaminB:
+          type: number
+          description: The vitamin B concentration in the blood serum (µg/dL).
+          example: 5
+        lacticAcid:
+          type: number
+          description: The lactic acid level in the blood serum (mmol/L).
+          example: 1.5
+        pyruvicAcid:
+          type: number
+          description: The pyruvic acid level in the blood serum (mg/dL).
+          example: 1.2
+        citricAcid:
+          type: number
+          description: The citric acid level in the blood serum (mg/dL).
+          example: 1.5
+        urea:
+          type: number
+          description: The urea level in the blood serum (mg/dL).
+          example: 25
+        ureaAcid:
+          type: number
+          description: The uric acid level in the blood serum (mg/dL).
+          example: 5
+        animalId:
+          type: number
+          description: The ID of the animal the blood serum test is associated with.
+          example: 101
+      required:
+        - totalProtein
+        - totalCalcium
+        - organicPhosphorus
+        - albumen
+        - alphaGlobulin
+        - betaGlobulin
+        - gammaGlobulin
+        - creatine
+        - alkalineReserve
+        - glucose
+        - totalBilirubin
+        - cholesterol
+        - totalLipids
+        - vitaminA
+        - vitaminB
+        - lacticAcid
+        - pyruvicAcid
+        - citricAcid
+        - urea
+        - ureaAcid
+        - animalId
+    BloodSerumTestEntity:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identifier for the blood serum test.
+          example: 1
+        totalProtein:
+          type: number
+          description: The total protein level in the blood serum (g/dL).
+          example: 7.2
+        totalCalcium:
+          type: number
+          description: The total calcium level in the blood serum (mg/dL).
+          example: 9.5
+        organicPhosphorus:
+          type: number
+          description: The level of organic phosphorus in the blood serum (mg/dL).
+          example: 3.5
+        albumen:
+          type: number
+          description: The albumen concentration in the blood serum (g/dL).
+          example: 4
+        alphaGlobulin:
+          type: number
+          description: The alpha-globulin concentration in the blood serum (g/dL).
+          example: 1.2
+        betaGlobulin:
+          type: number
+          description: The beta-globulin concentration in the blood serum (g/dL).
+          example: 1
+        gammaGlobulin:
+          type: number
+          description: The gamma-globulin concentration in the blood serum (g/dL).
+          example: 0.8
+        creatine:
+          type: number
+          description: The creatine level in the blood serum (mg/dL).
+          example: 1
+        alkalineReserve:
+          type: number
+          description: The alkaline reserve in the blood serum (mmol/L).
+          example: 22
+        glucose:
+          type: number
+          description: The glucose level in the blood serum (mg/dL).
+          example: 90
+        totalBilirubin:
+          type: number
+          description: The total bilirubin level in the blood serum (mg/dL).
+          example: 0.8
+        cholesterol:
+          type: number
+          description: The cholesterol level in the blood serum (mg/dL).
+          example: 180
+        totalLipids:
+          type: number
+          description: The total lipid concentration in the blood serum (mg/dL).
+          example: 600
+        vitaminA:
+          type: number
+          description: The vitamin A concentration in the blood serum (µg/dL).
+          example: 60
+        vitaminB:
+          type: number
+          description: The vitamin B concentration in the blood serum (µg/dL).
+          example: 5
+        lacticAcid:
+          type: number
+          description: The lactic acid level in the blood serum (mmol/L).
+          example: 1.5
+        pyruvicAcid:
+          type: number
+          description: The pyruvic acid level in the blood serum (mg/dL).
+          example: 1.2
+        citricAcid:
+          type: number
+          description: The citric acid level in the blood serum (mg/dL).
+          example: 1.5
+        urea:
+          type: number
+          description: The urea level in the blood serum (mg/dL).
+          example: 25
+        ureaAcid:
+          type: number
+          description: The uric acid level in the blood serum (mg/dL).
+          example: 5
+        animalId:
+          type: number
+          description: The ID of the animal this test is associated with.
+          example: 101
+        createdAt:
+          format: date-time
+          type: string
+          description: The date and time when the test was created.
+          example: "2024-12-14T09:15:30Z"
+        updatedAt:
+          format: date-time
+          type: string
+          description: The date and time when the test was last updated.
+          example: "2024-12-14T10:00:00Z"
+      required:
+        - id
+        - totalProtein
+        - totalCalcium
+        - organicPhosphorus
+        - albumen
+        - alphaGlobulin
+        - betaGlobulin
+        - gammaGlobulin
+        - creatine
+        - alkalineReserve
+        - glucose
+        - totalBilirubin
+        - cholesterol
+        - totalLipids
+        - vitaminA
+        - vitaminB
+        - lacticAcid
+        - pyruvicAcid
+        - citricAcid
+        - urea
+        - ureaAcid
+        - animalId
+        - createdAt
+        - updatedAt
+    PaginatedBloodSerumTestEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/BloodSerumTestEntity"
+        meta:
+          $ref: "#/components/schemas/MetaDateEntity"
+      required:
+        - data
+        - meta
+    UpdateBloodSerumTestDto:
+      type: object
+      properties:
+        totalProtein:
+          type: number
+          description: The total protein level in the blood serum (g/dL).
+          example: 7.2
+        totalCalcium:
+          type: number
+          description: The total calcium level in the blood serum (mg/dL).
+          example: 9.5
+        organicPhosphorus:
+          type: number
+          description: The level of organic phosphorus in the blood serum (mg/dL).
+          example: 3.5
+        albumen:
+          type: number
+          description: The albumen concentration in the blood serum (g/dL).
+          example: 4
+        alphaGlobulin:
+          type: number
+          description: The alpha-globulin concentration in the blood serum (g/dL).
+          example: 1.2
+        betaGlobulin:
+          type: number
+          description: The beta-globulin concentration in the blood serum (g/dL).
+          example: 1
+        gammaGlobulin:
+          type: number
+          description: The gamma-globulin concentration in the blood serum (g/dL).
+          example: 0.8
+        creatine:
+          type: number
+          description: The creatine level in the blood serum (mg/dL).
+          example: 1
+        alkalineReserve:
+          type: number
+          description: The alkaline reserve in the blood serum (mmol/L).
+          example: 22
+        glucose:
+          type: number
+          description: The glucose level in the blood serum (mg/dL).
+          example: 90
+        totalBilirubin:
+          type: number
+          description: The total bilirubin level in the blood serum (mg/dL).
+          example: 0.8
+        cholesterol:
+          type: number
+          description: The cholesterol level in the blood serum (mg/dL).
+          example: 180
+        totalLipids:
+          type: number
+          description: The total lipid concentration in the blood serum (mg/dL).
+          example: 600
+        vitaminA:
+          type: number
+          description: The vitamin A concentration in the blood serum (µg/dL).
+          example: 60
+        vitaminB:
+          type: number
+          description: The vitamin B concentration in the blood serum (µg/dL).
+          example: 5
+        lacticAcid:
+          type: number
+          description: The lactic acid level in the blood serum (mmol/L).
+          example: 1.5
+        pyruvicAcid:
+          type: number
+          description: The pyruvic acid level in the blood serum (mg/dL).
+          example: 1.2
+        citricAcid:
+          type: number
+          description: The citric acid level in the blood serum (mg/dL).
+          example: 1.5
+        urea:
+          type: number
+          description: The urea level in the blood serum (mg/dL).
+          example: 25
+        ureaAcid:
+          type: number
+          description: The uric acid level in the blood serum (mg/dL).
+          example: 5
+        animalId:
+          type: number
+          description: The ID of the animal the blood serum test is associated with.
+          example: 101
+    CreateUrineTestDto:
+      type: object
+      properties:
+        animalId:
+          type: number
+          description: The ID of the animal associated with the urine test.
+          example: 102
+        diseaseId:
+          type: number
+          description: The ID of the disease suspected or diagnosed in the animal.
+          example: 12
+        colorId:
+          type: number
+          description: The ID of the color classification of the urine.
+          example: 5
+        clarity:
+          type: string
+          description: >-
+            The clarity of the urine sample, categorized using the UrineClarity
+            enum.
+          enum:
+            - CLEAR
+            - NOT_CLEAR
+          example: CLEAR
+        consistency:
+          type: number
+          description: >-
+            The consistency level of the urine sample, represented as an integer
+            value.
+          example: 3
+        smell:
+          type: string
+          description: The smell of the urine sample, categorized using the SmellType enum.
+          enum:
+            - PUNGENT
+            - WEAK
+            - HAS
+            - "NO"
+          example: PUNGENT
+      required:
+        - animalId
+        - diseaseId
+        - colorId
+        - clarity
+        - consistency
+        - smell
+    UrineTestEntity:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identifier for the urine test.
+          example: 1
+        animalId:
+          type: number
+          description: The ID of the animal the test belongs to.
+          example: 101
+        diseaseId:
+          type: number
+          description: The ID of the disease associated with this test.
+          example: 202
+        colorId:
+          type: number
+          description: The ID representing the color of the urine.
+          example: 3
+        clarity:
+          type: string
+          description: The clarity level of the urine.
+          enum:
+            - CLEAR
+            - NOT_CLEAR
+          example: CLEAR
+        consistency:
+          type: number
+          description: Consistency level of the urine.
+          example: 5
+        smell:
+          type: string
+          description: The smell type of the urine.
+          enum:
+            - PUNGENT
+            - WEAK
+            - HAS
+            - "NO"
+          example: HAS
+        createdAt:
+          format: date-time
+          type: string
+          description: The date and time when the test was created.
+          example: "2024-12-14T09:15:30Z"
+        updatedAt:
+          format: date-time
+          type: string
+          description: The date and time when the test was last updated.
+          example: "2024-12-14T10:00:00Z"
+      required:
+        - id
+        - animalId
+        - diseaseId
+        - colorId
+        - clarity
+        - consistency
+        - smell
+        - createdAt
+        - updatedAt
+    PaginatedUrineTestEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/UrineTestEntity"
+        meta:
+          $ref: "#/components/schemas/MetaDateEntity"
+      required:
+        - data
+        - meta
+    UpdateUrineTestDto:
+      type: object
+      properties:
+        animalId:
+          type: number
+          description: The ID of the animal associated with the urine test.
+          example: 102
+        diseaseId:
+          type: number
+          description: The ID of the disease suspected or diagnosed in the animal.
+          example: 12
+        colorId:
+          type: number
+          description: The ID of the color classification of the urine.
+          example: 5
+        clarity:
+          type: string
+          description: >-
+            The clarity of the urine sample, categorized using the UrineClarity
+            enum.
+          enum:
+            - CLEAR
+            - NOT_CLEAR
+          example: CLEAR
+        consistency:
+          type: number
+          description: >-
+            The consistency level of the urine sample, represented as an integer
+            value.
+          example: 3
+        smell:
+          type: string
+          description: The smell of the urine sample, categorized using the SmellType enum.
+          enum:
+            - PUNGENT
+            - WEAK
+            - HAS
+            - "NO"
+          example: PUNGENT
+    CreateDungTestDto:
+      type: object
+      properties:
+        animalId:
+          type: number
+          description: The ID of the animal associated with the dung test.
+          example: 101
+        diseaseId:
+          type: number
+          description: The ID of the disease associated with the dung test, if applicable.
+          example: 5
+        colorId:
+          type: number
+          description: The ID of the color associated with the dung.
+          example: 3
+        clarity:
+          type: string
+          description: The clarity of the dung sample.
+          enum:
+            - CLEAR
+            - NOT_CLEAR
+          example: CLEAR
+        smell:
+          type: string
+          description: The smell type of the dung sample.
+          enum:
+            - PUNGENT
+            - WEAK
+            - HAS
+            - "NO"
+          example: HAS
+        form:
+          type: string
+          description: The form of the dung sample.
+          enum:
+            - NORMAL
+            - SOLID
+            - LIQUID
+            - MEDIUM
+          example: SOLID
+        consistency:
+          type: number
+          description: The consistency of the dung sample, measured as an integer value.
+          example: 5
+        worms:
+          type: number
+          description: The number of worms observed in the dung sample.
+          example: 2
+      required:
+        - animalId
+        - diseaseId
+        - colorId
+        - clarity
+        - smell
+        - form
+        - consistency
+        - worms
+    DungTestEntity:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identifier for the dung test.
+          example: 1
+        animalId:
+          type: number
+          description: The ID of the animal the dung test is associated with.
+          example: 101
+        diseaseId:
+          type: number
+          description: The ID of the disease associated with this test.
+          example: 202
+        colorId:
+          type: number
+          description: The ID representing the color of the dung.
+          example: 3
+        clarity:
+          type: string
+          description: The clarity of the dung sample.
+          enum:
+            - CLEAR
+            - NOT_CLEAR
+          example: CLEAR
+        smell:
+          type: string
+          description: The smell type of the dung.
+          enum:
+            - PUNGENT
+            - WEAK
+            - HAS
+            - "NO"
+          example: HAS
+        form:
+          type: string
+          description: The form of the dung (e.g., solid, semi-solid, or liquid).
+          enum:
+            - NORMAL
+            - SOLID
+            - LIQUID
+            - MEDIUM
+          example: SOLID
+        consistency:
+          type: number
+          description: The consistency level of the dung.
+          example: 5
+        worms:
+          type: number
+          description: The number of worms detected in the dung sample.
+          example: 2
+        createdAt:
+          format: date-time
+          type: string
+          description: The date and time when the dung test was created.
+          example: "2024-12-14T09:15:30Z"
+        updatedAt:
+          format: date-time
+          type: string
+          description: The date and time when the dung test was last updated.
+          example: "2024-12-14T10:00:00Z"
+      required:
+        - id
+        - animalId
+        - diseaseId
+        - colorId
+        - clarity
+        - smell
+        - form
+        - consistency
+        - worms
+        - createdAt
+        - updatedAt
+    PaginatedDungTestEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/DungTestEntity"
+        meta:
+          $ref: "#/components/schemas/MetaDateEntity"
+      required:
+        - data
+        - meta
+    UpdateDungTestDto:
+      type: object
+      properties:
+        animalId:
+          type: number
+          description: The ID of the animal associated with the dung test.
+          example: 101
+        diseaseId:
+          type: number
+          description: The ID of the disease associated with the dung test, if applicable.
+          example: 5
+        colorId:
+          type: number
+          description: The ID of the color associated with the dung.
+          example: 3
+        clarity:
+          type: string
+          description: The clarity of the dung sample.
+          enum:
+            - CLEAR
+            - NOT_CLEAR
+          example: CLEAR
+        smell:
+          type: string
+          description: The smell type of the dung sample.
+          enum:
+            - PUNGENT
+            - WEAK
+            - HAS
+            - "NO"
+          example: HAS
+        form:
+          type: string
+          description: The form of the dung sample.
+          enum:
+            - NORMAL
+            - SOLID
+            - LIQUID
+            - MEDIUM
+          example: SOLID
+        consistency:
+          type: number
+          description: The consistency of the dung sample, measured as an integer value.
+          example: 5
+        worms:
+          type: number
+          description: The number of worms observed in the dung sample.
+          example: 2

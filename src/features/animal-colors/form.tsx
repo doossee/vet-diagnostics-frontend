@@ -23,7 +23,7 @@ export function AnimalColorForm({ onSubmit, defaultValues }: AnimalColorFormProp
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 h-full">
         <FormField
-          name="name_ru"
+          name="name.ru"
           control={form.control}
           render={({ field }) => (
             <FormItem>
@@ -36,7 +36,7 @@ export function AnimalColorForm({ onSubmit, defaultValues }: AnimalColorFormProp
           )}
         />
         <FormField
-          name="name_uz"
+          name="name.uz"
           control={form.control}
           render={({ field }) => (
             <FormItem>

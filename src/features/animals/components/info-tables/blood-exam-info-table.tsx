@@ -2,26 +2,29 @@
 
 import { Syringe } from "lucide-react";
 
-import { InfoTable } from "./info-table";
-import { createGeneralBloodTestColumns } from "@/entities/general-blood-tests";
-import { useGetLastGeneralBloodTest } from "@/entities/general-blood-tests/services/queries";
+import { BloodExam } from "@/shared/types";
 import { routes } from "@/shared/constants/routes";
+import { createGeneralBloodTestColumns } from "@/entities/general-blood-tests";
+
+import { InfoTable } from "./info-table";
 
 type Props = {
-  id: string
+  isLoading?: boolean
+  data?: BloodExam | null
   onCreate?: (route: string, createNew?: boolean) => void
 }
 
-export function BloodExamInfoTable({ id, onCreate }: Props) {
+export function BloodExamInfoTable({ data, isLoading, onCreate }: Props) {
   const handleOpen = (createNew?: boolean) => {
     onCreate?.(routes.GENERAL_BLOOD_TESTS, createNew)
   }
 
   return <InfoTable
+    data={data}
     onCreate={handleOpen}
-    icon={<Syringe className="size-5 md:size-6" />}
+    isLoading={isLoading}
     localeTitle="nav.generalBloodTests"
     createColumns={createGeneralBloodTestColumns}
-    queryFn={() => useGetLastGeneralBloodTest(id)}
+    icon={<Syringe className="size-5 md:size-6" />}
   />
 }

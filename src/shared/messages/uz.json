@@ -47,7 +47,9 @@
     "urineSettings": "Siydik sozlamalari",
     "dungSettings": "Tezak sozlamalari",
     "mapSettings": "Xarita sozlamalari",
-    "medicineSettings": "Meditsina sozlamalari"
+    "medicineSettings": "Meditsina sozlamalari",
+    
+    "sessions": "Sessiyalar"
   },
   "theme": {
     "light": "Yorug'",

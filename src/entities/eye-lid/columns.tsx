@@ -4,19 +4,32 @@ import { Button } from "@/shared/components/ui/button";
 import { MUCOSA_TYPES } from "./utils/constants/mucosa-types";
 
 export const createEyeLidColumns = (handleEditItem: (item: MucosaAppearance) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
-  { title: t("management.eyeLidName"), key: `name_${locale}` },
+  {
+    title: t("management.eyeLidName"),
+    key: "name",
+    render(item: MucosaAppearance) {
+      return item.name?.[locale] ?? "-";
+    },
+  },
   {
     title: t("inspections.mucosaType"),
     key: "mucosaType",
     render(item: MucosaAppearance) {
-      return MUCOSA_TYPES?.[item.mucosaType]?.[locale]
+      return item.mucosaType?.name?.[locale]
     }
   },
   {
     title: t("animals.animalType"),
     key: "animalType",
     render(item: MucosaAppearance) {
-      return item.animalType?.[`name_${locale}`]
+      return item.animalType?.name?.[locale]
+    }
+  },
+  {
+    title: "Значение",
+    key: "numericValue",
+    render(item: MucosaAppearance) {
+      return item.numericValue ?? "-"
     }
   },
   {

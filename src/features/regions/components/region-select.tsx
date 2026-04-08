@@ -25,7 +25,7 @@ export function RegionSelect({ value, placeholder, min, onChange, onRemove }: Pr
       placeholder={placeholder}
       queryFn={useGetRegionsInfinite}
       onSelect={(e: any) => onChange?.(e?.id)}
-      getOptionLabel={(option) => option[`name_${locale}`]}
+      getOptionLabel={(option) => option.name?.[locale]}
       clientSearch={(search, item) => searchUtil(search, item, ["id", "name"] as any)}
     />
   );

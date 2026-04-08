@@ -26,7 +26,7 @@ export function ProphylaxisDetailSelect({ value, placeholder, disabled, itemId, 
       placeholder={placeholder}
       queryFn={search => useGetProphylaxisDetailsInfinite(itemId, search)}
       onSelect={(e: any) => onChange?.(e?.id)}
-      getOptionLabel={item => item?.[`name_${locale}`]}
+      getOptionLabel={item => item?.name?.[locale]}
       // clientSearch={(search, item) =>
       //   searchUtil(search, item, ["id", "name"])
       // }

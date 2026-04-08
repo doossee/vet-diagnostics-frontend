@@ -23,6 +23,7 @@ const ANIMAL_CONTEXT_PAGES = new Set([
   links["mucosa-exams"].url,
   links["general-blood-tests"].url,
   links["general-inspections"].url,
+  links["sessions"].url,
 ]);
 
 export function AppBreadcrumb() {

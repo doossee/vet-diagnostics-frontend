@@ -3,7 +3,13 @@ import { Button } from "@/shared/components/ui/button";
 import { Edit, Trash } from "lucide-react";
 
 export const createAnimalColorColumns = (handleEditItem: (item: Color) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
-  { title: t("management.colorName"), key: `name_${locale}` },
+  {
+    title: t("management.colorName"),
+    key: "name",
+    render(item) {
+      return item.name?.[locale] ?? "-";
+    },
+  },
   {
     title: t("table.actions"),
     key: "actions",

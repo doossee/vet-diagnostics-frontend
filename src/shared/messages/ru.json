@@ -48,7 +48,9 @@
     "urineSettings": "Настройки мочи",
     "dungSettings": "Настройки кала",
     "mapSettings": "Настройки карты",
-    "medicineSettings": "Настройки медицины"
+    "medicineSettings": "Настройки медицины",
+
+    "sessions": "Сессии"
   },
   "theme": {
     "light": "Светлая",

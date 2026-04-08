@@ -1,4 +1,4 @@
-import { LanguageLocales, UserRole } from "@/shared/types";
+import { LanguageLocales, type UserRole } from "@/shared/types";
 import {
   Shovel,
   Syringe,
@@ -31,6 +31,7 @@ import {
   Droplets,
   Sparkles,
   PlusIcon,
+  FileText,
 } from "lucide-react";
 
 export const REACT_QUERY_STALE_TIME = 20 * 60 * 1000; // 20 minutes
@@ -263,6 +264,11 @@ export const links = {
     icon: ScanEye,
     url: "/mucosa-exams",
   },
+  "sessions": {
+    title: "nav.sessions",
+    icon: FileText,
+    url: "/sessions",
+  },
 };
 
 export const navLinksVariant: Record<UserRole, NavLink[]> = {
@@ -322,25 +328,25 @@ export const navLinksVariant: Record<UserRole, NavLink[]> = {
       title: "nav.management",
       icon: FolderCog,
       items: [
-        { groupTitle: "Настройки животных" } as any,
+        { groupTitle: "nav.animalSettings" } as any,
         links['animal-types'],
         links['breeds'],
         links['animal-colors'],
-        { groupTitle: "Настройки мочи" } as any,
+        { groupTitle: "nav.urineSettings" } as any,
         links['urine-colors'],
         links['urine-clarities'],
         links['urine-consistencies'],
         links['urine-smells'],
-        { groupTitle: "Настройки кала" },
+        { groupTitle: "nav.dungSettings" },
         links['dung-colors'],
         links['dung-forms'],
         links['dung-consistencies'],
         links['dung-smells'],
-        { groupTitle: "Настройки карту" },
+        { groupTitle: "nav.mapSettings" },
         links['regions'],
         links['districts'],
         links['vetstations'],
-        { groupTitle: "Настройки медицину" },
+        { groupTitle: "nav.medicineSettings" },
         links['disease-types'],
         links['eye-lid'],
         links['prophylaxis-items'],
@@ -373,9 +379,10 @@ export const SKELETON_TYPES = {
 };
 
 export const QUERY_PARAM_KEYS = {
-  ANIMAL_ID: "animalId",
-  NEW: "new",
   ID: "id",
+  NEW: "new",
+  ANIMAL_ID: "animalId",
+  SESSION_ID: "sessionId",
 };
 
 export const PREDICT_DISEASES: Record<string, Record<LanguageLocales, string>> = {

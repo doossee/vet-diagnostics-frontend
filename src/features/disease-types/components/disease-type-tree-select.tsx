@@ -25,7 +25,7 @@ export function DiseaseTypeTreeSelect({ value, placeholder, disabled, onChange, 
       defaultValue={value as DiseaseCategory}
       onSelect={(e) => onChange?.(e?.id, e!)}
       placeholder={placeholder}
-      getOptionLabel={(option) => option[`name_${locale}`]}
+      getOptionLabel={(option) => option.name?.[locale]}
       queryFn={(parentId) => useGetDiseaseTypesInfinite(parentId)}
     />
   );

@@ -86,7 +86,7 @@ apiInstance.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const response = await refreshInstance.post(baseURL + "/auth/refresh", {}, {
+        const response = await refreshInstance.post("/auth/refresh", {}, {
           headers: {
             "Authorization": refreshToken as string
           }
@@ -117,12 +117,12 @@ apiInstance.interceptors.response.use(
   },
 );
 
-export const createInstance = <T>(config: AxiosRequestConfig, options?: AxiosRequestConfig): Promise<T> => {
+export function createInstance<T>(config: AxiosRequestConfig, options?: AxiosRequestConfig): Promise<T> {
   return apiInstance({
     ...config,
     ...options,
   }).then((r) => r?.data);
-};
+}
 
 export type ErrorType<Error> = AxiosError<Error>;
 

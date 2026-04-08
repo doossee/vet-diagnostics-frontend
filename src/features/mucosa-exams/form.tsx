@@ -3,12 +3,11 @@ import { useI18n } from "@/shared/hooks/use-i18n";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/shared/components/ui/button";
 // import { Textarea } from "@/shared/components/ui/textarea";
-import { MUCOSA_TYPES } from "@/entities/eye-lid/utils/constants/mucosa-types";
-import { ObjectEntriesSelect } from "@/shared/components/object-entries-select";
 // import { AnimalTypeSelect } from "../animal-types/components/animal-type-select";
 import { MucosaExamSchema, createMucosaExamSchema, mucosaExamValues } from "./mucosa-exam.model";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 import { EyeLidSelect } from "../eye-lid/components/eye-lid-select";
+import { MucosaTypesSelect } from "../additional-crud/components/mucosa-types-select";
 
 interface MucosaExamFormProps {
   defaultValues?: MucosaExamSchema;
@@ -16,47 +15,41 @@ interface MucosaExamFormProps {
 }
 
 export function MucosaExamForm({ onSubmit, defaultValues }: MucosaExamFormProps) {
-  const { t, locale } = useI18n();
+  const { t } = useI18n();
 
   const form = useForm<MucosaExamSchema>({
     resolver: zodResolver(createMucosaExamSchema(t)),
     defaultValues: defaultValues || mucosaExamValues,
   });
 
-  const type = form.watch('mucosaType')
+  const mucosaTypeId = form.watch('mucosaTypeId')
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 h-full">
-        {/* <FormField
-          name="animalId"
+        <FormField
+          name="mucosaTypeId"
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{"Animal"}</FormLabel>
+              <FormLabel>{t("inspections.mucosaType")}</FormLabel>
               <FormControl>
-                <AnimalSelect placeholder={"Animal"} value={field.value} onChange={field.onChange} />
+                <MucosaTypesSelect placeholder={t("inspections.mucosaType")} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
-        /> */}
-        <ObjectEntriesSelect
-          form={form}
-          locale={locale}
-          name="mucosaType"
-          object={MUCOSA_TYPES}
-          label={t("inspections.mucosaType")}
-          placeholder={t("inspections.mucosaType")}
         />
-        {type && <FormField
+
+        {mucosaTypeId && <FormField
           name="mucosaAppearanceId"
           control={form.control}
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t("inspections.mucosaAppearance")}</FormLabel>
               <FormControl>
-                <EyeLidSelect placeholder={t("inspections.mucosaAppearance")} type={type} value={field.value} onChange={field.onChange} />
+                {/* <MucosaTypesSelect /> */}
+                <EyeLidSelect placeholder={t("inspections.mucosaAppearance")} typeId={mucosaTypeId} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>

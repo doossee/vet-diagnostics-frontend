@@ -17,28 +17,28 @@ export const createDungTestColumns = (handleEditItem: (item: FecesExam) => void,
     title: t("inspections.smell"),
     key: "smell",
     render(item: FecesExam) {
-      return item.fecesSmell?.[`name_${locale}`] ?? "-";
+      return item.fecesSmell?.name?.[locale] ?? "-";
     },
   },
   {
     title: t("inspections.consistency"),
     key: "clarity",
     render(item: FecesExam) {
-      return item.fecesConsistency?.[`name_${locale}`] ?? "-";
+      return item.fecesConsistency?.name?.[locale] ?? "-";
     },
   },
   {
     title: t("form.color"),
     key: "color",
     render(item: FecesExam) {
-      return item.fecesColor?.[`name_${locale}`] ?? "-";
+      return item.fecesColor?.name?.[locale] ?? "-";
     },
   },
   {
     title: t("inspections.form"),
     key: "form",
     render(item: FecesExam) {
-      return item.fecesForm?.[`name_${locale}`] ?? "-";
+      return item.fecesForm?.name?.[locale] ?? "-";
     },
   },
   {

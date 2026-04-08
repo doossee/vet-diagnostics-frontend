@@ -29,9 +29,9 @@ export function DistrictSelect({ placeholder, value, disabled, regionId, min, on
       queryFn={useGetDistrictsInfinite}
       dependsOn={regionId}
       onSelect={(e: any) => onChange?.(e?.id)}
-      getOptionLabel={(option) => option[`name_${locale}`]}
+      getOptionLabel={(option) => option.name?.[locale] ?? ""}
       customFilter={(item) => (regionId ? item.regionId === regionId : true)}
-      clientSearch={(search, item) => searchUtil(search, item, ["id", "name_ru", "name_uz"])}
+      clientSearch={(search, item) => searchUtil(search, item, ["id", "name.ru", "name.uz"])}
     />
   );
 }

@@ -28,8 +28,8 @@ export function DungSmellsSelect({ value, placeholder, disabled, onChange, onRem
       onSelect={(e: any) => onChange?.(e?.id)}
       placeholder={placeholder}
       queryFn={(search) => useGetDungSmellsInfinite(search, undefined)}
-      getOptionLabel={item => item?.[`name_${locale}`]}
-      extraLabel={item => item?.animalType?.[`name_${locale}`]}
+      getOptionLabel={item => item?.name?.[locale]}
+      extraLabel={item => item?.animalType?.name?.[locale]}
     />
   );
 }

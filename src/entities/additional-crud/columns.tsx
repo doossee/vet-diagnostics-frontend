@@ -3,12 +3,18 @@ import { Button } from "@/shared/components/ui/button";
 import { AdditionalCrudModel, LanguageLocales } from "@/shared/types";
 
 export const createAdditionalCrudColumns = (handleEditItem: (item: AdditionalCrudModel) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
-  { title: t("inspections.name"), key: `name_${locale}` },
+  {
+    title: t("inspections.name"),
+    key: "name",
+    render(item) {
+      return item.name?.[locale] ?? "-";
+    },
+  },
   {
     title: t("animals.animalType"),
     key: "animalType",
     render(item: AdditionalCrudModel) {
-      return item?.animalType?.[`name_${locale}`]
+      return item?.animalType?.name?.[locale]
     }
   },
   {

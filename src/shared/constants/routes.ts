@@ -2,12 +2,17 @@ export const routes = {
   ANIMALS: {
     INDEX: "/animals",
     ID: (id: number | string) => `/animals/${id}`,
+    ID_SESSION_ID: (id: number | string, sessionId: number | string) => `/animals/${id}/session/${sessionId}`,
   },
   ANIMALS_CREATE: "/animals-create",
   ANIMAL_TYPES: "/animal-types",
   ANIMAL_COLORS: "/animal-colors",
   AUTH: {
     LOGIN: "/login",
+  },
+  SESSIONS: {
+    INDEX: "/sessions",
+    ID: (id: number | string) => `/sessions/${id}`,
   },
   BREEDS: "/breeds",
   DISEASE_TYPES: "/disease-types",

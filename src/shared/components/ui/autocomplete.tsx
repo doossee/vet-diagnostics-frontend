@@ -5,17 +5,16 @@ import { ReactNode, useMemo } from "react";
 import debounce from "lodash/debounce";
 import { cn } from "@/shared/lib/utils";
 import { useState, useEffect, useRef } from "react";
-import type { PaginatedEntity } from "@/shared/types";
 import { Input } from "@/shared/components/ui/input";
 import { Button } from "@/shared/components/ui/button";
 import { useInView } from "react-intersection-observer";
 import { Spinner } from "@/shared/components/elements/spinner";
 import { pageableToArray } from "@/shared/helpers/pageable-to-array";
 import { Check, ChevronDown, Search, Loader2, X, Inbox } from "lucide-react";
-import type { UseInfiniteQueryResult, InfiniteData } from "@tanstack/react-query";
+import type { UseInfiniteQueryResult, InfiniteData, UseQueryResult } from "@tanstack/react-query";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/components/ui/popover";
 
-interface AutocompleteProps<T> {
+interface AutocompleteBaseProps<T> {
   disabled?: boolean;
   className?: string;
   hideSearch?: boolean;
@@ -24,7 +23,6 @@ interface AutocompleteProps<T> {
   defaultValue?: T | string | number;
   onSelect?: (value: T | null) => void;
   onRemove?: () => void
-  queryFn: (search?: string | undefined, ...args: any[]) => UseInfiniteQueryResult<InfiniteData<PaginatedEntity<T>, unknown>, Error>;
   renderOption?: (option: T) => React.ReactNode;
   getOptionLabel?: (option: T) => string;
   getOptionId?: (option: T) => string;
@@ -34,6 +32,19 @@ interface AutocompleteProps<T> {
   queryParams?: Record<string, unknown>;
   extraLabel?: (option: T) => string;
 }
+
+type InfiniteQueryFn<T> = (search?: string | undefined, ...args: any[]) => UseInfiniteQueryResult<InfiniteData<{ data?: T[] }, unknown>, Error>;
+type SimpleQueryFn<T> = (search?: string | undefined, ...args: any[]) => UseQueryResult<{ data?: T[] }, Error>;
+
+type AutocompleteProps<T> =
+  | (AutocompleteBaseProps<T> & {
+      queryType?: "infinite";
+      queryFn: InfiniteQueryFn<T>;
+    })
+  | (AutocompleteBaseProps<T> & {
+      queryType: "query";
+      queryFn: SimpleQueryFn<T>;
+    });
 
 interface OptionItemProps<T> {
   option: T;
@@ -68,7 +79,8 @@ export function Autocomplete<T>({
   getOptionId = (option: any) => option.id || String(option),
   clientSearch,
   queryParams,
-  extraLabel
+  extraLabel,
+  queryType = "infinite",
 }: AutocompleteProps<T>) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -86,9 +98,16 @@ export function Autocomplete<T>({
 
   // Передаем queryParams как дополнительные аргументы в queryFn
   const queryParamsArray = queryParams ? Object.values(queryParams).filter(v => v !== null && v !== undefined) : [];
-  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = queryFn(clientSearch ? undefined : search, ...queryParamsArray);
+  const queryResult = queryFn(clientSearch ? undefined : search, ...queryParamsArray);
+  const infiniteQueryResult = queryType === "infinite" ? (queryResult as UseInfiniteQueryResult<InfiniteData<{ data?: T[] }, unknown>, Error>) : null;
+  const simpleQueryResult = queryType === "query" ? (queryResult as UseQueryResult<{ data?: T[] }, Error>) : null;
 
-  const options = pageableToArray(data);
+  const options = queryType === "infinite"
+    ? pageableToArray(infiniteQueryResult?.data)
+    : simpleQueryResult?.data?.data ?? [];
+  const isLoading = queryType === "infinite" ? !!infiniteQueryResult?.isLoading : !!simpleQueryResult?.isLoading;
+  const hasNextPage = queryType === "infinite" ? !!infiniteQueryResult?.hasNextPage : false;
+  const isFetchingNextPage = queryType === "infinite" ? !!infiniteQueryResult?.isFetchingNextPage : false;
 
   const resolvedDefaultValue = useMemo(() => {
     if (!defaultValue) return null;
@@ -122,8 +141,10 @@ export function Autocomplete<T>({
   }, [resolvedDefaultValue]);
 
   useEffect(() => {
-    if (inView) fetchNextPage();
-  }, [fetchNextPage, inView]);
+    if (queryType === "infinite" && inView && infiniteQueryResult?.hasNextPage) {
+      infiniteQueryResult.fetchNextPage();
+    }
+  }, [queryType, inView, infiniteQueryResult]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -200,7 +221,7 @@ export function Autocomplete<T>({
             // className="w-full justify-between p-3 bg-input! border-input!"
             className="border-input data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 dark:hover:bg-input/50 flex w-full items-center justify-between gap-2 rounded-md border bg-transparent px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4">
             {value ? (
-              <div className="flex items-center justify-start gap-2 font-normal">
+              <div className="flex items-center justify-start gap-2 font-normal flex-1">
                 <div className="truncate block max-w-[calc(100%-20px)]">
                   {getOptionLabel(value)}
                   {/* {" "}{extraLabel && <span className="text-xs text-gray-600 truncate">({extraLabel(value)})</span>} */}
@@ -252,7 +273,7 @@ export function Autocomplete<T>({
               <div>
                 {allOptions.map((option, index) => (
                   <OptionItem key={getOptionId(option) + "-" + index} option={option} isSelected={value ? getOptionId(value) === getOptionId(option) : false} onSelect={handleSelect}>
-                    {renderOption ? renderOption(option) : <span>{getOptionLabel(option)} {extraLabel && <span className="text-xs text-gray-600">({extraLabel(option)})</span>}</span>}
+                    {renderOption ? renderOption(option) : <span>{getOptionLabel(option)} {extraLabel && <span className="text-xs text-gray-400">({extraLabel(option)})</span>}</span>}
                   </OptionItem>
                 ))}
 

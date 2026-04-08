@@ -13,25 +13,26 @@ import { BLOOD_TEST_FIELDS } from "@/entities/general-blood-tests/utils/constant
 
 type Props = {
   id: string;
+  // data?:
 }
 
 const clinicExamFields = [
   'temperature',
   'pulse',
   'respiratoryRate',
-  // 'rumination',
-  // 'rumenFluidState',
-  // 'rumenInfusoriaCount',
+  'rumination',
+  'rumenFluidState',
+  'rumenInfusoriaCount',
 ]
 
 const bloodExamFields = [
   'erythrocyteCount',
   'hemoglobin',
-  // 'totalProtein',
+  'totalProtein',
   'totalCalcium',
-  // 'organicPhosphorus',
+  'organicPhosphorus',
   'glucose',
-  // 'alkalineReserve',
+  'alkalineReserve',
   'copper',
   'cobalt',
   'manganese',

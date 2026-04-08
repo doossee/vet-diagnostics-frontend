@@ -3,12 +3,18 @@ import { LanguageLocales, UrineColor } from "@/shared/types";
 import { Button } from "@/shared/components/ui/button";
 
 export const createUrineColorColumns = (handleEditItem: (item: UrineColor) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
-  { title: t("management.colorName"), key: `name_${locale}` },
+  {
+    title: t("management.colorName"),
+    key: "name",
+    render(item) {
+      return item.name?.[locale] ?? "-";
+    },
+  },
   {
     title: t("animals.animalType"),
     key: "animalType",
     render(item: UrineColor) {
-      return item?.animalType?.[`name_${locale}`]
+      return item?.animalType?.name?.[locale]
     }
   },
   {

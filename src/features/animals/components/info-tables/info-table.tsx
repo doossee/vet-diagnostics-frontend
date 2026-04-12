@@ -47,9 +47,9 @@ export function InfoTable<T>({ localeTitle, icon, hideCreateButton, createColumn
           </div>
           <div>
             {t(localeTitle)}
-            {sessionLabel && (
+            {/* {sessionLabel && (
               <p className="text-xs font-normal text-muted-foreground mt-0.5">{sessionLabel}</p>
-            )}
+            )} */}
           </div>
         </CardTitle>
 

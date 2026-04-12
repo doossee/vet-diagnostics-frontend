@@ -6,6 +6,7 @@ import { useI18n } from "@/shared/hooks/use-i18n";
 import type { AdditionalCrudModel } from "@/shared/types";
 import { DataTable } from "@/shared/components/data-table";
 import { Modal } from "@/shared/components/elements/modal";
+import { ExcelDownloadButton } from "@/shared/components/excel-download-button";
 import { createAdditionalCrudColumns } from "@/entities/additional-crud";
 import { AdditionalCrudForm, AdditionalCrudSchema } from "@/features/additional-crud";
 import { useGetUrineClarities } from "@/entities/additional-crud/services/queries";
@@ -24,7 +25,7 @@ export default function UrineClarities() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetUrineClarities} topSlot={createButton(t("pages.createUrineClarity"))} />
+      <DataTable columns={columns} queryFunction={useGetUrineClarities} topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/urine-clarities/import" />{createButton(t("pages.createUrineClarity"))}</div>} />
 
       <Modal open={dialog} onClose={handleClose} title={editedItem ? t("pages.editUrineClarity") : t("pages.createUrineClarity")}>
         <AdditionalCrudForm

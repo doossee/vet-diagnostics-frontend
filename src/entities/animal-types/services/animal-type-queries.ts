@@ -1,8 +1,16 @@
 import { AnimalType, PaginatedEntity } from "@/shared/types";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { paramsToQueryKeys } from "@/shared/helpers/params-to-keys";
-import { animalTypeControllerFindAll } from "@/shared/api/api-new";
+import { animalTypeControllerFindAll, animalTypeControllerFindOne } from "@/shared/api/api-new";
 import { AnimalTypesQueryKeys } from "../utils/constants/query-keys";
+
+export function useGetAnimalTypeById(id?: string | null) {
+  return useQuery<AnimalType, Error>({
+    queryKey: [AnimalTypesQueryKeys.ANIMAL_TYPES, "by-id", id],
+    queryFn: async () => animalTypeControllerFindOne(id!) as Promise<AnimalType>,
+    enabled: !!id,
+  });
+}
 
 export function useGetAnimalTypes(params: Record<string, unknown>, enabled?: boolean) {
   return useQuery<PaginatedEntity<AnimalType>, Error>({

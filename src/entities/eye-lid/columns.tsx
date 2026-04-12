@@ -1,6 +1,7 @@
 import { Edit, Trash } from "lucide-react";
 import { LanguageLocales, MucosaAppearance } from "@/shared/types";
 import { Button } from "@/shared/components/ui/button";
+import { CopyIdButton } from "@/shared/components/copy-id-button";
 import { MUCOSA_TYPES } from "./utils/constants/mucosa-types";
 
 export const createEyeLidColumns = (handleEditItem: (item: MucosaAppearance) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
@@ -38,6 +39,7 @@ export const createEyeLidColumns = (handleEditItem: (item: MucosaAppearance) => 
     render(item: MucosaAppearance) {
       return (
         <div className="flex gap-2 items-center flex-wrap md:flex-nowrap justify-end md:justify-start">
+          <CopyIdButton id={item.id} />
           <Button onClick={() => handleEditItem(item)} size="sm" className="text-xs!">
             <Edit />
             {t("table.edit")}

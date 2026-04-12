@@ -6,6 +6,7 @@ import { useI18n } from "@/shared/hooks/use-i18n";
 import type { DiseaseCategory } from "@/shared/types";
 import { DataTable } from "@/shared/components/data-table";
 import { Modal } from "@/shared/components/elements/modal";
+import { ExcelDownloadButton } from "@/shared/components/excel-download-button";
 import { createDiseaseTypeColumns } from "@/entities/disease-types";
 import { DiseaseTypeForm, DiseaseTypeSchema } from "@/features/disease-types";
 import { useGetDiseaseTypes } from "@/entities/disease-types/services/queries";
@@ -24,7 +25,7 @@ export default function DiseaseTypes() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetDiseaseTypes} topSlot={createButton(t("pages.createDiseaseType"))} />
+      <DataTable columns={columns} queryFunction={useGetDiseaseTypes} topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/disease-categories/import" />{createButton(t("pages.createDiseaseType"))}</div>} />
 
       <Modal open={dialog} onClose={handleClose} title={editedItem ? t("pages.editDiseaseType") : t("pages.createDiseaseType")}>
         <DiseaseTypeForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : (undefined as any)} />

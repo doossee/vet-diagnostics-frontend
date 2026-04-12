@@ -1,0 +1,74 @@
+Field                  | Uzbek Label                                  | Value
+-----------------------|----------------------------------------------|-------
+sex                    | Jinsi                                        | 0
+temperature            | Tana harorati                                | 40
+pulse                  | Puls soni                                    | 10
+respiratoryRate        | Nafas soni                                   | 20
+rumination             | Ruminatsiya                                  | 20
+rumenInfusoriaCount    | Qorindagi infuzoriyalar soni - 1000/ml       | 200
+bodyType               | Hayvon jussasi                               | 1
+obesity                | Semizligi                                    | 2
+bodyPosition           | Tananing tashqi muhitdagi holati poza        | 3
+constitution           | Tana tuzilishi                               | 1
+temperament            | Temperament                                  | 0
+wool                   | Jun                                          | 5
+down                   | Paxmoq                                       | 6
+hair                   | Soch                                         | 1
+feathers               | Patlar                                       | 1
+skinColor              | Teri rangi                                   | 0
+skinHumidity           | Teri namligi                                 | 2
+skinSmell              | Teri hidi                                    | 0
+skinTemp               | Teri harorati                                | 2
+skinSurface            | Teri yuzasi                                  | 3
+skinElasticity         | Teri elastikligi                             | 1
+skinSensitivity        | Teri sezgirligi                              | 1
+skinPain               | Teri og'rig'i                                | 2
+rumenFluidState        | Qorin suyuqligi holati (Rametrom)            | 0
+lymphSize              | Limfa tuguni o'lchami                        | 0
+lymphShape             | Limfa tuguni shakli                          | 0
+lymphSurface           | Limfa tuguni yuzasi                          | 1
+lymphConsistency       | Limfa tuguni konsistensiyasi                 | 0
+lymphTemp              | Limfa tuguni harorati                        | 1
+lymphPain              | Limfa tuguni og'rig'i                        | 0
+lymphMobility          | Limfa tuguni harakatchanligi                 | 1
+erythrocyteCount       | Eritrotsitlar soni                           | 51
+leukocyteCount         | Leykotsitlar soni                            | 52
+thrombocyteCount       | Trombotsitlar soni                           | 53
+hemoglobin             | Gemoglobin                                   | 54
+coe                    | COE                                          | 50
+totalProtein           | Umumiy oqsil                                 | 58
+totalCalcium           | Umumiy kalsiy                                | 59
+organicPhosphorus      | Organik fosfor                               | 60
+albumin                | Albumin                                      | 61
+glucose                | Glyukoza                                     | 71
+alkalineReserve        | Ishqoriy zahira                              | 70
+ketoneBodies           | Keton tanachalari                            | 72
+totalBilirubin         | Umumiy Bilirubin                             | 73
+totalCholesterol       | Umumiy Xolestrin                             | 75
+urea                   | Karbamid                                     | 66
+copper                 | Mis                                          | 83
+cobalt                 | Kobalt                                       | 85
+manganese              | Marganets                                    | 86
+zinc                   | Rux                                          | 87
+urinePh                | Muhit (pH)                                   | 16
+urineAmount            | Miqdori                                      | 10
+urineAcetone           | Keton tanachalari (atseton)                  | 17
+urineProtein           | Oqsil                                        | 18
+urineBilirubin         | Bilirubin                                    | 19
+urineSugar             | Shakar                                       | 21
+urineLeukocytes        | Leukotsitlar                                 | 11
+urineErythrocytes      | Eritrotsitlar                                | 14
+urineColor             | Siydik rangi                                 | 3
+urineSmell             | Siydik hidi                                  | 0
+urineClarity           | Tiniqligi                                    | 0
+urineConsistency       | Konsentratsiyasi                             | 0
+fecesAmount            | Miqdori                                      | 140
+fecesUndigestedFood    | Hazm bo'lmagan ovqat miqdori                 | 200
+fecesColor             | Rangi                                        | 0
+fecesSmell             | Hidi                                         | 0
+fecesConsistency       | Konsentratsiyasi                             | 0
+fecesForm              | Shakli                                       | 0
+mucosaOral             | Og'iz bo'shlig'i                             | 0
+mucosaNasal            | Burun bo'shlig'i                             | 2
+mucosaOcular           | Ko'z shilliq qavati                          | 1
+mucosaVaginal          | Reproduktiv organ                            | 3

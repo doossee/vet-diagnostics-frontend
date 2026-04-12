@@ -1,5 +1,6 @@
 import { Edit, Trash } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
+import { CopyIdButton } from "@/shared/components/copy-id-button";
 import { ClinicalExam, LanguageLocales } from "@/shared/types";
 // import { DOWN_TYPE, FEATHER_TYPE, HAIR_TYPE, WOOL_TYPE } from "@/entities/general-inspections/utils/constants/skin-cover";
 // import { SKIN_COLOR, SKIN_ELASTICITY, SKIN_HUMIDITY, SKIN_TEMP } from "@/entities/general-inspections/utils/constants/skin";
@@ -203,6 +204,7 @@ export const createGeneralInspectionColumns = (handleEditItem: (item: ClinicalEx
     render(item: ClinicalExam) {
       return (
         <div className="flex gap-2 items-center flex-wrap md:flex-nowrap justify-end md:justify-start">
+          <CopyIdButton id={item.id} />
           <Button onClick={() => handleEditItem(item)} size="sm" className="text-xs!">
             <Edit />
             {t("table.edit")}

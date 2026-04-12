@@ -236,7 +236,7 @@ export function DataTable<T extends { id: any }>({ onRowClick, columns, topSlot,
                   {items().map((item, i) => (
                     <TableRow key={i} onClick={() => !!onRowClick && onRowClick(item, i)}>
                       {columns.map((col, i) => (
-                        <TableCell key={i} className={cn(col.sorting ? "pl-4!" : "", !!onRowClick ? "cursor-pointer" : "")}>
+                        <TableCell key={i} className={cn(col.sorting ? "pl-4!" : "", !!onRowClick ? "cursor-pointer" : "")} onClick={(col?.stopPropagationOnClick || col.key === "actions") ? stopPropagation : undefined}>
                           <SkeletonWrapper loading={isLoading}>
                             {(col.render ? col.render(item) : (item as any)[col.key])}
                           </SkeletonWrapper>

@@ -520,16 +520,11 @@ paths:
       summary: Get last blood exam by animal ID
       tags:
         - blood-exams
-  /blood-exams/{id}:
+  /blood-exams/template:
     get:
       description: Retrieve blood exam details.
-      operationId: BloodExamController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: BloodExamController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Blood exam retrieved successfully
@@ -539,9 +534,45 @@ paths:
                 $ref: '#/components/schemas/BloodExamEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get blood exam by ID
+      tags:
+        - blood-exams
+  /blood-exams/import:
+    post:
+      operationId: BloodExamController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import blood exams from Excel file
+      tags:
+        - blood-exams
+  /blood-exams/{id}:
+    get:
+      operationId: BloodExamController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Blood exam not found
-      summary: Get blood exam by ID
       tags:
         - blood-exams
     patch:
@@ -691,16 +722,11 @@ paths:
       summary: Get last clinical exam by animal ID
       tags:
         - clinical-exams
-  /clinical-exams/{id}:
+  /clinical-exams/template:
     get:
       description: Retrieve clinical exam details.
-      operationId: ClinicalExamController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: ClinicalExamController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Clinical exam retrieved successfully
@@ -710,9 +736,45 @@ paths:
                 $ref: '#/components/schemas/ClinicalExamEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get clinical exam by ID
+      tags:
+        - clinical-exams
+  /clinical-exams/import:
+    post:
+      operationId: ClinicalExamController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import clinical exams from Excel file
+      tags:
+        - clinical-exams
+  /clinical-exams/{id}:
+    get:
+      operationId: ClinicalExamController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Clinical exam not found
-      summary: Get clinical exam by ID
       tags:
         - clinical-exams
     patch:
@@ -862,16 +924,11 @@ paths:
       summary: Get last feces exam by animal ID
       tags:
         - feces-exams
-  /feces-exams/{id}:
+  /feces-exams/template:
     get:
       description: Retrieve feces exam details.
-      operationId: FecesExamController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: FecesExamController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Feces exam retrieved successfully
@@ -881,9 +938,45 @@ paths:
                 $ref: '#/components/schemas/FecesExamEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get feces exam by ID
+      tags:
+        - feces-exams
+  /feces-exams/import:
+    post:
+      operationId: FecesExamController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import feces exams from Excel file
+      tags:
+        - feces-exams
+  /feces-exams/{id}:
+    get:
+      operationId: FecesExamController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Feces exam not found
-      summary: Get feces exam by ID
       tags:
         - feces-exams
     patch:
@@ -997,6 +1090,11 @@ paths:
           in: query
           schema:
             type: string
+        - name: sessionId
+          required: false
+          in: query
+          schema:
+            type: string
       responses:
         '200':
           description: Mucosa exams retrieved successfully
@@ -1033,16 +1131,11 @@ paths:
       summary: Get last mucosa exam by animal ID
       tags:
         - mucosa-exams
-  /mucosa-exams/{id}:
+  /mucosa-exams/template:
     get:
       description: Retrieve mucosa exam details.
-      operationId: MucosaExamController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: MucosaExamController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Mucosa exam retrieved successfully
@@ -1052,9 +1145,45 @@ paths:
                 $ref: '#/components/schemas/MucosaExamEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get mucosa exam by ID
+      tags:
+        - mucosa-exams
+  /mucosa-exams/import:
+    post:
+      operationId: MucosaExamController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import mucosa exams from Excel file
+      tags:
+        - mucosa-exams
+  /mucosa-exams/{id}:
+    get:
+      operationId: MucosaExamController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Mucosa exam not found
-      summary: Get mucosa exam by ID
       tags:
         - mucosa-exams
     patch:
@@ -1204,16 +1333,11 @@ paths:
       summary: Get last urine exam by animal ID
       tags:
         - urine-exams
-  /urine-exams/{id}:
+  /urine-exams/template:
     get:
       description: Retrieve urine exam details.
-      operationId: UrineExamController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: UrineExamController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Urine exam retrieved successfully
@@ -1223,9 +1347,45 @@ paths:
                 $ref: '#/components/schemas/UrineExamEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get urine exam by ID
+      tags:
+        - urine-exams
+  /urine-exams/import:
+    post:
+      operationId: UrineExamController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import urine exams from Excel file
+      tags:
+        - urine-exams
+  /urine-exams/{id}:
+    get:
+      operationId: UrineExamController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Urine exam not found
-      summary: Get urine exam by ID
       tags:
         - urine-exams
     patch:
@@ -1353,16 +1513,11 @@ paths:
       summary: List urine colors
       tags:
         - urine-colors
-  /urine-colors/{id}:
+  /urine-colors/template:
     get:
       description: Retrieve urine color details.
-      operationId: UrineColorController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: UrineColorController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Urine color retrieved successfully
@@ -1372,9 +1527,45 @@ paths:
                 $ref: '#/components/schemas/UrineColorEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get urine color by ID
+      tags:
+        - urine-colors
+  /urine-colors/import:
+    post:
+      operationId: UrineColorController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - urine-colors
+  /urine-colors/{id}:
+    get:
+      operationId: UrineColorController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Urine color not found
-      summary: Get urine color by ID
       tags:
         - urine-colors
     patch:
@@ -1502,16 +1693,11 @@ paths:
       summary: List urine smells
       tags:
         - urine-smells
-  /urine-smells/{id}:
+  /urine-smells/template:
     get:
       description: Retrieve urine smell details.
-      operationId: UrineSmellController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: UrineSmellController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Urine smell retrieved successfully
@@ -1521,9 +1707,45 @@ paths:
                 $ref: '#/components/schemas/UrineSmellEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get urine smell by ID
+      tags:
+        - urine-smells
+  /urine-smells/import:
+    post:
+      operationId: UrineSmellController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - urine-smells
+  /urine-smells/{id}:
+    get:
+      operationId: UrineSmellController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Urine smell not found
-      summary: Get urine smell by ID
       tags:
         - urine-smells
     patch:
@@ -1651,16 +1873,11 @@ paths:
       summary: List urine clarities
       tags:
         - urine-clarities
-  /urine-clarities/{id}:
+  /urine-clarities/template:
     get:
       description: Retrieve urine clarity details.
-      operationId: UrineClarityController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: UrineClarityController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Urine clarity retrieved successfully
@@ -1670,9 +1887,45 @@ paths:
                 $ref: '#/components/schemas/UrineClarityEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get urine clarity by ID
+      tags:
+        - urine-clarities
+  /urine-clarities/import:
+    post:
+      operationId: UrineClarityController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - urine-clarities
+  /urine-clarities/{id}:
+    get:
+      operationId: UrineClarityController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Urine clarity not found
-      summary: Get urine clarity by ID
       tags:
         - urine-clarities
     patch:
@@ -1800,16 +2053,11 @@ paths:
       summary: List urine consistencies
       tags:
         - urine-consistencies
-  /urine-consistencies/{id}:
+  /urine-consistencies/template:
     get:
       description: Retrieve urine consistency details.
-      operationId: UrineConsistencyController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: UrineConsistencyController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Urine consistency retrieved successfully
@@ -1819,9 +2067,45 @@ paths:
                 $ref: '#/components/schemas/UrineConsistencyEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get urine consistency by ID
+      tags:
+        - urine-consistencies
+  /urine-consistencies/import:
+    post:
+      operationId: UrineConsistencyController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - urine-consistencies
+  /urine-consistencies/{id}:
+    get:
+      operationId: UrineConsistencyController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Urine consistency not found
-      summary: Get urine consistency by ID
       tags:
         - urine-consistencies
     patch:
@@ -1949,16 +2233,11 @@ paths:
       summary: List feces colors
       tags:
         - feces-colors
-  /feces-colors/{id}:
+  /feces-colors/template:
     get:
       description: Retrieve feces color details.
-      operationId: FecesColorController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: FecesColorController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Feces color retrieved successfully
@@ -1968,9 +2247,45 @@ paths:
                 $ref: '#/components/schemas/FecesColorEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get feces color by ID
+      tags:
+        - feces-colors
+  /feces-colors/import:
+    post:
+      operationId: FecesColorController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - feces-colors
+  /feces-colors/{id}:
+    get:
+      operationId: FecesColorController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Feces color not found
-      summary: Get feces color by ID
       tags:
         - feces-colors
     patch:
@@ -2098,16 +2413,11 @@ paths:
       summary: List feces smells
       tags:
         - feces-smells
-  /feces-smells/{id}:
+  /feces-smells/template:
     get:
       description: Retrieve feces smell details.
-      operationId: FecesSmellController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: FecesSmellController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Feces smell retrieved successfully
@@ -2117,9 +2427,45 @@ paths:
                 $ref: '#/components/schemas/FecesSmellEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get feces smell by ID
+      tags:
+        - feces-smells
+  /feces-smells/import:
+    post:
+      operationId: FecesSmellController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - feces-smells
+  /feces-smells/{id}:
+    get:
+      operationId: FecesSmellController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Feces smell not found
-      summary: Get feces smell by ID
       tags:
         - feces-smells
     patch:
@@ -2247,16 +2593,11 @@ paths:
       summary: List feces consistencies
       tags:
         - feces-consistencies
-  /feces-consistencies/{id}:
+  /feces-consistencies/template:
     get:
       description: Retrieve feces consistency details.
-      operationId: FecesConsistencyController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: FecesConsistencyController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Feces consistency retrieved successfully
@@ -2266,9 +2607,45 @@ paths:
                 $ref: '#/components/schemas/FecesConsistencyEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get feces consistency by ID
+      tags:
+        - feces-consistencies
+  /feces-consistencies/import:
+    post:
+      operationId: FecesConsistencyController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - feces-consistencies
+  /feces-consistencies/{id}:
+    get:
+      operationId: FecesConsistencyController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Feces consistency not found
-      summary: Get feces consistency by ID
       tags:
         - feces-consistencies
     patch:
@@ -2396,16 +2773,11 @@ paths:
       summary: List feces forms
       tags:
         - feces-forms
-  /feces-forms/{id}:
+  /feces-forms/template:
     get:
       description: Retrieve feces form details.
-      operationId: FecesFormController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: FecesFormController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Feces form retrieved successfully
@@ -2415,9 +2787,45 @@ paths:
                 $ref: '#/components/schemas/FecesFormEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get feces form by ID
+      tags:
+        - feces-forms
+  /feces-forms/import:
+    post:
+      operationId: FecesFormController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - feces-forms
+  /feces-forms/{id}:
+    get:
+      operationId: FecesFormController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Feces form not found
-      summary: Get feces form by ID
       tags:
         - feces-forms
     patch:
@@ -2562,16 +2970,11 @@ paths:
       summary: List mucosa appearances
       tags:
         - mucosa-appearances
-  /mucosa-appearances/{id}:
+  /mucosa-appearances/template:
     get:
       description: Retrieve mucosa appearance details.
-      operationId: MucosaAppearanceController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: MucosaAppearanceController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Mucosa appearance retrieved successfully
@@ -2581,9 +2984,45 @@ paths:
                 $ref: '#/components/schemas/MucosaAppearanceEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get mucosa appearance by ID
+      tags:
+        - mucosa-appearances
+  /mucosa-appearances/import:
+    post:
+      operationId: MucosaAppearanceController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - mucosa-appearances
+  /mucosa-appearances/{id}:
+    get:
+      operationId: MucosaAppearanceController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Mucosa appearance not found
-      summary: Get mucosa appearance by ID
       tags:
         - mucosa-appearances
     patch:
@@ -2802,6 +3241,30 @@ paths:
         '404':
           description: Medical session not found
       summary: Delete medical session
+      tags:
+        - medical-sessions
+  /medical-sessions/{id}/predict:
+    get:
+      description: Retrieve the AI prediction result for a submitted session.
+      operationId: MedicalSessionController_getPrediction
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Prediction retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PredictionEntity'
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+        '404':
+          description: Prediction not found for this session
+      summary: Get prediction for medical session
       tags:
         - medical-sessions
   /medical-sessions/{id}/submit:
@@ -3417,16 +3880,11 @@ paths:
       summary: List body-positions
       tags:
         - body-positions
-  /body-positions/{id}:
+  /body-positions/template:
     get:
       description: Retrieve lookup record details.
-      operationId: BodyPositionController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: BodyPositionController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Record retrieved successfully
@@ -3436,9 +3894,45 @@ paths:
                 $ref: '#/components/schemas/BodyPositionEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get body-positions by ID
+      tags:
+        - body-positions
+  /body-positions/import:
+    post:
+      operationId: BodyPositionController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - body-positions
+  /body-positions/{id}:
+    get:
+      operationId: BodyPositionController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Record not found
-      summary: Get body-positions by ID
       tags:
         - body-positions
     patch:
@@ -3559,16 +4053,11 @@ paths:
       summary: List body-types
       tags:
         - body-types
-  /body-types/{id}:
+  /body-types/template:
     get:
       description: Retrieve lookup record details.
-      operationId: BodyTypeController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: BodyTypeController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Record retrieved successfully
@@ -3578,9 +4067,45 @@ paths:
                 $ref: '#/components/schemas/BodyTypeEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get body-types by ID
+      tags:
+        - body-types
+  /body-types/import:
+    post:
+      operationId: BodyTypeController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - body-types
+  /body-types/{id}:
+    get:
+      operationId: BodyTypeController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Record not found
-      summary: Get body-types by ID
       tags:
         - body-types
     patch:
@@ -3701,16 +4226,11 @@ paths:
       summary: List constitutions
       tags:
         - constitutions
-  /constitutions/{id}:
+  /constitutions/template:
     get:
       description: Retrieve lookup record details.
-      operationId: ConstitutionController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: ConstitutionController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Record retrieved successfully
@@ -3720,9 +4240,45 @@ paths:
                 $ref: '#/components/schemas/ConstitutionEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get constitutions by ID
+      tags:
+        - constitutions
+  /constitutions/import:
+    post:
+      operationId: ConstitutionController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - constitutions
+  /constitutions/{id}:
+    get:
+      operationId: ConstitutionController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Record not found
-      summary: Get constitutions by ID
       tags:
         - constitutions
     patch:
@@ -3843,16 +4399,11 @@ paths:
       summary: List down-types
       tags:
         - down-types
-  /down-types/{id}:
+  /down-types/template:
     get:
       description: Retrieve lookup record details.
-      operationId: DownTypeController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: DownTypeController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Record retrieved successfully
@@ -3862,9 +4413,45 @@ paths:
                 $ref: '#/components/schemas/DownTypeEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get down-types by ID
+      tags:
+        - down-types
+  /down-types/import:
+    post:
+      operationId: DownTypeController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - down-types
+  /down-types/{id}:
+    get:
+      operationId: DownTypeController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Record not found
-      summary: Get down-types by ID
       tags:
         - down-types
     patch:
@@ -3985,16 +4572,11 @@ paths:
       summary: List feather-types
       tags:
         - feather-types
-  /feather-types/{id}:
+  /feather-types/template:
     get:
       description: Retrieve lookup record details.
-      operationId: FeatherTypeController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: FeatherTypeController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Record retrieved successfully
@@ -4004,9 +4586,45 @@ paths:
                 $ref: '#/components/schemas/FeatherTypeEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get feather-types by ID
+      tags:
+        - feather-types
+  /feather-types/import:
+    post:
+      operationId: FeatherTypeController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - feather-types
+  /feather-types/{id}:
+    get:
+      operationId: FeatherTypeController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Record not found
-      summary: Get feather-types by ID
       tags:
         - feather-types
     patch:
@@ -4127,16 +4745,11 @@ paths:
       summary: List hair-types
       tags:
         - hair-types
-  /hair-types/{id}:
+  /hair-types/template:
     get:
       description: Retrieve lookup record details.
-      operationId: HairTypeController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: HairTypeController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Record retrieved successfully
@@ -4146,9 +4759,45 @@ paths:
                 $ref: '#/components/schemas/HairTypeEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get hair-types by ID
+      tags:
+        - hair-types
+  /hair-types/import:
+    post:
+      operationId: HairTypeController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - hair-types
+  /hair-types/{id}:
+    get:
+      operationId: HairTypeController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Record not found
-      summary: Get hair-types by ID
       tags:
         - hair-types
     patch:
@@ -4269,16 +4918,11 @@ paths:
       summary: List lymph-consistencies
       tags:
         - lymph-consistencies
-  /lymph-consistencies/{id}:
+  /lymph-consistencies/template:
     get:
       description: Retrieve lookup record details.
-      operationId: LymphConsistencyController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: LymphConsistencyController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Record retrieved successfully
@@ -4288,9 +4932,45 @@ paths:
                 $ref: '#/components/schemas/LymphConsistencyEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get lymph-consistencies by ID
+      tags:
+        - lymph-consistencies
+  /lymph-consistencies/import:
+    post:
+      operationId: LymphConsistencyController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - lymph-consistencies
+  /lymph-consistencies/{id}:
+    get:
+      operationId: LymphConsistencyController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Record not found
-      summary: Get lymph-consistencies by ID
       tags:
         - lymph-consistencies
     patch:
@@ -4411,16 +5091,11 @@ paths:
       summary: List lymph-mobilities
       tags:
         - lymph-mobilities
-  /lymph-mobilities/{id}:
+  /lymph-mobilities/template:
     get:
       description: Retrieve lookup record details.
-      operationId: LymphMobilityController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: LymphMobilityController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Record retrieved successfully
@@ -4430,9 +5105,45 @@ paths:
                 $ref: '#/components/schemas/LymphMobilityEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get lymph-mobilities by ID
+      tags:
+        - lymph-mobilities
+  /lymph-mobilities/import:
+    post:
+      operationId: LymphMobilityController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - lymph-mobilities
+  /lymph-mobilities/{id}:
+    get:
+      operationId: LymphMobilityController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Record not found
-      summary: Get lymph-mobilities by ID
       tags:
         - lymph-mobilities
     patch:
@@ -4553,16 +5264,11 @@ paths:
       summary: List lymph-pains
       tags:
         - lymph-pains
-  /lymph-pains/{id}:
+  /lymph-pains/template:
     get:
       description: Retrieve lookup record details.
-      operationId: LymphPainController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: LymphPainController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Record retrieved successfully
@@ -4572,9 +5278,45 @@ paths:
                 $ref: '#/components/schemas/LymphPainEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get lymph-pains by ID
+      tags:
+        - lymph-pains
+  /lymph-pains/import:
+    post:
+      operationId: LymphPainController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - lymph-pains
+  /lymph-pains/{id}:
+    get:
+      operationId: LymphPainController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Record not found
-      summary: Get lymph-pains by ID
       tags:
         - lymph-pains
     patch:
@@ -4695,16 +5437,11 @@ paths:
       summary: List lymph-shapes
       tags:
         - lymph-shapes
-  /lymph-shapes/{id}:
+  /lymph-shapes/template:
     get:
       description: Retrieve lookup record details.
-      operationId: LymphShapeController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: LymphShapeController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Record retrieved successfully
@@ -4714,9 +5451,45 @@ paths:
                 $ref: '#/components/schemas/LymphShapeEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get lymph-shapes by ID
+      tags:
+        - lymph-shapes
+  /lymph-shapes/import:
+    post:
+      operationId: LymphShapeController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - lymph-shapes
+  /lymph-shapes/{id}:
+    get:
+      operationId: LymphShapeController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Record not found
-      summary: Get lymph-shapes by ID
       tags:
         - lymph-shapes
     patch:
@@ -4837,16 +5610,11 @@ paths:
       summary: List lymph-sizes
       tags:
         - lymph-sizes
-  /lymph-sizes/{id}:
+  /lymph-sizes/template:
     get:
       description: Retrieve lookup record details.
-      operationId: LymphSizeController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: LymphSizeController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Record retrieved successfully
@@ -4856,9 +5624,45 @@ paths:
                 $ref: '#/components/schemas/LymphSizeEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get lymph-sizes by ID
+      tags:
+        - lymph-sizes
+  /lymph-sizes/import:
+    post:
+      operationId: LymphSizeController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - lymph-sizes
+  /lymph-sizes/{id}:
+    get:
+      operationId: LymphSizeController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Record not found
-      summary: Get lymph-sizes by ID
       tags:
         - lymph-sizes
     patch:
@@ -4979,16 +5783,11 @@ paths:
       summary: List lymph-surfaces
       tags:
         - lymph-surfaces
-  /lymph-surfaces/{id}:
+  /lymph-surfaces/template:
     get:
       description: Retrieve lookup record details.
-      operationId: LymphSurfaceController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: LymphSurfaceController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Record retrieved successfully
@@ -4998,9 +5797,45 @@ paths:
                 $ref: '#/components/schemas/LymphSurfaceEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get lymph-surfaces by ID
+      tags:
+        - lymph-surfaces
+  /lymph-surfaces/import:
+    post:
+      operationId: LymphSurfaceController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - lymph-surfaces
+  /lymph-surfaces/{id}:
+    get:
+      operationId: LymphSurfaceController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Record not found
-      summary: Get lymph-surfaces by ID
       tags:
         - lymph-surfaces
     patch:
@@ -5121,16 +5956,11 @@ paths:
       summary: List lymph-temps
       tags:
         - lymph-temps
-  /lymph-temps/{id}:
+  /lymph-temps/template:
     get:
       description: Retrieve lookup record details.
-      operationId: LymphTempController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: LymphTempController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Record retrieved successfully
@@ -5140,9 +5970,45 @@ paths:
                 $ref: '#/components/schemas/LymphTempEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get lymph-temps by ID
+      tags:
+        - lymph-temps
+  /lymph-temps/import:
+    post:
+      operationId: LymphTempController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - lymph-temps
+  /lymph-temps/{id}:
+    get:
+      operationId: LymphTempController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Record not found
-      summary: Get lymph-temps by ID
       tags:
         - lymph-temps
     patch:
@@ -5263,16 +6129,11 @@ paths:
       summary: List mucosa-types
       tags:
         - mucosa-types
-  /mucosa-types/{id}:
+  /mucosa-types/template:
     get:
       description: Retrieve lookup record details.
-      operationId: MucosaTypeController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: MucosaTypeController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Record retrieved successfully
@@ -5282,9 +6143,45 @@ paths:
                 $ref: '#/components/schemas/MucosaTypeEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get mucosa-types by ID
+      tags:
+        - mucosa-types
+  /mucosa-types/import:
+    post:
+      operationId: MucosaTypeController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - mucosa-types
+  /mucosa-types/{id}:
+    get:
+      operationId: MucosaTypeController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Record not found
-      summary: Get mucosa-types by ID
       tags:
         - mucosa-types
     patch:
@@ -5405,16 +6302,11 @@ paths:
       summary: List obesity-types
       tags:
         - obesity-types
-  /obesity-types/{id}:
+  /obesity-types/template:
     get:
       description: Retrieve lookup record details.
-      operationId: ObesityTypeController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: ObesityTypeController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Record retrieved successfully
@@ -5424,9 +6316,45 @@ paths:
                 $ref: '#/components/schemas/ObesityTypeEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get obesity-types by ID
+      tags:
+        - obesity-types
+  /obesity-types/import:
+    post:
+      operationId: ObesityTypeController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - obesity-types
+  /obesity-types/{id}:
+    get:
+      operationId: ObesityTypeController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Record not found
-      summary: Get obesity-types by ID
       tags:
         - obesity-types
     patch:
@@ -5547,16 +6475,11 @@ paths:
       summary: List skin-colors
       tags:
         - skin-colors
-  /skin-colors/{id}:
+  /skin-colors/template:
     get:
       description: Retrieve lookup record details.
-      operationId: SkinColorController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: SkinColorController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Record retrieved successfully
@@ -5566,9 +6489,45 @@ paths:
                 $ref: '#/components/schemas/SkinColorEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get skin-colors by ID
+      tags:
+        - skin-colors
+  /skin-colors/import:
+    post:
+      operationId: SkinColorController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - skin-colors
+  /skin-colors/{id}:
+    get:
+      operationId: SkinColorController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Record not found
-      summary: Get skin-colors by ID
       tags:
         - skin-colors
     patch:
@@ -5689,16 +6648,11 @@ paths:
       summary: List skin-elasticities
       tags:
         - skin-elasticities
-  /skin-elasticities/{id}:
+  /skin-elasticities/template:
     get:
       description: Retrieve lookup record details.
-      operationId: SkinElasticityController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: SkinElasticityController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Record retrieved successfully
@@ -5708,9 +6662,45 @@ paths:
                 $ref: '#/components/schemas/SkinElasticityEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get skin-elasticities by ID
+      tags:
+        - skin-elasticities
+  /skin-elasticities/import:
+    post:
+      operationId: SkinElasticityController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - skin-elasticities
+  /skin-elasticities/{id}:
+    get:
+      operationId: SkinElasticityController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Record not found
-      summary: Get skin-elasticities by ID
       tags:
         - skin-elasticities
     patch:
@@ -5831,16 +6821,11 @@ paths:
       summary: List skin-humidities
       tags:
         - skin-humidities
-  /skin-humidities/{id}:
+  /skin-humidities/template:
     get:
       description: Retrieve lookup record details.
-      operationId: SkinHumidityController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: SkinHumidityController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Record retrieved successfully
@@ -5850,9 +6835,45 @@ paths:
                 $ref: '#/components/schemas/SkinHumidityEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get skin-humidities by ID
+      tags:
+        - skin-humidities
+  /skin-humidities/import:
+    post:
+      operationId: SkinHumidityController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - skin-humidities
+  /skin-humidities/{id}:
+    get:
+      operationId: SkinHumidityController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Record not found
-      summary: Get skin-humidities by ID
       tags:
         - skin-humidities
     patch:
@@ -5973,16 +6994,11 @@ paths:
       summary: List skin-pains
       tags:
         - skin-pains
-  /skin-pains/{id}:
+  /skin-pains/template:
     get:
       description: Retrieve lookup record details.
-      operationId: SkinPainController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: SkinPainController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Record retrieved successfully
@@ -5992,9 +7008,45 @@ paths:
                 $ref: '#/components/schemas/SkinPainEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get skin-pains by ID
+      tags:
+        - skin-pains
+  /skin-pains/import:
+    post:
+      operationId: SkinPainController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - skin-pains
+  /skin-pains/{id}:
+    get:
+      operationId: SkinPainController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Record not found
-      summary: Get skin-pains by ID
       tags:
         - skin-pains
     patch:
@@ -6115,16 +7167,11 @@ paths:
       summary: List skin-sensitivities
       tags:
         - skin-sensitivities
-  /skin-sensitivities/{id}:
+  /skin-sensitivities/template:
     get:
       description: Retrieve lookup record details.
-      operationId: SkinSensitivityController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: SkinSensitivityController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Record retrieved successfully
@@ -6134,9 +7181,45 @@ paths:
                 $ref: '#/components/schemas/SkinSensitivityEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get skin-sensitivities by ID
+      tags:
+        - skin-sensitivities
+  /skin-sensitivities/import:
+    post:
+      operationId: SkinSensitivityController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - skin-sensitivities
+  /skin-sensitivities/{id}:
+    get:
+      operationId: SkinSensitivityController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Record not found
-      summary: Get skin-sensitivities by ID
       tags:
         - skin-sensitivities
     patch:
@@ -6257,16 +7340,11 @@ paths:
       summary: List skin-smells
       tags:
         - skin-smells
-  /skin-smells/{id}:
+  /skin-smells/template:
     get:
       description: Retrieve lookup record details.
-      operationId: SkinSmellController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: SkinSmellController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Record retrieved successfully
@@ -6276,9 +7354,45 @@ paths:
                 $ref: '#/components/schemas/SkinSmellEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get skin-smells by ID
+      tags:
+        - skin-smells
+  /skin-smells/import:
+    post:
+      operationId: SkinSmellController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - skin-smells
+  /skin-smells/{id}:
+    get:
+      operationId: SkinSmellController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Record not found
-      summary: Get skin-smells by ID
       tags:
         - skin-smells
     patch:
@@ -6399,16 +7513,11 @@ paths:
       summary: List skin-surfaces
       tags:
         - skin-surfaces
-  /skin-surfaces/{id}:
+  /skin-surfaces/template:
     get:
       description: Retrieve lookup record details.
-      operationId: SkinSurfaceController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: SkinSurfaceController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Record retrieved successfully
@@ -6418,9 +7527,45 @@ paths:
                 $ref: '#/components/schemas/SkinSurfaceEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get skin-surfaces by ID
+      tags:
+        - skin-surfaces
+  /skin-surfaces/import:
+    post:
+      operationId: SkinSurfaceController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - skin-surfaces
+  /skin-surfaces/{id}:
+    get:
+      operationId: SkinSurfaceController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Record not found
-      summary: Get skin-surfaces by ID
       tags:
         - skin-surfaces
     patch:
@@ -6541,16 +7686,11 @@ paths:
       summary: List skin-temps
       tags:
         - skin-temps
-  /skin-temps/{id}:
+  /skin-temps/template:
     get:
       description: Retrieve lookup record details.
-      operationId: SkinTempController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: SkinTempController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Record retrieved successfully
@@ -6560,9 +7700,45 @@ paths:
                 $ref: '#/components/schemas/SkinTempEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get skin-temps by ID
+      tags:
+        - skin-temps
+  /skin-temps/import:
+    post:
+      operationId: SkinTempController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - skin-temps
+  /skin-temps/{id}:
+    get:
+      operationId: SkinTempController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Record not found
-      summary: Get skin-temps by ID
       tags:
         - skin-temps
     patch:
@@ -6683,16 +7859,11 @@ paths:
       summary: List temperaments
       tags:
         - temperaments
-  /temperaments/{id}:
+  /temperaments/template:
     get:
       description: Retrieve lookup record details.
-      operationId: TemperamentController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: TemperamentController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Record retrieved successfully
@@ -6702,9 +7873,45 @@ paths:
                 $ref: '#/components/schemas/TemperamentEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get temperaments by ID
+      tags:
+        - temperaments
+  /temperaments/import:
+    post:
+      operationId: TemperamentController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - temperaments
+  /temperaments/{id}:
+    get:
+      operationId: TemperamentController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Record not found
-      summary: Get temperaments by ID
       tags:
         - temperaments
     patch:
@@ -6825,16 +8032,11 @@ paths:
       summary: List wool-types
       tags:
         - wool-types
-  /wool-types/{id}:
+  /wool-types/template:
     get:
       description: Retrieve lookup record details.
-      operationId: WoolTypeController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: WoolTypeController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Record retrieved successfully
@@ -6844,9 +8046,45 @@ paths:
                 $ref: '#/components/schemas/WoolTypeEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get wool-types by ID
+      tags:
+        - wool-types
+  /wool-types/import:
+    post:
+      operationId: WoolTypeController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - wool-types
+  /wool-types/{id}:
+    get:
+      operationId: WoolTypeController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Record not found
-      summary: Get wool-types by ID
       tags:
         - wool-types
     patch:
@@ -6903,6 +8141,372 @@ paths:
       summary: Delete wool-types
       tags:
         - wool-types
+  /rumen-fluid-states:
+    post:
+      description: Creates a new lookup record.
+      operationId: RumenFluidStateController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRumenFluidStateDto'
+      responses:
+        '201':
+          description: Record created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RumenFluidStateEntity'
+        '400':
+          description: Invalid data
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Create rumen-fluid-states
+      tags:
+        - rumen-fluid-states
+    get:
+      description: Retrieve paginated list of lookup records.
+      operationId: RumenFluidStateController_findAll
+      parameters:
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: byId
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      responses:
+        '200':
+          description: Records retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRumenFluidStateEntity'
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: List rumen-fluid-states
+      tags:
+        - rumen-fluid-states
+  /rumen-fluid-states/template:
+    get:
+      description: Retrieve lookup record details.
+      operationId: RumenFluidStateController_downloadTemplate
+      parameters: []
+      responses:
+        '200':
+          description: Record retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RumenFluidStateEntity'
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get rumen-fluid-states by ID
+      tags:
+        - rumen-fluid-states
+  /rumen-fluid-states/import:
+    post:
+      operationId: RumenFluidStateController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - rumen-fluid-states
+  /rumen-fluid-states/{id}:
+    get:
+      operationId: RumenFluidStateController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+        '404':
+          description: Record not found
+      tags:
+        - rumen-fluid-states
+    patch:
+      description: Update lookup record by ID.
+      operationId: RumenFluidStateController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRumenFluidStateDto'
+      responses:
+        '200':
+          description: Record updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RumenFluidStateEntity'
+        '400':
+          description: Invalid update data
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+        '404':
+          description: Record not found
+      summary: Update rumen-fluid-states
+      tags:
+        - rumen-fluid-states
+    delete:
+      description: Delete lookup record by ID.
+      operationId: RumenFluidStateController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Record deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RumenFluidStateEntity'
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+        '404':
+          description: Record not found
+      summary: Delete rumen-fluid-states
+      tags:
+        - rumen-fluid-states
+  /statistics/diseases:
+    get:
+      description: >-
+        Returns how many animals are diagnosed with each disease. Disease is
+        determined by the highest probability in the AI prediction output.
+        Filters: animalTypeId, startDate, endDate.
+      operationId: StatisticsController_getDiseasesByAnimals
+      parameters:
+        - name: animalTypeId
+          required: false
+          in: query
+          description: Filter by animal type ID
+          schema:
+            type: string
+        - name: startDate
+          required: false
+          in: query
+          description: Start date filter (ISO 8601)
+          schema:
+            example: '2026-01-01'
+            type: string
+        - name: endDate
+          required: false
+          in: query
+          description: End date filter (ISO 8601)
+          schema:
+            example: '2026-12-31'
+            type: string
+      responses:
+        '200':
+          description: Disease counts sorted by disease index
+          content:
+            application/json:
+              schema:
+                example:
+                  data:
+                    - diseaseIndex: '14'
+                      diseaseName: Пневмония
+                      count: 23
+                    - diseaseIndex: '34'
+                      diseaseName: Гепатит
+                      count: 15
+                  totalSessionsAnalyzed: 60
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Diseases by animal count
+      tags:
+        - statistics
+  /statistics/diseases/chart:
+    get:
+      description: >-
+        Returns disease counts sorted by frequency (descending) — ready for
+        bar/pie charts. Filters: animalTypeId, startDate, endDate.
+      operationId: StatisticsController_getDiseasesChart
+      parameters:
+        - name: animalTypeId
+          required: false
+          in: query
+          description: Filter by animal type ID
+          schema:
+            type: string
+        - name: startDate
+          required: false
+          in: query
+          description: Start date filter (ISO 8601)
+          schema:
+            example: '2026-01-01'
+            type: string
+        - name: endDate
+          required: false
+          in: query
+          description: End date filter (ISO 8601)
+          schema:
+            example: '2026-12-31'
+            type: string
+      responses:
+        '200':
+          description: Disease counts sorted by count descending
+          content:
+            application/json:
+              schema:
+                example:
+                  data:
+                    - diseaseIndex: '14'
+                      diseaseName: Пневмония
+                      count: 23
+                    - diseaseIndex: '34'
+                      diseaseName: Гепатит
+                      count: 15
+                  totalSessionsAnalyzed: 60
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Disease frequency chart
+      tags:
+        - statistics
+  /statistics/overview:
+    get:
+      description: >-
+        Returns aggregate counts: total sessions by status, unique animals
+        examined, and the most common diagnosed disease. Filters: animalTypeId,
+        startDate, endDate.
+      operationId: StatisticsController_getOverview
+      parameters:
+        - name: animalTypeId
+          required: false
+          in: query
+          description: Filter by animal type ID
+          schema:
+            type: string
+        - name: startDate
+          required: false
+          in: query
+          description: Start date filter (ISO 8601)
+          schema:
+            example: '2026-01-01'
+            type: string
+        - name: endDate
+          required: false
+          in: query
+          description: End date filter (ISO 8601)
+          schema:
+            example: '2026-12-31'
+            type: string
+      responses:
+        '200':
+          description: Overview statistics
+          content:
+            application/json:
+              schema:
+                example:
+                  totalSessions: 100
+                  submittedSessions: 60
+                  draftSessions: 30
+                  readySessions: 10
+                  totalAnimalsExamined: 45
+                  mostCommonDisease:
+                    diseaseIndex: '14'
+                    diseaseName: Пневмония
+                    count: 23
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Dashboard overview
+      tags:
+        - statistics
+  /statistics/trends:
+    get:
+      description: >-
+        Returns per-month breakdown of diagnosed diseases — useful for
+        time-series charts. Filters: animalTypeId, startDate, endDate.
+      operationId: StatisticsController_getMonthlyTrends
+      parameters:
+        - name: animalTypeId
+          required: false
+          in: query
+          description: Filter by animal type ID
+          schema:
+            type: string
+        - name: startDate
+          required: false
+          in: query
+          description: Start date filter (ISO 8601)
+          schema:
+            example: '2026-01-01'
+            type: string
+        - name: endDate
+          required: false
+          in: query
+          description: End date filter (ISO 8601)
+          schema:
+            example: '2026-12-31'
+            type: string
+      responses:
+        '200':
+          description: Monthly trends grouped by period (YYYY-MM)
+          content:
+            application/json:
+              schema:
+                example:
+                  data:
+                    - period: 2026-01
+                      total: 12
+                      diseases:
+                        - diseaseIndex: '14'
+                          diseaseName: Пневмония
+                          count: 5
+                        - diseaseIndex: '34'
+                          diseaseName: Гепатит
+                          count: 3
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Monthly disease trends
+      tags:
+        - statistics
   /diseases:
     post:
       operationId: DiseaseController_create
@@ -6967,6 +8571,40 @@ paths:
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
       summary: List diseases
+      tags:
+        - diseases
+  /diseases/template:
+    get:
+      operationId: DiseaseController_downloadTemplate
+      parameters: []
+      responses:
+        '200':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Download Excel import template for diseases
+      tags:
+        - diseases
+  /diseases/import:
+    post:
+      operationId: DiseaseController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import diseases from Excel file
       tags:
         - diseases
   /diseases/{id}:
@@ -7102,6 +8740,40 @@ paths:
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
       summary: List disease categories
+      tags:
+        - disease-categories
+  /disease-categories/template:
+    get:
+      operationId: DiseaseCategoryController_downloadTemplate
+      parameters: []
+      responses:
+        '200':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Download Excel import template for disease categories
+      tags:
+        - disease-categories
+  /disease-categories/import:
+    post:
+      operationId: DiseaseCategoryController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import disease categories from Excel file
       tags:
         - disease-categories
   /disease-categories/{id}:
@@ -7410,6 +9082,40 @@ paths:
       summary: List prophylaxis items
       tags:
         - prophylaxis-items
+  /prophylaxis-items/template:
+    get:
+      operationId: ProphylaxisItemController_downloadTemplate
+      parameters: []
+      responses:
+        '200':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Download Excel import template for prophylaxis items
+      tags:
+        - prophylaxis-items
+  /prophylaxis-items/import:
+    post:
+      operationId: ProphylaxisItemController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import prophylaxis items from Excel file
+      tags:
+        - prophylaxis-items
   /prophylaxis-items/{id}:
     get:
       operationId: ProphylaxisItemController_findOne
@@ -7542,6 +9248,40 @@ paths:
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
       summary: List prophylaxis details
+      tags:
+        - prophylaxis-details
+  /prophylaxis-details/template:
+    get:
+      operationId: ProphylaxisDetailController_downloadTemplate
+      parameters: []
+      responses:
+        '200':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Download Excel import template for prophylaxis details
+      tags:
+        - prophylaxis-details
+  /prophylaxis-details/import:
+    post:
+      operationId: ProphylaxisDetailController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import prophylaxis details from Excel file
       tags:
         - prophylaxis-details
   /prophylaxis-details/{id}:
@@ -7687,6 +9427,40 @@ paths:
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
       summary: List animals
+      tags:
+        - animals
+  /animals/template:
+    get:
+      operationId: AnimalController_downloadTemplate
+      parameters: []
+      responses:
+        '200':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Download Excel import template for animals
+      tags:
+        - animals
+  /animals/import:
+    post:
+      operationId: AnimalController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import animals from Excel file
       tags:
         - animals
   /animals/{id}:
@@ -7890,6 +9664,40 @@ paths:
       summary: Resolve leaf AnimalType from parent + sex + birth month/year
       tags:
         - animal-types
+  /animal-types/template:
+    get:
+      operationId: AnimalTypeController_downloadTemplate
+      parameters: []
+      responses:
+        '200':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Download Excel import template for animal types
+      tags:
+        - animal-types
+  /animal-types/import:
+    post:
+      operationId: AnimalTypeController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import animal types from Excel file
+      tags:
+        - animal-types
   /animal-types/{id}:
     get:
       operationId: AnimalTypeController_findOne
@@ -8017,6 +9825,40 @@ paths:
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
       summary: List breeds
+      tags:
+        - breeds
+  /breeds/template:
+    get:
+      operationId: AnimalBreedController_downloadTemplate
+      parameters: []
+      responses:
+        '200':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Download Excel import template for animal breeds
+      tags:
+        - breeds
+  /breeds/import:
+    post:
+      operationId: AnimalBreedController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import animal breeds from Excel file
       tags:
         - breeds
   /breeds/{id}:
@@ -8157,16 +9999,11 @@ paths:
       summary: List colors
       tags:
         - colors
-  /colors/{id}:
+  /colors/template:
     get:
       description: Retrieve color details.
-      operationId: AnimalColorController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: AnimalColorController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: AnimalColor retrieved successfully
@@ -8176,9 +10013,45 @@ paths:
                 $ref: '#/components/schemas/AnimalColorEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get color by ID
+      tags:
+        - colors
+  /colors/import:
+    post:
+      operationId: AnimalColorController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import animal colors from Excel file
+      tags:
+        - colors
+  /colors/{id}:
+    get:
+      operationId: AnimalColorController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: AnimalColor not found
-      summary: Get color by ID
       tags:
         - colors
     patch:
@@ -8299,16 +10172,11 @@ paths:
       summary: List animal-sexes
       tags:
         - animal-sexes
-  /animal-sexes/{id}:
+  /animal-sexes/template:
     get:
       description: Retrieve lookup record details.
-      operationId: AnimalSexController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: AnimalSexController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Record retrieved successfully
@@ -8318,9 +10186,45 @@ paths:
                 $ref: '#/components/schemas/AnimalSexEntity'
         '401':
           description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Get animal-sexes by ID
+      tags:
+        - animal-sexes
+  /animal-sexes/import:
+    post:
+      operationId: AnimalSexController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
+      summary: Import records from Excel file
+      tags:
+        - animal-sexes
+  /animal-sexes/{id}:
+    get:
+      operationId: AnimalSexController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Access denied: User is not authenticated. Please log in to continue.'
         '404':
           description: Record not found
-      summary: Get animal-sexes by ID
       tags:
         - animal-sexes
     patch:
@@ -8453,16 +10357,11 @@ paths:
       summary: List regions
       tags:
         - regions
-  /regions/{id}:
+  /regions/template:
     get:
       description: Retrieve region details with nested districts.
-      operationId: RegionController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: number
+      operationId: RegionController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Region retrieved successfully
@@ -8478,9 +10377,57 @@ paths:
           description: >-
             Access denied: Insufficient permissions. Admin privileges are
             required to perform this action.
+      summary: Get region by ID
+      tags:
+        - regions
+  /regions/import:
+    post:
+      operationId: RegionController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: >-
+            Access denied: User is not authenticated. Please log in to access
+            this resource.
+        '403':
+          description: >-
+            Access denied: Insufficient permissions. Admin privileges are
+            required to perform this action.
+      summary: Import regions from Excel file
+      tags:
+        - regions
+  /regions/{id}:
+    get:
+      operationId: RegionController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '401':
+          description: >-
+            Access denied: User is not authenticated. Please log in to access
+            this resource.
+        '403':
+          description: >-
+            Access denied: Insufficient permissions. Admin privileges are
+            required to perform this action.
         '404':
           description: Region not found
-      summary: Get region by ID
       tags:
         - regions
     patch:
@@ -8632,16 +10579,11 @@ paths:
       summary: List districts
       tags:
         - districts
-  /districts/{id}:
+  /districts/template:
     get:
       description: Retrieve district details with nested region.
-      operationId: DistrictController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: DistrictController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: District retrieved successfully
@@ -8657,9 +10599,57 @@ paths:
           description: >-
             Access denied: Insufficient permissions. Admin privileges are
             required to perform this action.
+      summary: Get district by ID
+      tags:
+        - districts
+  /districts/import:
+    post:
+      operationId: DistrictController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: >-
+            Access denied: User is not authenticated. Please log in to access
+            this resource.
+        '403':
+          description: >-
+            Access denied: Insufficient permissions. Admin privileges are
+            required to perform this action.
+      summary: Import districts from Excel file
+      tags:
+        - districts
+  /districts/{id}:
+    get:
+      operationId: DistrictController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: >-
+            Access denied: User is not authenticated. Please log in to access
+            this resource.
+        '403':
+          description: >-
+            Access denied: Insufficient permissions. Admin privileges are
+            required to perform this action.
         '404':
           description: District not found
-      summary: Get district by ID
       tags:
         - districts
     patch:
@@ -8811,16 +10801,11 @@ paths:
       summary: List vet stations
       tags:
         - vet-stations
-  /vet-stations/{id}:
+  /vet-stations/template:
     get:
       description: Retrieve vet station details.
-      operationId: VetStationController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: VetStationController_downloadTemplate
+      parameters: []
       responses:
         '200':
           description: Vet station retrieved successfully
@@ -8836,9 +10821,57 @@ paths:
           description: >-
             Access denied: Insufficient permissions. Admin privileges are
             required to perform this action.
+      summary: Get vet station by ID
+      tags:
+        - vet-stations
+  /vet-stations/import:
+    post:
+      operationId: VetStationController_importFromExcel
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: >-
+            Access denied: User is not authenticated. Please log in to access
+            this resource.
+        '403':
+          description: >-
+            Access denied: Insufficient permissions. Admin privileges are
+            required to perform this action.
+      summary: Import vet stations from Excel file
+      tags:
+        - vet-stations
+  /vet-stations/{id}:
+    get:
+      operationId: VetStationController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '401':
+          description: >-
+            Access denied: User is not authenticated. Please log in to access
+            this resource.
+        '403':
+          description: >-
+            Access denied: Insufficient permissions. Admin privileges are
+            required to perform this action.
         '404':
           description: Vet station not found
-      summary: Get vet station by ID
       tags:
         - vet-stations
     patch:
@@ -9004,11 +11037,16 @@ components:
             - VETERINARIAN
             - FARMER
           example: VETERINARIAN
+        veterinarianId:
+          type: object
+          description: Veterinarian ID for create farmer profile (required)
+          example: 550e8400-e29b-41d4-a716-446655440000
       required:
         - username
         - password
         - firstName
         - districtId
+        - veterinarianId
     UserEntity:
       type: object
       properties:
@@ -9175,6 +11213,10 @@ components:
             - VETERINARIAN
             - FARMER
           example: VETERINARIAN
+        veterinarianId:
+          type: object
+          description: Veterinarian ID for create farmer profile (required)
+          example: 550e8400-e29b-41d4-a716-446655440000
     ChangePasswordDto:
       type: object
       properties:
@@ -11169,6 +13211,34 @@ components:
           type: string
           description: Notes about the session
           example: Annual checkup
+    PredictionEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+        sessionId:
+          type: string
+          description: Medical session ID
+        inputVector:
+          type: object
+          description: Numeric input vector sent to the AI model
+        rawOutput:
+          type: object
+          description: Raw response from the AI model
+        modelVersion:
+          type: object
+          description: Version of the AI model used
+        createdAt:
+          format: date-time
+          type: string
+          description: Prediction creation date
+      required:
+        - id
+        - sessionId
+        - inputVector
+        - rawOutput
+        - createdAt
     CreateFeedbackDto:
       type: object
       properties:
@@ -11176,6 +13246,9 @@ components:
           type: string
           example: 123e4567-e89b-12d3-a456-426614174000
         veterinarianId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        adminId:
           type: string
           example: 123e4567-e89b-12d3-a456-426614174000
         rating:
@@ -11191,7 +13264,6 @@ components:
           description: Suggested correct disease ID
       required:
         - predictionId
-        - veterinarianId
         - rating
     FeedbackEntity:
       type: object
@@ -11207,6 +13279,10 @@ components:
         veterinarianId:
           type: string
           description: Veterinarian ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        adminId:
+          type: string
+          description: Admin ID
           example: 123e4567-e89b-12d3-a456-426614174000
         rating:
           type: number
@@ -11560,7 +13636,7 @@ components:
           type: array
           description: List of detected anomalies (values outside normal ranges)
           items:
-            $ref: '#/components/schemas/AnomalyAlertEntity'
+            type: object
         overallSeverity:
           type: string
           description: Overall severity (worst anomaly severity, or OK if none)
@@ -13316,6 +15392,79 @@ components:
         - data
         - meta
     UpdateWoolTypeDto:
+      type: object
+      properties:
+        name:
+          description: Localized name
+          allOf:
+            - $ref: '#/components/schemas/NameDto'
+        numericValue:
+          type: number
+          example: 1
+          description: Numeric value for ML mapping
+    CreateRumenFluidStateDto:
+      type: object
+      properties:
+        name:
+          description: Localized name
+          allOf:
+            - $ref: '#/components/schemas/NameDto'
+        numericValue:
+          type: number
+          example: 1
+          description: Numeric value for ML mapping
+      required:
+        - name
+        - numericValue
+    RumenFluidStateEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        name:
+          type: object
+          description: Localized name
+          example:
+            ru: Name
+            uz: Nomi
+        numericValue:
+          type: number
+          description: Numeric value for ML mapping
+          example: 1
+        createdAt:
+          format: date-time
+          type: string
+          description: Creation timestamp
+          example: '2024-01-01T12:00:00Z'
+        updatedAt:
+          format: date-time
+          type: string
+          description: Last update timestamp
+          example: '2024-01-01T12:00:00Z'
+      required:
+        - id
+        - name
+        - numericValue
+        - createdAt
+        - updatedAt
+    PaginatedRumenFluidStateEntity:
+      type: object
+      properties:
+        data:
+          description: Array of records
+          type: array
+          items:
+            $ref: '#/components/schemas/RumenFluidStateEntity'
+        meta:
+          description: Pagination metadata
+          allOf:
+            - $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateRumenFluidStateDto:
       type: object
       properties:
         name:

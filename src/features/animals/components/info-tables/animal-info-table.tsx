@@ -11,11 +11,14 @@ type Props = {
 }
 
 export function AnimalInfoTable({ id }: Props) {
+  const { data, isLoading } = useGetAnimal(id);
+
   return <InfoTable
     hideCreateButton
     icon={<PawPrint className="size-5 md:size-6" />}
     localeTitle="animals.animalInfo"
-    queryFn={() => useGetAnimal(id)}
+    data={data}
+    isLoading={isLoading}
     createColumns={createAnimalColumns}
   />
 }

@@ -1,6 +1,7 @@
 import { LanguageLocales, Region } from "@/shared/types";
 import { Edit, Trash } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
+import { CopyIdButton } from "@/shared/components/copy-id-button";
 
 export const createRegionColumns = (handleEditItem: (item: Region) => void, handleDelete: (id: number) => void, t: any, locale: LanguageLocales) => [
   {
@@ -24,6 +25,7 @@ export const createRegionColumns = (handleEditItem: (item: Region) => void, hand
     render(item: Region) {
       return (
         <div className="flex gap-2 items-center flex-wrap md:flex-nowrap justify-end md:justify-start">
+          <CopyIdButton id={item.id} />
           <Button onClick={() => handleEditItem(item)} size="sm" className="text-xs!">
             <Edit />
             {t("table.edit")}

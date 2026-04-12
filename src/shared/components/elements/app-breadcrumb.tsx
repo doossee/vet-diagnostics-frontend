@@ -34,14 +34,16 @@ export function AppBreadcrumb() {
   const { get } = useSearchQueryParams();
 
   const [path, param] = splitPathParam(pathname);
+  const [firstParam, ...restParams] = (param ?? "").split("/");
+  const subPath = restParams.join("/");
   const page = links[(path)?.replaceAll('/', '') as keyof typeof links];
 
   const animalId = get(QUERY_PARAM_KEYS.ANIMAL_ID);
 
-  const hasEntityContext = page.url === links.animals.url && isUUID(param);
+  const hasEntityContext = page.url === links.animals.url && isUUID(firstParam);
   const hasAnimalContext = Boolean(animalId && page?.url && ANIMAL_CONTEXT_PAGES.has(page.url))
 
-  const animalQueryId = animalId ?? (isUUID(param) ? param : undefined);
+  const animalQueryId = animalId ?? (isUUID(firstParam) ? firstParam : undefined);
 
   const { data: animal, isLoading: animalIsLoading } = useGetAnimal(
     animalQueryId ? String(animalQueryId) : "",
@@ -69,15 +71,26 @@ export function AppBreadcrumb() {
           </span>
         </span>
       ),
-      ...(page?.url && { link: page?.url }),
+      ...(page?.url && { link: subPath && isUUID(firstParam) ? `${page.url}/${firstParam}` : page.url }),
     });
 
-    if (isUUID(param)) {
-      paths.push({
-        root: <SkeletonWrapper loading={animalIsLoading}>
-          {animal?.animalNameCode}
-        </SkeletonWrapper>,
-      });
+    if (isUUID(firstParam)) {
+      if (animal || animalIsLoading) {
+        paths.push({
+          root: <SkeletonWrapper loading={animalIsLoading}>
+            {animal?.animalNameCode}
+          </SkeletonWrapper>,
+          ...(subPath && { link: `${page?.url}/${firstParam}` }),
+        });
+      }
+      if (subPath) {
+        const SUB_PATH_LABELS: Record<string, string> = {
+          prediction: "AI Прогноз",
+        };
+        paths.push({
+          root: SUB_PATH_LABELS[subPath] ?? subPath,
+        });
+      }
     } else if (param) {
       paths.push({
         root: param,

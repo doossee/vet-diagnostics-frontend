@@ -1,6 +1,7 @@
 import { Edit, Trash } from "lucide-react";
 import { LanguageLocales, VetStation } from "@/shared/types";
 import { Button } from "@/shared/components/ui/button";
+import { CopyIdButton } from "@/shared/components/copy-id-button";
 
 export const createVetStationColumns = (handleEditItem: (item: VetStation) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
   {
@@ -24,6 +25,7 @@ export const createVetStationColumns = (handleEditItem: (item: VetStation) => vo
     render(item: VetStation) {
       return (
         <div className="flex gap-2 items-center flex-wrap md:flex-nowrap justify-end md:justify-start">
+          <CopyIdButton id={item.id} />
           <Button onClick={() => handleEditItem(item)} size="sm" className="text-xs!">
             <Edit />
             {t("table.edit")}

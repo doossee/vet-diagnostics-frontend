@@ -10,6 +10,7 @@ import { Modal } from "@/shared/components/elements/modal";
 import { createUserColumns } from "@/entities/users";
 import { useGetVeterinarians } from "@/entities/users/services/queries";
 import { useUpdateVeterinarian, useCreateVeterinarian, useDeleteVeterinarian } from "@/entities/users/services/mutations";
+import { ExcelDownloadButton } from "@/shared/components/excel-download-button";
 import { UsersQueryParamKeys } from "@/entities/users/utils/constants/users-query-param-keys";
 
 export default function Veterinarians() {
@@ -35,7 +36,7 @@ export default function Veterinarians() {
         columns={columns}
         queryFunction={useGetVeterinarians}
         filterQueryParamKeys={UsersQueryParamKeys}
-        topSlot={createButton(t("users.createVeterinarian"))}
+        topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/users/import" />{createButton(t("users.createVeterinarian"))}</div>}
       />
 
       <Modal open={dialog} onClose={handleClose} widthClassName="max-w-[650px]!" title={t(editedItem ? "users.editVeterinarian" : "users.createVeterinarian")}>

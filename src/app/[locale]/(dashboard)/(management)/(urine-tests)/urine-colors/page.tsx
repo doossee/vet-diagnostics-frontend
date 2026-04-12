@@ -6,6 +6,7 @@ import { useI18n } from "@/shared/hooks/use-i18n";
 import { useCrud } from "@/shared/hooks/use-crud";
 import { DataTable } from "@/shared/components/data-table";
 import { Modal } from "@/shared/components/elements/modal";
+import { ExcelDownloadButton } from "@/shared/components/excel-download-button";
 import { createUrineColorColumns } from "@/entities/urine-colors";
 import { UrineColorForm, UrineColorSchema } from "@/features/urine-colors";
 import { useGetUrineColors } from "@/entities/urine-colors/services/queries";
@@ -24,7 +25,7 @@ export default function UrineColors() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetUrineColors} topSlot={createButton(t("management.urineColorCreate"))} />
+      <DataTable columns={columns} queryFunction={useGetUrineColors} topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/urine-colors/import" />{createButton(t("management.urineColorCreate"))}</div>} />
 
       <Modal open={dialog} onClose={handleClose} title={t(editedItem ? "management.editColor" : "management.createColor")}>
         <UrineColorForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : (undefined as any)} />

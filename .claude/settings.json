@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xargs grep:*)",
+      "Bash(npx orval:*)",
+      "Bash(node -e \"const fs = require\\('fs'\\); const yaml = require\\('js-yaml'\\); try { const doc = yaml.load\\(fs.readFileSync\\('./src/shared/schema/schema.yaml', 'utf8'\\)\\); console.log\\('YAML valid, keys:', Object.keys\\(doc\\)\\); } catch\\(e\\) { console.error\\('YAML error:', e.message\\); }\")",
+      "Bash(node -e ':*)",
+      "Bash(grep -n '\\\\\\\\\\\\\\\\' src/shared/schema/schema.yaml)",
+      "Bash(node -e \"const fs = require\\('fs'\\); const c = fs.readFileSync\\('./src/shared/schema/schema.yaml', 'utf8'\\); const lines = c.split\\('\\\\n'\\); lines.forEach\\(\\(l,i\\) => { if \\(l.startsWith\\('  /'\\) || l.startsWith\\('  \\\\\\\\\\\\\\\\'\\)\\) console.log\\(i+1, l.substring\\(0,60\\)\\); }\\);\")",
+      "Bash(ls -la /d/client/vet/src/app/[locale]/\\\\\\(dashboard\\\\\\)/\\\\\\(animals\\\\\\)/animals/[id]/)",
+      "Bash(ls -la /d/client/vet/src/app/[locale]/\\\\\\(dashboard\\\\\\)/\\\\\\(tests\\\\\\)/sessions/[id]/)",
+      "Bash(cat -n d:/client/vet/src/app/[locale]/\\\\\\(dashboard\\\\\\)/\\\\\\(management\\\\\\)/\\\\\\(animals\\\\\\)/animal-types/page.tsx)",
+      "Bash(cat -n d:/client/vet/src/app/[locale]/\\\\\\(dashboard\\\\\\)/\\\\\\(management\\\\\\)/\\\\\\(animals\\\\\\)/breeds/page.tsx)",
+      "Bash(cat -n d:/client/vet/src/app/[locale]/\\\\\\(dashboard\\\\\\)/\\\\\\(management\\\\\\)/\\\\\\(animals\\\\\\)/animal-colors/page.tsx)"
+    ]
+  }
+}

@@ -12,6 +12,7 @@ import { createUserColumns, UserFilters } from "@/entities/users";
 import { useGetFarmers } from "@/entities/users/services/queries";
 import { UsersQueryParamKeys } from "@/entities/users/utils/constants/users-query-param-keys";
 import { useCreateFarmer, useDeleteFarmer, useUpdateFarmer } from "@/entities/users/services/mutations";
+import { ExcelDownloadButton } from "@/shared/components/excel-download-button";
 
 export default function Farmers() {
   const { t, locale } = useI18n();
@@ -40,7 +41,7 @@ export default function Farmers() {
         columns={columns}
         queryFunction={useGetFarmers}
         filterQueryParamKeys={UsersQueryParamKeys}
-        topSlot={createButton(t("users.createFarmer"))}
+        topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/users/import" />{createButton(t("users.createFarmer"))}</div>}
       />
 
       <Modal

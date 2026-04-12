@@ -7,6 +7,7 @@ import { useCrud } from "@/shared/hooks/use-crud";
 import { createRegionColumns } from "@/entities/regions";
 import { DataTable } from "@/shared/components/data-table";
 import { Modal } from "@/shared/components/elements/modal";
+import { ExcelDownloadButton } from "@/shared/components/excel-download-button";
 import { RegionForm, RegionSchema } from "@/features/regions";
 import { useCreateRegions, useDeleteRegions, useUpdateRegions } from "@/entities/regions/services/mutations";
 import { useGetRegions } from "@/entities/regions/services/queries";
@@ -23,7 +24,7 @@ export default function Regions() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetRegions} topSlot={createButton(t("regions.createRegion"))} />
+      <DataTable columns={columns} queryFunction={useGetRegions} topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/regions/import" />{createButton(t("regions.createRegion"))}</div>} />
 
       <Modal open={dialog} onClose={handleClose} title={t(editedItem ? "regions.editRegion" : "regions.createRegion")}>
         <RegionForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : undefined} />

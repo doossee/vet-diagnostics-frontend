@@ -6,6 +6,7 @@ import { useI18n } from "@/shared/hooks/use-i18n";
 import type { AdditionalCrudModel } from "@/shared/types";
 import { DataTable } from "@/shared/components/data-table";
 import { Modal } from "@/shared/components/elements/modal";
+import { ExcelDownloadButton } from "@/shared/components/excel-download-button";
 import { createAdditionalCrudColumns } from "@/entities/additional-crud";
 import { useGetUrineSmells } from "@/entities/additional-crud/services/queries";
 import { AdditionalCrudForm, AdditionalCrudSchema } from "@/features/additional-crud";
@@ -24,7 +25,7 @@ export default function UrineSmells() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetUrineSmells} topSlot={createButton(t("pages.createUrineSmell"))} />
+      <DataTable columns={columns} queryFunction={useGetUrineSmells} topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/urine-smells/import" />{createButton(t("pages.createUrineSmell"))}</div>} />
 
       <Modal open={dialog} onClose={handleClose} title={editedItem ? t("pages.editUrineSmell") : t("pages.createUrineSmell")}>
         <AdditionalCrudForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : (undefined as any)} />

@@ -1,6 +1,7 @@
 import { Edit, Trash } from "lucide-react";
 import { BloodExam } from "@/shared/types";
 import { Button } from "@/shared/components/ui/button";
+import { CopyIdButton } from "@/shared/components/copy-id-button";
 import { LanguageLocales } from "@/shared/types";
 import { BLOOD_TEST_FIELDS } from "@/entities/general-blood-tests/utils/constants/blood-test-fields";
 
@@ -36,6 +37,7 @@ export const createGeneralBloodTestColumns = (handleEditItem: (item: BloodExam) 
     render(item: BloodExam) {
       return (
         <div className="flex gap-2 items-center flex-wrap md:flex-nowrap justify-end md:justify-start">
+          <CopyIdButton id={item.id} />
           <Button onClick={() => handleEditItem(item)} size="sm" className="text-xs!">
             <Edit />
             {t("table.edit")}

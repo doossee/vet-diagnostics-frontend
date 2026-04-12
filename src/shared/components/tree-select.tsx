@@ -216,6 +216,8 @@ export function TreeSelect<T>({
       return;
     }
 
+    // String/number ID — don't reset if current value already matches
+    if (value && String(getOptionId(value)) === String(defaultValue)) return;
     setValue(null);
   }, [defaultValue]);
 

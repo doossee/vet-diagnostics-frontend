@@ -13,6 +13,7 @@ export const routes = {
   SESSIONS: {
     INDEX: "/sessions",
     ID: (id: number | string) => `/sessions/${id}`,
+    PREDICT: (id: number | string) => `/sessions/${id}/prediction`,
   },
   BREEDS: "/breeds",
   DISEASE_TYPES: "/disease-types",
@@ -37,4 +38,5 @@ export const routes = {
   INSPECTIONS: "/inspections",
   URINE_TESTS: "/urine-tests",
   VACCINES: "/vaccines",
+  STATISTICS: "/statistics",
 };

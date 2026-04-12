@@ -10,6 +10,7 @@ import { AnimalTypeSchema, AnimalTypeForm } from "@/features/animal-types";
 import { useGetAnimalTypes } from "@/entities/animal-types/services/animal-type-queries";
 import { useCreateAnimalType, useDeleteAnimalType, useUpdateAnimalType } from "@/entities/animal-types/services/animal-type-mutations";
 import { Modal } from "@/shared/components/elements/modal";
+import { ExcelDownloadButton } from "@/shared/components/excel-download-button";
 
 export default function AnimalTypes() {
   const { t, locale } = useI18n();
@@ -24,7 +25,7 @@ export default function AnimalTypes() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetAnimalTypes} topSlot={createButton(t("animalTypes.createButton"))} />
+      <DataTable columns={columns} queryFunction={useGetAnimalTypes} topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/animal-types/import" />{createButton(t("animalTypes.createButton"))}</div>} />
 
       <Modal open={dialog} onClose={handleClose} title={t(editedItem ? "animalTypes.editAnimalType" : "animalTypes.createAnimalType")}>
         <AnimalTypeForm onSubmit={onSubmit} defaultValues={editedItem !== null ? editedItem : undefined} />

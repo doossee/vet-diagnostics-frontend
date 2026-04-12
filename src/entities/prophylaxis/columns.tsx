@@ -2,6 +2,7 @@ import { Edit, Trash } from "lucide-react";
 
 import { LanguageLocales, Prophylaxis } from "@/shared/types";
 import { Button } from "@/shared/components/ui/button";
+import { CopyIdButton } from "@/shared/components/copy-id-button";
 import { Badge } from "@/shared/components/ui/badge";
 import { PROPHYLAXIS_BADGE_COLORS, PROPHYLAXIS_TYPES } from "./utils/constants/prophylaxis-types";
 
@@ -40,6 +41,7 @@ export const createProphylaxisColumns = (handleEditItem: (item: Prophylaxis) => 
     render(item: Prophylaxis) {
       return (
         <div className="flex gap-2 items-center flex-wrap md:flex-nowrap justify-end md:justify-start">
+          <CopyIdButton id={item.id} />
           <Button onClick={() => handleEditItem(item)} size="sm" className="text-xs!">
             <Edit />
             {t("table.edit")}

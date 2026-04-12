@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -n \"ExcelDownloadButton\" d:/client/vet/src/app/[locale]/\\\\\\(dashboard\\\\\\)/\\\\\\(users\\\\\\)/veterinarians/page.tsx d:/client/vet/src/app/[locale]/\\\\\\(dashboard\\\\\\)/\\\\\\(users\\\\\\)/farmers/page.tsx)",
+      "Bash(xargs cat:*)"
+    ]
+  }
+}

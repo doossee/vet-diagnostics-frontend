@@ -50,6 +50,11 @@ export const CreateUserDtoRole = {
   FARMER: "FARMER",
 } as const;
 
+/**
+ * Veterinarian ID for create farmer profile (required)
+ */
+export type CreateUserDtoVeterinarianId = { [key: string]: unknown };
+
 export interface CreateUserDto {
   /**
    * The user's username (required, unique)
@@ -82,6 +87,8 @@ export interface CreateUserDto {
   districtId: string;
   /** The user's role in the system */
   role?: CreateUserDtoRole;
+  /** Veterinarian ID for create farmer profile (required) */
+  veterinarianId: CreateUserDtoVeterinarianId;
 }
 
 /**
@@ -216,6 +223,11 @@ export const UpdateUserDtoRole = {
   FARMER: "FARMER",
 } as const;
 
+/**
+ * Veterinarian ID for create farmer profile (required)
+ */
+export type UpdateUserDtoVeterinarianId = { [key: string]: unknown };
+
 export interface UpdateUserDto {
   /**
    * The user's username (required, unique)
@@ -243,6 +255,8 @@ export interface UpdateUserDto {
   districtId?: string;
   /** The user's role in the system */
   role?: UpdateUserDtoRole;
+  /** Veterinarian ID for create farmer profile (required) */
+  veterinarianId?: UpdateUserDtoVeterinarianId;
 }
 
 export interface ChangePasswordDto {
@@ -1597,9 +1611,40 @@ export interface UpdateMedicalSessionDto {
   notes?: string;
 }
 
+/**
+ * Numeric input vector sent to the AI model
+ */
+export type PredictionEntityInputVector = { [key: string]: unknown };
+
+/**
+ * Raw response from the AI model
+ */
+export type PredictionEntityRawOutput = { [key: string]: unknown };
+
+/**
+ * Version of the AI model used
+ */
+export type PredictionEntityModelVersion = { [key: string]: unknown };
+
+export interface PredictionEntity {
+  /** Unique identifier */
+  id: string;
+  /** Medical session ID */
+  sessionId: string;
+  /** Numeric input vector sent to the AI model */
+  inputVector: PredictionEntityInputVector;
+  /** Raw response from the AI model */
+  rawOutput: PredictionEntityRawOutput;
+  /** Version of the AI model used */
+  modelVersion?: PredictionEntityModelVersion;
+  /** Prediction creation date */
+  createdAt: string;
+}
+
 export interface CreateFeedbackDto {
   predictionId: string;
-  veterinarianId: string;
+  veterinarianId?: string;
+  adminId?: string;
   /** Prediction accuracy rating (1-5) */
   rating: number;
   comment?: string;
@@ -1624,6 +1669,8 @@ export interface FeedbackEntity {
   predictionId: string;
   /** Veterinarian ID */
   veterinarianId: string;
+  /** Admin ID */
+  adminId?: string;
   /** Prediction accuracy rating (1-5) */
   rating: number;
   /** Feedback comment */
@@ -1843,6 +1890,8 @@ export interface PredictDto {
  */
 export type PredictionResultEntityPredictions = { [key: string]: unknown };
 
+export type PredictionResultEntityAnomaliesItem = { [key: string]: unknown };
+
 /**
  * Overall severity (worst anomaly severity, or OK if none)
  */
@@ -1861,7 +1910,7 @@ export interface PredictionResultEntity {
   /** Raw AI model output (disease predictions) */
   predictions: PredictionResultEntityPredictions;
   /** List of detected anomalies (values outside normal ranges) */
-  anomalies: AnomalyAlertEntity[];
+  anomalies: PredictionResultEntityAnomaliesItem[];
   /** Overall severity (worst anomaly severity, or OK if none) */
   overallSeverity: PredictionResultEntityOverallSeverity;
   /** Session UUID if linked */
@@ -2502,41 +2551,6 @@ export interface UpdateLymphTempDto {
   numericValue?: number;
 }
 
-export interface CreateRumenFluidStateDto {
-  /** Localized name */
-  name: NameDto;
-  /** Numeric value for ML mapping */
-  numericValue: number;
-}
-
-/**
- * Localized name
- */
-export type RumenFluidStateEntityName = { [key: string]: unknown };
-
-export interface RumenFluidStateEntity {
-  /** Unique identifier */
-  id: string;
-  /** Localized name */
-  name: RumenFluidStateEntityName;
-  /** Numeric value for ML mapping */
-  numericValue: number;
-}
-
-export interface PaginatedRumenFluidStateEntity {
-  /** Array of records */
-  data: RumenFluidStateEntity[];
-  /** Pagination metadata */
-  meta: MetaDataEntity;
-}
-
-export interface UpdateRumenFluidStateDto {
-  /** Localized name */
-  name?: NameDto;
-  /** Numeric value for ML mapping */
-  numericValue?: number;
-}
-
 export interface CreateMucosaTypeDto {
   /** Localized name */
   name: NameDto;
@@ -2951,6 +2965,45 @@ export interface PaginatedWoolTypeEntity {
 }
 
 export interface UpdateWoolTypeDto {
+  /** Localized name */
+  name?: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue?: number;
+}
+
+export interface CreateRumenFluidStateDto {
+  /** Localized name */
+  name: NameDto;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+}
+
+/**
+ * Localized name
+ */
+export type RumenFluidStateEntityName = { [key: string]: unknown };
+
+export interface RumenFluidStateEntity {
+  /** Unique identifier */
+  id: string;
+  /** Localized name */
+  name: RumenFluidStateEntityName;
+  /** Numeric value for ML mapping */
+  numericValue: number;
+  /** Creation timestamp */
+  createdAt: string;
+  /** Last update timestamp */
+  updatedAt: string;
+}
+
+export interface PaginatedRumenFluidStateEntity {
+  /** Array of records */
+  data: RumenFluidStateEntity[];
+  /** Pagination metadata */
+  meta: MetaDataEntity;
+}
+
+export interface UpdateRumenFluidStateDto {
   /** Localized name */
   name?: NameDto;
   /** Numeric value for ML mapping */
@@ -3635,6 +3688,10 @@ export const BloodExamControllerFindAllById = {
   desc: "desc",
 } as const;
 
+export type BloodExamControllerImportFromExcelBody = {
+  file?: Blob;
+};
+
 export type ClinicalExamControllerFindAllParams = {
   search?: string;
   page?: number;
@@ -3650,6 +3707,10 @@ export const ClinicalExamControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export type ClinicalExamControllerImportFromExcelBody = {
+  file?: Blob;
+};
 
 export type FecesExamControllerFindAllParams = {
   search?: string;
@@ -3667,12 +3728,17 @@ export const FecesExamControllerFindAllById = {
   desc: "desc",
 } as const;
 
+export type FecesExamControllerImportFromExcelBody = {
+  file?: Blob;
+};
+
 export type MucosaExamControllerFindAllParams = {
   search?: string;
   page?: number;
   perPage?: number;
   byId?: MucosaExamControllerFindAllById;
   animalId?: string;
+  sessionId?: string;
 };
 
 export type MucosaExamControllerFindAllById = (typeof MucosaExamControllerFindAllById)[keyof typeof MucosaExamControllerFindAllById];
@@ -3682,6 +3748,10 @@ export const MucosaExamControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export type MucosaExamControllerImportFromExcelBody = {
+  file?: Blob;
+};
 
 export type UrineExamControllerFindAllParams = {
   search?: string;
@@ -3698,6 +3768,10 @@ export const UrineExamControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export type UrineExamControllerImportFromExcelBody = {
+  file?: Blob;
+};
 
 export type UrineColorControllerFindAllParams = {
   search?: string;
@@ -3718,6 +3792,10 @@ export const UrineColorControllerFindAllById = {
   desc: "desc",
 } as const;
 
+export type UrineColorControllerImportFromExcelBody = {
+  file?: Blob;
+};
+
 export type UrineSmellControllerFindAllParams = {
   search?: string;
   page?: number;
@@ -3736,6 +3814,10 @@ export const UrineSmellControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export type UrineSmellControllerImportFromExcelBody = {
+  file?: Blob;
+};
 
 export type UrineClarityControllerFindAllParams = {
   search?: string;
@@ -3756,6 +3838,10 @@ export const UrineClarityControllerFindAllById = {
   desc: "desc",
 } as const;
 
+export type UrineClarityControllerImportFromExcelBody = {
+  file?: Blob;
+};
+
 export type UrineConsistencyControllerFindAllParams = {
   search?: string;
   page?: number;
@@ -3774,6 +3860,10 @@ export const UrineConsistencyControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export type UrineConsistencyControllerImportFromExcelBody = {
+  file?: Blob;
+};
 
 export type FecesColorControllerFindAllParams = {
   search?: string;
@@ -3794,6 +3884,10 @@ export const FecesColorControllerFindAllById = {
   desc: "desc",
 } as const;
 
+export type FecesColorControllerImportFromExcelBody = {
+  file?: Blob;
+};
+
 export type FecesSmellControllerFindAllParams = {
   search?: string;
   page?: number;
@@ -3812,6 +3906,10 @@ export const FecesSmellControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export type FecesSmellControllerImportFromExcelBody = {
+  file?: Blob;
+};
 
 export type FecesConsistencyControllerFindAllParams = {
   search?: string;
@@ -3832,6 +3930,10 @@ export const FecesConsistencyControllerFindAllById = {
   desc: "desc",
 } as const;
 
+export type FecesConsistencyControllerImportFromExcelBody = {
+  file?: Blob;
+};
+
 export type FecesFormControllerFindAllParams = {
   search?: string;
   page?: number;
@@ -3850,6 +3952,10 @@ export const FecesFormControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export type FecesFormControllerImportFromExcelBody = {
+  file?: Blob;
+};
 
 export type MucosaAppearanceControllerFindAllParams = {
   /**
@@ -3885,6 +3991,10 @@ export const MucosaAppearanceControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export type MucosaAppearanceControllerImportFromExcelBody = {
+  file?: Blob;
+};
 
 export type MedicalSessionControllerFindAllParams = {
   search?: string;
@@ -4046,6 +4156,10 @@ export const BodyPositionControllerFindAllById = {
   desc: "desc",
 } as const;
 
+export type BodyPositionControllerImportFromExcelBody = {
+  file?: Blob;
+};
+
 export type BodyTypeControllerFindAllParams = {
   search?: string;
   page?: number;
@@ -4060,6 +4174,10 @@ export const BodyTypeControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export type BodyTypeControllerImportFromExcelBody = {
+  file?: Blob;
+};
 
 export type ConstitutionControllerFindAllParams = {
   search?: string;
@@ -4076,6 +4194,10 @@ export const ConstitutionControllerFindAllById = {
   desc: "desc",
 } as const;
 
+export type ConstitutionControllerImportFromExcelBody = {
+  file?: Blob;
+};
+
 export type DownTypeControllerFindAllParams = {
   search?: string;
   page?: number;
@@ -4090,6 +4212,10 @@ export const DownTypeControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export type DownTypeControllerImportFromExcelBody = {
+  file?: Blob;
+};
 
 export type FeatherTypeControllerFindAllParams = {
   search?: string;
@@ -4106,6 +4232,10 @@ export const FeatherTypeControllerFindAllById = {
   desc: "desc",
 } as const;
 
+export type FeatherTypeControllerImportFromExcelBody = {
+  file?: Blob;
+};
+
 export type HairTypeControllerFindAllParams = {
   search?: string;
   page?: number;
@@ -4120,6 +4250,10 @@ export const HairTypeControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export type HairTypeControllerImportFromExcelBody = {
+  file?: Blob;
+};
 
 export type LymphConsistencyControllerFindAllParams = {
   search?: string;
@@ -4136,6 +4270,10 @@ export const LymphConsistencyControllerFindAllById = {
   desc: "desc",
 } as const;
 
+export type LymphConsistencyControllerImportFromExcelBody = {
+  file?: Blob;
+};
+
 export type LymphMobilityControllerFindAllParams = {
   search?: string;
   page?: number;
@@ -4150,6 +4288,10 @@ export const LymphMobilityControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export type LymphMobilityControllerImportFromExcelBody = {
+  file?: Blob;
+};
 
 export type LymphPainControllerFindAllParams = {
   search?: string;
@@ -4166,6 +4308,10 @@ export const LymphPainControllerFindAllById = {
   desc: "desc",
 } as const;
 
+export type LymphPainControllerImportFromExcelBody = {
+  file?: Blob;
+};
+
 export type LymphShapeControllerFindAllParams = {
   search?: string;
   page?: number;
@@ -4180,6 +4326,10 @@ export const LymphShapeControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export type LymphShapeControllerImportFromExcelBody = {
+  file?: Blob;
+};
 
 export type LymphSizeControllerFindAllParams = {
   search?: string;
@@ -4196,6 +4346,10 @@ export const LymphSizeControllerFindAllById = {
   desc: "desc",
 } as const;
 
+export type LymphSizeControllerImportFromExcelBody = {
+  file?: Blob;
+};
+
 export type LymphSurfaceControllerFindAllParams = {
   search?: string;
   page?: number;
@@ -4210,6 +4364,10 @@ export const LymphSurfaceControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export type LymphSurfaceControllerImportFromExcelBody = {
+  file?: Blob;
+};
 
 export type LymphTempControllerFindAllParams = {
   search?: string;
@@ -4226,20 +4384,9 @@ export const LymphTempControllerFindAllById = {
   desc: "desc",
 } as const;
 
-export type RumenFluidStateControllerFindAllParams = {
-  search?: string;
-  page?: number;
-  perPage?: number;
-  byId?: RumenFluidStateControllerFindAllById;
+export type LymphTempControllerImportFromExcelBody = {
+  file?: Blob;
 };
-
-export type RumenFluidStateControllerFindAllById = (typeof RumenFluidStateControllerFindAllById)[keyof typeof RumenFluidStateControllerFindAllById];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const RumenFluidStateControllerFindAllById = {
-  asc: "asc",
-  desc: "desc",
-} as const;
 
 export type MucosaTypeControllerFindAllParams = {
   search?: string;
@@ -4256,6 +4403,10 @@ export const MucosaTypeControllerFindAllById = {
   desc: "desc",
 } as const;
 
+export type MucosaTypeControllerImportFromExcelBody = {
+  file?: Blob;
+};
+
 export type ObesityTypeControllerFindAllParams = {
   search?: string;
   page?: number;
@@ -4270,6 +4421,10 @@ export const ObesityTypeControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export type ObesityTypeControllerImportFromExcelBody = {
+  file?: Blob;
+};
 
 export type SkinColorControllerFindAllParams = {
   search?: string;
@@ -4286,6 +4441,10 @@ export const SkinColorControllerFindAllById = {
   desc: "desc",
 } as const;
 
+export type SkinColorControllerImportFromExcelBody = {
+  file?: Blob;
+};
+
 export type SkinElasticityControllerFindAllParams = {
   search?: string;
   page?: number;
@@ -4300,6 +4459,10 @@ export const SkinElasticityControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export type SkinElasticityControllerImportFromExcelBody = {
+  file?: Blob;
+};
 
 export type SkinHumidityControllerFindAllParams = {
   search?: string;
@@ -4316,6 +4479,10 @@ export const SkinHumidityControllerFindAllById = {
   desc: "desc",
 } as const;
 
+export type SkinHumidityControllerImportFromExcelBody = {
+  file?: Blob;
+};
+
 export type SkinPainControllerFindAllParams = {
   search?: string;
   page?: number;
@@ -4330,6 +4497,10 @@ export const SkinPainControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export type SkinPainControllerImportFromExcelBody = {
+  file?: Blob;
+};
 
 export type SkinSensitivityControllerFindAllParams = {
   search?: string;
@@ -4346,6 +4517,10 @@ export const SkinSensitivityControllerFindAllById = {
   desc: "desc",
 } as const;
 
+export type SkinSensitivityControllerImportFromExcelBody = {
+  file?: Blob;
+};
+
 export type SkinSmellControllerFindAllParams = {
   search?: string;
   page?: number;
@@ -4360,6 +4535,10 @@ export const SkinSmellControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export type SkinSmellControllerImportFromExcelBody = {
+  file?: Blob;
+};
 
 export type SkinSurfaceControllerFindAllParams = {
   search?: string;
@@ -4376,6 +4555,10 @@ export const SkinSurfaceControllerFindAllById = {
   desc: "desc",
 } as const;
 
+export type SkinSurfaceControllerImportFromExcelBody = {
+  file?: Blob;
+};
+
 export type SkinTempControllerFindAllParams = {
   search?: string;
   page?: number;
@@ -4390,6 +4573,10 @@ export const SkinTempControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export type SkinTempControllerImportFromExcelBody = {
+  file?: Blob;
+};
 
 export type TemperamentControllerFindAllParams = {
   search?: string;
@@ -4406,6 +4593,10 @@ export const TemperamentControllerFindAllById = {
   desc: "desc",
 } as const;
 
+export type TemperamentControllerImportFromExcelBody = {
+  file?: Blob;
+};
+
 export type WoolTypeControllerFindAllParams = {
   search?: string;
   page?: number;
@@ -4420,6 +4611,89 @@ export const WoolTypeControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export type WoolTypeControllerImportFromExcelBody = {
+  file?: Blob;
+};
+
+export type RumenFluidStateControllerFindAllParams = {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  byId?: RumenFluidStateControllerFindAllById;
+};
+
+export type RumenFluidStateControllerFindAllById = (typeof RumenFluidStateControllerFindAllById)[keyof typeof RumenFluidStateControllerFindAllById];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RumenFluidStateControllerFindAllById = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+export type RumenFluidStateControllerImportFromExcelBody = {
+  file?: Blob;
+};
+
+export type StatisticsControllerGetDiseasesByAnimalsParams = {
+  /**
+   * Filter by animal type ID
+   */
+  animalTypeId?: string;
+  /**
+   * Start date filter (ISO 8601)
+   */
+  startDate?: string;
+  /**
+   * End date filter (ISO 8601)
+   */
+  endDate?: string;
+};
+
+export type StatisticsControllerGetDiseasesChartParams = {
+  /**
+   * Filter by animal type ID
+   */
+  animalTypeId?: string;
+  /**
+   * Start date filter (ISO 8601)
+   */
+  startDate?: string;
+  /**
+   * End date filter (ISO 8601)
+   */
+  endDate?: string;
+};
+
+export type StatisticsControllerGetOverviewParams = {
+  /**
+   * Filter by animal type ID
+   */
+  animalTypeId?: string;
+  /**
+   * Start date filter (ISO 8601)
+   */
+  startDate?: string;
+  /**
+   * End date filter (ISO 8601)
+   */
+  endDate?: string;
+};
+
+export type StatisticsControllerGetMonthlyTrendsParams = {
+  /**
+   * Filter by animal type ID
+   */
+  animalTypeId?: string;
+  /**
+   * Start date filter (ISO 8601)
+   */
+  startDate?: string;
+  /**
+   * End date filter (ISO 8601)
+   */
+  endDate?: string;
+};
 
 export type DiseaseControllerFindAllParams = {
   search?: string;
@@ -4436,6 +4710,10 @@ export const DiseaseControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export type DiseaseControllerImportFromExcelBody = {
+  file?: Blob;
+};
 
 export type DiseaseCategoryControllerFindAllParams = {
   search?: string;
@@ -4455,6 +4733,10 @@ export const DiseaseCategoryControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export type DiseaseCategoryControllerImportFromExcelBody = {
+  file?: Blob;
+};
 
 export type ProphylaxisControllerFindAllParams = {
   search?: string;
@@ -4499,6 +4781,10 @@ export const ProphylaxisItemControllerFindAllType = {
   DEWORMING: "DEWORMING",
 } as const;
 
+export type ProphylaxisItemControllerImportFromExcelBody = {
+  file?: Blob;
+};
+
 export type ProphylaxisDetailControllerFindAllParams = {
   search?: string;
   page?: number;
@@ -4514,6 +4800,10 @@ export const ProphylaxisDetailControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export type ProphylaxisDetailControllerImportFromExcelBody = {
+  file?: Blob;
+};
 
 export type AnimalControllerFindAllParams = {
   search?: string;
@@ -4535,6 +4825,10 @@ export const AnimalControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export type AnimalControllerImportFromExcelBody = {
+  file?: Blob;
+};
 
 export type AnimalTypeControllerFindAllParams = {
   search?: string;
@@ -4571,6 +4865,10 @@ export type AnimalTypeControllerResolveAnimalTypeParams = {
   birthMonth: number;
 };
 
+export type AnimalTypeControllerImportFromExcelBody = {
+  file?: Blob;
+};
+
 export type AnimalBreedControllerFindAllParams = {
   search?: string;
   page?: number;
@@ -4585,6 +4883,10 @@ export const AnimalBreedControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export type AnimalBreedControllerImportFromExcelBody = {
+  file?: Blob;
+};
 
 export type AnimalColorControllerFindAllParams = {
   search?: string;
@@ -4602,6 +4904,10 @@ export const AnimalColorControllerFindAllById = {
   desc: "desc",
 } as const;
 
+export type AnimalColorControllerImportFromExcelBody = {
+  file?: Blob;
+};
+
 export type AnimalSexControllerFindAllParams = {
   search?: string;
   page?: number;
@@ -4617,6 +4923,10 @@ export const AnimalSexControllerFindAllById = {
   desc: "desc",
 } as const;
 
+export type AnimalSexControllerImportFromExcelBody = {
+  file?: Blob;
+};
+
 export type RegionControllerFindAllParams = {
   search?: string;
   page?: number;
@@ -4631,6 +4941,10 @@ export const RegionControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export type RegionControllerImportFromExcelBody = {
+  file?: Blob;
+};
 
 export type DistrictControllerFindAllParams = {
   search?: string;
@@ -4651,6 +4965,10 @@ export const DistrictControllerFindAllById = {
   desc: "desc",
 } as const;
 
+export type DistrictControllerImportFromExcelBody = {
+  file?: Blob;
+};
+
 export type VetStationControllerFindAllParams = {
   search?: string;
   page?: number;
@@ -4669,6 +4987,10 @@ export const VetStationControllerFindAllById = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export type VetStationControllerImportFromExcelBody = {
+  file?: Blob;
+};
 
 /**
  * Authenticates users (SUPER_ADMIN, ADMIN, VETERINARIAN, FARMER) with username and password. Returns JWT access and refresh tokens.
@@ -4809,8 +5131,24 @@ export const bloodExamControllerFindLastByAnimalId = (animalId: string) => {
  * Retrieve blood exam details.
  * @summary Get blood exam by ID
  */
+export const bloodExamControllerDownloadTemplate = () => {
+  return createInstance<BloodExamEntity>({ url: `/blood-exams/template`, method: "GET" });
+};
+
+/**
+ * @summary Import blood exams from Excel file
+ */
+export const bloodExamControllerImportFromExcel = (bloodExamControllerImportFromExcelBody: BloodExamControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (bloodExamControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, bloodExamControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/blood-exams/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const bloodExamControllerFindOne = (id: string) => {
-  return createInstance<BloodExamEntity>({ url: `/blood-exams/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/blood-exams/${id}`, method: "GET" });
 };
 
 /**
@@ -4857,8 +5195,24 @@ export const clinicalExamControllerFindLastByAnimalId = (animalId: string) => {
  * Retrieve clinical exam details.
  * @summary Get clinical exam by ID
  */
+export const clinicalExamControllerDownloadTemplate = () => {
+  return createInstance<ClinicalExamEntity>({ url: `/clinical-exams/template`, method: "GET" });
+};
+
+/**
+ * @summary Import clinical exams from Excel file
+ */
+export const clinicalExamControllerImportFromExcel = (clinicalExamControllerImportFromExcelBody: ClinicalExamControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (clinicalExamControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, clinicalExamControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/clinical-exams/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const clinicalExamControllerFindOne = (id: string) => {
-  return createInstance<ClinicalExamEntity>({ url: `/clinical-exams/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/clinical-exams/${id}`, method: "GET" });
 };
 
 /**
@@ -4905,8 +5259,24 @@ export const fecesExamControllerFindLastByAnimalId = (animalId: string) => {
  * Retrieve feces exam details.
  * @summary Get feces exam by ID
  */
+export const fecesExamControllerDownloadTemplate = () => {
+  return createInstance<FecesExamEntity>({ url: `/feces-exams/template`, method: "GET" });
+};
+
+/**
+ * @summary Import feces exams from Excel file
+ */
+export const fecesExamControllerImportFromExcel = (fecesExamControllerImportFromExcelBody: FecesExamControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (fecesExamControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, fecesExamControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/feces-exams/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const fecesExamControllerFindOne = (id: string) => {
-  return createInstance<FecesExamEntity>({ url: `/feces-exams/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/feces-exams/${id}`, method: "GET" });
 };
 
 /**
@@ -4953,8 +5323,24 @@ export const mucosaExamControllerFindLastByAnimalId = (animalId: string) => {
  * Retrieve mucosa exam details.
  * @summary Get mucosa exam by ID
  */
+export const mucosaExamControllerDownloadTemplate = () => {
+  return createInstance<MucosaExamEntity>({ url: `/mucosa-exams/template`, method: "GET" });
+};
+
+/**
+ * @summary Import mucosa exams from Excel file
+ */
+export const mucosaExamControllerImportFromExcel = (mucosaExamControllerImportFromExcelBody: MucosaExamControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (mucosaExamControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, mucosaExamControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/mucosa-exams/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const mucosaExamControllerFindOne = (id: string) => {
-  return createInstance<MucosaExamEntity>({ url: `/mucosa-exams/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/mucosa-exams/${id}`, method: "GET" });
 };
 
 /**
@@ -5001,8 +5387,24 @@ export const urineExamControllerFindLastByAnimalId = (animalId: string) => {
  * Retrieve urine exam details.
  * @summary Get urine exam by ID
  */
+export const urineExamControllerDownloadTemplate = () => {
+  return createInstance<UrineExamEntity>({ url: `/urine-exams/template`, method: "GET" });
+};
+
+/**
+ * @summary Import urine exams from Excel file
+ */
+export const urineExamControllerImportFromExcel = (urineExamControllerImportFromExcelBody: UrineExamControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (urineExamControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, urineExamControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/urine-exams/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const urineExamControllerFindOne = (id: string) => {
-  return createInstance<UrineExamEntity>({ url: `/urine-exams/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/urine-exams/${id}`, method: "GET" });
 };
 
 /**
@@ -5041,8 +5443,24 @@ export const urineColorControllerFindAll = (params?: UrineColorControllerFindAll
  * Retrieve urine color details.
  * @summary Get urine color by ID
  */
+export const urineColorControllerDownloadTemplate = () => {
+  return createInstance<UrineColorEntity>({ url: `/urine-colors/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const urineColorControllerImportFromExcel = (urineColorControllerImportFromExcelBody: UrineColorControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (urineColorControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, urineColorControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/urine-colors/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const urineColorControllerFindOne = (id: string) => {
-  return createInstance<UrineColorEntity>({ url: `/urine-colors/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/urine-colors/${id}`, method: "GET" });
 };
 
 /**
@@ -5081,8 +5499,24 @@ export const urineSmellControllerFindAll = (params?: UrineSmellControllerFindAll
  * Retrieve urine smell details.
  * @summary Get urine smell by ID
  */
+export const urineSmellControllerDownloadTemplate = () => {
+  return createInstance<UrineSmellEntity>({ url: `/urine-smells/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const urineSmellControllerImportFromExcel = (urineSmellControllerImportFromExcelBody: UrineSmellControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (urineSmellControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, urineSmellControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/urine-smells/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const urineSmellControllerFindOne = (id: string) => {
-  return createInstance<UrineSmellEntity>({ url: `/urine-smells/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/urine-smells/${id}`, method: "GET" });
 };
 
 /**
@@ -5121,8 +5555,24 @@ export const urineClarityControllerFindAll = (params?: UrineClarityControllerFin
  * Retrieve urine clarity details.
  * @summary Get urine clarity by ID
  */
+export const urineClarityControllerDownloadTemplate = () => {
+  return createInstance<UrineClarityEntity>({ url: `/urine-clarities/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const urineClarityControllerImportFromExcel = (urineClarityControllerImportFromExcelBody: UrineClarityControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (urineClarityControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, urineClarityControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/urine-clarities/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const urineClarityControllerFindOne = (id: string) => {
-  return createInstance<UrineClarityEntity>({ url: `/urine-clarities/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/urine-clarities/${id}`, method: "GET" });
 };
 
 /**
@@ -5161,8 +5611,24 @@ export const urineConsistencyControllerFindAll = (params?: UrineConsistencyContr
  * Retrieve urine consistency details.
  * @summary Get urine consistency by ID
  */
+export const urineConsistencyControllerDownloadTemplate = () => {
+  return createInstance<UrineConsistencyEntity>({ url: `/urine-consistencies/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const urineConsistencyControllerImportFromExcel = (urineConsistencyControllerImportFromExcelBody: UrineConsistencyControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (urineConsistencyControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, urineConsistencyControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/urine-consistencies/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const urineConsistencyControllerFindOne = (id: string) => {
-  return createInstance<UrineConsistencyEntity>({ url: `/urine-consistencies/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/urine-consistencies/${id}`, method: "GET" });
 };
 
 /**
@@ -5201,8 +5667,24 @@ export const fecesColorControllerFindAll = (params?: FecesColorControllerFindAll
  * Retrieve feces color details.
  * @summary Get feces color by ID
  */
+export const fecesColorControllerDownloadTemplate = () => {
+  return createInstance<FecesColorEntity>({ url: `/feces-colors/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const fecesColorControllerImportFromExcel = (fecesColorControllerImportFromExcelBody: FecesColorControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (fecesColorControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, fecesColorControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/feces-colors/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const fecesColorControllerFindOne = (id: string) => {
-  return createInstance<FecesColorEntity>({ url: `/feces-colors/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/feces-colors/${id}`, method: "GET" });
 };
 
 /**
@@ -5241,8 +5723,24 @@ export const fecesSmellControllerFindAll = (params?: FecesSmellControllerFindAll
  * Retrieve feces smell details.
  * @summary Get feces smell by ID
  */
+export const fecesSmellControllerDownloadTemplate = () => {
+  return createInstance<FecesSmellEntity>({ url: `/feces-smells/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const fecesSmellControllerImportFromExcel = (fecesSmellControllerImportFromExcelBody: FecesSmellControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (fecesSmellControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, fecesSmellControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/feces-smells/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const fecesSmellControllerFindOne = (id: string) => {
-  return createInstance<FecesSmellEntity>({ url: `/feces-smells/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/feces-smells/${id}`, method: "GET" });
 };
 
 /**
@@ -5281,8 +5779,24 @@ export const fecesConsistencyControllerFindAll = (params?: FecesConsistencyContr
  * Retrieve feces consistency details.
  * @summary Get feces consistency by ID
  */
+export const fecesConsistencyControllerDownloadTemplate = () => {
+  return createInstance<FecesConsistencyEntity>({ url: `/feces-consistencies/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const fecesConsistencyControllerImportFromExcel = (fecesConsistencyControllerImportFromExcelBody: FecesConsistencyControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (fecesConsistencyControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, fecesConsistencyControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/feces-consistencies/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const fecesConsistencyControllerFindOne = (id: string) => {
-  return createInstance<FecesConsistencyEntity>({ url: `/feces-consistencies/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/feces-consistencies/${id}`, method: "GET" });
 };
 
 /**
@@ -5321,8 +5835,24 @@ export const fecesFormControllerFindAll = (params?: FecesFormControllerFindAllPa
  * Retrieve feces form details.
  * @summary Get feces form by ID
  */
+export const fecesFormControllerDownloadTemplate = () => {
+  return createInstance<FecesFormEntity>({ url: `/feces-forms/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const fecesFormControllerImportFromExcel = (fecesFormControllerImportFromExcelBody: FecesFormControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (fecesFormControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, fecesFormControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/feces-forms/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const fecesFormControllerFindOne = (id: string) => {
-  return createInstance<FecesFormEntity>({ url: `/feces-forms/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/feces-forms/${id}`, method: "GET" });
 };
 
 /**
@@ -5361,8 +5891,24 @@ export const mucosaAppearanceControllerFindAll = (params?: MucosaAppearanceContr
  * Retrieve mucosa appearance details.
  * @summary Get mucosa appearance by ID
  */
+export const mucosaAppearanceControllerDownloadTemplate = () => {
+  return createInstance<MucosaAppearanceEntity>({ url: `/mucosa-appearances/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const mucosaAppearanceControllerImportFromExcel = (mucosaAppearanceControllerImportFromExcelBody: MucosaAppearanceControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (mucosaAppearanceControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, mucosaAppearanceControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/mucosa-appearances/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const mucosaAppearanceControllerFindOne = (id: string) => {
-  return createInstance<MucosaAppearanceEntity>({ url: `/mucosa-appearances/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/mucosa-appearances/${id}`, method: "GET" });
 };
 
 /**
@@ -5419,6 +5965,14 @@ export const medicalSessionControllerUpdate = (id: string, updateMedicalSessionD
  */
 export const medicalSessionControllerDelete = (id: string) => {
   return createInstance<MedicalSessionEntity>({ url: `/medical-sessions/${id}`, method: "DELETE" });
+};
+
+/**
+ * Retrieve the AI prediction result for a submitted session.
+ * @summary Get prediction for medical session
+ */
+export const medicalSessionControllerGetPrediction = (id: string) => {
+  return createInstance<PredictionEntity>({ url: `/medical-sessions/${id}/predict`, method: "GET" });
 };
 
 /**
@@ -5566,8 +6120,24 @@ export const bodyPositionControllerFindAll = (params?: BodyPositionControllerFin
  * Retrieve lookup record details.
  * @summary Get body-positions by ID
  */
+export const bodyPositionControllerDownloadTemplate = () => {
+  return createInstance<BodyPositionEntity>({ url: `/body-positions/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const bodyPositionControllerImportFromExcel = (bodyPositionControllerImportFromExcelBody: BodyPositionControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (bodyPositionControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, bodyPositionControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/body-positions/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const bodyPositionControllerFindOne = (id: string) => {
-  return createInstance<BodyPositionEntity>({ url: `/body-positions/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/body-positions/${id}`, method: "GET" });
 };
 
 /**
@@ -5606,8 +6176,24 @@ export const bodyTypeControllerFindAll = (params?: BodyTypeControllerFindAllPara
  * Retrieve lookup record details.
  * @summary Get body-types by ID
  */
+export const bodyTypeControllerDownloadTemplate = () => {
+  return createInstance<BodyTypeEntity>({ url: `/body-types/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const bodyTypeControllerImportFromExcel = (bodyTypeControllerImportFromExcelBody: BodyTypeControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (bodyTypeControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, bodyTypeControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/body-types/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const bodyTypeControllerFindOne = (id: string) => {
-  return createInstance<BodyTypeEntity>({ url: `/body-types/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/body-types/${id}`, method: "GET" });
 };
 
 /**
@@ -5646,8 +6232,24 @@ export const constitutionControllerFindAll = (params?: ConstitutionControllerFin
  * Retrieve lookup record details.
  * @summary Get constitutions by ID
  */
+export const constitutionControllerDownloadTemplate = () => {
+  return createInstance<ConstitutionEntity>({ url: `/constitutions/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const constitutionControllerImportFromExcel = (constitutionControllerImportFromExcelBody: ConstitutionControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (constitutionControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, constitutionControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/constitutions/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const constitutionControllerFindOne = (id: string) => {
-  return createInstance<ConstitutionEntity>({ url: `/constitutions/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/constitutions/${id}`, method: "GET" });
 };
 
 /**
@@ -5686,8 +6288,24 @@ export const downTypeControllerFindAll = (params?: DownTypeControllerFindAllPara
  * Retrieve lookup record details.
  * @summary Get down-types by ID
  */
+export const downTypeControllerDownloadTemplate = () => {
+  return createInstance<DownTypeEntity>({ url: `/down-types/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const downTypeControllerImportFromExcel = (downTypeControllerImportFromExcelBody: DownTypeControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (downTypeControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, downTypeControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/down-types/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const downTypeControllerFindOne = (id: string) => {
-  return createInstance<DownTypeEntity>({ url: `/down-types/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/down-types/${id}`, method: "GET" });
 };
 
 /**
@@ -5726,8 +6344,24 @@ export const featherTypeControllerFindAll = (params?: FeatherTypeControllerFindA
  * Retrieve lookup record details.
  * @summary Get feather-types by ID
  */
+export const featherTypeControllerDownloadTemplate = () => {
+  return createInstance<FeatherTypeEntity>({ url: `/feather-types/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const featherTypeControllerImportFromExcel = (featherTypeControllerImportFromExcelBody: FeatherTypeControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (featherTypeControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, featherTypeControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/feather-types/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const featherTypeControllerFindOne = (id: string) => {
-  return createInstance<FeatherTypeEntity>({ url: `/feather-types/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/feather-types/${id}`, method: "GET" });
 };
 
 /**
@@ -5766,8 +6400,24 @@ export const hairTypeControllerFindAll = (params?: HairTypeControllerFindAllPara
  * Retrieve lookup record details.
  * @summary Get hair-types by ID
  */
+export const hairTypeControllerDownloadTemplate = () => {
+  return createInstance<HairTypeEntity>({ url: `/hair-types/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const hairTypeControllerImportFromExcel = (hairTypeControllerImportFromExcelBody: HairTypeControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (hairTypeControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, hairTypeControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/hair-types/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const hairTypeControllerFindOne = (id: string) => {
-  return createInstance<HairTypeEntity>({ url: `/hair-types/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/hair-types/${id}`, method: "GET" });
 };
 
 /**
@@ -5806,8 +6456,24 @@ export const lymphConsistencyControllerFindAll = (params?: LymphConsistencyContr
  * Retrieve lookup record details.
  * @summary Get lymph-consistencies by ID
  */
+export const lymphConsistencyControllerDownloadTemplate = () => {
+  return createInstance<LymphConsistencyEntity>({ url: `/lymph-consistencies/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const lymphConsistencyControllerImportFromExcel = (lymphConsistencyControllerImportFromExcelBody: LymphConsistencyControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (lymphConsistencyControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, lymphConsistencyControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/lymph-consistencies/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const lymphConsistencyControllerFindOne = (id: string) => {
-  return createInstance<LymphConsistencyEntity>({ url: `/lymph-consistencies/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/lymph-consistencies/${id}`, method: "GET" });
 };
 
 /**
@@ -5846,8 +6512,24 @@ export const lymphMobilityControllerFindAll = (params?: LymphMobilityControllerF
  * Retrieve lookup record details.
  * @summary Get lymph-mobilities by ID
  */
+export const lymphMobilityControllerDownloadTemplate = () => {
+  return createInstance<LymphMobilityEntity>({ url: `/lymph-mobilities/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const lymphMobilityControllerImportFromExcel = (lymphMobilityControllerImportFromExcelBody: LymphMobilityControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (lymphMobilityControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, lymphMobilityControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/lymph-mobilities/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const lymphMobilityControllerFindOne = (id: string) => {
-  return createInstance<LymphMobilityEntity>({ url: `/lymph-mobilities/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/lymph-mobilities/${id}`, method: "GET" });
 };
 
 /**
@@ -5886,8 +6568,24 @@ export const lymphPainControllerFindAll = (params?: LymphPainControllerFindAllPa
  * Retrieve lookup record details.
  * @summary Get lymph-pains by ID
  */
+export const lymphPainControllerDownloadTemplate = () => {
+  return createInstance<LymphPainEntity>({ url: `/lymph-pains/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const lymphPainControllerImportFromExcel = (lymphPainControllerImportFromExcelBody: LymphPainControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (lymphPainControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, lymphPainControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/lymph-pains/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const lymphPainControllerFindOne = (id: string) => {
-  return createInstance<LymphPainEntity>({ url: `/lymph-pains/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/lymph-pains/${id}`, method: "GET" });
 };
 
 /**
@@ -5926,8 +6624,24 @@ export const lymphShapeControllerFindAll = (params?: LymphShapeControllerFindAll
  * Retrieve lookup record details.
  * @summary Get lymph-shapes by ID
  */
+export const lymphShapeControllerDownloadTemplate = () => {
+  return createInstance<LymphShapeEntity>({ url: `/lymph-shapes/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const lymphShapeControllerImportFromExcel = (lymphShapeControllerImportFromExcelBody: LymphShapeControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (lymphShapeControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, lymphShapeControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/lymph-shapes/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const lymphShapeControllerFindOne = (id: string) => {
-  return createInstance<LymphShapeEntity>({ url: `/lymph-shapes/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/lymph-shapes/${id}`, method: "GET" });
 };
 
 /**
@@ -5966,8 +6680,24 @@ export const lymphSizeControllerFindAll = (params?: LymphSizeControllerFindAllPa
  * Retrieve lookup record details.
  * @summary Get lymph-sizes by ID
  */
+export const lymphSizeControllerDownloadTemplate = () => {
+  return createInstance<LymphSizeEntity>({ url: `/lymph-sizes/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const lymphSizeControllerImportFromExcel = (lymphSizeControllerImportFromExcelBody: LymphSizeControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (lymphSizeControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, lymphSizeControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/lymph-sizes/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const lymphSizeControllerFindOne = (id: string) => {
-  return createInstance<LymphSizeEntity>({ url: `/lymph-sizes/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/lymph-sizes/${id}`, method: "GET" });
 };
 
 /**
@@ -6006,8 +6736,24 @@ export const lymphSurfaceControllerFindAll = (params?: LymphSurfaceControllerFin
  * Retrieve lookup record details.
  * @summary Get lymph-surfaces by ID
  */
+export const lymphSurfaceControllerDownloadTemplate = () => {
+  return createInstance<LymphSurfaceEntity>({ url: `/lymph-surfaces/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const lymphSurfaceControllerImportFromExcel = (lymphSurfaceControllerImportFromExcelBody: LymphSurfaceControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (lymphSurfaceControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, lymphSurfaceControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/lymph-surfaces/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const lymphSurfaceControllerFindOne = (id: string) => {
-  return createInstance<LymphSurfaceEntity>({ url: `/lymph-surfaces/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/lymph-surfaces/${id}`, method: "GET" });
 };
 
 /**
@@ -6046,8 +6792,24 @@ export const lymphTempControllerFindAll = (params?: LymphTempControllerFindAllPa
  * Retrieve lookup record details.
  * @summary Get lymph-temps by ID
  */
+export const lymphTempControllerDownloadTemplate = () => {
+  return createInstance<LymphTempEntity>({ url: `/lymph-temps/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const lymphTempControllerImportFromExcel = (lymphTempControllerImportFromExcelBody: LymphTempControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (lymphTempControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, lymphTempControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/lymph-temps/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const lymphTempControllerFindOne = (id: string) => {
-  return createInstance<LymphTempEntity>({ url: `/lymph-temps/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/lymph-temps/${id}`, method: "GET" });
 };
 
 /**
@@ -6064,46 +6826,6 @@ export const lymphTempControllerUpdate = (id: string, updateLymphTempDto: Update
  */
 export const lymphTempControllerDelete = (id: string) => {
   return createInstance<LymphTempEntity>({ url: `/lymph-temps/${id}`, method: "DELETE" });
-};
-
-/**
- * Creates a new lookup record.
- * @summary Create rumen-fluid-states
- */
-export const rumenFluidStateControllerCreate = (createRumenFluidStateDto: CreateRumenFluidStateDto) => {
-  return createInstance<RumenFluidStateEntity>({ url: `/rumen-fluid-states`, method: "POST", headers: { "Content-Type": "application/json" }, data: createRumenFluidStateDto });
-};
-
-/**
- * Retrieve paginated list of lookup records.
- * @summary List rumen-fluid-states
- */
-export const rumenFluidStateControllerFindAll = (params?: RumenFluidStateControllerFindAllParams) => {
-  return createInstance<PaginatedRumenFluidStateEntity>({ url: `/rumen-fluid-states`, method: "GET", params });
-};
-
-/**
- * Retrieve lookup record details.
- * @summary Get rumen-fluid-states by ID
- */
-export const rumenFluidStateControllerFindOne = (id: string) => {
-  return createInstance<RumenFluidStateEntity>({ url: `/rumen-fluid-states/${id}`, method: "GET" });
-};
-
-/**
- * Update lookup record by ID.
- * @summary Update rumen-fluid-states
- */
-export const rumenFluidStateControllerUpdate = (id: string, updateRumenFluidStateDto: UpdateRumenFluidStateDto) => {
-  return createInstance<RumenFluidStateEntity>({ url: `/rumen-fluid-states/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateRumenFluidStateDto });
-};
-
-/**
- * Delete lookup record by ID.
- * @summary Delete rumen-fluid-states
- */
-export const rumenFluidStateControllerDelete = (id: string) => {
-  return createInstance<RumenFluidStateEntity>({ url: `/rumen-fluid-states/${id}`, method: "DELETE" });
 };
 
 /**
@@ -6126,8 +6848,24 @@ export const mucosaTypeControllerFindAll = (params?: MucosaTypeControllerFindAll
  * Retrieve lookup record details.
  * @summary Get mucosa-types by ID
  */
+export const mucosaTypeControllerDownloadTemplate = () => {
+  return createInstance<MucosaTypeEntity>({ url: `/mucosa-types/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const mucosaTypeControllerImportFromExcel = (mucosaTypeControllerImportFromExcelBody: MucosaTypeControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (mucosaTypeControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, mucosaTypeControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/mucosa-types/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const mucosaTypeControllerFindOne = (id: string) => {
-  return createInstance<MucosaTypeEntity>({ url: `/mucosa-types/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/mucosa-types/${id}`, method: "GET" });
 };
 
 /**
@@ -6166,8 +6904,24 @@ export const obesityTypeControllerFindAll = (params?: ObesityTypeControllerFindA
  * Retrieve lookup record details.
  * @summary Get obesity-types by ID
  */
+export const obesityTypeControllerDownloadTemplate = () => {
+  return createInstance<ObesityTypeEntity>({ url: `/obesity-types/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const obesityTypeControllerImportFromExcel = (obesityTypeControllerImportFromExcelBody: ObesityTypeControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (obesityTypeControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, obesityTypeControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/obesity-types/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const obesityTypeControllerFindOne = (id: string) => {
-  return createInstance<ObesityTypeEntity>({ url: `/obesity-types/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/obesity-types/${id}`, method: "GET" });
 };
 
 /**
@@ -6206,8 +6960,24 @@ export const skinColorControllerFindAll = (params?: SkinColorControllerFindAllPa
  * Retrieve lookup record details.
  * @summary Get skin-colors by ID
  */
+export const skinColorControllerDownloadTemplate = () => {
+  return createInstance<SkinColorEntity>({ url: `/skin-colors/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const skinColorControllerImportFromExcel = (skinColorControllerImportFromExcelBody: SkinColorControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (skinColorControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, skinColorControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/skin-colors/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const skinColorControllerFindOne = (id: string) => {
-  return createInstance<SkinColorEntity>({ url: `/skin-colors/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/skin-colors/${id}`, method: "GET" });
 };
 
 /**
@@ -6246,8 +7016,24 @@ export const skinElasticityControllerFindAll = (params?: SkinElasticityControlle
  * Retrieve lookup record details.
  * @summary Get skin-elasticities by ID
  */
+export const skinElasticityControllerDownloadTemplate = () => {
+  return createInstance<SkinElasticityEntity>({ url: `/skin-elasticities/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const skinElasticityControllerImportFromExcel = (skinElasticityControllerImportFromExcelBody: SkinElasticityControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (skinElasticityControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, skinElasticityControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/skin-elasticities/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const skinElasticityControllerFindOne = (id: string) => {
-  return createInstance<SkinElasticityEntity>({ url: `/skin-elasticities/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/skin-elasticities/${id}`, method: "GET" });
 };
 
 /**
@@ -6286,8 +7072,24 @@ export const skinHumidityControllerFindAll = (params?: SkinHumidityControllerFin
  * Retrieve lookup record details.
  * @summary Get skin-humidities by ID
  */
+export const skinHumidityControllerDownloadTemplate = () => {
+  return createInstance<SkinHumidityEntity>({ url: `/skin-humidities/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const skinHumidityControllerImportFromExcel = (skinHumidityControllerImportFromExcelBody: SkinHumidityControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (skinHumidityControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, skinHumidityControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/skin-humidities/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const skinHumidityControllerFindOne = (id: string) => {
-  return createInstance<SkinHumidityEntity>({ url: `/skin-humidities/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/skin-humidities/${id}`, method: "GET" });
 };
 
 /**
@@ -6326,8 +7128,24 @@ export const skinPainControllerFindAll = (params?: SkinPainControllerFindAllPara
  * Retrieve lookup record details.
  * @summary Get skin-pains by ID
  */
+export const skinPainControllerDownloadTemplate = () => {
+  return createInstance<SkinPainEntity>({ url: `/skin-pains/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const skinPainControllerImportFromExcel = (skinPainControllerImportFromExcelBody: SkinPainControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (skinPainControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, skinPainControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/skin-pains/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const skinPainControllerFindOne = (id: string) => {
-  return createInstance<SkinPainEntity>({ url: `/skin-pains/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/skin-pains/${id}`, method: "GET" });
 };
 
 /**
@@ -6366,8 +7184,24 @@ export const skinSensitivityControllerFindAll = (params?: SkinSensitivityControl
  * Retrieve lookup record details.
  * @summary Get skin-sensitivities by ID
  */
+export const skinSensitivityControllerDownloadTemplate = () => {
+  return createInstance<SkinSensitivityEntity>({ url: `/skin-sensitivities/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const skinSensitivityControllerImportFromExcel = (skinSensitivityControllerImportFromExcelBody: SkinSensitivityControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (skinSensitivityControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, skinSensitivityControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/skin-sensitivities/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const skinSensitivityControllerFindOne = (id: string) => {
-  return createInstance<SkinSensitivityEntity>({ url: `/skin-sensitivities/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/skin-sensitivities/${id}`, method: "GET" });
 };
 
 /**
@@ -6406,8 +7240,24 @@ export const skinSmellControllerFindAll = (params?: SkinSmellControllerFindAllPa
  * Retrieve lookup record details.
  * @summary Get skin-smells by ID
  */
+export const skinSmellControllerDownloadTemplate = () => {
+  return createInstance<SkinSmellEntity>({ url: `/skin-smells/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const skinSmellControllerImportFromExcel = (skinSmellControllerImportFromExcelBody: SkinSmellControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (skinSmellControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, skinSmellControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/skin-smells/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const skinSmellControllerFindOne = (id: string) => {
-  return createInstance<SkinSmellEntity>({ url: `/skin-smells/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/skin-smells/${id}`, method: "GET" });
 };
 
 /**
@@ -6446,8 +7296,24 @@ export const skinSurfaceControllerFindAll = (params?: SkinSurfaceControllerFindA
  * Retrieve lookup record details.
  * @summary Get skin-surfaces by ID
  */
+export const skinSurfaceControllerDownloadTemplate = () => {
+  return createInstance<SkinSurfaceEntity>({ url: `/skin-surfaces/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const skinSurfaceControllerImportFromExcel = (skinSurfaceControllerImportFromExcelBody: SkinSurfaceControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (skinSurfaceControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, skinSurfaceControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/skin-surfaces/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const skinSurfaceControllerFindOne = (id: string) => {
-  return createInstance<SkinSurfaceEntity>({ url: `/skin-surfaces/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/skin-surfaces/${id}`, method: "GET" });
 };
 
 /**
@@ -6486,8 +7352,24 @@ export const skinTempControllerFindAll = (params?: SkinTempControllerFindAllPara
  * Retrieve lookup record details.
  * @summary Get skin-temps by ID
  */
+export const skinTempControllerDownloadTemplate = () => {
+  return createInstance<SkinTempEntity>({ url: `/skin-temps/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const skinTempControllerImportFromExcel = (skinTempControllerImportFromExcelBody: SkinTempControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (skinTempControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, skinTempControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/skin-temps/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const skinTempControllerFindOne = (id: string) => {
-  return createInstance<SkinTempEntity>({ url: `/skin-temps/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/skin-temps/${id}`, method: "GET" });
 };
 
 /**
@@ -6526,8 +7408,24 @@ export const temperamentControllerFindAll = (params?: TemperamentControllerFindA
  * Retrieve lookup record details.
  * @summary Get temperaments by ID
  */
+export const temperamentControllerDownloadTemplate = () => {
+  return createInstance<TemperamentEntity>({ url: `/temperaments/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const temperamentControllerImportFromExcel = (temperamentControllerImportFromExcelBody: TemperamentControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (temperamentControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, temperamentControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/temperaments/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const temperamentControllerFindOne = (id: string) => {
-  return createInstance<TemperamentEntity>({ url: `/temperaments/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/temperaments/${id}`, method: "GET" });
 };
 
 /**
@@ -6566,8 +7464,24 @@ export const woolTypeControllerFindAll = (params?: WoolTypeControllerFindAllPara
  * Retrieve lookup record details.
  * @summary Get wool-types by ID
  */
+export const woolTypeControllerDownloadTemplate = () => {
+  return createInstance<WoolTypeEntity>({ url: `/wool-types/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const woolTypeControllerImportFromExcel = (woolTypeControllerImportFromExcelBody: WoolTypeControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (woolTypeControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, woolTypeControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/wool-types/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const woolTypeControllerFindOne = (id: string) => {
-  return createInstance<WoolTypeEntity>({ url: `/wool-types/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/wool-types/${id}`, method: "GET" });
 };
 
 /**
@@ -6587,6 +7501,94 @@ export const woolTypeControllerDelete = (id: string) => {
 };
 
 /**
+ * Creates a new lookup record.
+ * @summary Create rumen-fluid-states
+ */
+export const rumenFluidStateControllerCreate = (createRumenFluidStateDto: CreateRumenFluidStateDto) => {
+  return createInstance<RumenFluidStateEntity>({ url: `/rumen-fluid-states`, method: "POST", headers: { "Content-Type": "application/json" }, data: createRumenFluidStateDto });
+};
+
+/**
+ * Retrieve paginated list of lookup records.
+ * @summary List rumen-fluid-states
+ */
+export const rumenFluidStateControllerFindAll = (params?: RumenFluidStateControllerFindAllParams) => {
+  return createInstance<PaginatedRumenFluidStateEntity>({ url: `/rumen-fluid-states`, method: "GET", params });
+};
+
+/**
+ * Retrieve lookup record details.
+ * @summary Get rumen-fluid-states by ID
+ */
+export const rumenFluidStateControllerDownloadTemplate = () => {
+  return createInstance<RumenFluidStateEntity>({ url: `/rumen-fluid-states/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const rumenFluidStateControllerImportFromExcel = (rumenFluidStateControllerImportFromExcelBody: RumenFluidStateControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (rumenFluidStateControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, rumenFluidStateControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/rumen-fluid-states/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
+export const rumenFluidStateControllerFindOne = (id: string) => {
+  return createInstance<unknown>({ url: `/rumen-fluid-states/${id}`, method: "GET" });
+};
+
+/**
+ * Update lookup record by ID.
+ * @summary Update rumen-fluid-states
+ */
+export const rumenFluidStateControllerUpdate = (id: string, updateRumenFluidStateDto: UpdateRumenFluidStateDto) => {
+  return createInstance<RumenFluidStateEntity>({ url: `/rumen-fluid-states/${id}`, method: "PATCH", headers: { "Content-Type": "application/json" }, data: updateRumenFluidStateDto });
+};
+
+/**
+ * Delete lookup record by ID.
+ * @summary Delete rumen-fluid-states
+ */
+export const rumenFluidStateControllerDelete = (id: string) => {
+  return createInstance<RumenFluidStateEntity>({ url: `/rumen-fluid-states/${id}`, method: "DELETE" });
+};
+
+/**
+ * Returns how many animals are diagnosed with each disease. Disease is determined by the highest probability in the AI prediction output. Filters: animalTypeId, startDate, endDate.
+ * @summary Diseases by animal count
+ */
+export const statisticsControllerGetDiseasesByAnimals = (params?: StatisticsControllerGetDiseasesByAnimalsParams) => {
+  return createInstance<unknown>({ url: `/statistics/diseases`, method: "GET", params });
+};
+
+/**
+ * Returns disease counts sorted by frequency (descending) — ready for bar/pie charts. Filters: animalTypeId, startDate, endDate.
+ * @summary Disease frequency chart
+ */
+export const statisticsControllerGetDiseasesChart = (params?: StatisticsControllerGetDiseasesChartParams) => {
+  return createInstance<unknown>({ url: `/statistics/diseases/chart`, method: "GET", params });
+};
+
+/**
+ * Returns aggregate counts: total sessions by status, unique animals examined, and the most common diagnosed disease. Filters: animalTypeId, startDate, endDate.
+ * @summary Dashboard overview
+ */
+export const statisticsControllerGetOverview = (params?: StatisticsControllerGetOverviewParams) => {
+  return createInstance<unknown>({ url: `/statistics/overview`, method: "GET", params });
+};
+
+/**
+ * Returns per-month breakdown of diagnosed diseases — useful for time-series charts. Filters: animalTypeId, startDate, endDate.
+ * @summary Monthly disease trends
+ */
+export const statisticsControllerGetMonthlyTrends = (params?: StatisticsControllerGetMonthlyTrendsParams) => {
+  return createInstance<unknown>({ url: `/statistics/trends`, method: "GET", params });
+};
+
+/**
  * @summary Create disease
  */
 export const diseaseControllerCreate = (createDiseaseDto: CreateDiseaseDto) => {
@@ -6598,6 +7600,25 @@ export const diseaseControllerCreate = (createDiseaseDto: CreateDiseaseDto) => {
  */
 export const diseaseControllerFindAll = (params?: DiseaseControllerFindAllParams) => {
   return createInstance<PaginatedDiseaseEntity>({ url: `/diseases`, method: "GET", params });
+};
+
+/**
+ * @summary Download Excel import template for diseases
+ */
+export const diseaseControllerDownloadTemplate = () => {
+  return createInstance<void>({ url: `/diseases/template`, method: "GET" });
+};
+
+/**
+ * @summary Import diseases from Excel file
+ */
+export const diseaseControllerImportFromExcel = (diseaseControllerImportFromExcelBody: DiseaseControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (diseaseControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, diseaseControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/diseases/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
 };
 
 /**
@@ -6633,6 +7654,25 @@ export const diseaseCategoryControllerCreate = (createDiseaseCategoryDto: Create
  */
 export const diseaseCategoryControllerFindAll = (params?: DiseaseCategoryControllerFindAllParams) => {
   return createInstance<PaginatedDiseaseCategoryEntity>({ url: `/disease-categories`, method: "GET", params });
+};
+
+/**
+ * @summary Download Excel import template for disease categories
+ */
+export const diseaseCategoryControllerDownloadTemplate = () => {
+  return createInstance<void>({ url: `/disease-categories/template`, method: "GET" });
+};
+
+/**
+ * @summary Import disease categories from Excel file
+ */
+export const diseaseCategoryControllerImportFromExcel = (diseaseCategoryControllerImportFromExcelBody: DiseaseCategoryControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (diseaseCategoryControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, diseaseCategoryControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/disease-categories/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
 };
 
 /**
@@ -6714,6 +7754,25 @@ export const prophylaxisItemControllerFindAll = (params?: ProphylaxisItemControl
 };
 
 /**
+ * @summary Download Excel import template for prophylaxis items
+ */
+export const prophylaxisItemControllerDownloadTemplate = () => {
+  return createInstance<void>({ url: `/prophylaxis-items/template`, method: "GET" });
+};
+
+/**
+ * @summary Import prophylaxis items from Excel file
+ */
+export const prophylaxisItemControllerImportFromExcel = (prophylaxisItemControllerImportFromExcelBody: ProphylaxisItemControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (prophylaxisItemControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, prophylaxisItemControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/prophylaxis-items/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
+/**
  * @summary Get prophylaxis item by ID
  */
 export const prophylaxisItemControllerFindOne = (id: string) => {
@@ -6749,6 +7808,25 @@ export const prophylaxisDetailControllerFindAll = (params?: ProphylaxisDetailCon
 };
 
 /**
+ * @summary Download Excel import template for prophylaxis details
+ */
+export const prophylaxisDetailControllerDownloadTemplate = () => {
+  return createInstance<void>({ url: `/prophylaxis-details/template`, method: "GET" });
+};
+
+/**
+ * @summary Import prophylaxis details from Excel file
+ */
+export const prophylaxisDetailControllerImportFromExcel = (prophylaxisDetailControllerImportFromExcelBody: ProphylaxisDetailControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (prophylaxisDetailControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, prophylaxisDetailControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/prophylaxis-details/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
+/**
  * @summary Get prophylaxis detail by ID
  */
 export const prophylaxisDetailControllerFindOne = (id: string) => {
@@ -6781,6 +7859,25 @@ export const animalControllerCreate = (createAnimalDto: CreateAnimalDto) => {
  */
 export const animalControllerFindAll = (params?: AnimalControllerFindAllParams) => {
   return createInstance<PaginatedAnimalEntity>({ url: `/animals`, method: "GET", params });
+};
+
+/**
+ * @summary Download Excel import template for animals
+ */
+export const animalControllerDownloadTemplate = () => {
+  return createInstance<void>({ url: `/animals/template`, method: "GET" });
+};
+
+/**
+ * @summary Import animals from Excel file
+ */
+export const animalControllerImportFromExcel = (animalControllerImportFromExcelBody: AnimalControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (animalControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, animalControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/animals/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
 };
 
 /**
@@ -6833,6 +7930,25 @@ export const animalTypeControllerResolveAnimalType = (params: AnimalTypeControll
 };
 
 /**
+ * @summary Download Excel import template for animal types
+ */
+export const animalTypeControllerDownloadTemplate = () => {
+  return createInstance<void>({ url: `/animal-types/template`, method: "GET" });
+};
+
+/**
+ * @summary Import animal types from Excel file
+ */
+export const animalTypeControllerImportFromExcel = (animalTypeControllerImportFromExcelBody: AnimalTypeControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (animalTypeControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, animalTypeControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/animal-types/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
+/**
  * @summary Get animal type by ID
  */
 export const animalTypeControllerFindOne = (id: string) => {
@@ -6865,6 +7981,25 @@ export const animalBreedControllerCreate = (createAnimalBreedDto: CreateAnimalBr
  */
 export const animalBreedControllerFindAll = (params?: AnimalBreedControllerFindAllParams) => {
   return createInstance<PaginatedAnimalBreedEntity>({ url: `/breeds`, method: "GET", params });
+};
+
+/**
+ * @summary Download Excel import template for animal breeds
+ */
+export const animalBreedControllerDownloadTemplate = () => {
+  return createInstance<void>({ url: `/breeds/template`, method: "GET" });
+};
+
+/**
+ * @summary Import animal breeds from Excel file
+ */
+export const animalBreedControllerImportFromExcel = (animalBreedControllerImportFromExcelBody: AnimalBreedControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (animalBreedControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, animalBreedControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/breeds/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
 };
 
 /**
@@ -6908,8 +8043,24 @@ export const animalColorControllerFindAll = (params?: AnimalColorControllerFindA
  * Retrieve color details.
  * @summary Get color by ID
  */
+export const animalColorControllerDownloadTemplate = () => {
+  return createInstance<AnimalColorEntity>({ url: `/colors/template`, method: "GET" });
+};
+
+/**
+ * @summary Import animal colors from Excel file
+ */
+export const animalColorControllerImportFromExcel = (animalColorControllerImportFromExcelBody: AnimalColorControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (animalColorControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, animalColorControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/colors/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const animalColorControllerFindOne = (id: string) => {
-  return createInstance<AnimalColorEntity>({ url: `/colors/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/colors/${id}`, method: "GET" });
 };
 
 /**
@@ -6948,8 +8099,24 @@ export const animalSexControllerFindAll = (params?: AnimalSexControllerFindAllPa
  * Retrieve lookup record details.
  * @summary Get animal-sexes by ID
  */
+export const animalSexControllerDownloadTemplate = () => {
+  return createInstance<AnimalSexEntity>({ url: `/animal-sexes/template`, method: "GET" });
+};
+
+/**
+ * @summary Import records from Excel file
+ */
+export const animalSexControllerImportFromExcel = (animalSexControllerImportFromExcelBody: AnimalSexControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (animalSexControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, animalSexControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/animal-sexes/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const animalSexControllerFindOne = (id: string) => {
-  return createInstance<AnimalSexEntity>({ url: `/animal-sexes/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/animal-sexes/${id}`, method: "GET" });
 };
 
 /**
@@ -6988,8 +8155,24 @@ export const regionControllerFindAll = (params?: RegionControllerFindAllParams) 
  * Retrieve region details with nested districts.
  * @summary Get region by ID
  */
+export const regionControllerDownloadTemplate = () => {
+  return createInstance<RegionEntity>({ url: `/regions/template`, method: "GET" });
+};
+
+/**
+ * @summary Import regions from Excel file
+ */
+export const regionControllerImportFromExcel = (regionControllerImportFromExcelBody: RegionControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (regionControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, regionControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/regions/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const regionControllerFindOne = (id: number) => {
-  return createInstance<RegionEntity>({ url: `/regions/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/regions/${id}`, method: "GET" });
 };
 
 /**
@@ -7028,8 +8211,24 @@ export const districtControllerFindAll = (params?: DistrictControllerFindAllPara
  * Retrieve district details with nested region.
  * @summary Get district by ID
  */
+export const districtControllerDownloadTemplate = () => {
+  return createInstance<DistrictEntity>({ url: `/districts/template`, method: "GET" });
+};
+
+/**
+ * @summary Import districts from Excel file
+ */
+export const districtControllerImportFromExcel = (districtControllerImportFromExcelBody: DistrictControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (districtControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, districtControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/districts/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const districtControllerFindOne = (id: string) => {
-  return createInstance<DistrictEntity>({ url: `/districts/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/districts/${id}`, method: "GET" });
 };
 
 /**
@@ -7068,8 +8267,24 @@ export const vetStationControllerFindAll = (params?: VetStationControllerFindAll
  * Retrieve vet station details.
  * @summary Get vet station by ID
  */
+export const vetStationControllerDownloadTemplate = () => {
+  return createInstance<VetStationEntity>({ url: `/vet-stations/template`, method: "GET" });
+};
+
+/**
+ * @summary Import vet stations from Excel file
+ */
+export const vetStationControllerImportFromExcel = (vetStationControllerImportFromExcelBody: VetStationControllerImportFromExcelBody) => {
+  const formData = new FormData();
+  if (vetStationControllerImportFromExcelBody.file !== undefined) {
+    formData.append(`file`, vetStationControllerImportFromExcelBody.file);
+  }
+
+  return createInstance<void>({ url: `/vet-stations/import`, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
+};
+
 export const vetStationControllerFindOne = (id: string) => {
-  return createInstance<VetStationEntity>({ url: `/vet-stations/${id}`, method: "GET" });
+  return createInstance<unknown>({ url: `/vet-stations/${id}`, method: "GET" });
 };
 
 /**
@@ -7105,75 +8320,103 @@ export type HealthControllerCheckResult = NonNullable<Awaited<ReturnType<typeof 
 export type BloodExamControllerCreateResult = NonNullable<Awaited<ReturnType<typeof bloodExamControllerCreate>>>;
 export type BloodExamControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof bloodExamControllerFindAll>>>;
 export type BloodExamControllerFindLastByAnimalIdResult = NonNullable<Awaited<ReturnType<typeof bloodExamControllerFindLastByAnimalId>>>;
+export type BloodExamControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof bloodExamControllerDownloadTemplate>>>;
+export type BloodExamControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof bloodExamControllerImportFromExcel>>>;
 export type BloodExamControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof bloodExamControllerFindOne>>>;
 export type BloodExamControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof bloodExamControllerUpdate>>>;
 export type BloodExamControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof bloodExamControllerDelete>>>;
 export type ClinicalExamControllerCreateResult = NonNullable<Awaited<ReturnType<typeof clinicalExamControllerCreate>>>;
 export type ClinicalExamControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof clinicalExamControllerFindAll>>>;
 export type ClinicalExamControllerFindLastByAnimalIdResult = NonNullable<Awaited<ReturnType<typeof clinicalExamControllerFindLastByAnimalId>>>;
+export type ClinicalExamControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof clinicalExamControllerDownloadTemplate>>>;
+export type ClinicalExamControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof clinicalExamControllerImportFromExcel>>>;
 export type ClinicalExamControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof clinicalExamControllerFindOne>>>;
 export type ClinicalExamControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof clinicalExamControllerUpdate>>>;
 export type ClinicalExamControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof clinicalExamControllerDelete>>>;
 export type FecesExamControllerCreateResult = NonNullable<Awaited<ReturnType<typeof fecesExamControllerCreate>>>;
 export type FecesExamControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof fecesExamControllerFindAll>>>;
 export type FecesExamControllerFindLastByAnimalIdResult = NonNullable<Awaited<ReturnType<typeof fecesExamControllerFindLastByAnimalId>>>;
+export type FecesExamControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof fecesExamControllerDownloadTemplate>>>;
+export type FecesExamControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof fecesExamControllerImportFromExcel>>>;
 export type FecesExamControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof fecesExamControllerFindOne>>>;
 export type FecesExamControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof fecesExamControllerUpdate>>>;
 export type FecesExamControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof fecesExamControllerDelete>>>;
 export type MucosaExamControllerCreateResult = NonNullable<Awaited<ReturnType<typeof mucosaExamControllerCreate>>>;
 export type MucosaExamControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof mucosaExamControllerFindAll>>>;
 export type MucosaExamControllerFindLastByAnimalIdResult = NonNullable<Awaited<ReturnType<typeof mucosaExamControllerFindLastByAnimalId>>>;
+export type MucosaExamControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof mucosaExamControllerDownloadTemplate>>>;
+export type MucosaExamControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof mucosaExamControllerImportFromExcel>>>;
 export type MucosaExamControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof mucosaExamControllerFindOne>>>;
 export type MucosaExamControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof mucosaExamControllerUpdate>>>;
 export type MucosaExamControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof mucosaExamControllerDelete>>>;
 export type UrineExamControllerCreateResult = NonNullable<Awaited<ReturnType<typeof urineExamControllerCreate>>>;
 export type UrineExamControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof urineExamControllerFindAll>>>;
 export type UrineExamControllerFindLastByAnimalIdResult = NonNullable<Awaited<ReturnType<typeof urineExamControllerFindLastByAnimalId>>>;
+export type UrineExamControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof urineExamControllerDownloadTemplate>>>;
+export type UrineExamControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof urineExamControllerImportFromExcel>>>;
 export type UrineExamControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof urineExamControllerFindOne>>>;
 export type UrineExamControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof urineExamControllerUpdate>>>;
 export type UrineExamControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof urineExamControllerDelete>>>;
 export type UrineColorControllerCreateResult = NonNullable<Awaited<ReturnType<typeof urineColorControllerCreate>>>;
 export type UrineColorControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof urineColorControllerFindAll>>>;
+export type UrineColorControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof urineColorControllerDownloadTemplate>>>;
+export type UrineColorControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof urineColorControllerImportFromExcel>>>;
 export type UrineColorControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof urineColorControllerFindOne>>>;
 export type UrineColorControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof urineColorControllerUpdate>>>;
 export type UrineColorControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof urineColorControllerDelete>>>;
 export type UrineSmellControllerCreateResult = NonNullable<Awaited<ReturnType<typeof urineSmellControllerCreate>>>;
 export type UrineSmellControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof urineSmellControllerFindAll>>>;
+export type UrineSmellControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof urineSmellControllerDownloadTemplate>>>;
+export type UrineSmellControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof urineSmellControllerImportFromExcel>>>;
 export type UrineSmellControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof urineSmellControllerFindOne>>>;
 export type UrineSmellControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof urineSmellControllerUpdate>>>;
 export type UrineSmellControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof urineSmellControllerDelete>>>;
 export type UrineClarityControllerCreateResult = NonNullable<Awaited<ReturnType<typeof urineClarityControllerCreate>>>;
 export type UrineClarityControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof urineClarityControllerFindAll>>>;
+export type UrineClarityControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof urineClarityControllerDownloadTemplate>>>;
+export type UrineClarityControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof urineClarityControllerImportFromExcel>>>;
 export type UrineClarityControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof urineClarityControllerFindOne>>>;
 export type UrineClarityControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof urineClarityControllerUpdate>>>;
 export type UrineClarityControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof urineClarityControllerDelete>>>;
 export type UrineConsistencyControllerCreateResult = NonNullable<Awaited<ReturnType<typeof urineConsistencyControllerCreate>>>;
 export type UrineConsistencyControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof urineConsistencyControllerFindAll>>>;
+export type UrineConsistencyControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof urineConsistencyControllerDownloadTemplate>>>;
+export type UrineConsistencyControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof urineConsistencyControllerImportFromExcel>>>;
 export type UrineConsistencyControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof urineConsistencyControllerFindOne>>>;
 export type UrineConsistencyControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof urineConsistencyControllerUpdate>>>;
 export type UrineConsistencyControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof urineConsistencyControllerDelete>>>;
 export type FecesColorControllerCreateResult = NonNullable<Awaited<ReturnType<typeof fecesColorControllerCreate>>>;
 export type FecesColorControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof fecesColorControllerFindAll>>>;
+export type FecesColorControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof fecesColorControllerDownloadTemplate>>>;
+export type FecesColorControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof fecesColorControllerImportFromExcel>>>;
 export type FecesColorControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof fecesColorControllerFindOne>>>;
 export type FecesColorControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof fecesColorControllerUpdate>>>;
 export type FecesColorControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof fecesColorControllerDelete>>>;
 export type FecesSmellControllerCreateResult = NonNullable<Awaited<ReturnType<typeof fecesSmellControllerCreate>>>;
 export type FecesSmellControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof fecesSmellControllerFindAll>>>;
+export type FecesSmellControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof fecesSmellControllerDownloadTemplate>>>;
+export type FecesSmellControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof fecesSmellControllerImportFromExcel>>>;
 export type FecesSmellControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof fecesSmellControllerFindOne>>>;
 export type FecesSmellControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof fecesSmellControllerUpdate>>>;
 export type FecesSmellControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof fecesSmellControllerDelete>>>;
 export type FecesConsistencyControllerCreateResult = NonNullable<Awaited<ReturnType<typeof fecesConsistencyControllerCreate>>>;
 export type FecesConsistencyControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof fecesConsistencyControllerFindAll>>>;
+export type FecesConsistencyControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof fecesConsistencyControllerDownloadTemplate>>>;
+export type FecesConsistencyControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof fecesConsistencyControllerImportFromExcel>>>;
 export type FecesConsistencyControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof fecesConsistencyControllerFindOne>>>;
 export type FecesConsistencyControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof fecesConsistencyControllerUpdate>>>;
 export type FecesConsistencyControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof fecesConsistencyControllerDelete>>>;
 export type FecesFormControllerCreateResult = NonNullable<Awaited<ReturnType<typeof fecesFormControllerCreate>>>;
 export type FecesFormControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof fecesFormControllerFindAll>>>;
+export type FecesFormControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof fecesFormControllerDownloadTemplate>>>;
+export type FecesFormControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof fecesFormControllerImportFromExcel>>>;
 export type FecesFormControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof fecesFormControllerFindOne>>>;
 export type FecesFormControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof fecesFormControllerUpdate>>>;
 export type FecesFormControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof fecesFormControllerDelete>>>;
 export type MucosaAppearanceControllerCreateResult = NonNullable<Awaited<ReturnType<typeof mucosaAppearanceControllerCreate>>>;
 export type MucosaAppearanceControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof mucosaAppearanceControllerFindAll>>>;
+export type MucosaAppearanceControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof mucosaAppearanceControllerDownloadTemplate>>>;
+export type MucosaAppearanceControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof mucosaAppearanceControllerImportFromExcel>>>;
 export type MucosaAppearanceControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof mucosaAppearanceControllerFindOne>>>;
 export type MucosaAppearanceControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof mucosaAppearanceControllerUpdate>>>;
 export type MucosaAppearanceControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof mucosaAppearanceControllerDelete>>>;
@@ -7182,6 +8425,7 @@ export type MedicalSessionControllerFindAllResult = NonNullable<Awaited<ReturnTy
 export type MedicalSessionControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof medicalSessionControllerFindOne>>>;
 export type MedicalSessionControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof medicalSessionControllerUpdate>>>;
 export type MedicalSessionControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof medicalSessionControllerDelete>>>;
+export type MedicalSessionControllerGetPredictionResult = NonNullable<Awaited<ReturnType<typeof medicalSessionControllerGetPrediction>>>;
 export type MedicalSessionControllerSubmitResult = NonNullable<Awaited<ReturnType<typeof medicalSessionControllerSubmit>>>;
 export type FeedbackControllerCreateResult = NonNullable<Awaited<ReturnType<typeof feedbackControllerCreate>>>;
 export type FeedbackControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof feedbackControllerFindAll>>>;
@@ -7200,141 +8444,201 @@ export type ReferenceRangeControllerUpdateResult = NonNullable<Awaited<ReturnTyp
 export type ReferenceRangeControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof referenceRangeControllerDelete>>>;
 export type BodyPositionControllerCreateResult = NonNullable<Awaited<ReturnType<typeof bodyPositionControllerCreate>>>;
 export type BodyPositionControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof bodyPositionControllerFindAll>>>;
+export type BodyPositionControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof bodyPositionControllerDownloadTemplate>>>;
+export type BodyPositionControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof bodyPositionControllerImportFromExcel>>>;
 export type BodyPositionControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof bodyPositionControllerFindOne>>>;
 export type BodyPositionControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof bodyPositionControllerUpdate>>>;
 export type BodyPositionControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof bodyPositionControllerDelete>>>;
 export type BodyTypeControllerCreateResult = NonNullable<Awaited<ReturnType<typeof bodyTypeControllerCreate>>>;
 export type BodyTypeControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof bodyTypeControllerFindAll>>>;
+export type BodyTypeControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof bodyTypeControllerDownloadTemplate>>>;
+export type BodyTypeControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof bodyTypeControllerImportFromExcel>>>;
 export type BodyTypeControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof bodyTypeControllerFindOne>>>;
 export type BodyTypeControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof bodyTypeControllerUpdate>>>;
 export type BodyTypeControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof bodyTypeControllerDelete>>>;
 export type ConstitutionControllerCreateResult = NonNullable<Awaited<ReturnType<typeof constitutionControllerCreate>>>;
 export type ConstitutionControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof constitutionControllerFindAll>>>;
+export type ConstitutionControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof constitutionControllerDownloadTemplate>>>;
+export type ConstitutionControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof constitutionControllerImportFromExcel>>>;
 export type ConstitutionControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof constitutionControllerFindOne>>>;
 export type ConstitutionControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof constitutionControllerUpdate>>>;
 export type ConstitutionControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof constitutionControllerDelete>>>;
 export type DownTypeControllerCreateResult = NonNullable<Awaited<ReturnType<typeof downTypeControllerCreate>>>;
 export type DownTypeControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof downTypeControllerFindAll>>>;
+export type DownTypeControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof downTypeControllerDownloadTemplate>>>;
+export type DownTypeControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof downTypeControllerImportFromExcel>>>;
 export type DownTypeControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof downTypeControllerFindOne>>>;
 export type DownTypeControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof downTypeControllerUpdate>>>;
 export type DownTypeControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof downTypeControllerDelete>>>;
 export type FeatherTypeControllerCreateResult = NonNullable<Awaited<ReturnType<typeof featherTypeControllerCreate>>>;
 export type FeatherTypeControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof featherTypeControllerFindAll>>>;
+export type FeatherTypeControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof featherTypeControllerDownloadTemplate>>>;
+export type FeatherTypeControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof featherTypeControllerImportFromExcel>>>;
 export type FeatherTypeControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof featherTypeControllerFindOne>>>;
 export type FeatherTypeControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof featherTypeControllerUpdate>>>;
 export type FeatherTypeControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof featherTypeControllerDelete>>>;
 export type HairTypeControllerCreateResult = NonNullable<Awaited<ReturnType<typeof hairTypeControllerCreate>>>;
 export type HairTypeControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof hairTypeControllerFindAll>>>;
+export type HairTypeControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof hairTypeControllerDownloadTemplate>>>;
+export type HairTypeControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof hairTypeControllerImportFromExcel>>>;
 export type HairTypeControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof hairTypeControllerFindOne>>>;
 export type HairTypeControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof hairTypeControllerUpdate>>>;
 export type HairTypeControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof hairTypeControllerDelete>>>;
 export type LymphConsistencyControllerCreateResult = NonNullable<Awaited<ReturnType<typeof lymphConsistencyControllerCreate>>>;
 export type LymphConsistencyControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof lymphConsistencyControllerFindAll>>>;
+export type LymphConsistencyControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof lymphConsistencyControllerDownloadTemplate>>>;
+export type LymphConsistencyControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof lymphConsistencyControllerImportFromExcel>>>;
 export type LymphConsistencyControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof lymphConsistencyControllerFindOne>>>;
 export type LymphConsistencyControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof lymphConsistencyControllerUpdate>>>;
 export type LymphConsistencyControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof lymphConsistencyControllerDelete>>>;
 export type LymphMobilityControllerCreateResult = NonNullable<Awaited<ReturnType<typeof lymphMobilityControllerCreate>>>;
 export type LymphMobilityControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof lymphMobilityControllerFindAll>>>;
+export type LymphMobilityControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof lymphMobilityControllerDownloadTemplate>>>;
+export type LymphMobilityControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof lymphMobilityControllerImportFromExcel>>>;
 export type LymphMobilityControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof lymphMobilityControllerFindOne>>>;
 export type LymphMobilityControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof lymphMobilityControllerUpdate>>>;
 export type LymphMobilityControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof lymphMobilityControllerDelete>>>;
 export type LymphPainControllerCreateResult = NonNullable<Awaited<ReturnType<typeof lymphPainControllerCreate>>>;
 export type LymphPainControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof lymphPainControllerFindAll>>>;
+export type LymphPainControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof lymphPainControllerDownloadTemplate>>>;
+export type LymphPainControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof lymphPainControllerImportFromExcel>>>;
 export type LymphPainControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof lymphPainControllerFindOne>>>;
 export type LymphPainControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof lymphPainControllerUpdate>>>;
 export type LymphPainControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof lymphPainControllerDelete>>>;
 export type LymphShapeControllerCreateResult = NonNullable<Awaited<ReturnType<typeof lymphShapeControllerCreate>>>;
 export type LymphShapeControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof lymphShapeControllerFindAll>>>;
+export type LymphShapeControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof lymphShapeControllerDownloadTemplate>>>;
+export type LymphShapeControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof lymphShapeControllerImportFromExcel>>>;
 export type LymphShapeControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof lymphShapeControllerFindOne>>>;
 export type LymphShapeControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof lymphShapeControllerUpdate>>>;
 export type LymphShapeControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof lymphShapeControllerDelete>>>;
 export type LymphSizeControllerCreateResult = NonNullable<Awaited<ReturnType<typeof lymphSizeControllerCreate>>>;
 export type LymphSizeControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof lymphSizeControllerFindAll>>>;
+export type LymphSizeControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof lymphSizeControllerDownloadTemplate>>>;
+export type LymphSizeControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof lymphSizeControllerImportFromExcel>>>;
 export type LymphSizeControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof lymphSizeControllerFindOne>>>;
 export type LymphSizeControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof lymphSizeControllerUpdate>>>;
 export type LymphSizeControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof lymphSizeControllerDelete>>>;
 export type LymphSurfaceControllerCreateResult = NonNullable<Awaited<ReturnType<typeof lymphSurfaceControllerCreate>>>;
 export type LymphSurfaceControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof lymphSurfaceControllerFindAll>>>;
+export type LymphSurfaceControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof lymphSurfaceControllerDownloadTemplate>>>;
+export type LymphSurfaceControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof lymphSurfaceControllerImportFromExcel>>>;
 export type LymphSurfaceControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof lymphSurfaceControllerFindOne>>>;
 export type LymphSurfaceControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof lymphSurfaceControllerUpdate>>>;
 export type LymphSurfaceControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof lymphSurfaceControllerDelete>>>;
 export type LymphTempControllerCreateResult = NonNullable<Awaited<ReturnType<typeof lymphTempControllerCreate>>>;
 export type LymphTempControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof lymphTempControllerFindAll>>>;
+export type LymphTempControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof lymphTempControllerDownloadTemplate>>>;
+export type LymphTempControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof lymphTempControllerImportFromExcel>>>;
 export type LymphTempControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof lymphTempControllerFindOne>>>;
 export type LymphTempControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof lymphTempControllerUpdate>>>;
 export type LymphTempControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof lymphTempControllerDelete>>>;
-export type RumenFluidStateControllerCreateResult = NonNullable<Awaited<ReturnType<typeof rumenFluidStateControllerCreate>>>;
-export type RumenFluidStateControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof rumenFluidStateControllerFindAll>>>;
-export type RumenFluidStateControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof rumenFluidStateControllerFindOne>>>;
-export type RumenFluidStateControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof rumenFluidStateControllerUpdate>>>;
-export type RumenFluidStateControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof rumenFluidStateControllerDelete>>>;
 export type MucosaTypeControllerCreateResult = NonNullable<Awaited<ReturnType<typeof mucosaTypeControllerCreate>>>;
 export type MucosaTypeControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof mucosaTypeControllerFindAll>>>;
+export type MucosaTypeControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof mucosaTypeControllerDownloadTemplate>>>;
+export type MucosaTypeControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof mucosaTypeControllerImportFromExcel>>>;
 export type MucosaTypeControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof mucosaTypeControllerFindOne>>>;
 export type MucosaTypeControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof mucosaTypeControllerUpdate>>>;
 export type MucosaTypeControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof mucosaTypeControllerDelete>>>;
 export type ObesityTypeControllerCreateResult = NonNullable<Awaited<ReturnType<typeof obesityTypeControllerCreate>>>;
 export type ObesityTypeControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof obesityTypeControllerFindAll>>>;
+export type ObesityTypeControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof obesityTypeControllerDownloadTemplate>>>;
+export type ObesityTypeControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof obesityTypeControllerImportFromExcel>>>;
 export type ObesityTypeControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof obesityTypeControllerFindOne>>>;
 export type ObesityTypeControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof obesityTypeControllerUpdate>>>;
 export type ObesityTypeControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof obesityTypeControllerDelete>>>;
 export type SkinColorControllerCreateResult = NonNullable<Awaited<ReturnType<typeof skinColorControllerCreate>>>;
 export type SkinColorControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof skinColorControllerFindAll>>>;
+export type SkinColorControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof skinColorControllerDownloadTemplate>>>;
+export type SkinColorControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof skinColorControllerImportFromExcel>>>;
 export type SkinColorControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof skinColorControllerFindOne>>>;
 export type SkinColorControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof skinColorControllerUpdate>>>;
 export type SkinColorControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof skinColorControllerDelete>>>;
 export type SkinElasticityControllerCreateResult = NonNullable<Awaited<ReturnType<typeof skinElasticityControllerCreate>>>;
 export type SkinElasticityControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof skinElasticityControllerFindAll>>>;
+export type SkinElasticityControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof skinElasticityControllerDownloadTemplate>>>;
+export type SkinElasticityControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof skinElasticityControllerImportFromExcel>>>;
 export type SkinElasticityControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof skinElasticityControllerFindOne>>>;
 export type SkinElasticityControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof skinElasticityControllerUpdate>>>;
 export type SkinElasticityControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof skinElasticityControllerDelete>>>;
 export type SkinHumidityControllerCreateResult = NonNullable<Awaited<ReturnType<typeof skinHumidityControllerCreate>>>;
 export type SkinHumidityControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof skinHumidityControllerFindAll>>>;
+export type SkinHumidityControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof skinHumidityControllerDownloadTemplate>>>;
+export type SkinHumidityControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof skinHumidityControllerImportFromExcel>>>;
 export type SkinHumidityControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof skinHumidityControllerFindOne>>>;
 export type SkinHumidityControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof skinHumidityControllerUpdate>>>;
 export type SkinHumidityControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof skinHumidityControllerDelete>>>;
 export type SkinPainControllerCreateResult = NonNullable<Awaited<ReturnType<typeof skinPainControllerCreate>>>;
 export type SkinPainControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof skinPainControllerFindAll>>>;
+export type SkinPainControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof skinPainControllerDownloadTemplate>>>;
+export type SkinPainControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof skinPainControllerImportFromExcel>>>;
 export type SkinPainControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof skinPainControllerFindOne>>>;
 export type SkinPainControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof skinPainControllerUpdate>>>;
 export type SkinPainControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof skinPainControllerDelete>>>;
 export type SkinSensitivityControllerCreateResult = NonNullable<Awaited<ReturnType<typeof skinSensitivityControllerCreate>>>;
 export type SkinSensitivityControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof skinSensitivityControllerFindAll>>>;
+export type SkinSensitivityControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof skinSensitivityControllerDownloadTemplate>>>;
+export type SkinSensitivityControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof skinSensitivityControllerImportFromExcel>>>;
 export type SkinSensitivityControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof skinSensitivityControllerFindOne>>>;
 export type SkinSensitivityControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof skinSensitivityControllerUpdate>>>;
 export type SkinSensitivityControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof skinSensitivityControllerDelete>>>;
 export type SkinSmellControllerCreateResult = NonNullable<Awaited<ReturnType<typeof skinSmellControllerCreate>>>;
 export type SkinSmellControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof skinSmellControllerFindAll>>>;
+export type SkinSmellControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof skinSmellControllerDownloadTemplate>>>;
+export type SkinSmellControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof skinSmellControllerImportFromExcel>>>;
 export type SkinSmellControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof skinSmellControllerFindOne>>>;
 export type SkinSmellControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof skinSmellControllerUpdate>>>;
 export type SkinSmellControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof skinSmellControllerDelete>>>;
 export type SkinSurfaceControllerCreateResult = NonNullable<Awaited<ReturnType<typeof skinSurfaceControllerCreate>>>;
 export type SkinSurfaceControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof skinSurfaceControllerFindAll>>>;
+export type SkinSurfaceControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof skinSurfaceControllerDownloadTemplate>>>;
+export type SkinSurfaceControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof skinSurfaceControllerImportFromExcel>>>;
 export type SkinSurfaceControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof skinSurfaceControllerFindOne>>>;
 export type SkinSurfaceControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof skinSurfaceControllerUpdate>>>;
 export type SkinSurfaceControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof skinSurfaceControllerDelete>>>;
 export type SkinTempControllerCreateResult = NonNullable<Awaited<ReturnType<typeof skinTempControllerCreate>>>;
 export type SkinTempControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof skinTempControllerFindAll>>>;
+export type SkinTempControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof skinTempControllerDownloadTemplate>>>;
+export type SkinTempControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof skinTempControllerImportFromExcel>>>;
 export type SkinTempControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof skinTempControllerFindOne>>>;
 export type SkinTempControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof skinTempControllerUpdate>>>;
 export type SkinTempControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof skinTempControllerDelete>>>;
 export type TemperamentControllerCreateResult = NonNullable<Awaited<ReturnType<typeof temperamentControllerCreate>>>;
 export type TemperamentControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof temperamentControllerFindAll>>>;
+export type TemperamentControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof temperamentControllerDownloadTemplate>>>;
+export type TemperamentControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof temperamentControllerImportFromExcel>>>;
 export type TemperamentControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof temperamentControllerFindOne>>>;
 export type TemperamentControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof temperamentControllerUpdate>>>;
 export type TemperamentControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof temperamentControllerDelete>>>;
 export type WoolTypeControllerCreateResult = NonNullable<Awaited<ReturnType<typeof woolTypeControllerCreate>>>;
 export type WoolTypeControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof woolTypeControllerFindAll>>>;
+export type WoolTypeControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof woolTypeControllerDownloadTemplate>>>;
+export type WoolTypeControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof woolTypeControllerImportFromExcel>>>;
 export type WoolTypeControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof woolTypeControllerFindOne>>>;
 export type WoolTypeControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof woolTypeControllerUpdate>>>;
 export type WoolTypeControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof woolTypeControllerDelete>>>;
+export type RumenFluidStateControllerCreateResult = NonNullable<Awaited<ReturnType<typeof rumenFluidStateControllerCreate>>>;
+export type RumenFluidStateControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof rumenFluidStateControllerFindAll>>>;
+export type RumenFluidStateControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof rumenFluidStateControllerDownloadTemplate>>>;
+export type RumenFluidStateControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof rumenFluidStateControllerImportFromExcel>>>;
+export type RumenFluidStateControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof rumenFluidStateControllerFindOne>>>;
+export type RumenFluidStateControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof rumenFluidStateControllerUpdate>>>;
+export type RumenFluidStateControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof rumenFluidStateControllerDelete>>>;
+export type StatisticsControllerGetDiseasesByAnimalsResult = NonNullable<Awaited<ReturnType<typeof statisticsControllerGetDiseasesByAnimals>>>;
+export type StatisticsControllerGetDiseasesChartResult = NonNullable<Awaited<ReturnType<typeof statisticsControllerGetDiseasesChart>>>;
+export type StatisticsControllerGetOverviewResult = NonNullable<Awaited<ReturnType<typeof statisticsControllerGetOverview>>>;
+export type StatisticsControllerGetMonthlyTrendsResult = NonNullable<Awaited<ReturnType<typeof statisticsControllerGetMonthlyTrends>>>;
 export type DiseaseControllerCreateResult = NonNullable<Awaited<ReturnType<typeof diseaseControllerCreate>>>;
 export type DiseaseControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof diseaseControllerFindAll>>>;
+export type DiseaseControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof diseaseControllerDownloadTemplate>>>;
+export type DiseaseControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof diseaseControllerImportFromExcel>>>;
 export type DiseaseControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof diseaseControllerFindOne>>>;
 export type DiseaseControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof diseaseControllerUpdate>>>;
 export type DiseaseControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof diseaseControllerDelete>>>;
 export type DiseaseCategoryControllerCreateResult = NonNullable<Awaited<ReturnType<typeof diseaseCategoryControllerCreate>>>;
 export type DiseaseCategoryControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof diseaseCategoryControllerFindAll>>>;
+export type DiseaseCategoryControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof diseaseCategoryControllerDownloadTemplate>>>;
+export type DiseaseCategoryControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof diseaseCategoryControllerImportFromExcel>>>;
 export type DiseaseCategoryControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof diseaseCategoryControllerFindOne>>>;
 export type DiseaseCategoryControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof diseaseCategoryControllerUpdate>>>;
 export type DiseaseCategoryControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof diseaseCategoryControllerDelete>>>;
@@ -7346,16 +8650,22 @@ export type ProphylaxisControllerUpdateResult = NonNullable<Awaited<ReturnType<t
 export type ProphylaxisControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof prophylaxisControllerDelete>>>;
 export type ProphylaxisItemControllerCreateResult = NonNullable<Awaited<ReturnType<typeof prophylaxisItemControllerCreate>>>;
 export type ProphylaxisItemControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof prophylaxisItemControllerFindAll>>>;
+export type ProphylaxisItemControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof prophylaxisItemControllerDownloadTemplate>>>;
+export type ProphylaxisItemControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof prophylaxisItemControllerImportFromExcel>>>;
 export type ProphylaxisItemControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof prophylaxisItemControllerFindOne>>>;
 export type ProphylaxisItemControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof prophylaxisItemControllerUpdate>>>;
 export type ProphylaxisItemControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof prophylaxisItemControllerDelete>>>;
 export type ProphylaxisDetailControllerCreateResult = NonNullable<Awaited<ReturnType<typeof prophylaxisDetailControllerCreate>>>;
 export type ProphylaxisDetailControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof prophylaxisDetailControllerFindAll>>>;
+export type ProphylaxisDetailControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof prophylaxisDetailControllerDownloadTemplate>>>;
+export type ProphylaxisDetailControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof prophylaxisDetailControllerImportFromExcel>>>;
 export type ProphylaxisDetailControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof prophylaxisDetailControllerFindOne>>>;
 export type ProphylaxisDetailControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof prophylaxisDetailControllerUpdate>>>;
 export type ProphylaxisDetailControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof prophylaxisDetailControllerDelete>>>;
 export type AnimalControllerCreateResult = NonNullable<Awaited<ReturnType<typeof animalControllerCreate>>>;
 export type AnimalControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof animalControllerFindAll>>>;
+export type AnimalControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof animalControllerDownloadTemplate>>>;
+export type AnimalControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof animalControllerImportFromExcel>>>;
 export type AnimalControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof animalControllerFindOne>>>;
 export type AnimalControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof animalControllerUpdate>>>;
 export type AnimalControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof animalControllerDelete>>>;
@@ -7363,36 +8673,50 @@ export type AnimalControllerFindPredictResult = NonNullable<Awaited<ReturnType<t
 export type AnimalTypeControllerCreateResult = NonNullable<Awaited<ReturnType<typeof animalTypeControllerCreate>>>;
 export type AnimalTypeControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof animalTypeControllerFindAll>>>;
 export type AnimalTypeControllerResolveAnimalTypeResult = NonNullable<Awaited<ReturnType<typeof animalTypeControllerResolveAnimalType>>>;
+export type AnimalTypeControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof animalTypeControllerDownloadTemplate>>>;
+export type AnimalTypeControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof animalTypeControllerImportFromExcel>>>;
 export type AnimalTypeControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof animalTypeControllerFindOne>>>;
 export type AnimalTypeControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof animalTypeControllerUpdate>>>;
 export type AnimalTypeControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof animalTypeControllerDelete>>>;
 export type AnimalBreedControllerCreateResult = NonNullable<Awaited<ReturnType<typeof animalBreedControllerCreate>>>;
 export type AnimalBreedControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof animalBreedControllerFindAll>>>;
+export type AnimalBreedControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof animalBreedControllerDownloadTemplate>>>;
+export type AnimalBreedControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof animalBreedControllerImportFromExcel>>>;
 export type AnimalBreedControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof animalBreedControllerFindOne>>>;
 export type AnimalBreedControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof animalBreedControllerUpdate>>>;
 export type AnimalBreedControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof animalBreedControllerDelete>>>;
 export type AnimalColorControllerCreateResult = NonNullable<Awaited<ReturnType<typeof animalColorControllerCreate>>>;
 export type AnimalColorControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof animalColorControllerFindAll>>>;
+export type AnimalColorControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof animalColorControllerDownloadTemplate>>>;
+export type AnimalColorControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof animalColorControllerImportFromExcel>>>;
 export type AnimalColorControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof animalColorControllerFindOne>>>;
 export type AnimalColorControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof animalColorControllerUpdate>>>;
 export type AnimalColorControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof animalColorControllerDelete>>>;
 export type AnimalSexControllerCreateResult = NonNullable<Awaited<ReturnType<typeof animalSexControllerCreate>>>;
 export type AnimalSexControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof animalSexControllerFindAll>>>;
+export type AnimalSexControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof animalSexControllerDownloadTemplate>>>;
+export type AnimalSexControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof animalSexControllerImportFromExcel>>>;
 export type AnimalSexControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof animalSexControllerFindOne>>>;
 export type AnimalSexControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof animalSexControllerUpdate>>>;
 export type AnimalSexControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof animalSexControllerDelete>>>;
 export type RegionControllerCreateResult = NonNullable<Awaited<ReturnType<typeof regionControllerCreate>>>;
 export type RegionControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof regionControllerFindAll>>>;
+export type RegionControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof regionControllerDownloadTemplate>>>;
+export type RegionControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof regionControllerImportFromExcel>>>;
 export type RegionControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof regionControllerFindOne>>>;
 export type RegionControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof regionControllerUpdate>>>;
 export type RegionControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof regionControllerDelete>>>;
 export type DistrictControllerCreateResult = NonNullable<Awaited<ReturnType<typeof districtControllerCreate>>>;
 export type DistrictControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof districtControllerFindAll>>>;
+export type DistrictControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof districtControllerDownloadTemplate>>>;
+export type DistrictControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof districtControllerImportFromExcel>>>;
 export type DistrictControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof districtControllerFindOne>>>;
 export type DistrictControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof districtControllerUpdate>>>;
 export type DistrictControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof districtControllerDelete>>>;
 export type VetStationControllerCreateResult = NonNullable<Awaited<ReturnType<typeof vetStationControllerCreate>>>;
 export type VetStationControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof vetStationControllerFindAll>>>;
+export type VetStationControllerDownloadTemplateResult = NonNullable<Awaited<ReturnType<typeof vetStationControllerDownloadTemplate>>>;
+export type VetStationControllerImportFromExcelResult = NonNullable<Awaited<ReturnType<typeof vetStationControllerImportFromExcel>>>;
 export type VetStationControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof vetStationControllerFindOne>>>;
 export type VetStationControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof vetStationControllerUpdate>>>;
 export type VetStationControllerDeleteResult = NonNullable<Awaited<ReturnType<typeof vetStationControllerDelete>>>;

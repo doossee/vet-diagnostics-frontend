@@ -1,7 +1,7 @@
-import { PaginatedEntity, MedicalSession } from "@/shared/types";
+import { PaginatedEntity, MedicalSession, Prediction } from "@/shared/types";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { paramsToQueryKeys } from "@/shared/helpers/params-to-keys";
-import { medicalSessionControllerFindAll, medicalSessionControllerFindOne } from "@/shared/api/api-new";
+import { medicalSessionControllerFindAll, medicalSessionControllerFindOne, medicalSessionControllerGetPrediction, feedbackControllerFindAll, PaginatedFeedbackEntity } from "@/shared/api/api-new";
 import { SessionsQueryKeys } from "../utils/constants/query-keys";
 
 export function useGetMedicalSessions(params: Record<string, unknown>, enabled?: boolean) {
@@ -16,6 +16,22 @@ export function useGetMedicalSessionById(id: string, enabled?: boolean) {
   return useQuery<MedicalSession, Error>({
     queryKey: [SessionsQueryKeys.SESSIONS_BY_ID, id],
     queryFn: async () => medicalSessionControllerFindOne(id) as Promise<MedicalSession>,
+    enabled,
+  });
+}
+
+export function useGetFeedbacksByPrediction(predictionId: string, enabled?: boolean) {
+  return useQuery<PaginatedFeedbackEntity, Error>({
+    queryKey: ["FEEDBACKS", predictionId],
+    queryFn: async () => feedbackControllerFindAll({ predictionId, perPage: 50 }) as Promise<PaginatedFeedbackEntity>,
+    enabled: enabled !== false && !!predictionId,
+  });
+}
+
+export function useGetSessionPrediction(id: string, enabled?: boolean) {
+  return useQuery<Prediction, Error>({
+    queryKey: [SessionsQueryKeys.SESSIONS_BY_ID, id, "prediction"],
+    queryFn: async () => medicalSessionControllerGetPrediction(id) as Promise<Prediction>,
     enabled,
   });
 }

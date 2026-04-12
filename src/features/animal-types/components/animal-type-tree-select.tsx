@@ -2,7 +2,7 @@
 
 import { AnimalType } from "@/shared/types";
 import { useI18n } from "@/shared/hooks/use-i18n";
-import { useGetAnimalTypesInfinite } from "@/entities/animal-types/services/animal-type-queries";
+import { useGetAnimalTypeById, useGetAnimalTypesInfinite } from "@/entities/animal-types/services/animal-type-queries";
 import { TreeSelect } from "@/shared/components/tree-select";
 
 interface Props {
@@ -16,13 +16,21 @@ interface Props {
 }
 
 export function AnimalTypeTreeSelect({ value, placeholder, disabled, onChange, onRemove }: Props) {
-  const { locale } = useI18n()
+  const { locale } = useI18n();
+
+  // When value is a string ID (from URL param), resolve it to a full object
+  const stringId = typeof value === "string" ? value : null;
+  const { data: resolvedById } = useGetAnimalTypeById(stringId);
+
+  const defaultValue = typeof value === "object" && value !== null
+    ? value as AnimalType
+    : resolvedById ?? null;
 
   return (
     <TreeSelect<AnimalType>
       onRemove={onRemove}
       disabled={disabled}
-      defaultValue={value as AnimalType}
+      defaultValue={defaultValue as AnimalType}
       onSelect={(e) => onChange?.(e?.id, e!)}
       placeholder={placeholder}
       getOptionLabel={(option) => option.name?.[locale]}

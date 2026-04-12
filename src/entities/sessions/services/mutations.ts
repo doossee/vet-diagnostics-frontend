@@ -2,7 +2,7 @@ import { UpdateBody, MedicalSession } from "@/shared/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { SessionsQueryKeys } from "../utils/constants/query-keys";
 import { createQueryData, removeQueryData, updateQueryData } from "@/shared/helpers/query-updater";
-import { medicalSessionControllerCreate, medicalSessionControllerDelete, medicalSessionControllerUpdate, medicalSessionControllerSubmit } from "@/shared/api/api-new";
+import { medicalSessionControllerCreate, medicalSessionControllerDelete, medicalSessionControllerUpdate, medicalSessionControllerSubmit, feedbackControllerCreate, CreateFeedbackDto } from "@/shared/api/api-new";
 import { MedicalSessionSchema } from "@/features/sessions";
 
 export function useCreateMedicalSession() {
@@ -68,6 +68,12 @@ export function useDeleteMedicalSession() {
         });
       }
     },
+  });
+}
+
+export function useCreateFeedback() {
+  return useMutation<any, any, CreateFeedbackDto>({
+    mutationFn: feedbackControllerCreate,
   });
 }
 

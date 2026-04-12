@@ -6,6 +6,7 @@ import { useI18n } from "@/shared/hooks/use-i18n";
 import type { ProphylaxisDetail } from "@/shared/types";
 import { DataTable } from "@/shared/components/data-table";
 import { Modal } from "@/shared/components/elements/modal";
+import { ExcelDownloadButton } from "@/shared/components/excel-download-button";
 import { createProphylaxisDetailsColumns } from "@/entities/prophylaxis-details";
 import { ProphylaxisDetailSchema, ProphylaxisDetailsForm } from "@/features/prophylaxis-details";
 import { useGetProphylaxisDetails } from "@/entities/prophylaxis-details/services/queries";
@@ -24,7 +25,7 @@ export default function ProphylaxisDetails() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetProphylaxisDetails} topSlot={createButton(t("pages.createProphylaxisDetails"))} />
+      <DataTable columns={columns} queryFunction={useGetProphylaxisDetails} topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/prophylaxis-details/import" />{createButton(t("pages.createProphylaxisDetails"))}</div>} />
 
       <Modal open={dialog} onClose={handleClose} title={editedItem ? t("pages.editProphylaxisDetails") : t("pages.createProphylaxisDetails")}>
         <ProphylaxisDetailsForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : (undefined as any)} />

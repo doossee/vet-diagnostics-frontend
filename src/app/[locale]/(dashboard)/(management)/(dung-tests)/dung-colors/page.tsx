@@ -6,6 +6,7 @@ import { useCrud } from "@/shared/hooks/use-crud";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { DataTable } from "@/shared/components/data-table";
 import { Modal } from "@/shared/components/elements/modal";
+import { ExcelDownloadButton } from "@/shared/components/excel-download-button";
 import { createDungColorColumns } from "@/entities/dung-colors";
 import { DungColorForm, DungColorSchema } from "@/features/dung-colors";
 import { useGetDungColors } from "@/entities/dung-colors/services/queries";
@@ -24,7 +25,7 @@ export default function DungColors() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetDungColors} topSlot={createButton(t("management.dungColorCreate"))} />
+      <DataTable columns={columns} queryFunction={useGetDungColors} topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/feces-colors/import" />{createButton(t("management.dungColorCreate"))}</div>} />
 
       <Modal open={dialog} onClose={handleClose} title={t(editedItem ? "management.editColor" : "management.createColor")}>
         <DungColorForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : (undefined as any)} />

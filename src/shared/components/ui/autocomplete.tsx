@@ -214,12 +214,12 @@ export function Autocomplete<T>({
   };
   // TODO: bg
   return (
-    <div className={cn("relative", minWidth ? "" : "w-full", className)} style={{ width: "var(--radix-popover-trigger-width)" }}>
+    <div className={cn("relative min-w-0", minWidth ? "" : "w-full", className)}>
       <Popover modal={false} open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button variant="outline" role="combobox" type="button" disabled={disabled} aria-expanded={open} onClick={toggleDropdown}
             // className="w-full justify-between p-3 bg-input! border-input!"
-            className="border-input data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 dark:hover:bg-input/50 flex w-full items-center justify-between gap-2 rounded-md border bg-transparent px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4">
+            className="border-input data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 dark:hover:bg-input/50 flex w-full min-w-0 items-center justify-between gap-2 rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 overflow-hidden [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4">
             {value ? (
               <div className="flex items-center justify-start gap-2 font-normal flex-1">
                 <div className="truncate block max-w-[calc(100%-20px)]">
@@ -230,7 +230,7 @@ export function Autocomplete<T>({
             ) : (
               <span className="text-muted-foreground font-normal">{placeholder}</span>
             )}
-            <div className="flex items-center">
+            <div className="flex items-center shrink-0">
               {value && (
                 <div onClick={handleRemove} className="h-4 w-4 p-0 mr-1 opacity-50">
                   <X className="h-3 w-3" />

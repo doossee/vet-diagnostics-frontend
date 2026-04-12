@@ -1,5 +1,6 @@
 import { Edit, Trash } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
+import { CopyIdButton } from "@/shared/components/copy-id-button";
 import { FecesExam, LanguageLocales } from "@/shared/types";
 
 export const createDungTestColumns = (handleEditItem: (item: FecesExam) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
@@ -48,6 +49,7 @@ export const createDungTestColumns = (handleEditItem: (item: FecesExam) => void,
     render(item: FecesExam) {
       return (
         <div className="flex gap-2 items-center flex-wrap md:flex-nowrap justify-end md:justify-start">
+          <CopyIdButton id={item.id} />
           <Button onClick={() => handleEditItem(item)} size="sm" className="text-xs!">
             <Edit />
             {t("table.edit")}

@@ -50,7 +50,8 @@
     "mapSettings": "Настройки карты",
     "medicineSettings": "Настройки медицины",
 
-    "sessions": "Сессии"
+    "sessions": "Сессии",
+    "statistics": "Статистика"
   },
   "theme": {
     "light": "Светлая",

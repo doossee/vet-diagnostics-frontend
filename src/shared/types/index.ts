@@ -33,6 +33,7 @@ export type UserData = {
 
   farmerId: number;
   veterinarianId: number;
+  adminId: number;
 };
 
 export interface AdditionalCrudModel {
@@ -690,7 +691,7 @@ export interface Prediction {
   sessionId: string;
   session: MedicalSession;
   inputVector: number[];
-  rawOutput: any;
+  rawOutput: Record<string, number>;
 }
 
 export interface Feedback {

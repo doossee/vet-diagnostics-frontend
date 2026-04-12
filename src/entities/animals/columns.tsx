@@ -1,5 +1,6 @@
 import { Edit, Trash } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
+import { CopyIdButton } from "@/shared/components/copy-id-button";
 import { Animal, LanguageLocales } from "@/shared/types";
 // import { ANIMAL_GENDERS } from "./utils/constants/animal-genders";
 
@@ -72,6 +73,7 @@ export const createAnimalColumns = (handleEditItem: (item: Animal) => void, hand
     render(item: Animal) {
       return (
         <div className="flex gap-2 items-center flex-wrap md:flex-nowrap justify-end md:justify-start" onClick={(event) => event.stopPropagation()}>
+          <CopyIdButton id={item.id} />
           <Button onClick={() => handleEditItem(item)} size="sm" className="text-xs!">
             <Edit />
             {t("table.edit")}

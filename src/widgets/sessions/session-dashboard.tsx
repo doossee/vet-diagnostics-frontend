@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import { format } from "date-fns";
 import { Brain, ExternalLink } from "lucide-react";
 import { Link } from "@/shared/i18n/routing";
 import { useSearchQueryParams } from "@/shared/hooks/use-query-params";
@@ -17,6 +19,7 @@ import { Skeleton } from "@/shared/components/ui/skeleton";
 import { PREDICT_DISEASES } from "@/shared/constants";
 import { routes } from "@/shared/constants/routes";
 import { useI18n } from "@/shared/hooks/use-i18n";
+import { SessionExamModal, SessionExamType } from "./session-exam-modal";
 
 type SeverityLevel = { label: string; badgeClass: string; barClass: string; borderClass: string; bgClass: string };
 
@@ -192,38 +195,80 @@ function PredictSummaryCard({ sessionId, prediction, anomalyAlerts, isLoading }:
 export function SessionDashboard({ id }: { id: string }) {
   const { setMany } = useSearchQueryParams();
   const { data, isLoading } = useGetMedicalSessionById(id);
+  const [activeModal, setActiveModal] = useState<SessionExamType | null>(null);
+
+  const canEdit = data?.status !== "SUBMITTED";
+
+  const sessionLabel = data
+    ? `${data.animal?.animalNameCode} — ${format(new Date(data.date), "dd.MM.yyyy")}`
+    : undefined;
 
   const handleOpenRoute = (route: string, isNew?: boolean) => {
-    if(!data?.animal) return
+    if (!data?.animal) return;
+    const { id: animalId, animalTypeId } = data.animal;
+    setMany({ animalId, new: isNew, animalTypeId, ...(isNew && { sessionId: id }) }, route);
+  };
 
-    const { id: animalId, animalTypeId } = data?.animal
-
-    const payload = {
-      animalId,
-      new: isNew,
-      animalTypeId,
-
-      ...(isNew && {sessionId: id}),
-    }
-
-    setMany(payload, route)
-  }
+  const openModal = (type: SessionExamType) => () => setActiveModal(type);
+  const closeModal = () => setActiveModal(null);
 
   return (
     <div>
       <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <PredictSummaryCard sessionId={id} prediction={data?.prediction} anomalyAlerts={data?.anomalyAlerts} isLoading={isLoading} />
 
-        <FecesExamInfoTable data={data?.fecesExam} isLoading={isLoading} onCreate={handleOpenRoute} />
+        <FecesExamInfoTable
+          data={data?.fecesExam}
+          isLoading={isLoading}
+          onCreate={handleOpenRoute}
+          sessionLabel={sessionLabel}
+          onAdd={canEdit ? openModal("feces") : undefined}
+          onEdit={canEdit ? openModal("feces") : undefined}
+        />
 
-        <UrineExamInfoTable data={data?.urineExam} isLoading={isLoading} onCreate={handleOpenRoute} />
+        <UrineExamInfoTable
+          data={data?.urineExam}
+          isLoading={isLoading}
+          onCreate={handleOpenRoute}
+          sessionLabel={sessionLabel}
+          onAdd={canEdit ? openModal("urine") : undefined}
+          onEdit={canEdit ? openModal("urine") : undefined}
+        />
 
-        <ClinicExamInfoTable data={data?.clinicalExam} isLoading={isLoading} onCreate={handleOpenRoute} />
+        <ClinicExamInfoTable
+          data={data?.clinicalExam}
+          isLoading={isLoading}
+          onCreate={handleOpenRoute}
+          sessionLabel={sessionLabel}
+          onAdd={canEdit ? openModal("clinical") : undefined}
+          onEdit={canEdit ? openModal("clinical") : undefined}
+        />
 
-        <BloodExamInfoTable data={data?.bloodExam} isLoading={isLoading} onCreate={handleOpenRoute} />
+        <BloodExamInfoTable
+          data={data?.bloodExam}
+          isLoading={isLoading}
+          onCreate={handleOpenRoute}
+          sessionLabel={sessionLabel}
+          onAdd={canEdit ? openModal("blood") : undefined}
+          onEdit={canEdit ? openModal("blood") : undefined}
+        />
 
         <MucosaExamsTable animalId={data?.animalId} sessionId={data?.id} className="col-span-1 md:col-span-2 lg:col-span-3" />
       </div>
+
+      {data?.animal && (
+        <SessionExamModal
+          type={activeModal}
+          open={!!activeModal}
+          onClose={closeModal}
+          sessionId={id}
+          animalId={data.animal.id}
+          bloodExam={data.bloodExam}
+          clinicalExam={data.clinicalExam}
+          urineExam={data.urineExam}
+          fecesExam={data.fecesExam}
+        />
+      )}
     </div>
   );
 }

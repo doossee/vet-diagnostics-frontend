@@ -11,18 +11,24 @@ import { InfoTable } from "./info-table";
 type Props = {
   isLoading?: boolean
   data?: FecesExam | null
+  sessionLabel?: string
+  onAdd?: () => void
+  onEdit?: () => void
   onCreate?: (route: string, createNew?: boolean) => void
 }
 
-export function FecesExamInfoTable({ data, isLoading, onCreate }: Props) {
+export function FecesExamInfoTable({ data, isLoading, onCreate, onAdd, onEdit, sessionLabel }: Props) {
   const handleOpen = (createNew?: boolean) => {
     onCreate?.(routes.DUNG_TESTS, createNew)
   }
-  
+
   return <InfoTable
     data={data}
     onCreate={handleOpen}
     isLoading={isLoading}
+    onAdd={onAdd}
+    onEdit={onEdit}
+    sessionLabel={sessionLabel}
     localeTitle="nav.dungTests"
     createColumns={createDungTestColumns}
     icon={<Shovel className="size-5 md:size-6" />}

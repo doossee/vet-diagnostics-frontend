@@ -1,6 +1,6 @@
 "use client";
 
-import { ExternalLink, Plus } from "lucide-react";
+import { ExternalLink, Pencil, Plus } from "lucide-react";
 import { ReactNode, useMemo } from "react";
 
 import { useI18n } from "@/shared/hooks/use-i18n";
@@ -17,15 +17,17 @@ type Props<T> = {
   icon: ReactNode
   isLoading?: boolean
   localeTitle: string
+  sessionLabel?: string
   hideCreateButton?: boolean
   onCreate?: (createNew?: boolean) => void
+  onAdd?: () => void
+  onEdit?: () => void
   queryFn?: () => UseQueryResult<T | null, any>
   createColumns: (fn1: any, fn2: any, t: any, locale: LanguageLocales) => any[],
 }
 
-export function InfoTable<T>({ localeTitle, icon, hideCreateButton, createColumns, data, isLoading, onCreate }: Props<T>) {
+export function InfoTable<T>({ localeTitle, icon, hideCreateButton, createColumns, data, isLoading, onCreate, onAdd, onEdit, sessionLabel }: Props<T>) {
   const { t, locale } = useI18n();
-  // const { data, isLoading } = queryFn();
 
   const columns = useMemo(() =>
     createColumns(()=>{}, ()=>{}, t, locale)
@@ -43,19 +45,33 @@ export function InfoTable<T>({ localeTitle, icon, hideCreateButton, createColumn
           <div>
             {icon}
           </div>
-          {t(localeTitle)}
+          <div>
+            {t(localeTitle)}
+            {sessionLabel && (
+              <p className="text-xs font-normal text-muted-foreground mt-0.5">{sessionLabel}</p>
+            )}
+          </div>
         </CardTitle>
 
-        {!hideCreateButton && <Button size={'sm'} onClick={() => onCreate?.()}>
-          <ExternalLink />
-          <span className="hidden md:inline">{t("show")}</span>
-        </Button>}
+        <div className="flex items-center gap-2 shrink-0">
+          {data && onEdit && (
+            <Button size="sm" variant="outline" onClick={onEdit}>
+              <Pencil className="size-4" />
+            </Button>
+          )}
+          {!hideCreateButton && (
+            <Button size={'sm'} onClick={() => onCreate?.()}>
+              <ExternalLink />
+              <span className="hidden md:inline">{t("show")}</span>
+            </Button>
+          )}
+        </div>
       </div>
     </CardHeader>
     <CardContent className="px-4 max-h-[630px] overflow-auto">
       {(showEmptyState && !hideCreateButton) ? (
         <EmptyState>
-          <Button onClick={() => onCreate?.(true)}>
+          <Button onClick={() => onAdd ? onAdd() : onCreate?.(true)}>
             <Plus />
             {t("form.add")}
           </Button>
@@ -63,7 +79,7 @@ export function InfoTable<T>({ localeTitle, icon, hideCreateButton, createColumn
       ) : <Table>
         <TableBody>
           {
-            columns.map((row) => 
+            columns.map((row) =>
               <TableRow key={row.key}>
                 <TableCell>
                   <b className="whitespace-pre-line text-left">{row.title}</b>

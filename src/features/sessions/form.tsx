@@ -29,9 +29,9 @@ export function MedicalSessionForm({ onSubmit, defaultValues }: MedicalSessionFo
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{t("users.veterinarian")}</FormLabel>
+              <FormLabel>{t("form.veterinarian")}</FormLabel>
               <FormControl>
-                <VeterinarianSelect placeholder={t("users.veterinarian")} value={field.value} onChange={field.onChange} />
+                <VeterinarianSelect placeholder={t("form.veterinarian")} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>

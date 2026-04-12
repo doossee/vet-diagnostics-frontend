@@ -29,9 +29,9 @@ export function MedicalSessionForm({ onSubmit, defaultValues }: MedicalSessionFo
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>Veterinar</FormLabel>
+              <FormLabel>{t("users.veterinarian")}</FormLabel>
               <FormControl>
-                <VeterinarianSelect placeholder={t("inspections.prophylaxisItem")} value={field.value} onChange={field.onChange} />
+                <VeterinarianSelect placeholder={t("users.veterinarian")} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -42,7 +42,7 @@ export function MedicalSessionForm({ onSubmit, defaultValues }: MedicalSessionFo
           control={form.control}
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>Sana</FormLabel>
+              <FormLabel>{t("form.date")}</FormLabel>
               <FormControl>
                 <DatePicker field={field} />
               </FormControl>
@@ -55,9 +55,9 @@ export function MedicalSessionForm({ onSubmit, defaultValues }: MedicalSessionFo
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Xulosa</FormLabel>
+              <FormLabel>{t("inspections.conclusion")}</FormLabel>
               <FormControl>
-                <Textarea placeholder={"Xulosa"} {...field} rows={2} />
+                <Textarea placeholder={t("inspections.conclusion")} {...field} rows={2} />
               </FormControl>
               <FormMessage />
             </FormItem>

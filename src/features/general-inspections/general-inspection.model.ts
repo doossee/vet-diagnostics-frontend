@@ -36,9 +36,6 @@ export const generalInspectionValues = {
   lymphTempId: undefined,
   lymphPainId: undefined,
   lymphMobilityId: undefined,
-
-  rumenInfusoriaCount: 0,
-  rumenFluidStateId: undefined,
 };
 
 export const createGeneralInspectionSchema = (_: any) =>
@@ -79,8 +76,6 @@ export const createGeneralInspectionSchema = (_: any) =>
     lymphPainId: z.string().optional(),
     lymphMobilityId: z.string().optional(),
 
-    rumenInfusoriaCount: z.coerce.number(),
-    rumenFluidStateId: z.string().optional(),
   });
 
 export type GeneralInspectionSchema = z.infer<ReturnType<typeof createGeneralInspectionSchema>>;

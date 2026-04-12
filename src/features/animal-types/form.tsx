@@ -2,10 +2,12 @@ import { useForm } from "react-hook-form";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
 import { AnimalTypeSchema, animalTypeValues, createAnimalTypeSchema } from "./animal-type.model";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 import { Textarea } from "@/shared/components/ui/textarea";
 import { AnimalTypeSelect } from "./components/animal-type-select";
+import { AnimalSexSelect } from "../additional-crud/components/animal-sex-select";
 
 interface AnimalTypeFormProps {
   defaultValues: AnimalTypeSchema | undefined;
@@ -57,6 +59,60 @@ export function AnimalTypeForm({ onSubmit, defaultValues }: AnimalTypeFormProps)
               <FormLabel>{t("inspections.parentType")}</FormLabel>
               <FormControl>
                 <AnimalTypeSelect placeholder={t("inspections.parentType")} value={field.value} onChange={field.onChange} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="sexId"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Пол (ограничение)</FormLabel>
+              <FormControl>
+                <AnimalSexSelect placeholder="Все полы" value={field.value} onChange={field.onChange} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <div className="grid grid-cols-2 gap-4">
+          <FormField
+            name="minAgeMonths"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Мин. возраст (мес.)</FormLabel>
+                <FormControl>
+                  <Input type="number" min={0} placeholder="0" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            name="maxAgeMonths"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Макс. возраст (мес.)</FormLabel>
+                <FormControl>
+                  <Input type="number" min={0} placeholder="—" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <FormField
+          name="modelKey"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Ключ AI модели</FormLabel>
+              <FormControl>
+                <Input placeholder="например: buqa, sigir" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

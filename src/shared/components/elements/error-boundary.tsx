@@ -41,10 +41,19 @@ export function ErrorSender() {
     };
   }, [userData]);
 
+  const IGNORED_ERRORS = [
+    "ResizeObserver loop completed with undelivered notifications",
+    "ResizeObserver loop limit exceeded",
+    "Script error.",
+  ];
+
   const handleError = (event: ErrorEvent) => {
+    const msg = event.error?.message || event.message || "";
+    if (IGNORED_ERRORS.some((ignore) => msg.includes(ignore))) return;
+
     sendErrorRef.current?.({
       type: "runtime",
-      message: event.error?.message || event.message,
+      message: msg,
       file: event.filename,
       line: `${event.lineno}:${event.colno}`,
       stack: event.error?.stack,

@@ -604,6 +604,7 @@ export interface Prophylaxis {
   type: ProphylaxisType;
   animalId: string;
   animal: Animal;
+  notes?: string;
   itemId: string;
   item: ProphylaxisItem;
   detailId?: string | null;

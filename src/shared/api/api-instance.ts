@@ -53,7 +53,7 @@ apiInstance.interceptors.response.use(
   },
   async (error: AxiosError) => {
     const { refreshToken, setAuthData } = useAuthData();
-    if (error.status! >= 400 ) {
+    if (error.status! >= 400 && error.response?.status !== 401) {
       const { message } = error.response?.data as { message: string[] | string } ;
 
       if(isArray(message)) {

@@ -10,7 +10,7 @@ export const medicalSessionValues = {
 export const createMedicalSessionSchema = (_: any) =>
   z.object({
     animalId: z.string().optional(),
-    veterinarianId: z.string(),
+    veterinarianId: z.string().optional(),
     date: z.date(),
     notes: z.string().optional()
   });

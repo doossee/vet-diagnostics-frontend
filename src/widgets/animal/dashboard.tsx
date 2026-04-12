@@ -26,7 +26,7 @@ export function AnimalDashboard({ id }: { id: string }) {
 
         <ProphylaxisInfoTable id={id} onCreate={handleOpenRoute} />
 
-        <SessionsTable animalId={id} className="col-span-1 md:col-span-2" />
+        <SessionsTable animalId={id} className="col-span-full" />
       </div>
     </div>
   );

@@ -2,7 +2,15 @@
   "permissions": {
     "allow": [
       "Bash(grep -n \"ExcelDownloadButton\" d:/client/vet/src/app/[locale]/\\\\\\(dashboard\\\\\\)/\\\\\\(users\\\\\\)/veterinarians/page.tsx d:/client/vet/src/app/[locale]/\\\\\\(dashboard\\\\\\)/\\\\\\(users\\\\\\)/farmers/page.tsx)",
-      "Bash(xargs cat:*)"
+      "Bash(xargs cat:*)",
+      "Bash(ls d:/client/vet/src/app/[locale]/\\\\\\(dashboard\\\\\\)/\\\\\\(management\\\\\\)/)",
+      "Bash(ls d:/client/vet/src/app/[locale]/\\\\\\(dashboard\\\\\\)/\\\\\\(management\\\\\\)/\\\\\\(medical\\\\\\)/)",
+      "Bash(cat d:/client/vet/src/app/[locale]/\\\\\\(dashboard\\\\\\)/\\\\\\(management\\\\\\)/\\\\\\(medical\\\\\\)/body-types/page.tsx)",
+      "Bash(node -e \"const d=require\\('./src/shared/messages/ru.json'\\); for\\(const [s,v] of Object.entries\\(d\\)\\){if\\(typeof v==='object'&&'date' in v\\) console.log\\(s+'.date =',v.date\\)}\")",
+      "Bash(node -e \"const d=require\\('./src/shared/messages/ru.json'\\); for\\(const [s,v] of Object.entries\\(d\\)\\){if\\(typeof v==='object'&&'notes' in v\\) console.log\\(s+'.notes =',v.notes\\)}\")",
+      "Bash(node -e \"const d=require\\('./src/shared/messages/ru.json'\\); for\\(const [s,v] of Object.entries\\(d\\)\\){if\\(typeof v==='object'&&'conclusion' in v\\) console.log\\(s+'.conclusion =',v.conclusion\\)}\")",
+      "Bash(grep -l \"queryFn\" d:/client/vet/src/features/animals/components/info-tables/*.tsx)",
+      "Bash(head -5 d:/client/vet/src/widgets/animal/*.tsx)"
     ]
   }
 }

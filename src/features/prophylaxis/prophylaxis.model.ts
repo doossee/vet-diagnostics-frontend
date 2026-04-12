@@ -23,7 +23,7 @@ export const createProphylaxisSchema = (_: any) =>
 
     detailId: z.string().optional(),
 
-    notes: z.string(),
+    notes: z.string().optional(),
 
     date: z.date({
       required_error: "Выберите дату проведения",

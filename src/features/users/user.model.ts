@@ -30,8 +30,9 @@ export const createUserSchema = (t: any, itemId?: string) =>
       email: z
         .string()
         .email("Неверный формат email")
-        .optional(),
-      username: z.string().min(1, "Введите имя пользователя"),
+        .optional()
+        .or(z.literal("")),
+      username: z.string().min(3, "Имя пользователя должно быть не менее 3 символов"),
       lastName: z.string().min(1, t("required.lastNameRequired")),
       firstName: z.string().min(1, t("required.firstNameRequired")),
       districtId: z.string({

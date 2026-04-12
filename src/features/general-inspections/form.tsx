@@ -2,7 +2,7 @@
 import { useForm } from "react-hook-form";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CircleDot, Droplet, Layers, ListChecks, PersonStanding, TestTube } from "lucide-react";
+import { CircleDot, Droplet, Layers, ListChecks, PersonStanding } from "lucide-react";
 
 import { Input } from "@/shared/components/ui/input";
 import { Divider } from "@/shared/components/divider";
@@ -35,7 +35,6 @@ import { SkinSmellsSelect } from "../additional-crud/components/skin-smells-sele
 import { SkinSurfacesSelect } from "../additional-crud/components/skin-surfaces-select";
 import { SkinSensitivitiesSelect } from "../additional-crud/components/skin-sensitivities-select";
 import { SkinPainsSelect } from "../additional-crud/components/skin-pains-select";
-import { RumenFluidStateSelect } from "../additional-crud/components/rumen-fluid-state-select";
 
 interface GeneralInspectionFormProps {
   defaultValues?: GeneralInspectionSchema;
@@ -482,33 +481,6 @@ export function GeneralInspectionForm({ onSubmit, defaultValues }: GeneralInspec
           )}
         />
         
-        <Divider label={t("inspections.rumenFluid")} icon={<TestTube />} className="col-span-1 md:col-span-2 lg:col-span-3" />
-
-        <FormField
-          name="rumenInfusoriaCount"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{t("inspections.rumenInfusoriaCount")}</FormLabel>
-              <FormControl>
-                <Input placeholder={t("inspections.rumenInfusoriaCount")} {...field} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          name="rumenFluidStateId"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className="flex flex-col gap-1 pt-1.5">
-              <FormLabel>{t("inspections.rumenFluidState")}</FormLabel>
-              <FormControl>
-                <RumenFluidStateSelect placeholder={t("inspections.rumenFluidState")} value={field.value} onChange={field.onChange} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
 
 
         <div className="col-span-1 md:col-span-2 lg:col-span-3" />

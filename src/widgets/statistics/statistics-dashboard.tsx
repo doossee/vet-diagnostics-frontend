@@ -12,6 +12,7 @@ import {
   TrendingUp,
   BarChart3,
   CalendarRange,
+  ChevronDown,
 } from "lucide-react";
 import {
   Bar,
@@ -23,14 +24,17 @@ import {
   AreaChart,
   Legend,
 } from "recharts";
+import { format, subDays, subMonths, subYears, startOfDay, endOfDay } from "date-fns";
+import { ru } from "date-fns/locale";
+import type { DateRange } from "react-day-picker";
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/shared/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/shared/components/ui/chart";
 import { Badge } from "@/shared/components/ui/badge";
 import { Separator } from "@/shared/components/ui/separator";
-import { Input } from "@/shared/components/ui/input";
 import { Button } from "@/shared/components/ui/button";
-import { Label } from "@/shared/components/ui/label";
+import { Calendar } from "@/shared/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/shared/components/ui/popover";
 import {
   useGetStatisticsOverview,
   useGetStatisticsDiseases,
@@ -38,6 +42,18 @@ import {
 } from "@/entities/statistics/services/queries";
 import { PREDICT_DISEASES } from "@/shared/constants";
 import { useI18n } from "@/shared/hooks/use-i18n";
+
+// ─── Date range presets ───────────────────────────────────────────────────────
+
+const PRESETS = [
+  { label: "Неделя", getRange: () => ({ from: subDays(new Date(), 6), to: new Date() }) },
+  { label: "Месяц", getRange: () => ({ from: subMonths(new Date(), 1), to: new Date() }) },
+  { label: "3 мес.", getRange: () => ({ from: subMonths(new Date(), 3), to: new Date() }) },
+  { label: "Год", getRange: () => ({ from: subYears(new Date(), 1), to: new Date() }) },
+];
+
+function toIsoStart(d: Date) { return startOfDay(d).toISOString().slice(0, 10); }
+function toIsoEnd(d: Date) { return endOfDay(d).toISOString().slice(0, 10); }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -104,17 +120,15 @@ export function StatisticsDashboard() {
   const getDiseaseName = (diseaseIndex: string, fallback: string) =>
     PREDICT_DISEASES[diseaseIndex]?.[locale] ?? fallback;
 
-  const today = new Date();
-  const sixMonthsAgo = new Date(today.getFullYear(), today.getMonth() - 5, 1);
-
-  const [startDate, setStartDate] = useState(sixMonthsAgo.toISOString().slice(0, 10));
-  const [endDate, setEndDate] = useState(today.toISOString().slice(0, 10));
-  const [appliedStart, setAppliedStart] = useState(sixMonthsAgo.toISOString().slice(0, 10));
-  const [appliedEnd, setAppliedEnd] = useState(today.toISOString().slice(0, 10));
+  const defaultRange: DateRange = { from: subMonths(new Date(), 1), to: new Date() };
+  const [range, setRange] = useState<DateRange>(defaultRange);
+  const [appliedRange, setAppliedRange] = useState<DateRange>(defaultRange);
+  const [calOpen, setCalOpen] = useState(false);
+  const [activePreset, setActivePreset] = useState<string | null>("Месяц");
 
   const params = {
-    startDate: appliedStart ? `${appliedStart}T00:00:00.000Z` : undefined,
-    endDate: appliedEnd ? `${appliedEnd}T23:59:59.999Z` : undefined,
+    startDate: appliedRange.from ? `${toIsoStart(appliedRange.from)}T00:00:00.000Z` : undefined,
+    endDate: appliedRange.to ? `${toIsoEnd(appliedRange.to)}T23:59:59.999Z` : undefined,
   };
 
   const { data: overview, isLoading: overviewLoading } = useGetStatisticsOverview(params);
@@ -122,17 +136,28 @@ export function StatisticsDashboard() {
   const { data: trends, isLoading: trendsLoading } = useGetStatisticsTrends(params);
 
   const handleApply = () => {
-    setAppliedStart(startDate);
-    setAppliedEnd(endDate);
+    setAppliedRange(range);
+    setCalOpen(false);
+  };
+
+  const handlePreset = (preset: typeof PRESETS[0]) => {
+    const r = preset.getRange();
+    setRange(r);
+    setAppliedRange(r);
+    setActivePreset(preset.label);
+    setCalOpen(false);
   };
 
   const handleReset = () => {
-    const s = sixMonthsAgo.toISOString().slice(0, 10);
-    const e = today.toISOString().slice(0, 10);
-    setStartDate(s);
-    setEndDate(e);
-    setAppliedStart(s);
-    setAppliedEnd(e);
+    setRange(defaultRange);
+    setAppliedRange(defaultRange);
+    setActivePreset("Месяц");
+  };
+
+  const formatRange = () => {
+    if (!appliedRange.from) return "Выберите период";
+    if (!appliedRange.to) return format(appliedRange.from, "dd.MM.yyyy", { locale: ru });
+    return `${format(appliedRange.from, "dd.MM.yyyy", { locale: ru })} — ${format(appliedRange.to, "dd.MM.yyyy", { locale: ru })}`;
   };
 
   const trendData = (trends?.data ?? []).map((item) => {
@@ -168,30 +193,60 @@ export function StatisticsDashboard() {
   return (
     <div className="space-y-6">
       {/* Date filter */}
-      <Card className="shadow-none rounded">
-        <CardContent className="py-2!">
-          <div className="flex flex-wrap items-end gap-4">
-            <CalendarRange className="size-5 text-muted-foreground shrink-0 self-center" />
-            <div className="flex flex-col gap-1">
-              <Label className="text-xs text-muted-foreground">Начало периода</Label>
-              <Input
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                className="w-40"
-              />
+      <Card className="shadow-none rounded py-2">
+        <CardContent className="py-3!">
+          <div className="flex flex-wrap items-center gap-2">
+            <CalendarRange className="size-4 text-muted-foreground shrink-0" />
+
+            {/* Quick presets */}
+            <div className="flex gap-1 flex-wrap">
+              {PRESETS.map((p) => (
+                <Button
+                  key={p.label}
+                  size="sm"
+                  variant={activePreset === p.label ? "default" : "outline"}
+                  className="h-8 px-3 text-xs"
+                  onClick={() => handlePreset(p)}
+                >
+                  {p.label}
+                </Button>
+              ))}
             </div>
-            <div className="flex flex-col gap-1">
-              <Label className="text-xs text-muted-foreground">Конец периода</Label>
-              <Input
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                className="w-40"
-              />
-            </div>
-            <Button onClick={handleApply} size="sm">Применить</Button>
-            <Button onClick={handleReset} size="sm" variant="outline">Сбросить</Button>
+
+            <div className="w-px h-6 bg-border hidden sm:block" />
+
+            {/* Date range popover */}
+            <Popover open={calOpen} onOpenChange={setCalOpen}>
+              <PopoverTrigger asChild>
+                <Button variant="outline" size="sm" className="h-8 gap-2 text-sm font-normal min-w-[220px] justify-between">
+                  <span className="flex items-center gap-1.5">
+                    <CalendarRange className="size-3.5 text-muted-foreground" />
+                    {formatRange()}
+                  </span>
+                  <ChevronDown className="size-3.5 text-muted-foreground" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="range"
+                  selected={range}
+                  onSelect={(r) => { if (r) { setRange(r); setActivePreset(null); } }}
+                  numberOfMonths={2}
+                  locale={ru}
+                  captionLayout="dropdown"
+                  fromYear={2020}
+                  toYear={new Date().getFullYear()}
+                />
+                <div className="flex justify-end gap-2 p-3 border-t">
+                  <Button size="sm" variant="outline" onClick={() => setCalOpen(false)}>Отмена</Button>
+                  <Button size="sm" onClick={handleApply} disabled={!range.from || !range.to}>Применить</Button>
+                </div>
+              </PopoverContent>
+            </Popover>
+
+            <Button size="sm" variant="ghost" className="h-8 text-xs text-muted-foreground" onClick={handleReset}>
+              Сбросить
+            </Button>
           </div>
         </CardContent>
       </Card>

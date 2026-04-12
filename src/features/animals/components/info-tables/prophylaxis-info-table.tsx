@@ -13,15 +13,18 @@ type Props = {
 }
 
 export function ProphylaxisInfoTable({ id, onCreate }: Props) {
+  const { data, isLoading } = useGetLastProphylaxisByAnimal(id, !!id)
+
   const handleOpen = (createNew?: boolean) => {
     onCreate?.(routes.PROPHYLAXIS, createNew)
   }
-  
+
   return <InfoTable
+    data={data}
+    isLoading={isLoading}
     onCreate={handleOpen}
     icon={<Activity className="size-5 md:size-6" />}
     localeTitle="nav.prophylaxis"
     createColumns={createProphylaxisColumns}
-    queryFn={() => useGetLastProphylaxisByAnimal(id)}
   />
 }

@@ -13,15 +13,18 @@ type Props = {
 }
 
 export function MucosaExamInfoTable({ id, onCreate }: Props) {
+  const { data, isLoading } = useGetLastMucosaExamByAnimal(id, !!id)
+
   const handleOpen = (createNew?: boolean) => {
     onCreate?.(routes.MUCOSA_EXAMS, createNew)
   }
-  
+
   return <InfoTable
+    data={data}
+    isLoading={isLoading}
     onCreate={handleOpen}
     icon={<ScanEye className="size-5 md:size-6" />}
     localeTitle="nav.mucosaExams"
     createColumns={createMucosaExamColumns}
-    queryFn={() => useGetLastMucosaExamByAnimal(id)}
   />
 }

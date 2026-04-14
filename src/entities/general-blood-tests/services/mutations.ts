@@ -13,6 +13,7 @@ export function useCreateGeneralBloodTest() {
     mutationFn: bloodExamControllerCreate,
     onSuccess: (data) => {
       createQueryData<BloodExam>(client, [GeneralBloodTestQueryKeys.GENERAL_BLOOD_TESTS], data);
+      client.invalidateQueries({ queryKey: [GeneralBloodTestQueryKeys.GENERAL_BLOOD_TESTS] });
       client.invalidateQueries({
         queryKey: [GeneralBloodTestQueryKeys.GENERAL_BLOOD_TESTS_SELECT],
       });
@@ -35,6 +36,7 @@ export function useUpdateGeneralBloodTest() {
     mutationFn: async ({ id, body }) => bloodExamControllerUpdate(id as string, body),
     onSuccess: (data) => {
       updateQueryData<BloodExam>(client, [GeneralBloodTestQueryKeys.GENERAL_BLOOD_TESTS], data);
+      client.invalidateQueries({ queryKey: [GeneralBloodTestQueryKeys.GENERAL_BLOOD_TESTS] });
       client.invalidateQueries({
         queryKey: [GeneralBloodTestQueryKeys.GENERAL_BLOOD_TESTS_SELECT],
       });
@@ -57,6 +59,7 @@ export function useDeleteGeneralBloodTest() {
     mutationFn: id => bloodExamControllerDelete(id as string),
     onSuccess: (data) => {
       removeQueryData<BloodExam>(client, [GeneralBloodTestQueryKeys.GENERAL_BLOOD_TESTS], data.id);
+      client.invalidateQueries({ queryKey: [GeneralBloodTestQueryKeys.GENERAL_BLOOD_TESTS] });
       client.invalidateQueries({
         queryKey: [GeneralBloodTestQueryKeys.GENERAL_BLOOD_TESTS_SELECT],
       });

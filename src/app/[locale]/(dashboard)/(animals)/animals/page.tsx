@@ -14,6 +14,7 @@ import { AnimalFilters, createAnimalColumns } from "@/entities/animals";
 import { useGetAnimals } from "@/entities/animals/services/animal-queries";
 import { queryParamKeys } from "@/entities/animals/utils/constants/query-param-keys";
 import { useCreateAnimal, useDeleteAnimal, useUpdateAnimal } from "@/entities/animals/services/animal-mutations";
+import { ExcelDownloadButton } from "@/shared/components/excel-download-button";
 
 export default function Animals() {
   const router = useRouter();
@@ -47,7 +48,7 @@ export default function Animals() {
         onRowClick={handleNavigate}
         queryFunction={useGetAnimals}
         filterQueryParamKeys={queryParamKeys}
-        topSlot={createButton(t("animals.createButton"))}
+        topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/animals/import" />{createButton(t("animals.createButton"))}</div>}
       />
 
       <Modal open={dialog} onClose={handleClose} widthClassName="max-w-[650px]!" title={t(editedItem ? "animals.editAnimal" : "animals.createAnimal")}>

@@ -13,6 +13,7 @@ import { useGetDungTests } from "@/entities/dung-tests/services/queries";
 import { queryParamKeys } from "@/entities/dung-tests/utils/constants/query-param-keys";
 import { DungTestForm, DungTestSchema, dungTestValues } from "@/features/dung-tests";
 import { useCreateDungTest, useDeleteDungTest, useUpdateDungTest } from "@/entities/dung-tests/services/mutations";
+import { ExcelDownloadButton } from "@/shared/components/excel-download-button";
 
 export default function DungTests() {
   const { t, locale } = useI18n();
@@ -43,7 +44,7 @@ export default function DungTests() {
         columns={columns}
         filterQueryParamKeys={queryParamKeys}
         queryFunction={useGetDungTests}
-        topSlot={createButton(t("inspections.createDungTest"))} />
+        topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/feces-exams/import" />{createButton(t("inspections.createDungTest"))}</div>} />
 
       <Modal
         open={dialog}

@@ -5,6 +5,7 @@ import { FiltersWrapper } from "@/shared/components/filters-wrapper";
 import { useSearchQueryParams } from "@/shared/hooks/use-query-params";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
 import { AnimalTypeTreeSelect } from "@/features/animal-types/components/animal-type-tree-select";
+import { AnimalSexSelect } from "@/features/additional-crud/components/animal-sex-select";
 
 export function AnimalFilters() {
   const { get, set, remove } = useSearchQueryParams()
@@ -19,9 +20,14 @@ export function AnimalFilters() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 mb-2">
         <AnimalTypeTreeSelect onRemove={() => remove(queryParamKeys.TYPE_ID)} placeholder={t("filters.byType")} value={typeId} onChange={e => set(queryParamKeys.TYPE_ID, e)} />
 
-        <Select value={gender ? gender : ""} onValueChange={(e) => set(queryParamKeys.GENDER, e)}>
+        <AnimalSexSelect
+          value={gender ? gender : ""}
+          placeholder={t("filters.byGender")}
+          onChange={(e) => set(queryParamKeys.GENDER, e)}
+        />
+        {/* <Select value={gender ? gender : ""}>
           <SelectTrigger className="bg-card">
-            <SelectValue placeholder={t("filters.byGender")} />
+            <SelectValue  />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value={null as any}>{t("filters.all")}</SelectItem>
@@ -31,7 +37,7 @@ export function AnimalFilters() {
               </SelectItem>
             ))}
           </SelectContent>
-        </Select>
+        </Select> */}
       </div>
     </FiltersWrapper>
   );

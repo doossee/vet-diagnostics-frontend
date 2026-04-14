@@ -12,6 +12,7 @@ import { useGetDiseases } from "@/entities/diseases/services/queries";
 import { useSearchQueryParams } from "@/shared/hooks/use-query-params";
 import { DiseaseForm, DiseaseSchema, diseaseValues } from "@/features/diseases";
 import { useCreateDisease, useDeleteDisease, useUpdateDisease } from "@/entities/diseases/services/mutations";
+import { ExcelDownloadButton } from "@/shared/components/excel-download-button";
 
 export default function Diseases() {
   const { t, locale } = useI18n();
@@ -45,7 +46,7 @@ export default function Diseases() {
       <DataTable
         columns={columns}
         queryFunction={useGetDiseases}
-        topSlot={createButton(t("inspections.createDisease"))} />
+        topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/diseases/import" />{createButton(t("inspections.createDisease"))}</div>} />
 
       <Modal
         open={dialog}

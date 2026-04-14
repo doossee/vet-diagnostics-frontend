@@ -12,6 +12,7 @@ export function useCreateUrineTest() {
     mutationFn: urineExamControllerCreate,
     onSuccess: (data) => {
       createQueryData<UrineExam>(client, [UrineTestQueryKeys.URINE_TESTS], data);
+      client.invalidateQueries({ queryKey: [UrineTestQueryKeys.URINE_TESTS] });
       client.invalidateQueries({
         queryKey: [UrineTestQueryKeys.URINE_TESTS_SELECT],
       });
@@ -31,6 +32,7 @@ export function useUpdateUrineTest() {
     mutationFn: async ({ id, body }) => urineExamControllerUpdate(id as string, body),
     onSuccess: (data) => {
       updateQueryData<UrineExam>(client, [UrineTestQueryKeys.URINE_TESTS], data);
+      client.invalidateQueries({ queryKey: [UrineTestQueryKeys.URINE_TESTS] });
       client.invalidateQueries({
         queryKey: [UrineTestQueryKeys.URINE_TESTS_SELECT],
       });
@@ -50,6 +52,7 @@ export function useDeleteUrineTest() {
     mutationFn: id => urineExamControllerDelete(id as string),
     onSuccess: (data) => {
       removeQueryData<UrineExam>(client, [UrineTestQueryKeys.URINE_TESTS], data.id);
+      client.invalidateQueries({ queryKey: [UrineTestQueryKeys.URINE_TESTS] });
       client.invalidateQueries({
         queryKey: [UrineTestQueryKeys.URINE_TESTS_SELECT],
       });

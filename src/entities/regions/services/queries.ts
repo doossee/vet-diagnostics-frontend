@@ -29,7 +29,5 @@ export function useGetRegionsInfinite(search?: string) {
           }
         : null;
     },
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
   });
 }

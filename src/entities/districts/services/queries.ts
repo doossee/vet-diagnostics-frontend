@@ -29,7 +29,5 @@ export function useGetDistrictsInfinite(search?: string) {
           }
         : null;
     },
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
   });
 }

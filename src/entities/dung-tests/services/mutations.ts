@@ -12,6 +12,7 @@ export function useCreateDungTest() {
     mutationFn: fecesExamControllerCreate,
     onSuccess: (data) => {
       createQueryData<FecesExam>(client, [DungTestQueryKeys.DUNG_TESTS], data);
+      client.invalidateQueries({ queryKey: [DungTestQueryKeys.DUNG_TESTS] });
       client.invalidateQueries({
         queryKey: [DungTestQueryKeys.DUNG_TESTS_SELECT],
       });
@@ -31,6 +32,7 @@ export function useUpdateDungTest() {
     mutationFn: async ({ id, body }) => fecesExamControllerUpdate(id as string, body),
     onSuccess: (data) => {
       updateQueryData<FecesExam>(client, [DungTestQueryKeys.DUNG_TESTS], data);
+      client.invalidateQueries({ queryKey: [DungTestQueryKeys.DUNG_TESTS] });
       client.invalidateQueries({
         queryKey: [DungTestQueryKeys.DUNG_TESTS_SELECT],
       });
@@ -50,6 +52,7 @@ export function useDeleteDungTest() {
     mutationFn: id => fecesExamControllerDelete(id as string),
     onSuccess: (data) => {
       removeQueryData<FecesExam>(client, [DungTestQueryKeys.DUNG_TESTS], data.id);
+      client.invalidateQueries({ queryKey: [DungTestQueryKeys.DUNG_TESTS] });
       client.invalidateQueries({
         queryKey: [DungTestQueryKeys.DUNG_TESTS_SELECT],
       });

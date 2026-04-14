@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { Input } from "@/shared/components/ui/input";
@@ -29,18 +28,12 @@ export function UserForm({ onSubmit, itemId, defaultValues }: UserFormProps) {
           ...defaultValues,
           password: "",
           confirmPassword: "",
+          regionId: (defaultValues as any)?.district?.regionId ?? (defaultValues as any)?.regionId,
         }
       : (userValues as any),
   });
 
   const regionId = form.watch("regionId" as any);
-
-  useEffect(() => {
-    if (!defaultValues) return;
-
-    form.setValue("regionId" as any, (defaultValues as any)?.district?.regionId);
-    form.setValue("districtId", defaultValues.districtId);
-  }, [defaultValues]);
 
   return (
     <Form {...form}>
@@ -133,7 +126,7 @@ export function UserForm({ onSubmit, itemId, defaultValues }: UserFormProps) {
               <FormItem>
                 <FormLabel>{t("form.districtName")}</FormLabel>
                 <FormControl>
-                  <DistrictSelect placeholder={t("form.districtName")} value={field.value} onChange={field.onChange} regionId={regionId??null} disabled={!regionId} />
+                  <DistrictSelect placeholder={t("form.districtName")} value={field.value} onChange={field.onChange} regionId={regionId} disabled={!regionId} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

@@ -13,6 +13,7 @@ import { useGetUrineTests } from "@/entities/urine-tests/services/queries";
 import { queryParamKeys } from "@/entities/urine-tests/utils/constants/query-param-keys";
 import { UrineTestForm, UrineTestSchema, urineTestValues } from "@/features/urine-tests";
 import { useCreateUrineTest, useDeleteUrineTest, useUpdateUrineTest } from "@/entities/urine-tests/services/mutations";
+import { ExcelDownloadButton } from "@/shared/components/excel-download-button";
 
 export default function UrineTests() {
   const { t, locale } = useI18n();
@@ -44,7 +45,7 @@ export default function UrineTests() {
         columns={columns}
         filterQueryParamKeys={queryParamKeys}
         queryFunction={useGetUrineTests}
-        topSlot={createButton(t("inspections.createUrineTest"))}
+        topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/urine-exams/import" />{createButton(t("inspections.createUrineTest"))}</div>}
       />
 
       <Modal

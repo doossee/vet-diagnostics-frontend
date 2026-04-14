@@ -12,6 +12,7 @@ import { MucosaExamForm, MucosaExamSchema } from "@/features/mucosa-exams";
 import { useGetMucosaExams } from "@/entities/mucosa-exams/services/queries";
 import { useCreateMucosaExam, useDeleteMucosaExam, useUpdateMucosaExam } from "@/entities/mucosa-exams/services/mutations";
 import { useSearchQueryParams } from "@/shared/hooks/use-query-params";
+import { ExcelDownloadButton } from "@/shared/components/excel-download-button";
 
 interface MucosaExamsTableProps {
   className?: string
@@ -49,7 +50,7 @@ export function MucosaExamsTable({ animalId, className, sessionId }: MucosaExams
         filterQueryParamKeys={queryParamKeys}
         queryFunction={useGetMucosaExams}
         customFilters={{ sessionId: sessionId! }}
-        topSlot={createButton(t("management.createEyeLid"))} />
+        topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/mucosa-exams/import" />{createButton(t("management.createEyeLid"))}</div>} />
 
       <Modal
         open={dialog}

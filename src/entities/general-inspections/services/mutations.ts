@@ -13,6 +13,7 @@ export function useCreateGeneralInspection() {
     mutationFn: clinicalExamControllerCreate,
     onSuccess: (data) => {
       createQueryData<ClinicalExam>(client, [GeneralInspectionQueryKeys.GENERAL_INSPECTION], data);
+      client.invalidateQueries({ queryKey: [GeneralInspectionQueryKeys.GENERAL_INSPECTION] });
       client.invalidateQueries({
         queryKey: [GeneralInspectionQueryKeys.GENERAL_INSPECTION_SELECT],
       });
@@ -35,6 +36,7 @@ export function useUpdateGeneralInspection() {
     mutationFn: async ({ id, body }) => clinicalExamControllerUpdate(id as string, body),
     onSuccess: (data) => {
       updateQueryData<ClinicalExam>(client, [GeneralInspectionQueryKeys.GENERAL_INSPECTION], data);
+      client.invalidateQueries({ queryKey: [GeneralInspectionQueryKeys.GENERAL_INSPECTION] });
       client.invalidateQueries({
         queryKey: [GeneralInspectionQueryKeys.GENERAL_INSPECTION_SELECT],
       });
@@ -57,6 +59,7 @@ export function useDeleteGeneralInspection() {
     mutationFn: id => clinicalExamControllerDelete(id as string),
     onSuccess: (data) => {
       removeQueryData<ClinicalExam>(client, [GeneralInspectionQueryKeys.GENERAL_INSPECTION], data.id);
+      client.invalidateQueries({ queryKey: [GeneralInspectionQueryKeys.GENERAL_INSPECTION] });
       client.invalidateQueries({
         queryKey: [GeneralInspectionQueryKeys.GENERAL_INSPECTION_SELECT],
       });

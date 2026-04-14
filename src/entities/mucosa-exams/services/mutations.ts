@@ -12,6 +12,7 @@ export function useCreateMucosaExam() {
     mutationFn: mucosaExamControllerCreate,
     onSuccess: (data) => {
       createQueryData<MucosaExam>(client, [MUCOSA_EXAMS_QUERY_KEYS.MUCOSA_EXAMS], data);
+      client.invalidateQueries({ queryKey: [MUCOSA_EXAMS_QUERY_KEYS.MUCOSA_EXAMS] });
       client.invalidateQueries({ queryKey: [MUCOSA_EXAMS_QUERY_KEYS.MUCOSA_EXAMS_SELECT] });
       if (data?.animalId) {
         client.invalidateQueries({
@@ -29,6 +30,7 @@ export function useUpdateMucosaExam() {
     mutationFn: async ({ id, body }) => mucosaExamControllerUpdate(id as string, body),
     onSuccess: (data) => {
       updateQueryData<MucosaExam>(client, [MUCOSA_EXAMS_QUERY_KEYS.MUCOSA_EXAMS], data);
+      client.invalidateQueries({ queryKey: [MUCOSA_EXAMS_QUERY_KEYS.MUCOSA_EXAMS] });
       client.invalidateQueries({ queryKey: [MUCOSA_EXAMS_QUERY_KEYS.MUCOSA_EXAMS_SELECT] });
       if (data?.animalId) {
         client.invalidateQueries({
@@ -46,6 +48,7 @@ export function useDeleteMucosaExam() {
     mutationFn: id => mucosaExamControllerDelete(id as string),
     onSuccess: (data) => {
       removeQueryData<MucosaExam>(client, [MUCOSA_EXAMS_QUERY_KEYS.MUCOSA_EXAMS], data.id);
+      client.invalidateQueries({ queryKey: [MUCOSA_EXAMS_QUERY_KEYS.MUCOSA_EXAMS] });
       client.invalidateQueries({ queryKey: [MUCOSA_EXAMS_QUERY_KEYS.MUCOSA_EXAMS_SELECT] });
       if (data?.animalId) {
         client.invalidateQueries({

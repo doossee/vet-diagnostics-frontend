@@ -12,6 +12,7 @@ export function useCreateMedicalSession() {
     mutationFn: medicalSessionControllerCreate,
     onSuccess: (data) => {
       createQueryData<MedicalSession>(client, [SessionsQueryKeys.SESSIONS], data);
+      client.invalidateQueries({ queryKey: [SessionsQueryKeys.SESSIONS] });
       client.invalidateQueries({
         queryKey: [SessionsQueryKeys.SESSIONS_SELECT],
       });
@@ -34,6 +35,7 @@ export function useUpdateMedicalSession() {
     mutationFn: async ({ id, body }) => medicalSessionControllerUpdate(String(id), body),
     onSuccess: (data) => {
       updateQueryData<MedicalSession>(client, [SessionsQueryKeys.SESSIONS], data);
+      client.invalidateQueries({ queryKey: [SessionsQueryKeys.SESSIONS] });
       client.invalidateQueries({
         queryKey: [SessionsQueryKeys.SESSIONS_SELECT],
       });
@@ -56,6 +58,7 @@ export function useDeleteMedicalSession() {
     mutationFn: id => medicalSessionControllerDelete(String(id)),
     onSuccess: (data) => {
       removeQueryData<MedicalSession>(client, [SessionsQueryKeys.SESSIONS], data.id);
+      client.invalidateQueries({ queryKey: [SessionsQueryKeys.SESSIONS] });
       client.invalidateQueries({
         queryKey: [SessionsQueryKeys.SESSIONS_SELECT],
       });

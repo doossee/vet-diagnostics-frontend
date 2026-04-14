@@ -13,6 +13,7 @@ import { useGetGeneralBloodTests } from "@/entities/general-blood-tests/services
 import { queryParamKeys } from '@/entities/general-blood-tests/utils/constants/query-param-keys';
 import { GeneralBloodTestForm, GeneralBloodTestSchema, generalBloodTestValues } from "@/features/general-blood-tests";
 import { useCreateGeneralBloodTest, useDeleteGeneralBloodTest, useUpdateGeneralBloodTest } from "@/entities/general-blood-tests/services/mutations";
+import { ExcelDownloadButton } from "@/shared/components/excel-download-button";
 
 export default function GeneralBloodTests() {
   const { t, locale } = useI18n();
@@ -44,7 +45,7 @@ export default function GeneralBloodTests() {
         columns={columns}
         filterQueryParamKeys={queryParamKeys}
         queryFunction={useGetGeneralBloodTests}
-        topSlot={createButton(t("inspections.createBloodTest"))} />
+        topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/blood-exams/import" />{createButton(t("inspections.createBloodTest"))}</div>} />
 
       <Modal
         open={dialog}

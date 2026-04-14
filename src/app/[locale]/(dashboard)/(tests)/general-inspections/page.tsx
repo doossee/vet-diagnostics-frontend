@@ -13,6 +13,7 @@ import { useGetGeneralInspections } from "@/entities/general-inspections/service
 // import { queryParamKeys } from "@/entities/general-inspections/utils/constants/query-param-keys";
 import { GeneralInspectionForm, GeneralInspectionSchema, generalInspectionValues } from "@/features/general-inspections";
 import { useCreateGeneralInspection, useDeleteGeneralInspection, useUpdateGeneralInspection } from "@/entities/general-inspections/services/mutations";
+import { ExcelDownloadButton } from "@/shared/components/excel-download-button";
 import { queryParamKeys } from "@/entities/general-inspections/utils/constants/query-param-keys";
 
 export default function GeneralInspections() {
@@ -45,7 +46,7 @@ export default function GeneralInspections() {
         columns={columns}
         filterQueryParamKeys={queryParamKeys} // TODO: backend api add filter animalId, ... field
         queryFunction={useGetGeneralInspections}
-        topSlot={createButton(t("inspections.createGeneralInspections"))} />
+        topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/clinical-exams/import" />{createButton(t("inspections.createGeneralInspections"))}</div>} />
 
       <Modal open={dialog} onClose={handleClose} widthClassName="bg-card max-w-[900px]!" title={t(editedItem ? "inspections.editGeneralInspections" : "inspections.createGeneralInspections")}>
         <GeneralInspectionForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : animalId ? { ...generalInspectionValues, sessionId, animalId } as any : undefined} />

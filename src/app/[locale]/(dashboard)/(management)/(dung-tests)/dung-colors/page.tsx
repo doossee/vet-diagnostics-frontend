@@ -25,7 +25,7 @@ export default function DungColors() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetDungColors} topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/feces-colors/import" />{createButton(t("management.dungColorCreate"))}</div>} />
+      <DataTable columns={columns} queryFunction={useGetDungColors} topSlot={<div className="grid gap-2 grid-cols-[50px_auto] w-full md:grid-cols-2 md:w-fit"><ExcelDownloadButton importUrl="/feces-colors/import" />{createButton(t("management.dungColorCreate"))}</div>} />
 
       <Modal open={dialog} onClose={handleClose} title={t(editedItem ? "management.editColor" : "management.createColor")}>
         <DungColorForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : (undefined as any)} />

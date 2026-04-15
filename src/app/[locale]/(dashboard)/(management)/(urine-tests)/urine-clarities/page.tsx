@@ -25,7 +25,7 @@ export default function UrineClarities() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetUrineClarities} topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/urine-clarities/import" />{createButton(t("pages.createUrineClarity"))}</div>} />
+      <DataTable columns={columns} queryFunction={useGetUrineClarities} topSlot={<div className="grid gap-2 grid-cols-[50px_auto] w-full md:grid-cols-2 md:w-fit"><ExcelDownloadButton importUrl="/urine-clarities/import" />{createButton(t("pages.createUrineClarity"))}</div>} />
 
       <Modal open={dialog} onClose={handleClose} title={editedItem ? t("pages.editUrineClarity") : t("pages.createUrineClarity")}>
         <AdditionalCrudForm

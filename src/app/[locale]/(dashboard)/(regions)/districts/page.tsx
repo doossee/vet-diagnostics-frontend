@@ -25,7 +25,7 @@ export default function Districts() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetDistricts} topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/districts/import" />{createButton(t("regions.createDistrict"))}</div>} />
+      <DataTable columns={columns} queryFunction={useGetDistricts} topSlot={<div className="grid gap-2 grid-cols-[50px_auto] w-full md:grid-cols-2 md:w-fit"><ExcelDownloadButton importUrl="/districts/import" />{createButton(t("regions.createDistrict"))}</div>} />
 
       <Modal open={dialog} onClose={handleClose} title={t(editedItem ? "regions.editDistrict" : "regions.createDistrict")}>
         <DistrictForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : undefined} />

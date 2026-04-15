@@ -41,7 +41,7 @@ export default function Farmers() {
         columns={columns}
         queryFunction={useGetFarmers}
         filterQueryParamKeys={UsersQueryParamKeys}
-        topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/users/import" />{createButton(t("users.createFarmer"))}</div>}
+        topSlot={<div className="grid gap-2 grid-cols-[50px_auto] w-full md:grid-cols-2 md:w-fit"><ExcelDownloadButton importUrl="/users/import" />{createButton(t("users.createFarmer"))}</div>}
       />
 
       <Modal

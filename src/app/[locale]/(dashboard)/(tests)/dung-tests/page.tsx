@@ -44,7 +44,7 @@ export default function DungTests() {
         columns={columns}
         filterQueryParamKeys={queryParamKeys}
         queryFunction={useGetDungTests}
-        topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/feces-exams/import" />{createButton(t("inspections.createDungTest"))}</div>} />
+        topSlot={<div className="grid gap-2 grid-cols-[50px_auto] w-full md:grid-cols-2 md:w-fit"><ExcelDownloadButton importUrl="/feces-exams/import" />{createButton(t("inspections.createDungTest"))}</div>} />
 
       <Modal
         open={dialog}

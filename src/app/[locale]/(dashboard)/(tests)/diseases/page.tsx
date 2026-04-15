@@ -46,7 +46,7 @@ export default function Diseases() {
       <DataTable
         columns={columns}
         queryFunction={useGetDiseases}
-        topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/diseases/import" />{createButton(t("inspections.createDisease"))}</div>} />
+        topSlot={<div className="grid gap-2 grid-cols-[50px_auto] w-full md:grid-cols-2 md:w-fit"><ExcelDownloadButton importUrl="/diseases/import" />{createButton(t("inspections.createDisease"))}</div>} />
 
       <Modal
         open={dialog}

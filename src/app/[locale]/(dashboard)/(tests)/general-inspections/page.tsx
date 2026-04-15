@@ -46,7 +46,7 @@ export default function GeneralInspections() {
         columns={columns}
         filterQueryParamKeys={queryParamKeys} // TODO: backend api add filter animalId, ... field
         queryFunction={useGetGeneralInspections}
-        topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/clinical-exams/import" />{createButton(t("inspections.createGeneralInspections"))}</div>} />
+        topSlot={<div className="grid gap-2 grid-cols-[50px_auto] w-full md:grid-cols-2 md:w-fit"><ExcelDownloadButton importUrl="/clinical-exams/import" />{createButton(t("inspections.createGeneralInspections"))}</div>} />
 
       <Modal open={dialog} onClose={handleClose} widthClassName="bg-card max-w-[900px]!" title={t(editedItem ? "inspections.editGeneralInspections" : "inspections.createGeneralInspections")}>
         <GeneralInspectionForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : animalId ? { ...generalInspectionValues, sessionId, animalId } as any : undefined} />

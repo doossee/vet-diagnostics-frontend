@@ -25,7 +25,7 @@ export default function AnimalTypes() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetAnimalTypes} topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/animal-types/import" />{createButton(t("animalTypes.createButton"))}</div>} />
+      <DataTable columns={columns} queryFunction={useGetAnimalTypes} topSlot={<div className="grid gap-2 grid-cols-[50px_auto] w-full md:grid-cols-2 md:w-fit"><ExcelDownloadButton importUrl="/animal-types/import" />{createButton(t("animalTypes.createButton"))}</div>} />
 
       <Modal open={dialog} onClose={handleClose} title={t(editedItem ? "animalTypes.editAnimalType" : "animalTypes.createAnimalType")}>
         <AnimalTypeForm onSubmit={onSubmit} defaultValues={editedItem !== null ? editedItem : undefined} />

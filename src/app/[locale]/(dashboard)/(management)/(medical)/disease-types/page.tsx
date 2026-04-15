@@ -25,7 +25,7 @@ export default function DiseaseTypes() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetDiseaseTypes} topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/disease-categories/import" />{createButton(t("pages.createDiseaseType"))}</div>} />
+      <DataTable columns={columns} queryFunction={useGetDiseaseTypes} topSlot={<div className="grid gap-2 grid-cols-[50px_auto] w-full md:grid-cols-2 md:w-fit"><ExcelDownloadButton importUrl="/disease-categories/import" />{createButton(t("pages.createDiseaseType"))}</div>} />
 
       <Modal open={dialog} onClose={handleClose} title={editedItem ? t("pages.editDiseaseType") : t("pages.createDiseaseType")}>
         <DiseaseTypeForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : (undefined as any)} />

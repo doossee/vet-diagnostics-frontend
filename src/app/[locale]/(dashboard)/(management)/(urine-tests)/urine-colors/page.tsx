@@ -25,7 +25,7 @@ export default function UrineColors() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetUrineColors} topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/urine-colors/import" />{createButton(t("management.urineColorCreate"))}</div>} />
+      <DataTable columns={columns} queryFunction={useGetUrineColors} topSlot={<div className="grid gap-2 grid-cols-[50px_auto] w-full md:grid-cols-2 md:w-fit"><ExcelDownloadButton importUrl="/urine-colors/import" />{createButton(t("management.urineColorCreate"))}</div>} />
 
       <Modal open={dialog} onClose={handleClose} title={t(editedItem ? "management.editColor" : "management.createColor")}>
         <UrineColorForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : (undefined as any)} />

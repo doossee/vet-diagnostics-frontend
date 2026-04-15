@@ -25,7 +25,7 @@ export default function Breeds() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetBreeds} topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/breeds/import" />{createButton(t("management.createBreed"))}</div>} />
+      <DataTable columns={columns} queryFunction={useGetBreeds} topSlot={<div className="grid gap-2 grid-cols-[50px_auto] w-full md:grid-cols-2 md:w-fit"><ExcelDownloadButton importUrl="/breeds/import" />{createButton(t("management.createBreed"))}</div>} />
 
       <Modal open={dialog} title={t(editedItem ? "management.editBreed" : "management.createBreed")} onClose={handleClose}>
         <BreedForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : (undefined as any)} />

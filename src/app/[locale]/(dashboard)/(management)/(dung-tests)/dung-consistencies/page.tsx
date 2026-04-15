@@ -25,7 +25,7 @@ export default function DungConsistencies() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetDungConsistencies} topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/feces-consistencies/import" />{createButton(t("pages.createDungConsistency"))}</div>} />
+      <DataTable columns={columns} queryFunction={useGetDungConsistencies} topSlot={<div className="grid gap-2 grid-cols-[50px_auto] w-full md:grid-cols-2 md:w-fit"><ExcelDownloadButton importUrl="/feces-consistencies/import" />{createButton(t("pages.createDungConsistency"))}</div>} />
 
       <Modal open={dialog} onClose={handleClose} title={editedItem ? t("pages.editDungConsistency") : t("pages.createDungConsistency")}>
         <AdditionalCrudForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : (undefined as any)} />

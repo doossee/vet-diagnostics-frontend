@@ -45,7 +45,7 @@ export default function GeneralBloodTests() {
         columns={columns}
         filterQueryParamKeys={queryParamKeys}
         queryFunction={useGetGeneralBloodTests}
-        topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/blood-exams/import" />{createButton(t("inspections.createBloodTest"))}</div>} />
+        topSlot={<div className="grid gap-2 grid-cols-[50px_auto] w-full md:grid-cols-2 md:w-fit"><ExcelDownloadButton importUrl="/blood-exams/import" />{createButton(t("inspections.createBloodTest"))}</div>} />
 
       <Modal
         open={dialog}

@@ -50,10 +50,10 @@ export function MucosaExamsTable({ animalId, className, sessionId, existingMucos
       <DataTable
         columns={columns}
         filterQueryParamKeys={queryParamKeys}
-        queryFunction={useGetMucosaExams}
+        queryFunction={(p) => useGetMucosaExams(p, !!sessionId)}
         customFilters={{ sessionId: sessionId! }}
         topSlot={
-          <div className="flex gap-2">
+          <div className="grid gap-2 grid-cols-[50px_auto] w-full md:grid-cols-2 md:w-fit">
             <ExcelDownloadButton importUrl="/mucosa-exams/import" disabled={!canEdit} />
             <Button
               size="default"

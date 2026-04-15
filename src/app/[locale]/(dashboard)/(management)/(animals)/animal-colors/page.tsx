@@ -25,7 +25,7 @@ export default function AnimalColors() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetAnimalColors} topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/colors/import" />{createButton(t("management.createColor"))}</div>} />
+      <DataTable columns={columns} queryFunction={useGetAnimalColors} topSlot={<div className="grid gap-2 grid-cols-[50px_auto] w-full md:grid-cols-2 md:w-fit"><ExcelDownloadButton importUrl="/colors/import" />{createButton(t("management.createColor"))}</div>} />
 
       <Modal open={dialog} onClose={handleClose} title={t(editedItem ? "management.editColor" : "management.createColor")}>
         <AnimalColorForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : (undefined as any)} />

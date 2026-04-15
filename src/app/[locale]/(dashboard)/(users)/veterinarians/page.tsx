@@ -36,7 +36,7 @@ export default function Veterinarians() {
         columns={columns}
         queryFunction={useGetVeterinarians}
         filterQueryParamKeys={UsersQueryParamKeys}
-        topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/users/import" />{createButton(t("users.createVeterinarian"))}</div>}
+        topSlot={<div className="grid gap-2 grid-cols-[50px_auto] w-full md:grid-cols-2 md:w-fit"><ExcelDownloadButton importUrl="/users/import" />{createButton(t("users.createVeterinarian"))}</div>}
       />
 
       <Modal open={dialog} onClose={handleClose} widthClassName="max-w-[650px]!" title={t(editedItem ? "users.editVeterinarian" : "users.createVeterinarian")}>

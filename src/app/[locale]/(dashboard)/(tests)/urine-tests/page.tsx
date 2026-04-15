@@ -45,7 +45,7 @@ export default function UrineTests() {
         columns={columns}
         filterQueryParamKeys={queryParamKeys}
         queryFunction={useGetUrineTests}
-        topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/urine-exams/import" />{createButton(t("inspections.createUrineTest"))}</div>}
+        topSlot={<div className="grid gap-2 grid-cols-[50px_auto] w-full md:grid-cols-2 md:w-fit"><ExcelDownloadButton importUrl="/urine-exams/import" />{createButton(t("inspections.createUrineTest"))}</div>}
       />
 
       <Modal

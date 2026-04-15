@@ -24,7 +24,7 @@ export default function Regions() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetRegions} topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/regions/import" />{createButton(t("regions.createRegion"))}</div>} />
+      <DataTable columns={columns} queryFunction={useGetRegions} topSlot={<div className="grid gap-2 grid-cols-[50px_auto] w-full md:grid-cols-2 md:w-fit"><ExcelDownloadButton importUrl="/regions/import" />{createButton(t("regions.createRegion"))}</div>} />
 
       <Modal open={dialog} onClose={handleClose} title={t(editedItem ? "regions.editRegion" : "regions.createRegion")}>
         <RegionForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : undefined} />

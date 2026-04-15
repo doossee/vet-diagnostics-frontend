@@ -25,7 +25,7 @@ export default function DungForms() {
 
   return (
     <div>
-      <DataTable columns={columns} queryFunction={useGetDungForms} topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/feces-forms/import" />{createButton(t("pages.createDungForm"))}</div>} />
+      <DataTable columns={columns} queryFunction={useGetDungForms} topSlot={<div className="grid gap-2 grid-cols-[50px_auto] w-full md:grid-cols-2 md:w-fit"><ExcelDownloadButton importUrl="/feces-forms/import" />{createButton(t("pages.createDungForm"))}</div>} />
 
       <Modal open={dialog} onClose={handleClose} title={editedItem ? t("pages.editDungForm") : t("pages.createDungForm")}>
         <AdditionalCrudForm onSubmit={onSubmit} defaultValues={editedItem ? editedItem : (undefined as any)} />

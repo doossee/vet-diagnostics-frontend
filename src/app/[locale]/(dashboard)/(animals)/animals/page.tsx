@@ -48,7 +48,7 @@ export default function Animals() {
         onRowClick={handleNavigate}
         queryFunction={useGetAnimals}
         filterQueryParamKeys={queryParamKeys}
-        topSlot={<div className="flex gap-2"><ExcelDownloadButton importUrl="/animals/import" />{createButton(t("animals.createButton"))}</div>}
+        topSlot={<div className="grid gap-2 grid-cols-[50px_auto] w-full md:grid-cols-2 md:w-fit"><ExcelDownloadButton importUrl="/animals/import" />{createButton(t("animals.createButton"))}</div>}
       />
 
       <Modal open={dialog} onClose={handleClose} widthClassName="max-w-[650px]!" title={t(editedItem ? "animals.editAnimal" : "animals.createAnimal")}>

@@ -55,10 +55,12 @@ export function ExcelDownloadButton({ importUrl, label = "Импорт из Exce
         onClick={handleClick}
         disabled={loading || disabled}
         size="default"
-        className="mt-0! w-full sm:w-fit bg-green-600 hover:bg-green-700 text-white"
+        className="mt-0! w-full bg-green-600 hover:bg-green-700 text-white"
       >
         <FileSpreadsheet className="size-4" />
-        {loading ? "Загрузка..." : label}
+        <span className="hidden md:inline-block">
+          {loading ? "Загрузка..." : label}
+        </span>
       </Button>
     </>
   );

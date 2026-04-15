@@ -10,9 +10,10 @@ import { useQueryClient } from "@tanstack/react-query";
 interface ExcelImportButtonProps {
   importUrl: string;
   label?: string;
+  disabled?: boolean;
 }
 
-export function ExcelDownloadButton({ importUrl, label = "Импорт из Excel" }: ExcelImportButtonProps) {
+export function ExcelDownloadButton({ importUrl, label = "Импорт из Excel", disabled }: ExcelImportButtonProps) {
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const queryClient = useQueryClient();
@@ -52,7 +53,7 @@ export function ExcelDownloadButton({ importUrl, label = "Импорт из Exce
       />
       <Button
         onClick={handleClick}
-        disabled={loading}
+        disabled={loading || disabled}
         size="default"
         className="mt-0! w-full sm:w-fit bg-green-600 hover:bg-green-700 text-white"
       >

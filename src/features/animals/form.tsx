@@ -6,6 +6,7 @@ import { Input } from "@/shared/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/shared/components/ui/button";
 import { DatePicker } from "@/shared/components/date-picker";
+import { MonthYearPicker } from "@/shared/components/month-year-picker";
 import { BreedSelect } from "../breeds/components/breed-select";
 import { AnimalSchema, animalValues, createAnimalSchema } from "./animal.model";
 import { AnimalColorSelect } from "../animal-colors/components/animal-color-select";
@@ -21,10 +22,6 @@ interface AnimalFormProps {
   onSubmit: (values: AnimalSchema) => void;
 }
 
-const toMonthInputValue = (year?: number | null, month?: number | null) => {
-  if (!year || !month) return "";
-  return `${year}-${String(month).padStart(2, "0")}`;
-};
 
 export function AnimalForm({ onSubmit, defaultValues, submitRightContent, showFarmer: _showFarmer }: AnimalFormProps) {
   const { t } = useI18n();
@@ -128,21 +125,12 @@ export function AnimalForm({ onSubmit, defaultValues, submitRightContent, showFa
               <FormItem>
                 <FormLabel>Birth month</FormLabel>
                 <FormControl>
-                  <Input
-                    type="month"
-                    value={toMonthInputValue(form.watch("birthYear"), field.value)}
-                    max={toMonthInputValue(new Date().getFullYear(), new Date().getMonth() + 1)}
-                    onChange={(event) => {
-                      const [year, month] = event.target.value.split("-");
-
-                      if (!year || !month) {
-                        field.onChange(undefined);
-                        form.setValue("birthYear", undefined as never, { shouldValidate: true, shouldDirty: true });
-                        return;
-                      }
-
-                      form.setValue("birthYear", Number(year), { shouldValidate: true, shouldDirty: true });
-                      field.onChange(Number(month));
+                  <MonthYearPicker
+                    month={field.value}
+                    year={form.watch("birthYear")}
+                    onChange={(year, month) => {
+                      field.onChange(month);
+                      form.setValue("birthYear", year as never, { shouldValidate: true, shouldDirty: true });
                     }}
                   />
                 </FormControl>

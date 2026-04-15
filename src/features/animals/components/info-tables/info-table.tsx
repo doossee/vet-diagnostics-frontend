@@ -71,10 +71,12 @@ export function InfoTable<T>({ localeTitle, icon, hideCreateButton, createColumn
     <CardContent className="px-4 max-h-[630px] overflow-auto">
       {(showEmptyState && !hideCreateButton) ? (
         <EmptyState>
-          <Button onClick={() => onAdd ? onAdd() : onCreate?.(true)}>
-            <Plus />
-            {t("form.add")}
-          </Button>
+          {onAdd && (
+            <Button onClick={onAdd}>
+              <Plus />
+              {t("form.add")}
+            </Button>
+          )}
         </EmptyState>
       ) : <Table>
         <TableBody>

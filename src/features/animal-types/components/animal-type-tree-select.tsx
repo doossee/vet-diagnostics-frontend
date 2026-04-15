@@ -35,6 +35,7 @@ export function AnimalTypeTreeSelect({ value, placeholder, disabled, onChange, o
       placeholder={placeholder}
       getOptionLabel={(option) => option.name?.[locale]}
       queryFn={(parentId) => useGetAnimalTypesInfinite(parentId)}
+      disableFolderSelect
     />
   );
 }

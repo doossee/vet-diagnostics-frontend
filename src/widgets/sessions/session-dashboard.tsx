@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { format } from "date-fns";
-import { Brain, ExternalLink } from "lucide-react";
+import { Brain, ExternalLink, Send, Calendar, Cat, Stethoscope, CheckCircle2, Clock } from "lucide-react";
 import { Link } from "@/shared/i18n/routing";
 import { useSearchQueryParams } from "@/shared/hooks/use-query-params";
 import { BloodExamInfoTable } from "@/features/animals/components/info-tables/blood-exam-info-table";
@@ -10,16 +10,18 @@ import { ClinicExamInfoTable } from "@/features/animals/components/info-tables/c
 import { UrineExamInfoTable } from "@/features/animals/components/info-tables/urine-exam-info-table";
 import { FecesExamInfoTable } from "@/features/animals/components/info-tables/feces-examp-info-table";
 import { useGetMedicalSessionById } from "@/entities/sessions/services/queries";
+import { useSubmitMedicalSession } from "@/entities/sessions/services/mutations";
 import { MucosaExamsTable } from "../mucosa-exams/mucosa-exams-table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import { Progress } from "@/shared/components/ui/progress";
 import { Skeleton } from "@/shared/components/ui/skeleton";
-import { PREDICT_DISEASES } from "@/shared/constants";
+import { ALERT_MESSAGES, PREDICT_DISEASES } from "@/shared/constants";
 import { routes } from "@/shared/constants/routes";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { SessionExamModal, SessionExamType } from "./session-exam-modal";
+import { createToast } from "@/shared/hooks/use-toast";
 
 type SeverityLevel = { label: string; badgeClass: string; barClass: string; borderClass: string; bgClass: string };
 
@@ -35,6 +37,95 @@ function getAlertSeverityInfo(alerts: import("@/shared/types").AnomalyAlert[]) {
   const counts = { CRITICAL: 0, HIGH: 0, MEDIUM: 0, LOW: 0 };
   alerts.forEach(a => { if (a.severity in counts) counts[a.severity]++; });
   return counts;
+}
+
+function SessionInfoPanel({ id, isLoading }: { id: string; isLoading: boolean }) {
+  const { data } = useGetMedicalSessionById(id);
+  const submitMutation = useSubmitMedicalSession();
+  const isSubmitted = data?.status === "SUBMITTED";
+  const isReadyForSubmit =
+    !isSubmitted &&
+    !!data?.fecesExam &&
+    !!data?.urineExam &&
+    !!data?.bloodExam &&
+    !!data?.clinicalExam &&
+    (data?.mucosaExams?.length ?? 0) >= 4;
+
+  const handleSubmit = () => {
+    if (!confirm("Sessiyani yakunlamoqchimisiz?")) return;
+    submitMutation.mutate(id, {
+      onSuccess: () => createToast(ALERT_MESSAGES.SESSION_SUBMITTED, "SUCCESS"),
+      onError: () => createToast(ALERT_MESSAGES.SESSION_SUBMIT_ERROR, "WARNING"),
+    });
+  };
+
+  if (isLoading) {
+    return (
+      <Card className="shadow-none rounded mb-4 py-2! px-2!">
+        <CardContent className="py-0 px-0!">
+          <div className="flex flex-wrap gap-4 items-center justify-between">
+            <div className="flex gap-4 flex-wrap">
+              {[1, 2, 3].map(i => <Skeleton key={i} className="h-5 w-32 rounded" />)}
+            </div>
+            <Skeleton className="h-9 w-36 rounded" />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (!data) return null;
+
+  return (
+    <Card className="shadow-none rounded mb-4 py-2! px-2!">
+      <CardContent className="py-0 px-2!">
+        <div className="flex flex-wrap gap-3 items-center justify-between">
+          <div className="flex flex-wrap gap-4 items-center text-sm">
+            <div className="flex items-center gap-1.5 text-muted-foreground">
+              <Cat className="size-4 shrink-0" />
+              <span className="font-medium text-foreground">{data.animal?.animalNameCode}</span>
+            </div>
+            <div className="flex items-center gap-1.5 text-muted-foreground">
+              <Calendar className="size-4 shrink-0" />
+              <span>{format(new Date(data.date), "dd.MM.yyyy")}</span>
+            </div>
+            {data.veterinarian && (
+              <div className="flex items-center gap-1.5 text-muted-foreground">
+                <Stethoscope className="size-4 shrink-0" />
+                <span>{data.veterinarian.user?.firstName} {data.veterinarian.user?.lastName}</span>
+              </div>
+            )}
+            <div className="flex items-center gap-1.5">
+              {isSubmitted ? (
+                <Badge className="bg-green-100 text-green-700 border-green-300 gap-1">
+                  <CheckCircle2 className="size-3" />
+                  Отправлено
+                </Badge>
+              ) : (
+                <Badge variant="outline" className="gap-1 text-muted-foreground">
+                  <Clock className="size-3" />
+                  Черновик
+                </Badge>
+              )}
+            </div>
+          </div>
+
+          {!isSubmitted && (
+            <Button
+              size="sm"
+              onClick={handleSubmit}
+              disabled={submitMutation.isPending || !isReadyForSubmit}
+              title={!isReadyForSubmit ? "Заполните все проверки: клинический осмотр, анализ крови, мочи, кала и хотя бы одну слизистую" : undefined}
+              className="gap-1.5"
+            >
+              <Send className="size-4" />
+              {submitMutation.isPending ? "Отправка..." : "Отправить сессию"}
+            </Button>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
 }
 
 function PredictSummaryCard({ sessionId, prediction, anomalyAlerts, isLoading }: {
@@ -123,7 +214,6 @@ function PredictSummaryCard({ sessionId, prediction, anomalyAlerts, isLoading }:
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        {/* Top disease highlight */}
         {top && (
           <div className={`rounded-lg border ${topSeverity.borderClass} ${topSeverity.bgClass} px-4 py-3`}>
             <p className="text-xs text-muted-foreground mb-1">Наиболее вероятный диагноз</p>
@@ -136,7 +226,6 @@ function PredictSummaryCard({ sessionId, prediction, anomalyAlerts, isLoading }:
           </div>
         )}
 
-        {/* Top 5 disease bars */}
         <div className="space-y-2.5">
           {top5.map((item, idx) => {
             const sev = getSeverity(item.percent);
@@ -155,7 +244,6 @@ function PredictSummaryCard({ sessionId, prediction, anomalyAlerts, isLoading }:
           })}
         </div>
 
-        {/* Anomaly alerts summary */}
         {totalAlerts > 0 && (
           <div className="rounded-lg border bg-muted/30 px-3 py-2.5">
             <p className="text-xs text-muted-foreground mb-2">Обнаруженные аномалии</p>
@@ -214,6 +302,8 @@ export function SessionDashboard({ id }: { id: string }) {
 
   return (
     <div>
+      <SessionInfoPanel id={id} isLoading={isLoading} />
+
       <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <PredictSummaryCard sessionId={id} prediction={data?.prediction} anomalyAlerts={data?.anomalyAlerts} isLoading={isLoading} />
 
@@ -253,7 +343,7 @@ export function SessionDashboard({ id }: { id: string }) {
           onEdit={canEdit ? openModal("blood") : undefined}
         />
 
-        <MucosaExamsTable animalId={data?.animalId} sessionId={data?.id} className="col-span-1 md:col-span-2 lg:col-span-3" />
+        <MucosaExamsTable animalId={data?.animalId} sessionId={data?.id} existingMucosaExams={data?.mucosaExams} canEdit={canEdit} className="col-span-1 md:col-span-2 lg:col-span-3" />
       </div>
 
       {data?.animal && (

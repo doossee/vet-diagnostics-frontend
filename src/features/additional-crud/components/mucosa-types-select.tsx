@@ -9,11 +9,12 @@ interface Props {
   value?: unknown;
   disabled?: boolean;
   placeholder?: string;
+  excludeIds?: string[];
   onRemove?: () => void;
   onChange?: (value: unknown) => void;
 }
 
-export function MucosaTypesSelect({ value, placeholder, disabled, onChange, onRemove }: Props) {
+export function MucosaTypesSelect({ value, placeholder, disabled, excludeIds, onChange, onRemove }: Props) {
   const { locale } = useI18n();
 
   return (
@@ -27,6 +28,7 @@ export function MucosaTypesSelect({ value, placeholder, disabled, onChange, onRe
       queryFn={() => useGetMucosaTypes()}
       hideSearch
       getOptionLabel={item => item?.name?.[locale]}
+      customFilter={excludeIds?.length ? (item: MucosaType) => !excludeIds.includes(item.id) : undefined}
     />
   );
 }

@@ -4,6 +4,14 @@ import { UrineTestQueryKeys } from "../utils/constants/query-keys";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createQueryData, removeQueryData, updateQueryData } from "@/shared/helpers/query-updater";
 import { urineExamControllerCreate, urineExamControllerDelete, urineExamControllerUpdate } from "@/shared/api/api-new";
+import { SessionsQueryKeys } from "@/entities/sessions/utils/constants/query-keys";
+
+function invalidateSessions(client: ReturnType<typeof useQueryClient>, data: any) {
+  client.invalidateQueries({ queryKey: [SessionsQueryKeys.SESSIONS] });
+  if (data?.sessionId) {
+    client.invalidateQueries({ queryKey: [SessionsQueryKeys.SESSIONS_BY_ID, data.sessionId] });
+  }
+}
 
 export function useCreateUrineTest() {
   const client = useQueryClient();
@@ -13,14 +21,13 @@ export function useCreateUrineTest() {
     onSuccess: (data) => {
       createQueryData<UrineExam>(client, [UrineTestQueryKeys.URINE_TESTS], data);
       client.invalidateQueries({ queryKey: [UrineTestQueryKeys.URINE_TESTS] });
-      client.invalidateQueries({
-        queryKey: [UrineTestQueryKeys.URINE_TESTS_SELECT],
-      });
+      client.invalidateQueries({ queryKey: [UrineTestQueryKeys.URINE_TESTS_SELECT] });
       if (data?.animalId) {
         client.invalidateQueries({
           queryKey: [UrineTestQueryKeys.URINE_TESTS_LAST_BY_ANIMAL, data.animalId],
         });
       }
+      invalidateSessions(client, data);
     },
   });
 }
@@ -33,14 +40,13 @@ export function useUpdateUrineTest() {
     onSuccess: (data) => {
       updateQueryData<UrineExam>(client, [UrineTestQueryKeys.URINE_TESTS], data);
       client.invalidateQueries({ queryKey: [UrineTestQueryKeys.URINE_TESTS] });
-      client.invalidateQueries({
-        queryKey: [UrineTestQueryKeys.URINE_TESTS_SELECT],
-      });
+      client.invalidateQueries({ queryKey: [UrineTestQueryKeys.URINE_TESTS_SELECT] });
       if (data?.animalId) {
         client.invalidateQueries({
           queryKey: [UrineTestQueryKeys.URINE_TESTS_LAST_BY_ANIMAL, data.animalId],
         });
       }
+      invalidateSessions(client, data);
     },
   });
 }
@@ -53,14 +59,13 @@ export function useDeleteUrineTest() {
     onSuccess: (data) => {
       removeQueryData<UrineExam>(client, [UrineTestQueryKeys.URINE_TESTS], data.id);
       client.invalidateQueries({ queryKey: [UrineTestQueryKeys.URINE_TESTS] });
-      client.invalidateQueries({
-        queryKey: [UrineTestQueryKeys.URINE_TESTS_SELECT],
-      });
+      client.invalidateQueries({ queryKey: [UrineTestQueryKeys.URINE_TESTS_SELECT] });
       if (data?.animalId) {
         client.invalidateQueries({
           queryKey: [UrineTestQueryKeys.URINE_TESTS_LAST_BY_ANIMAL, data.animalId],
         });
       }
+      invalidateSessions(client, data);
     },
   });
 }

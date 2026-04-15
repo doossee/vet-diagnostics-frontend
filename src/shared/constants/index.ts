@@ -104,6 +104,14 @@ export const ALERT_MESSAGES = {
     ru: "Вы уверены, что хотите удалить эти данные?",
     uz: "Ushbu ma'lumotni o'chirmoqchimisiz?",
   },
+  SESSION_SUBMITTED: {
+    ru: "Сессия успешно отправлена",
+    uz: "Sessiya muvaffaqiyatli yuborildi",
+  },
+  SESSION_SUBMIT_ERROR: {
+    ru: "Ошибка при отправке сессии",
+    uz: "Sessiyani yuborishda xatolik yuz berdi",
+  },
 };
 
 export type NavLink = {

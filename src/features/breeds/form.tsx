@@ -17,7 +17,9 @@ export function BreedForm({ onSubmit, defaultValues }: BreedFormProps) {
 
   const form = useForm<BreedSchema>({
     resolver: zodResolver(createBreedSchema(t)),
-    defaultValues: defaultValues || breedValues,
+    defaultValues: defaultValues
+      ? { name: { ru: defaultValues.name?.ru ?? "", uz: defaultValues.name?.uz ?? "" } }
+      : breedValues,
   });
 
   return (

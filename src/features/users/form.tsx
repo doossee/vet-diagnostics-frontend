@@ -2,14 +2,16 @@
 
 import { useForm } from "react-hook-form";
 import { useI18n } from "@/shared/hooks/use-i18n";
-import { Input } from "@/shared/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { PhoneInput } from "@/shared/components/phone-input";
 import { Button } from "@/shared/components/ui/button";
 import { Separator } from "@/shared/components/ui/separator";
 import { UserSchema, createUserSchema, userValues } from "./user.model";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 import { RegionSelect } from "../regions/components/region-select";
 import { DistrictSelect } from "../districts/components/district-select";
+import { Input } from "@/shared/components/ui/input";
+import { VeterinarianSelect } from "./components/veterinarian-select";
 
 interface UserFormProps {
   itemId?: string | null;
@@ -18,7 +20,7 @@ interface UserFormProps {
   onSubmit: (values: UserSchema) => void;
 }
 
-export function UserForm({ onSubmit, itemId, defaultValues }: UserFormProps) {
+export function UserForm({ onSubmit, itemId, defaultValues, showVeterinarians }: UserFormProps) {
   const { t } = useI18n();
 
   const form = useForm<UserSchema>({
@@ -99,7 +101,7 @@ export function UserForm({ onSubmit, itemId, defaultValues }: UserFormProps) {
               <FormItem className="flex flex-col gap-1 pt-1.5">
                 <FormLabel>{t("form.phone")}</FormLabel>
                 <FormControl>
-                  <Input maxLength={13} placeholder="+998 00 000 00 00" {...field} />
+                  <PhoneInput value={field.value ?? ""} onChange={field.onChange} />
                 </FormControl>
               </FormItem>
             )}
@@ -112,7 +114,7 @@ export function UserForm({ onSubmit, itemId, defaultValues }: UserFormProps) {
               <FormItem>
                 <FormLabel>{t("form.regionName")}</FormLabel>
                 <FormControl>
-                  <RegionSelect placeholder={t("form.regionName")} value={field.value} onChange={field.onChange} />
+                  <RegionSelect placeholder={t("form.regionName")} value={(defaultValues as any)?.district?.region || field.value} onChange={field.onChange} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -126,12 +128,32 @@ export function UserForm({ onSubmit, itemId, defaultValues }: UserFormProps) {
               <FormItem>
                 <FormLabel>{t("form.districtName")}</FormLabel>
                 <FormControl>
-                  <DistrictSelect placeholder={t("form.districtName")} value={field.value} onChange={field.onChange} regionId={regionId} disabled={!regionId} />
+                  <DistrictSelect placeholder={t("form.districtName")} value={(defaultValues as any)?.district || field.value} onChange={field.onChange} regionId={regionId} disabled={!regionId} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+
+          {showVeterinarians && (
+            <FormField
+              name="veterinarianId"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("nav.veterinarians")}</FormLabel>
+                  <FormControl>
+                    <VeterinarianSelect
+                      placeholder={t("nav.veterinarians")}
+                      value={(defaultValues as any)?.farmerProfile?.veterinarian?.user || field.value}
+                      onChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
 
           {!itemId?.trim() && <>
             <Separator className="col-span-1 md:col-span-2" />

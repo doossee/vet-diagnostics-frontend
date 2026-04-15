@@ -43,10 +43,10 @@ export const createGeneralInspectionSchema = (_: any) =>
     animalId: z.string(),
     sessionId: z.string().optional(),
 
-    pulse: z.coerce.number(),
-    rumination: z.coerce.number(),
-    temperature: z.coerce.number(),
-    respiratoryRate: z.coerce.number(),
+    pulse: z.coerce.number().min(10, "Пульс: 10–300").max(300, "Пульс: 10–300"),
+    rumination: z.coerce.number().min(0, "Жвачка: 0–30").max(30, "Жвачка: 0–30"),
+    temperature: z.coerce.number().min(30, "Температура: 30–45").max(45, "Температура: 30–45"),
+    respiratoryRate: z.coerce.number().min(1, "Дыхание: 1–150").max(150, "Дыхание: 1–150"),
 
     bodyTypeId: z.string().optional(),
     obesityId: z.string().optional(),

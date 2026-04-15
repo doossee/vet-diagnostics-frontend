@@ -2,6 +2,7 @@ import { Edit, Trash } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { CopyIdButton } from "@/shared/components/copy-id-button";
 import { ClinicalExam, LanguageLocales } from "@/shared/types";
+import { SessionCell } from "@/shared/components/session-cell";
 // import { DOWN_TYPE, FEATHER_TYPE, HAIR_TYPE, WOOL_TYPE } from "@/entities/general-inspections/utils/constants/skin-cover";
 // import { SKIN_COLOR, SKIN_ELASTICITY, SKIN_HUMIDITY, SKIN_TEMP } from "@/entities/general-inspections/utils/constants/skin";
 // import { BODY_POSITION, BODY_TYPE, CONSTITUTION, OBESITY_TYPE, TEMPERAMENT } from "@/entities/general-inspections/utils/constants/habitus";
@@ -14,6 +15,15 @@ export const createGeneralInspectionColumns = (handleEditItem: (item: ClinicalEx
     hideInInfoTable: true,
     render(item: ClinicalExam) {
       return <span className="text-right">{item.animal?.animalNameCode}</span>;
+    },
+  },
+  {
+    title: "Сессия",
+    key: "session",
+    hideInInfoTable: true,
+    render(item: ClinicalExam) {
+      if (!item.session) return <span className="text-muted-foreground text-sm">—</span>;
+      return <SessionCell session={item.session} />;
     },
   },
 

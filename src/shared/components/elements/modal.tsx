@@ -13,7 +13,16 @@ interface Props {
 export function Modal({ children, open, title, widthClassName, onClose }: Props) {
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className={cn("bg-card overflow-auto max-h-screen md:max-h-[95vh]", widthClassName)} aria-describedby={undefined}>
+      <DialogContent
+        className={cn("bg-card overflow-auto max-h-screen md:max-h-[95vh]", widthClassName)}
+        aria-describedby={undefined}
+        onInteractOutside={(e) => {
+          const target = e.target as Element;
+          if (target?.closest?.("[data-sonner-toaster]")) {
+            e.preventDefault();
+          }
+        }}
+      >
         <DialogHeader className="pb-2!">
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>

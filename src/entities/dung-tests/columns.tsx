@@ -2,6 +2,7 @@ import { Edit, Trash } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { CopyIdButton } from "@/shared/components/copy-id-button";
 import { FecesExam, LanguageLocales } from "@/shared/types";
+import { SessionCell } from "@/shared/components/session-cell";
 
 export const createDungTestColumns = (handleEditItem: (item: FecesExam) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
   {
@@ -10,6 +11,15 @@ export const createDungTestColumns = (handleEditItem: (item: FecesExam) => void,
     key: "animal",
     render(item: FecesExam) {
       return item.animal?.animalNameCode;
+    },
+  },
+  {
+    title: "Сессия",
+    key: "session",
+    hideInInfoTable: true,
+    render(item: FecesExam) {
+      if (!item.session) return <span className="text-muted-foreground text-sm">—</span>;
+      return <SessionCell session={item.session} />;
     },
   },
   { title: t("inspections.amount"), key: "amount" },

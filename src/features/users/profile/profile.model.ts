@@ -3,13 +3,9 @@ import { z } from "zod";
 export const createProfileSchema = (t: any) =>
   z
     .object({
-         phone: z.string()
-      .min(8, t("required.phoneRequired"))
-      .max(13, t("required.phoneRequired"))
-      .regex(
-        /^(?:\+998|998|0)?[3789][0-9]{8}$/,
-        "Неверный номер телефона (Узбекистан)"
-      ),
+      phone: z.string()
+        .min(8, t("required.phoneRequired"))
+        .max(13, t("required.phoneRequired")),
       password: z.string()
         .refine((val) => !val || val.length >= 6, {
           message: "Пароль должен быть не менее 6 символов",

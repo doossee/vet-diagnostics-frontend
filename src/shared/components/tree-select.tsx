@@ -27,6 +27,7 @@ interface TreeSelectProps<T> {
   getOptionId?: (option: T) => string;
   customFilter?: (option: T) => boolean;
   dependsOn?: unknown | null;
+  disableFolderSelect?: boolean;
 }
 
 interface TreeNodesProps<T> {
@@ -41,6 +42,7 @@ interface TreeNodesProps<T> {
   getOptionLabel: (option: T) => string;
   getOptionId: (option: T) => string;
   customFilter?: (option: T) => boolean;
+  disableFolderSelect?: boolean;
 }
 
 function TreeNodes<T>({
@@ -55,6 +57,7 @@ function TreeNodes<T>({
   getOptionLabel,
   getOptionId,
   customFilter,
+  disableFolderSelect,
 }: TreeNodesProps<T>) {
   const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = queryFn(parentId);
   const options = pageableToArray(data);
@@ -104,6 +107,10 @@ function TreeNodes<T>({
         };
 
         const handleSelectClick = () => {
+          if (disableFolderSelect && hasChildren) {
+            setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
+            return;
+          }
           onSelect(option);
         };
 
@@ -160,6 +167,7 @@ function TreeNodes<T>({
                 getOptionLabel={getOptionLabel}
                 getOptionId={getOptionId}
                 customFilter={customFilter}
+                disableFolderSelect={disableFolderSelect}
               />
             )}
           </div>
@@ -189,6 +197,7 @@ export function TreeSelect<T>({
   onRemove,
   renderOption,
   customFilter,
+  disableFolderSelect,
   getOptionLabel = (option: any) => option.name || option.label || String(option),
   getOptionId = (option: any) => option.id || String(option),
 }: TreeSelectProps<T>) {
@@ -305,6 +314,7 @@ export function TreeSelect<T>({
               getOptionLabel={getOptionLabel}
               getOptionId={getOptionId}
               customFilter={customFilter}
+              disableFolderSelect={disableFolderSelect}
             />
           </div>
         </PopoverContent>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Brain, Star, Send, TrendingUp, FlaskConical, MessageSquare } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
@@ -110,59 +110,22 @@ function getSeverityBadge(percent: number) {
   return { label: "Низкий", className: "bg-green-100 text-green-700 border-green-200" };
 }
 
-type Props = { id: string };
-
-export function PredictionDashboard({ id }: Props) {
-  const { locale } = useI18n();
-  const { userData } = useAuthData();
-  const { data: session, isLoading } = useGetMedicalSessionById(id);
+function FeedbackForm({ predictionId, role, userData, onSubmitted }: {
+  predictionId: string;
+  role: string;
+  userData: any;
+  onSubmitted: () => void;
+}) {
   const { mutateAsync: createFeedback, isPending } = useCreateFeedback();
-
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [comment, setComment] = useState("");
 
-  const prediction = session?.prediction;
-
-  const { data: feedbacksData, refetch: refetchFeedbacks } = useGetFeedbacksByPrediction(
-    prediction?.id ?? "",
-    !!prediction?.id,
-  );
-
-  const allDiagnoses = prediction
-    ? Object.entries(prediction.rawOutput as Record<string, number>)
-        .filter(([key]) => key !== "0" && PREDICT_DISEASES[key])
-        .map(([key, value]) => ({
-          key,
-          name: PREDICT_DISEASES[key]?.[locale] ?? `#${key}`,
-          percent: Math.round(value * 100),
-        }))
-        .sort((a, b) => b.percent - a.percent)
-    : [];
-
-  const topDiagnosis = allDiagnoses[0];
-  const topBadge = getSeverityBadge(topDiagnosis?.percent ?? 0);
-
-  // inputVector may come as array OR as object {"0": val, "1": val, ...}
-  const rawVector = prediction?.inputVector;
-  const inputVector: number[] = Array.isArray(rawVector)
-    ? (rawVector as number[])
-    : rawVector && typeof rawVector === "object"
-      ? Object.entries(rawVector as Record<string, unknown>)
-          .sort(([a], [b]) => Number(a) - Number(b))
-          .map(([, v]) => Number(v))
-      : [];
-
-  const role = userData?.role;
-  const canComment = role === "VETERINARIAN" || role === "ADMIN" || role === "SUPER_ADMIN";
-
   const handleSubmit = async () => {
-    if (!prediction) return;
     if (!comment.trim() && rating === 0) return;
-
     try {
       await createFeedback({
-        predictionId: prediction.id,
+        predictionId,
         ...(role === "VETERINARIAN"
           ? { veterinarianId: String(userData!.veterinarianId) }
           : { adminId: String(userData!.adminId ?? userData!.userId) }),
@@ -171,12 +134,105 @@ export function PredictionDashboard({ id }: Props) {
       });
       setComment("");
       setRating(0);
-      refetchFeedbacks();
+      onSubmitted();
     } catch (e: any) {
       const msg = e?.response?.data?.message ?? e?.message ?? "Ошибка отправки";
       createToast(Array.isArray(msg) ? msg.join(", ") : msg, "WARNING");
     }
   };
+
+  return (
+    <>
+      <div>
+        <p className="text-sm text-muted-foreground mb-2">Оценка точности прогноза</p>
+        <div className="flex gap-1">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <button
+              key={star}
+              type="button"
+              onMouseEnter={() => setHoverRating(star)}
+              onMouseLeave={() => setHoverRating(0)}
+              onClick={() => setRating(star)}
+              className="transition-colors"
+            >
+              <Star
+                className={`size-7 transition-colors ${
+                  star <= (hoverRating || rating)
+                    ? "fill-yellow-400 text-yellow-400"
+                    : "text-muted-foreground/40"
+                }`}
+              />
+            </button>
+          ))}
+          {rating > 0 && (
+            <span className="ml-2 text-sm text-muted-foreground self-center">{rating} / 5</span>
+          )}
+        </div>
+      </div>
+
+      <div>
+        <p className="text-sm text-muted-foreground mb-2">Комментарий</p>
+        <Textarea
+          placeholder="Введите ваш комментарий по результату прогноза..."
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+          rows={3}
+          className="resize-none"
+        />
+      </div>
+
+      <Button
+        onClick={handleSubmit}
+        disabled={isPending || (!comment.trim() && rating === 0)}
+        className="w-full sm:w-auto"
+      >
+        <Send className="size-4 mr-2" />
+        {isPending ? "Отправка..." : "Отправить"}
+      </Button>
+    </>
+  );
+}
+
+type Props = { id: string };
+
+export function PredictionDashboard({ id }: Props) {
+  const { locale } = useI18n();
+  const { userData } = useAuthData();
+  const { data: session, isLoading } = useGetMedicalSessionById(id);
+
+  const prediction = session?.prediction;
+
+  const { data: feedbacksData, refetch: refetchFeedbacks } = useGetFeedbacksByPrediction(
+    prediction?.id ?? "",
+    !!prediction?.id,
+  );
+
+  const allDiagnoses = useMemo(() => prediction
+    ? Object.entries(prediction.rawOutput as Record<string, number>)
+        .filter(([key]) => key !== "0" && PREDICT_DISEASES[key])
+        .map(([key, value]) => ({
+          key,
+          name: PREDICT_DISEASES[key]?.[locale] ?? `#${key}`,
+          percent: Math.round(value * 100),
+        }))
+        .sort((a, b) => b.percent - a.percent)
+    : [], [prediction, locale]);
+
+  const topDiagnosis = allDiagnoses[0];
+  const topBadge = getSeverityBadge(topDiagnosis?.percent ?? 0);
+
+  // inputVector may come as array OR as object {"0": val, "1": val, ...}
+  const rawVector = prediction?.inputVector;
+  const inputVector: number[] = useMemo(() => Array.isArray(rawVector)
+    ? (rawVector as number[])
+    : rawVector && typeof rawVector === "object"
+      ? Object.entries(rawVector as Record<string, unknown>)
+          .sort(([a], [b]) => Number(a) - Number(b))
+          .map(([, v]) => Number(v))
+      : [], [rawVector]);
+
+  const role = userData?.role;
+  const canComment = role === "VETERINARIAN" || role === "ADMIN" || role === "SUPER_ADMIN";
 
   if (isLoading) {
     return (
@@ -333,55 +389,13 @@ export function PredictionDashboard({ id }: Props) {
           )}
 
           {/* Форма отправки — только для ветеринаров и администраторов */}
-          {canComment && (
-            <>
-              <div>
-                <p className="text-sm text-muted-foreground mb-2">Оценка точности прогноза</p>
-                <div className="flex gap-1">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <button
-                      key={star}
-                      type="button"
-                      onMouseEnter={() => setHoverRating(star)}
-                      onMouseLeave={() => setHoverRating(0)}
-                      onClick={() => setRating(star)}
-                      className="transition-colors"
-                    >
-                      <Star
-                        className={`size-7 transition-colors ${
-                          star <= (hoverRating || rating)
-                            ? "fill-yellow-400 text-yellow-400"
-                            : "text-muted-foreground/40"
-                        }`}
-                      />
-                    </button>
-                  ))}
-                  {rating > 0 && (
-                    <span className="ml-2 text-sm text-muted-foreground self-center">{rating} / 5</span>
-                  )}
-                </div>
-              </div>
-
-              <div>
-                <p className="text-sm text-muted-foreground mb-2">Комментарий</p>
-                <Textarea
-                  placeholder="Введите ваш комментарий по результату прогноза..."
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                  rows={3}
-                  className="resize-none"
-                />
-              </div>
-
-              <Button
-                onClick={handleSubmit}
-                disabled={isPending || (!comment.trim() && rating === 0) || !prediction}
-                className="w-full sm:w-auto"
-              >
-                <Send className="size-4 mr-2" />
-                {isPending ? "Отправка..." : "Отправить"}
-              </Button>
-            </>
+          {canComment && prediction && (
+            <FeedbackForm
+              predictionId={prediction.id}
+              role={role!}
+              userData={userData}
+              onSubmitted={refetchFeedbacks}
+            />
           )}
         </CardContent>
       </Card>

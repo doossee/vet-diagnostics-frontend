@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/shared/components/ui/button";
 import { ProfileSchema, createProfileSchema } from "./profile.model";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
-// import { PhoneInput } from "@/shared/components/phone-input";
+import { PhoneInput } from "@/shared/components/phone-input";
 
 interface UserFormProps {
   loading: boolean;
@@ -133,7 +133,7 @@ export function ProfileForm({ onSubmit, loading, defaultValues }: UserFormProps)
             <FormItem className="flex flex-col gap-1 pt-1.5">
               <FormLabel>{t("form.phone")}</FormLabel>
               <FormControl>
-                <Input disabled={loading} placeholder="+998 00 000 00 00" {...field} />
+                <PhoneInput value={field.value ?? ""} onChange={field.onChange} disabled={loading} />
               </FormControl>
               <FormMessage />
             </FormItem>

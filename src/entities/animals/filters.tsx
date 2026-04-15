@@ -1,43 +1,47 @@
 import { useI18n } from "@/shared/hooks/use-i18n";
-import { ANIMAL_GENDERS } from "./utils/constants/animal-genders";
 import { queryParamKeys } from './utils/constants/query-param-keys';
 import { FiltersWrapper } from "@/shared/components/filters-wrapper";
 import { useSearchQueryParams } from "@/shared/hooks/use-query-params";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
 import { AnimalTypeTreeSelect } from "@/features/animal-types/components/animal-type-tree-select";
 import { AnimalSexSelect } from "@/features/additional-crud/components/animal-sex-select";
+// import { BreedSelect } from "@/features/breeds/components/breed-select";
+// import { AnimalColorSelect } from "@/features/animal-colors/components/animal-color-select";
 
 export function AnimalFilters() {
-  const { get, set, remove } = useSearchQueryParams()
+  const { get, set, remove } = useSearchQueryParams();
+  const { t } = useI18n();
 
-  const { t, locale } = useI18n();
-
-  const gender = get(queryParamKeys.GENDER) as string
-  const typeId = get(queryParamKeys.TYPE_ID)
+  const gender  = get(queryParamKeys.GENDER)  as string;
+  const typeId  = get(queryParamKeys.TYPE_ID)  as string;
+  // const breedId = get(queryParamKeys.BREED_ID) as string;
+  // const colorId = get(queryParamKeys.COLOR_ID) as string;
 
   return (
     <FiltersWrapper>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 mb-2">
-        <AnimalTypeTreeSelect onRemove={() => remove(queryParamKeys.TYPE_ID)} placeholder={t("filters.byType")} value={typeId} onChange={e => set(queryParamKeys.TYPE_ID, e)} />
-
-        <AnimalSexSelect
-          value={gender ? gender : ""}
-          placeholder={t("filters.byGender")}
-          onChange={(e) => set(queryParamKeys.GENDER, e)}
+        <AnimalTypeTreeSelect
+          onRemove={() => remove(queryParamKeys.TYPE_ID)}
+          placeholder={t("filters.byType")}
+          value={typeId}
+          onChange={e => set(queryParamKeys.TYPE_ID, e)}
         />
-        {/* <Select value={gender ? gender : ""}>
-          <SelectTrigger className="bg-card">
-            <SelectValue  />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value={null as any}>{t("filters.all")}</SelectItem>
-            {Object.entries(ANIMAL_GENDERS).map(([key, value]) => (
-              <SelectItem key={key} value={key}>
-                {value[locale]}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select> */}
+        <AnimalSexSelect
+          value={gender ?? ""}
+          placeholder={t("filters.byGender")}
+          onChange={e => set(queryParamKeys.GENDER, e)}
+        />
+        {/* <BreedSelect
+          onRemove={() => remove(queryParamKeys.BREED_ID)}
+          placeholder={t("filters.byBreed")}
+          value={""}
+          onChange={e => set(queryParamKeys.BREED_ID, e as string)}
+        />
+        <AnimalColorSelect
+          onRemove={() => remove(queryParamKeys.COLOR_ID)}
+          placeholder={t("filters.byColor")}
+          value={""}
+          onChange={e => set(queryParamKeys.COLOR_ID, e as string)}
+        /> */}
       </div>
     </FiltersWrapper>
   );

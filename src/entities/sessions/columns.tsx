@@ -57,7 +57,7 @@ export const createMedicalSessionsColumns = (
           item.urineExam &&
           item.bloodExam &&
           item.clinicalExam &&
-          (item.mucosaExams?.length ?? 0) > 0;
+          (item.mucosaExams?.length ?? 0) >= 4;
 
         return (
           <div className="flex gap-2 items-center flex-wrap md:flex-nowrap justify-end md:justify-start">

@@ -27,6 +27,7 @@ export function DiseaseTypeTreeSelect({ value, placeholder, disabled, onChange, 
       placeholder={placeholder}
       getOptionLabel={(option) => option.name?.[locale]}
       queryFn={(parentId) => useGetDiseaseTypesInfinite(parentId)}
+      disableFolderSelect
     />
   );
 }

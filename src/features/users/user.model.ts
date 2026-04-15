@@ -10,18 +10,15 @@ export const userValues = {
   firstName: "",
   districtId: null,
   confirmPassword: "",
+  veterinarianId : null,
 };
 
 export const createUserSchema = (t: any, itemId?: string) =>
   z
     .object({
       phone: z.string()
-      .min(8, t("required.phoneRequired"))
-      .max(13, t("required.phoneRequired"))
-      .regex(
-        /^(?:\+998|998|0)?[3789][0-9]{8}$/,
-        "Неверный номер телефона (Узбекистан)"
-      ),
+        .min(8, t("required.phoneRequired"))
+        .max(13, t("required.phoneRequired")),
       password: z.string()
         .refine((val) => !val || val.length >= 6, {
           message: "Пароль должен быть не менее 6 символов",
@@ -39,6 +36,7 @@ export const createUserSchema = (t: any, itemId?: string) =>
         required_error: t("required.districtRequired"),
         invalid_type_error: t("required.districtRequired"),
       }),
+      veterinarianId: z.string().optional().nullable(),
       confirmPassword: z.string().optional(),
     })
     .superRefine((data, ctx) => {

@@ -9,7 +9,7 @@ import { DatePicker } from "@/shared/components/date-picker";
 import { VeterinarianSelect } from "../users/components/veterinarian-select";
 
 interface MedicalSessionFormProps {
-  defaultValues?: MedicalSessionSchema;
+  defaultValues?: MedicalSessionSchema & { veterinarian?: any };
   onSubmit: (values: MedicalSessionSchema) => void;
 }
 
@@ -31,7 +31,7 @@ export function MedicalSessionForm({ onSubmit, defaultValues }: MedicalSessionFo
             <FormItem className="flex flex-col gap-1 pt-1.5">
               <FormLabel>{t("form.veterinarian")}</FormLabel>
               <FormControl>
-                <VeterinarianSelect placeholder={t("form.veterinarian")} value={field.value} onChange={field.onChange} />
+                <VeterinarianSelect placeholder={t("form.veterinarian")} value={(defaultValues?.veterinarian as any)?.user || defaultValues?.veterinarian || field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>

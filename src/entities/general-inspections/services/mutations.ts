@@ -5,6 +5,14 @@ import { GeneralInspectionQueryKeys } from "../utils/constants/query-keys";
 import { createQueryData, removeQueryData, updateQueryData } from "@/shared/helpers/query-updater";
 import { clinicalExamControllerCreate, clinicalExamControllerDelete, clinicalExamControllerUpdate } from "@/shared/api/api-new";
 import { AnimalQueryKeys } from "@/entities/animals/utils/constants/query-keys";
+import { SessionsQueryKeys } from "@/entities/sessions/utils/constants/query-keys";
+
+function invalidateSessions(client: ReturnType<typeof useQueryClient>, data: any) {
+  client.invalidateQueries({ queryKey: [SessionsQueryKeys.SESSIONS] });
+  if (data?.sessionId) {
+    client.invalidateQueries({ queryKey: [SessionsQueryKeys.SESSIONS_BY_ID, data.sessionId] });
+  }
+}
 
 export function useCreateGeneralInspection() {
   const client = useQueryClient();
@@ -25,6 +33,7 @@ export function useCreateGeneralInspection() {
           queryKey: [AnimalQueryKeys.ANIMALS_PREDICT_INFO, data.animalId],
         });
       }
+      invalidateSessions(client, data);
     },
   });
 }
@@ -48,6 +57,7 @@ export function useUpdateGeneralInspection() {
           queryKey: [AnimalQueryKeys.ANIMALS_PREDICT_INFO, data.animalId],
         });
       }
+      invalidateSessions(client, data);
     },
   });
 }
@@ -71,6 +81,7 @@ export function useDeleteGeneralInspection() {
           queryKey: [AnimalQueryKeys.ANIMALS_PREDICT_INFO, data.animalId],
         });
       }
+      invalidateSessions(client, data);
     },
   });
 }

@@ -30,7 +30,7 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
     if (digits.length > 5) parts.push(digits.slice(5, 8)); // XXX
     if (digits.length > 8) parts.push(digits.slice(8, 10)); // XX
     if (digits.length > 10) parts.push(digits.slice(10, 12)); // XX
-    return parts.join(" ");
+    return "+" + parts.join(" ");
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

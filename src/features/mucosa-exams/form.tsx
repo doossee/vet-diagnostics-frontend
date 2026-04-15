@@ -12,9 +12,10 @@ import { MucosaTypesSelect } from "../additional-crud/components/mucosa-types-se
 interface MucosaExamFormProps {
   defaultValues?: MucosaExamSchema;
   onSubmit: (values: MucosaExamSchema) => void;
+  excludeTypeIds?: string[];
 }
 
-export function MucosaExamForm({ onSubmit, defaultValues }: MucosaExamFormProps) {
+export function MucosaExamForm({ onSubmit, defaultValues, excludeTypeIds }: MucosaExamFormProps) {
   const { t } = useI18n();
 
   const form = useForm<MucosaExamSchema>({
@@ -34,7 +35,7 @@ export function MucosaExamForm({ onSubmit, defaultValues }: MucosaExamFormProps)
             <FormItem>
               <FormLabel>{t("inspections.mucosaType")}</FormLabel>
               <FormControl>
-                <MucosaTypesSelect placeholder={t("inspections.mucosaType")} value={field.value} onChange={field.onChange} />
+                <MucosaTypesSelect placeholder={t("inspections.mucosaType")} value={field.value} onChange={field.onChange} excludeIds={excludeTypeIds} />
               </FormControl>
               <FormMessage />
             </FormItem>

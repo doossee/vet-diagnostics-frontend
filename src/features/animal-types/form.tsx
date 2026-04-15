@@ -19,7 +19,16 @@ export function AnimalTypeForm({ onSubmit, defaultValues }: AnimalTypeFormProps)
 
   const form = useForm<AnimalTypeSchema>({
     resolver: zodResolver(createAnimalTypeSchema(t)),
-    defaultValues: defaultValues || animalTypeValues,
+    defaultValues: defaultValues
+      ? {
+          name: { ru: defaultValues.name?.ru ?? "", uz: defaultValues.name?.uz ?? "" },
+          parentId: defaultValues.parentId ?? "",
+          modelKey: defaultValues.modelKey ?? "",
+          sexId: defaultValues.sexId ?? "",
+          minAgeMonths: defaultValues.minAgeMonths ?? undefined,
+          maxAgeMonths: defaultValues.maxAgeMonths ?? undefined,
+        }
+      : animalTypeValues,
   });
 
   return (

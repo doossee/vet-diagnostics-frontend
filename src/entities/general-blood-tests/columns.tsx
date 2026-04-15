@@ -4,6 +4,7 @@ import { Button } from "@/shared/components/ui/button";
 import { CopyIdButton } from "@/shared/components/copy-id-button";
 import { LanguageLocales } from "@/shared/types";
 import { BLOOD_TEST_FIELDS } from "@/entities/general-blood-tests/utils/constants/blood-test-fields";
+import { SessionCell } from "@/shared/components/session-cell";
 
 export const createGeneralBloodTestColumns = (handleEditItem: (item: BloodExam) => void, handleDelete: (id: string) => void, t: any, locale: LanguageLocales) => [
   {
@@ -12,6 +13,15 @@ export const createGeneralBloodTestColumns = (handleEditItem: (item: BloodExam) 
     hideInInfoTable: true,
     render(item: BloodExam) {
       return item.animal?.animalNameCode;
+    },
+  },
+  {
+    title: "Сессия",
+    key: "session",
+    hideInInfoTable: true,
+    render(item: BloodExam) {
+      if (!item.session) return <span className="text-muted-foreground text-sm">—</span>;
+      return <SessionCell session={item.session} />;
     },
   },
   {

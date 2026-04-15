@@ -17,9 +17,10 @@ import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import { Progress } from "@/shared/components/ui/progress";
 import { Skeleton } from "@/shared/components/ui/skeleton";
-import { ALERT_MESSAGES, PREDICT_DISEASES } from "@/shared/constants";
+import { ALERT_MESSAGES, PREDICT_DISEASES, normalizePredictions } from "@/shared/constants";
 import { routes } from "@/shared/constants/routes";
 import { useI18n } from "@/shared/hooks/use-i18n";
+import { SESSION_STATUSES } from "@/entities/sessions/utils/constants/session-statuses";
 import { SessionExamModal, SessionExamType } from "./session-exam-modal";
 import { createToast } from "@/shared/hooks/use-toast";
 
@@ -40,6 +41,7 @@ function getAlertSeverityInfo(alerts: import("@/shared/types").AnomalyAlert[]) {
 }
 
 function SessionInfoPanel({ id, isLoading }: { id: string; isLoading: boolean }) {
+  const { t, locale } = useI18n();
   const { data } = useGetMedicalSessionById(id);
   const submitMutation = useSubmitMedicalSession();
   const isSubmitted = data?.status === "SUBMITTED";
@@ -52,7 +54,7 @@ function SessionInfoPanel({ id, isLoading }: { id: string; isLoading: boolean })
     (data?.mucosaExams?.length ?? 0) >= 4;
 
   const handleSubmit = () => {
-    if (!confirm("Sessiyani yakunlamoqchimisiz?")) return;
+    if (!confirm(t("sessions.confirmSubmit"))) return;
     submitMutation.mutate(id, {
       onSuccess: () => createToast(ALERT_MESSAGES.SESSION_SUBMITTED, "SUCCESS"),
       onError: () => createToast(ALERT_MESSAGES.SESSION_SUBMIT_ERROR, "WARNING"),
@@ -99,12 +101,12 @@ function SessionInfoPanel({ id, isLoading }: { id: string; isLoading: boolean })
               {isSubmitted ? (
                 <Badge className="bg-green-100 text-green-700 border-green-300 gap-1">
                   <CheckCircle2 className="size-3" />
-                  Отправлено
+                  {SESSION_STATUSES.SUBMITTED.label[locale]}
                 </Badge>
               ) : (
                 <Badge variant="outline" className="gap-1 text-muted-foreground">
                   <Clock className="size-3" />
-                  Черновик
+                  {SESSION_STATUSES.DRAFT.label[locale]}
                 </Badge>
               )}
             </div>
@@ -115,11 +117,10 @@ function SessionInfoPanel({ id, isLoading }: { id: string; isLoading: boolean })
               size="sm"
               onClick={handleSubmit}
               disabled={submitMutation.isPending || !isReadyForSubmit}
-              title={!isReadyForSubmit ? "Заполните все проверки: клинический осмотр, анализ крови, мочи, кала и хотя бы одну слизистую" : undefined}
               className="gap-1.5"
             >
               <Send className="size-4" />
-              {submitMutation.isPending ? "Отправка..." : "Отправить сессию"}
+              {submitMutation.isPending ? t("sessions.submitting") : t("sessions.submit")}
             </Button>
           )}
         </div>
@@ -130,7 +131,7 @@ function SessionInfoPanel({ id, isLoading }: { id: string; isLoading: boolean })
 
 function PredictSummaryCard({ sessionId, prediction, anomalyAlerts, isLoading }: {
   sessionId: string;
-  prediction?: { rawOutput: Record<string, number> } | null;
+  prediction?: import("@/shared/types").Prediction | null;
   anomalyAlerts?: import("@/shared/types").AnomalyAlert[];
   isLoading?: boolean;
 }) {
@@ -182,14 +183,12 @@ function PredictSummaryCard({ sessionId, prediction, anomalyAlerts, isLoading }:
     );
   }
 
-  const top5 = Object.entries(prediction.rawOutput)
-    .filter(([key]) => !!PREDICT_DISEASES[key])
-    .map(([key, value]) => ({
-      key,
-      name: PREDICT_DISEASES[key]?.[locale] ?? `#${key}`,
-      percent: Math.round(value * 100),
+  const top5 = normalizePredictions(prediction.rawOutput)
+    .map((d) => ({
+      key: d.diseaseIndex,
+      name: PREDICT_DISEASES[d.diseaseIndex]?.[locale] ?? d.diseaseName,
+      percent: Math.round(d.probability * 100),
     }))
-    .sort((a, b) => b.percent - a.percent)
     .slice(0, 5);
 
   const top = top5[0];
@@ -284,9 +283,9 @@ export function SessionDashboard({ id }: { id: string }) {
   const { setMany } = useSearchQueryParams();
   const { data, isLoading } = useGetMedicalSessionById(id);
   const [activeModal, setActiveModal] = useState<SessionExamType | null>(null);
-
   const canEdit = data?.status !== "SUBMITTED";
-
+  console.log(data);
+  
   const sessionLabel = data
     ? `${data.animal?.animalNameCode} — ${format(new Date(data.date), "dd.MM.yyyy")}`
     : undefined;

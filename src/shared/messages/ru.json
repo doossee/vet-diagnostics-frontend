@@ -85,6 +85,8 @@
     "gender": "Пол",
     "name": "Имя Фамилия",
     "phone": "Номер телефона",
+    "notes": "Заметки",
+    "status": "Статус",
     "address": "Адрес",
     "regionName": "Название региона",
     "districtName": "Название района",
@@ -133,6 +135,16 @@
     "byRegion": "Фильтр по региону",
     "byDistrict": "Фильтр по району",
     "byAnimal": "Фильтр по животному"
+  },
+  "sessions": {
+    "create": "Создать сессию",
+    "edit": "Редактировать сессию",
+    "confirmSubmit": "Вы хотите завершить сессию?",
+    "submit": "Отправить сессию",
+    "submitting": "Отправка...",
+    "statusDraft": "Черновик",
+    "statusReady": "Готово",
+    "statusSubmitted": "Отправлено"
   },
   "users": {
     "firstName": "Имя",

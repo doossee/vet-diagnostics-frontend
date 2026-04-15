@@ -188,7 +188,7 @@ export function StatisticsDashboard() {
     )
   ).slice(0, 3);
 
-  const TREND_COLORS = ["hsl(var(--chart-2))", "hsl(var(--chart-3))", "hsl(var(--chart-4))"];
+  const TREND_COLORS = ["#e05c2f", "#2fa84f", "#9333ea"];
 
   return (
     <div className="space-y-6">
@@ -344,7 +344,7 @@ export function StatisticsDashboard() {
                     fontSize={11}
                     width={160}
                   />
-                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <ChartTooltip content={<ChartTooltipContent className="min-w-[11rem]" />} />
                   <Bar dataKey="count" fill="hsl(var(--chart-1))" radius={[0, 4, 4, 0]} />
                 </BarChart>
               </ChartContainer>
@@ -428,7 +428,7 @@ export function StatisticsDashboard() {
                 <CartesianGrid vertical={false} />
                 <XAxis dataKey="period" tickLine={false} axisLine={false} fontSize={12} />
                 <YAxis tickLine={false} axisLine={false} fontSize={12} />
-                <ChartTooltip content={<ChartTooltipContent />} />
+                <ChartTooltip content={<ChartTooltipContent className="min-w-[11rem]" />} />
                 <Legend wrapperStyle={{ fontSize: 12, paddingTop: 12 }} />
                 <Area
                   type="monotone"

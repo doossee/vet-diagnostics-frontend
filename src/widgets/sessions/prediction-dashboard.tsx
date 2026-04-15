@@ -12,96 +12,99 @@ import { useGetMedicalSessionById, useGetFeedbacksByPrediction } from "@/entitie
 import { useCreateFeedback } from "@/entities/sessions/services/mutations";
 import { useAuthData } from "@/shared/hooks/use-auth-data";
 import { createToast } from "@/shared/hooks/use-toast";
-import { PREDICT_DISEASES } from "@/shared/constants";
+import { PREDICT_DISEASES, normalizePredictions, normalizeInputVector } from "@/shared/constants";
 import { useI18n } from "@/shared/hooks/use-i18n";
 
-const INPUT_VECTOR_DATA: { name: string; unit: string }[] = [
-  { name: "Пульс",                        unit: "уд.мин"    },
-  { name: "Дыхание",                      unit: "вдохов/мин"},
-  { name: "Температура",                  unit: "°C"        },
-  { name: "Эритроциты",                   unit: "млн/мкл"   },
-  { name: "Лейкоциты",                    unit: "тыс./мкл"  },
-  { name: "Тромбоциты",                   unit: "тыс./мкл"  },
-  { name: "СОЭ",                          unit: "мм/ч"      },
-  { name: "Вода",                         unit: "%"         },
-  { name: "Сухой остаток",                unit: "%"         },
-  { name: "Глутатион",                    unit: "ммоль/л"   },
-  { name: "Гемоглобин",                   unit: "г/л"       },
-  { name: "Общий белок сыворотки",        unit: "г/л"       },
-  { name: "Альбумины",                    unit: "%"         },
-  { name: "Альфа-глобулины",              unit: "%"         },
-  { name: "Бета-глобулины",               unit: "%"         },
-  { name: "Гамма-глобулины",              unit: "%"         },
-  { name: "Остаточный азот",              unit: "ммоль/л"   },
-  { name: "Мочевина",                     unit: "ммоль/л"   },
-  { name: "Мочевая кислота",              unit: "ммоль/л"   },
-  { name: "Креатинин",                    unit: "мкмоль/л"  },
-  { name: "Щелочный резерв",              unit: "об% СО₂"   },
-  { name: "Глюкоза",                      unit: "ммоль/л"   },
-  { name: "Кетоновые тела",               unit: "г/л"       },
-  { name: "Билирубин общий",              unit: "мкмоль/л"  },
-  { name: "Билирубин прямой",             unit: "мкмоль/л"  },
-  { name: "Холестерол общий",             unit: "ммоль/л"   },
-  { name: "Общие липиды",                 unit: "г/л"       },
-  { name: "Фосфолипиды",                  unit: "г/л"       },
-  { name: "Молочная кислота",             unit: "ммоль/л"   },
-  { name: "Пировиноградная кислота",      unit: "ммоль/л"   },
-  { name: "Лимонная кислота",             unit: "ммоль/л"   },
-  { name: "Каротин",                      unit: "мкмоль/л"  },
-  { name: "Витамин А",                    unit: "мкмоль/л"  },
-  { name: "Витамин С",                    unit: "мкмоль/л"  },
-  { name: "Общий фосфор",                 unit: "ммоль/л"   },
-  { name: "Общий кальций",                unit: "ммоль/л"   },
-  { name: "Креатин",                      unit: "ммоль/л"   },
-  { name: "Медь",                         unit: "ммоль/л"   },
-  { name: "Цинк",                         unit: "ммоль/л"   },
-  { name: "Марганец",                     unit: "ммоль/л"   },
-  { name: "Кобальт",                      unit: "ммоль/л"   },
-  { name: "Цвет мочи",                    unit: ""          },
-  { name: "Запах мочи",                   unit: ""          },
-  { name: "Прозрачность мочи",            unit: ""          },
-  { name: "Консистенция мочи",            unit: ""          },
-  { name: "Среда",                        unit: "pH"        },
-  { name: "Кетоновые тела (ацетон)",      unit: "ммоль/л"   },
-  { name: "Белок",                        unit: "г/л"       },
-  { name: "Билирубин",                    unit: "мкмоль/л"  },
-  { name: "Уробилирубин",                 unit: "мкмоль/л"  },
-  { name: "Сахар",                        unit: "ммоль/л"   },
-  { name: "Лейкоциты (моча)",             unit: "кол-во"    },
-  { name: "Эпителий",                     unit: "кол-во"    },
-  { name: "Микробные тела",               unit: "кол-во"    },
-  { name: "Эритроциты (моча)",            unit: "кол-во"    },
-  { name: "Кристалы солей",               unit: ""          },
-  { name: "Количество мочи",              unit: "л/сутки"   },
-  { name: "Запах кала",                   unit: ""          },
-  { name: "Цвет кала",                    unit: ""          },
-  { name: "Консистенция кала",            unit: ""          },
-  { name: "Форма кала",                   unit: ""          },
-  { name: "Количество кала",              unit: "кг"        },
-  { name: "Непереваренная пища",          unit: "%"         },
-  { name: "Оральная слизистая",           unit: ""          },
-  { name: "Назальная слизистая",          unit: ""          },
-  { name: "Окулярная слизистая",          unit: ""          },
-  { name: "Влагалищная слизистая",        unit: ""          },
-  { name: "Жвачка",                       unit: ""          },
-  { name: "Избыточный вес",               unit: ""          },
-  { name: "Состояние тела",               unit: ""          },
-  { name: "Поза тела",                    unit: ""          },
-  { name: "Шерсть",                       unit: ""          },
-  { name: "Цвет кожи",                    unit: ""          },
-  { name: "Влажность кожи",               unit: ""          },
-  { name: "Запах кожи",                   unit: ""          },
-  { name: "Температура кожи",             unit: ""          },
-  { name: "Поверхность кожи",             unit: ""          },
-  { name: "Эластичность кожи",            unit: ""          },
-  { name: "Размер лимфоузла",             unit: ""          },
-  { name: "Форма лимфоузла",              unit: ""          },
-  { name: "Поверхность лимфоузла",        unit: ""          },
-  { name: "Консистенция лимфоузла",       unit: ""          },
-  { name: "Температура лимфоузла",        unit: ""          },
-  { name: "Боль лимфоузла",               unit: ""          },
-  { name: "Подвижность лимфоузла",        unit: ""          },
-];
+const INPUT_VECTOR_META: Record<string, { name: string; unit: string }> = {
+  coe:                  { name: "СОЭ",                          unit: "мм/ч"       },
+  urea:                 { name: "Мочевина",                     unit: "ммоль/л"    },
+  zinc:                 { name: "Цинк",                         unit: "ммоль/л"    },
+  pulse:                { name: "Пульс",                        unit: "уд/мин"     },
+  cobalt:               { name: "Кобальт",                      unit: "ммоль/л"    },
+  copper:               { name: "Медь",                         unit: "ммоль/л"    },
+  albumin:              { name: "Альбумины",                    unit: "%"          },
+  glucose:              { name: "Глюкоза",                      unit: "ммоль/л"    },
+  obesity:              { name: "Ожирение",                     unit: ""           },
+  urinePh:              { name: "pH мочи",                      unit: "pH"         },
+  bodyType:             { name: "Тип тела",                     unit: ""           },
+  carotene:             { name: "Каротин",                      unit: "мкмоль/л"   },
+  creatine:             { name: "Креатин",                      unit: "ммоль/л"    },
+  skinPain:             { name: "Боль кожи",                    unit: ""           },
+  skinTemp:             { name: "Температура кожи",             unit: ""           },
+  uricAcid:             { name: "Мочевая кислота",              unit: "ммоль/л"    },
+  vitaminA:             { name: "Витамин А",                    unit: "мкмоль/л"   },
+  vitaminB:             { name: "Витамин В",                    unit: "мкмоль/л"   },
+  vitaminC:             { name: "Витамин С",                    unit: "мкмоль/л"   },
+  woolType:             { name: "Шерсть",                       unit: ""           },
+  fecesForm:            { name: "Форма кала",                   unit: ""           },
+  lymphPain:            { name: "Боль лимфоузла",               unit: ""           },
+  lymphSize:            { name: "Размер лимфоузла",             unit: ""           },
+  lymphTemp:            { name: "Температура лимфоузла",        unit: ""           },
+  manganese:            { name: "Марганец",                     unit: "ммоль/л"    },
+  skinColor:            { name: "Цвет кожи",                    unit: ""           },
+  skinSmell:            { name: "Запах кожи",                   unit: ""           },
+  citricAcid:           { name: "Лимонная кислота",             unit: "ммоль/л"    },
+  creatinine:           { name: "Креатинин",                    unit: "мкмоль/л"   },
+  dryResidue:           { name: "Сухой остаток",                unit: "%"          },
+  fecesColor:           { name: "Цвет кала",                    unit: ""           },
+  fecesSmell:           { name: "Запах кала",                   unit: ""           },
+  hemoglobin:           { name: "Гемоглобин",                   unit: "г/л"        },
+  lacticAcid:           { name: "Молочная кислота",             unit: "ммоль/л"    },
+  lymphShape:           { name: "Форма лимфоузла",              unit: ""           },
+  rumination:           { name: "Жвачка (румминация)",          unit: ""           },
+  urineColor:           { name: "Цвет мочи",                    unit: ""           },
+  urineSmell:           { name: "Запах мочи",                   unit: ""           },
+  urineSugar:           { name: "Сахар (моча)",                 unit: "ммоль/л"    },
+  fecesAmount:          { name: "Количество кала",              unit: "кг"         },
+  glutathione:          { name: "Глутатион",                    unit: "ммоль/л"    },
+  pyruvicAcid:          { name: "Пировиноградная кислота",      unit: "ммоль/л"    },
+  skinSurface:          { name: "Поверхность кожи",             unit: ""           },
+  temperament:          { name: "Темперамент",                  unit: ""           },
+  temperature:          { name: "Температура",                  unit: "°C"         },
+  totalLipids:          { name: "Общие липиды",                 unit: "г/л"        },
+  urineAmount:          { name: "Количество мочи",              unit: "л/сутки"    },
+  betaGlobulin:         { name: "Бета-глобулины",               unit: "%"          },
+  bodyPosition:         { name: "Поза тела",                    unit: ""           },
+  constitution:         { name: "Конституция",                  unit: ""           },
+  ketoneBodies:         { name: "Кетоновые тела",               unit: "г/л"        },
+  lymphSurface:         { name: "Поверхность лимфоузла",        unit: ""           },
+  skinHumidity:         { name: "Влажность кожи",               unit: ""           },
+  totalCalcium:         { name: "Общий кальций",                unit: "ммоль/л"    },
+  totalProtein:         { name: "Общий белок",                  unit: "г/л"        },
+  urineAcetone:         { name: "Ацетон (моча)",                unit: "ммоль/л"    },
+  urineClarity:         { name: "Прозрачность мочи",            unit: ""           },
+  urineProtein:         { name: "Белок (моча)",                 unit: "г/л"        },
+  alphaGlobulin:        { name: "Альфа-глобулины",              unit: "%"          },
+  gammaGlobulin:        { name: "Гамма-глобулины",              unit: "%"          },
+  lymphMobility:        { name: "Подвижность лимфоузла",        unit: ""           },
+  phospholipids:        { name: "Фосфолипиды",                  unit: "г/л"        },
+  infusoriaCount:       { name: "Инфузории рубца",              unit: "кол-во"     },
+  leukocyteCount:       { name: "Лейкоциты",                    unit: "тыс./мкл"   },
+  skinElasticity:       { name: "Эластичность кожи",            unit: ""           },
+  totalBilirubin:       { name: "Билирубин общий",              unit: "мкмоль/л"   },
+  urineBilirubin:       { name: "Билирубин (моча)",             unit: "мкмоль/л"   },
+  alkalineReserve:      { name: "Щелочный резерв",              unit: "об% СО₂"    },
+  directBilirubin:      { name: "Билирубин прямой",             unit: "мкмоль/л"   },
+  respiratoryRate:      { name: "Дыхание",                      unit: "вдохов/мин" },
+  rumenFluidState:      { name: "Состояние рубца",              unit: ""           },
+  skinSensitivity:      { name: "Чувствительность кожи",        unit: ""           },
+  urineEpithelium:      { name: "Эпителий (моча)",              unit: "кол-во"     },
+  urineLeukocytes:      { name: "Лейкоциты (моча)",             unit: "кол-во"     },
+  waterPercentage:      { name: "Вода",                         unit: "%"          },
+  erythrocyteCount:     { name: "Эритроциты",                   unit: "млн/мкл"    },
+  fecesConsistency:     { name: "Консистенция кала",            unit: ""           },
+  lymphConsistency:     { name: "Консистенция лимфоузла",       unit: ""           },
+  residualNitrogen:     { name: "Остаточный азот",              unit: "ммоль/л"    },
+  thrombocyteCount:     { name: "Тромбоциты",                   unit: "тыс./мкл"   },
+  totalCholesterol:     { name: "Холестерол общий",             unit: "ммоль/л"    },
+  urineConsistency:     { name: "Консистенция мочи",            unit: ""           },
+  organicPhosphorus:    { name: "Общий фосфор",                 unit: "ммоль/л"    },
+  urineErythrocytes:    { name: "Эритроциты (моча)",            unit: "кол-во"     },
+  urineSaltCrystals:    { name: "Кристалы солей (моча)",        unit: ""           },
+  urineUrobilinogen:    { name: "Уробилирубин (моча)",          unit: "мкмоль/л"   },
+  fecesUndigestedFood:  { name: "Непереваренная пища",          unit: "%"          },
+  urineMicrobialBodies: { name: "Микробные тела (моча)",        unit: "кол-во"     },
+};
 
 function getSeverityBadge(percent: number) {
   if (percent >= 70) return { label: "Высокий", className: "bg-red-100 text-red-700 border-red-200" };
@@ -208,28 +211,21 @@ export function PredictionDashboard({ id }: Props) {
   );
 
   const allDiagnoses = useMemo(() => prediction
-    ? Object.entries(prediction.rawOutput as Record<string, number>)
-        .filter(([key]) => key !== "0" && PREDICT_DISEASES[key])
-        .map(([key, value]) => ({
-          key,
-          name: PREDICT_DISEASES[key]?.[locale] ?? `#${key}`,
-          percent: Math.round(value * 100),
-        }))
-        .sort((a, b) => b.percent - a.percent)
+    ? normalizePredictions(prediction.rawOutput).map((d) => ({
+        key: d.diseaseIndex,
+        name: PREDICT_DISEASES[d.diseaseIndex]?.[locale] ?? d.diseaseName,
+        percent: Math.round(d.probability * 100),
+      }))
     : [], [prediction, locale]);
 
   const topDiagnosis = allDiagnoses[0];
   const topBadge = getSeverityBadge(topDiagnosis?.percent ?? 0);
 
-  // inputVector may come as array OR as object {"0": val, "1": val, ...}
-  const rawVector = prediction?.inputVector;
-  const inputVector: number[] = useMemo(() => Array.isArray(rawVector)
-    ? (rawVector as number[])
-    : rawVector && typeof rawVector === "object"
-      ? Object.entries(rawVector as Record<string, unknown>)
-          .sort(([a], [b]) => Number(a) - Number(b))
-          .map(([, v]) => Number(v))
-      : [], [rawVector]);
+  const inputEntries = useMemo(() =>
+    prediction?.inputVector
+      ? Object.entries(normalizeInputVector(prediction.inputVector))
+      : [],
+  [prediction?.inputVector]);
 
   const role = userData?.role;
   const canComment = role === "VETERINARIAN" || role === "ADMIN" || role === "SUPER_ADMIN";
@@ -308,26 +304,26 @@ export function PredictionDashboard({ id }: Props) {
           </CardContent>
         </Card>
 
-        {/* 85 входных значений */}
+        {/* Входные значения */}
         <Card className="shadow-none rounded flex flex-col max-h-[520px]">
           <CardHeader className="shrink-0 pb-2">
             <CardTitle className="flex items-center gap-2 text-sm md:text-base">
               <FlaskConical className="size-5 md:size-6" />
-              Входные значения ({inputVector.length})
+              Входные значения ({inputEntries.length})
             </CardTitle>
           </CardHeader>
           <CardContent className="flex-1 overflow-y-auto pb-3">
-            {inputVector.length === 0 ? (
+            {inputEntries.length === 0 ? (
               <p className="text-sm text-muted-foreground">Нет данных</p>
             ) : (
               <div className="space-y-0">
-                {inputVector.map((value, index) => {
-                  const meta = INPUT_VECTOR_DATA[index];
+                {inputEntries.map(([key, value], index) => {
+                  const meta = INPUT_VECTOR_META[key];
                   return (
-                    <div key={index} className="flex items-center justify-between gap-2 py-[5px] border-b border-border/30 last:border-0">
+                    <div key={key} className="flex items-center justify-between gap-2 py-[5px] border-b border-border/30 last:border-0">
                       <span className="text-sm text-muted-foreground leading-none">
                         <span className="tabular-nums text-muted-foreground/50 mr-1">{index + 1}.</span>
-                        {meta?.name ?? `x${index + 1}`}
+                        {meta?.name ?? key}
                       </span>
                       <span className="text-sm font-semibold shrink-0 tabular-nums pr-1">
                         {value}

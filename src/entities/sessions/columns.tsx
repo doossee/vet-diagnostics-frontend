@@ -22,7 +22,7 @@ export const createMedicalSessionsColumns = (
       }
     },
     {
-      title: "Veterinarian", key: "veterinarian", render(item: MedicalSession) {
+      title: t("form.veterinarian"), key: "veterinarian", render(item: MedicalSession) {
         return item?.veterinarian?.user?.firstName ?? "-"
       }
     },
@@ -32,12 +32,12 @@ export const createMedicalSessionsColumns = (
       }
     },
     {
-      title: "Notes", key: "notes", render(item: MedicalSession) {
+      title: t("form.notes"), key: "notes", render(item: MedicalSession) {
         return item.notes || "-"
       }
     },
     {
-      title: "Status", key: "status", render(item: MedicalSession) {
+      title: t("form.status"), key: "status", render(item: MedicalSession) {
         const status = SESSION_STATUSES[item.status]
 
         return <Badge className={status.className}>
@@ -64,7 +64,7 @@ export const createMedicalSessionsColumns = (
             <CopyIdButton id={item.id} />
             <Button disabled={!isReadyForSubmit} onClick={() => handleSubmitSession(item.id)} size="sm" className="text-xs!">
               <FileCheck />
-              Отправять
+              {t("sessions.submit")}
             </Button>
             <Button onClick={() => handleEditItem(item)} size="sm" className="text-xs!">
               <Edit />

@@ -30,7 +30,7 @@ export const createProphylaxisColumns = (handleEditItem: (item: Prophylaxis) => 
     }
   },
   {
-    title: "Notes", key: "notes", render(item: Prophylaxis) {
+    title: t("form.notes"), key: "notes", render(item: Prophylaxis) {
       return item.notes || "-"
     }
   },

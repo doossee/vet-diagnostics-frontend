@@ -687,12 +687,29 @@ export interface MedicalSession {
   updatedAt: Date;
 }
 
+export interface PredictionEntry {
+  diseaseName: string;
+  probability: number;
+  diseaseIndex: string;
+}
+
+export interface PredictionRawOutputV2 {
+  topDisease: PredictionEntry;
+  predictions: PredictionEntry[];
+}
+
+/** rawOutput can be the old format (Record<diseaseIndex, probability>) or new format */
+export type PredictionRawOutput = PredictionRawOutputV2 | Record<string, number>;
+
 export interface Prediction {
   id: string;
   sessionId: string;
   session: MedicalSession;
-  inputVector: number[];
-  rawOutput: Record<string, number>;
+  /** inputVector is an object with named keys (new) or an array (old) */
+  inputVector: Record<string, number> | number[];
+  rawOutput: PredictionRawOutput;
+  modelVersion?: string | null;
+  createdAt?: Date;
 }
 
 export interface Feedback {

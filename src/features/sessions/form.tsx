@@ -18,7 +18,9 @@ export function MedicalSessionForm({ onSubmit, defaultValues }: MedicalSessionFo
 
   const form = useForm<MedicalSessionSchema>({
     resolver: zodResolver(createMedicalSessionSchema(t)),
-    defaultValues: defaultValues || medicalSessionValues,
+    defaultValues: defaultValues
+      ? { ...defaultValues, notes: defaultValues.notes ?? "" }
+      : medicalSessionValues,
   });
 
   return (

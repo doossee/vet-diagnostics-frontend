@@ -84,6 +84,8 @@
     "gender": "Jinsi",
     "name": "Ism Familiyasi",
     "phone": "Telefon raqami",
+    "notes": "Izohlar",
+    "status": "Status",
     "address": "Manzili",
     "regionName": "Viloyat nomi",
     "districtName": "Tuman nomi",
@@ -132,6 +134,16 @@
     "byRegion": "Viloyat bo'yicha saralash",
     "byDistrict": "Tuman bo'yicha saralash",
     "byAnimal": "Hayvon bo'yicha saralash"
+  },
+  "sessions": {
+    "create": "Sessiya yaratish",
+    "edit": "Sessiyani o'zgartirish",
+    "confirmSubmit": "Sessiyani yakunlamoqchimisiz?",
+    "submit": "Sessiyani yuborish",
+    "submitting": "Yuborilmoqda...",
+    "statusDraft": "Qoralama",
+    "statusReady": "Tayyor",
+    "statusSubmitted": "Yuborilgan"
   },
   "users": {
     "firstName": "Ism",

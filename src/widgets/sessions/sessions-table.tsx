@@ -48,7 +48,7 @@ export default function SessionsTable({ animalId, className }: SessionsTableProp
   const defaultValues: any = editedItem ?? medicalSessionValues;
 
   const handleSubmitSession = (id: string | number) => {
-    if(!confirm("Sessiyani yakunlamoqchimisiz?")) return
+    if(!confirm(t("sessions.confirmSubmit"))) return
 
     submitSession.mutate(id)
   }
@@ -65,12 +65,12 @@ export default function SessionsTable({ animalId, className }: SessionsTableProp
         columns={columns}
         onRowClick={handleNavigate}
         queryFunction={useGetMedicalSessions}
-        topSlot={createButton(("Sessiya yaratish"))} />
+        topSlot={createButton(t("sessions.create"))} />
 
       <Modal
         open={dialog}
         onClose={handleClose}
-        title={(editedItem ? "Sessiyani o'zgartirish" : "Sessiya yaratish")}>
+        title={(editedItem ? t("sessions.edit") : t("sessions.create"))}>
         <MedicalSessionForm
           onSubmit={onSubmit}
           defaultValues={{...defaultValues, animalId}} />

@@ -4,12 +4,12 @@ import { useMemo } from "react";
 import type { MedicalSession } from "@/shared/types";
 import { useI18n } from "@/shared/hooks/use-i18n";
 import { useCrud } from "@/shared/hooks/use-crud";
-import { QUERY_PARAM_KEYS } from "@/shared/constants";
+// import { QUERY_PARAM_KEYS } from "@/shared/constants";
 import { createMedicalSessionsColumns } from "@/entities/sessions";
 import { DataTable } from "@/shared/components/data-table";
 import { Modal } from "@/shared/components/elements/modal";
 import { useGetMedicalSessions } from "@/entities/sessions/services/queries";
-import { useSearchQueryParams } from "@/shared/hooks/use-query-params";
+// import { useSearchQueryParams } from "@/shared/hooks/use-query-params";
 import { MedicalSessionForm, MedicalSessionSchema, medicalSessionValues } from "@/features/sessions";
 import { useCreateMedicalSession, useDeleteMedicalSession, useSubmitMedicalSession, useUpdateMedicalSession } from "@/entities/sessions/services/mutations";
 import { useRouter } from "@/shared/i18n/routing";
@@ -23,11 +23,11 @@ interface SessionsTableProps {
 export default function SessionsTable({ animalId, className }: SessionsTableProps) {
   const router = useRouter();
   const { t, locale } = useI18n();
-  const { get, setMany } = useSearchQueryParams();
+  // const { get, setMany } = useSearchQueryParams();
   const submitSession = useSubmitMedicalSession();
 
-  const newAnimal = get(QUERY_PARAM_KEYS.NEW);
-  const queryAnimalId = get(QUERY_PARAM_KEYS.ANIMAL_ID);
+  // const newAnimal = get(QUERY_PARAM_KEYS.NEW);
+  // const queryAnimalId = get(QUERY_PARAM_KEYS.ANIMAL_ID);
 
   const { dialog, editedItem, createButton, handleClose, handleDelete, handleEditItem, onSubmit } = useCrud<MedicalSession, MedicalSessionSchema, MedicalSessionSchema>({
     // dialogValue: !!newAnimal,
@@ -65,6 +65,7 @@ export default function SessionsTable({ animalId, className }: SessionsTableProp
         columns={columns}
         onRowClick={handleNavigate}
         queryFunction={useGetMedicalSessions}
+        customFilters={animalId ? { animalId } : {}}
         topSlot={createButton(t("sessions.create"))} />
 
       <Modal

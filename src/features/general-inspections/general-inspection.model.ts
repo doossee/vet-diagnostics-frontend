@@ -41,7 +41,7 @@ export const generalInspectionValues = {
 export const createGeneralInspectionSchema = (_: any) =>
   z.object({
     animalId: z.string(),
-    sessionId: z.string().optional(),
+    sessionId: z.string().optional().nullable(),
 
     pulse: z.coerce.number().min(10, "Пульс: 10–300").max(300, "Пульс: 10–300"),
     rumination: z.coerce.number().min(0, "Жвачка: 0–30").max(30, "Жвачка: 0–30"),

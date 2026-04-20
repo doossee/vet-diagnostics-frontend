@@ -539,10 +539,98 @@ export function normalizePredictions(rawOutput: PredictionRawOutput): Prediction
     }));
 }
 
+export const INPUT_VECTOR_KEYS: string[] = [
+  "pulse",               // 0
+  "respiratoryRate",     // 1
+  "temperature",         // 2
+  "erythrocyteCount",    // 3
+  "leukocyteCount",      // 4
+  "thrombocyteCount",    // 5
+  "coe",                 // 6
+  "waterPercentage",     // 7
+  "dryResidue",          // 8
+  "glutathione",         // 9
+  "hemoglobin",          // 10
+  "totalProtein",        // 11
+  "albumin",             // 12
+  "alphaGlobulin",       // 13
+  "betaGlobulin",        // 14
+  "gammaGlobulin",       // 15
+  "residualNitrogen",    // 16
+  "urea",                // 17
+  "uricAcid",            // 18
+  "creatinine",          // 19
+  "alkalineReserve",     // 20
+  "glucose",             // 21
+  "ketoneBodies",        // 22
+  "totalBilirubin",      // 23
+  "directBilirubin",     // 24
+  "totalCholesterol",    // 25
+  "totalLipids",         // 26
+  "phospholipids",       // 27
+  "lacticAcid",          // 28
+  "pyruvicAcid",         // 29
+  "citricAcid",          // 30
+  "carotene",            // 31
+  "vitaminA",            // 32
+  "vitaminC",            // 33
+  "organicPhosphorus",   // 34
+  "totalCalcium",        // 35
+  "creatine",            // 36
+  "copper",              // 37
+  "zinc",                // 38
+  "manganese",           // 39
+  "cobalt",              // 40
+  "urineColor",          // 41
+  "urineSmell",          // 42
+  "urineClarity",        // 43
+  "urineConsistency",    // 44
+  "urinePh",             // 45
+  "urineAcetone",        // 46
+  "urineProtein",        // 47
+  "urineBilirubin",      // 48
+  "urineUrobilinogen",   // 49
+  "urineSugar",          // 50
+  "urineLeukocytes",     // 51
+  "urineEpithelium",     // 52
+  "urineMicrobialBodies", // 53
+  "urineErythrocytes",   // 54
+  "urineSaltCrystals",   // 55
+  "urineAmount",         // 56
+  "fecesSmell",          // 57
+  "fecesColor",          // 58
+  "fecesConsistency",    // 59
+  "fecesForm",           // 60
+  "fecesAmount",         // 61
+  "fecesUndigestedFood", // 62
+  "mucosaOral",          // 63
+  "mucosaNasal",         // 64
+  "mucosaOcular",        // 65
+  "mucosaVaginal",       // 66
+  "rumination",          // 67
+  "obesity",             // 68
+  "bodyType",            // 69
+  "bodyPosition",        // 70
+  "wool",                // 71
+  "skinColor",           // 72
+  "skinHumidity",        // 73
+  "skinSmell",           // 74
+  "skinTemp",            // 75
+  "skinSurface",         // 76
+  "skinElasticity",      // 77
+  "lymphSize",           // 78
+  "lymphShape",          // 79
+  "lymphSurface",        // 80
+  "lymphConsistency",    // 81
+  "lymphTemp",           // 82
+  "lymphPain",           // 83
+  "lymphMobility",       // 84
+];
+
 /** Normalize inputVector to Record<string, number> regardless of model version */
 export function normalizeInputVector(inputVector: Record<string, number> | number[]): Record<string, number> {
   if (Array.isArray(inputVector)) {
-    return Object.fromEntries(inputVector.map((v, i) => [String(i), v]));
+    return Object.fromEntries(inputVector.map((v, i) => [INPUT_VECTOR_KEYS[i] ?? String(i), v]));
   }
   return inputVector ?? {};
 }

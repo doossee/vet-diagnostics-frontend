@@ -26,6 +26,14 @@ import { createToast } from "@/shared/hooks/use-toast";
 
 type SeverityLevel = { label: string; badgeClass: string; barClass: string; borderClass: string; bgClass: string };
 
+function formatPercent(probability: number): string {
+  const pct = probability * 100;
+  if (pct >= 1) return String(Math.round(pct));
+  if (pct >= 0.01) return pct.toFixed(2);
+  if (pct >= 0.000001) return pct.toPrecision(2);
+  return "0";
+}
+
 function getSeverity(percent: number): SeverityLevel {
   if (percent >= 70) return { label: "Критический", badgeClass: "bg-red-100 text-red-700 border-red-300", barClass: "[&>div]:bg-red-500", borderClass: "border-red-200", bgClass: "bg-red-50 dark:bg-red-950/20" };
   if (percent >= 50) return { label: "Высокий", badgeClass: "bg-orange-100 text-orange-700 border-orange-300", barClass: "[&>div]:bg-orange-500", borderClass: "border-orange-200", bgClass: "bg-orange-50 dark:bg-orange-950/20" };
@@ -187,8 +195,10 @@ function PredictSummaryCard({ sessionId, prediction, anomalyAlerts, isLoading }:
     .map((d) => ({
       key: d.diseaseIndex,
       name: PREDICT_DISEASES[d.diseaseIndex]?.[locale] ?? d.diseaseName,
+      probability: d.probability,
       percent: Math.round(d.probability * 100),
     }))
+    .sort((a, b) => b.probability - a.probability)
     .slice(0, 5);
 
   const top = top5[0];
@@ -219,7 +229,7 @@ function PredictSummaryCard({ sessionId, prediction, anomalyAlerts, isLoading }:
             <div className="flex items-center justify-between gap-2 flex-wrap">
               <span className="font-bold text-base leading-tight">{top.name}</span>
               <Badge variant="outline" className={`text-xs font-semibold px-2 py-0.5 ${topSeverity.badgeClass}`}>
-                {top.percent}% — {topSeverity.label}
+                {formatPercent(top.probability)}% — {topSeverity.label}
               </Badge>
             </div>
           </div>
@@ -235,9 +245,9 @@ function PredictSummaryCard({ sessionId, prediction, anomalyAlerts, isLoading }:
                     <span className="text-xs text-muted-foreground shrink-0 w-4 text-right">{idx + 1}.</span>
                     <span className="text-sm truncate">{item.name}</span>
                   </div>
-                  <span className="text-sm font-semibold shrink-0 tabular-nums">{item.percent}%</span>
+                  <span className="text-sm font-semibold shrink-0 tabular-nums">{formatPercent(item.probability)}%</span>
                 </div>
-                <Progress value={item.percent} className="h-2" />
+                <Progress value={item.percent > 0 ? item.percent : item.probability > 0 ? 0.3 : 0} className="h-2" />
               </div>
             );
           })}

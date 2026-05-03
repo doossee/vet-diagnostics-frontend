@@ -40,9 +40,9 @@ export function DungColorForm({ onSubmit, defaultValues }: DungColorFormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{"Значения"}</FormLabel>
+              <FormLabel>{t("inspections.numericValue")}</FormLabel>
               <FormControl>
-                <Input type="number" placeholder={"Значения"} {...field} />
+                <Input type="number" placeholder={t("inspections.numericValue")} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

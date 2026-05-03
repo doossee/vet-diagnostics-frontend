@@ -27,7 +27,7 @@ export const createEyeLidColumns = (handleEditItem: (item: MucosaAppearance) => 
     }
   },
   {
-    title: "Значение",
+    title: t("inspections.numericValue"),
     key: "numericValue",
     render(item: MucosaAppearance) {
       return item.numericValue ?? "-"

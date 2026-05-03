@@ -16,7 +16,7 @@ export const createGeneralBloodTestColumns = (handleEditItem: (item: BloodExam) 
     },
   },
   {
-    title: "Сессия",
+    title: t("sessions.session"),
     key: "session",
     hideInInfoTable: true,
     render(item: BloodExam) {

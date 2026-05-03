@@ -124,10 +124,48 @@ export const ALERT_MESSAGES = {
     ru: "Ошибка при импорте файла",
     uz: "Faylni import qilishda xatolik yuz berdi",
   },
-  NULL_FIELDS_PREFIX: {
-    ru: "Не заполнены поля",
-    uz: "To'ldirilmagan maydonlar",
+  NULL_FIELDS_TITLE: {
+    ru: "Сессия не может быть отправлена",
+    uz: "Sessiya yuborib bo'lmaydi",
   },
+  NULL_FIELDS_PREFIX: {
+    ru: "Для отправки заполните обязательные поля",
+    uz: "Yuborish uchun majburiy maydonlarni to'ldiring",
+  },
+};
+
+export const NULL_FIELD_EXAM_LABELS: Record<string, { ru: string; uz: string }> = {
+  clinical: { ru: "Клиническое обследование", uz: "Klinik tekshiruv" },
+  blood:    { ru: "Анализ крови",             uz: "Qon tahlili" },
+  urine:    { ru: "Анализ мочи",              uz: "Siydik tahlili" },
+  feces:    { ru: "Анализ кала",              uz: "Najas tahlili" },
+  mucosa:   { ru: "Слизистые оболочки",       uz: "Shilliq pardalar" },
+};
+
+export const NULL_FIELD_EXAM_GROUP: Record<string, string> = {
+  pulse: "clinical", respiratoryRate: "clinical", temperature: "clinical", rumination: "clinical",
+  obesity: "clinical", bodyType: "clinical", bodyPosition: "clinical", wool: "clinical",
+  skinColor: "clinical", skinHumidity: "clinical", skinSmell: "clinical", skinTemp: "clinical",
+  skinSurface: "clinical", skinElasticity: "clinical",
+  lymphSize: "clinical", lymphShape: "clinical", lymphSurface: "clinical", lymphConsistency: "clinical",
+  lymphTemp: "clinical", lymphPain: "clinical", lymphMobility: "clinical",
+  erythrocyteCount: "blood", leukocyteCount: "blood", thrombocyteCount: "blood", coe: "blood",
+  waterPercentage: "blood", dryResidue: "blood", glutathione: "blood", hemoglobin: "blood",
+  totalProtein: "blood", albumin: "blood", alphaGlobulin: "blood", betaGlobulin: "blood", gammaGlobulin: "blood",
+  residualNitrogen: "blood", urea: "blood", uricAcid: "blood", creatinine: "blood",
+  alkalineReserve: "blood", glucose: "blood", ketoneBodies: "blood", totalBilirubin: "blood", directBilirubin: "blood",
+  totalCholesterol: "blood", totalLipids: "blood", phospholipids: "blood",
+  lacticAcid: "blood", pyruvicAcid: "blood", citricAcid: "blood",
+  carotene: "blood", vitaminA: "blood", vitaminC: "blood",
+  organicPhosphorus: "blood", totalCalcium: "blood", creatine: "blood",
+  copper: "blood", zinc: "blood", manganese: "blood", cobalt: "blood",
+  urineColor: "urine", urineSmell: "urine", urineClarity: "urine", urineConsistency: "urine",
+  urinePh: "urine", urineAcetone: "urine", urineProtein: "urine", urineBilirubin: "urine",
+  urineUrobilinogen: "urine", urineSugar: "urine", urineLeukocytes: "urine", urineEpithelium: "urine",
+  urineMicrobialBodies: "urine", urineErythrocytes: "urine", urineSaltCrystals: "urine", urineAmount: "urine",
+  fecesSmell: "feces", fecesColor: "feces", fecesConsistency: "feces",
+  fecesForm: "feces", fecesAmount: "feces", fecesUndigestedFood: "feces",
+  mucosaOral: "mucosa", mucosaNasal: "mucosa", mucosaOcular: "mucosa", mucosaVaginal: "mucosa",
 };
 
 export const NULL_FIELD_LABELS: Record<string, { ru: string; uz: string }> = {

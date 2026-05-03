@@ -14,7 +14,7 @@ export const createDungTestColumns = (handleEditItem: (item: FecesExam) => void,
     },
   },
   {
-    title: "Сессия",
+    title: t("sessions.session"),
     key: "session",
     hideInInfoTable: true,
     render(item: FecesExam) {

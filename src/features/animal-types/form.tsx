@@ -78,9 +78,9 @@ export function AnimalTypeForm({ onSubmit, defaultValues }: AnimalTypeFormProps)
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Пол (ограничение)</FormLabel>
+              <FormLabel>{t("management.sexRestriction")}</FormLabel>
               <FormControl>
-                <AnimalSexSelect placeholder="Все полы" value={field.value} onChange={field.onChange} />
+                <AnimalSexSelect placeholder={t("management.allSexes")} value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -92,7 +92,7 @@ export function AnimalTypeForm({ onSubmit, defaultValues }: AnimalTypeFormProps)
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Мин. возраст (мес.)</FormLabel>
+                <FormLabel>{t("management.minAgeMonths")}</FormLabel>
                 <FormControl>
                   <Input type="number" min={0} placeholder="0" {...field} />
                 </FormControl>
@@ -105,7 +105,7 @@ export function AnimalTypeForm({ onSubmit, defaultValues }: AnimalTypeFormProps)
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Макс. возраст (мес.)</FormLabel>
+                <FormLabel>{t("management.maxAgeMonths")}</FormLabel>
                 <FormControl>
                   <Input type="number" min={0} placeholder="—" {...field} />
                 </FormControl>
@@ -119,9 +119,9 @@ export function AnimalTypeForm({ onSubmit, defaultValues }: AnimalTypeFormProps)
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Ключ AI модели</FormLabel>
+              <FormLabel>{t("management.aiModelKey")}</FormLabel>
               <FormControl>
-                <Input placeholder="например: buqa, sigir" {...field} />
+                <Input placeholder={t("management.aiModelKeyPlaceholder")} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

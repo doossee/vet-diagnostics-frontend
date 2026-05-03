@@ -58,6 +58,11 @@
     "title": "Maʼlumot topilmadi",
     "description": "Ushbu sahifada hozircha maʼlumot yo'q. Siz yangi yozuv qo'shishingiz yoki sahifani yangilashingiz mumkin."
   },
+  "noItems": "Elementlar yo'q",
+  "selectItem": "Elementni tanlang",
+  "selectMonth": "Oy",
+  "selectYear": "Yil",
+  "selectMonthYear": "Oy va yilni tanlang",
   "excel": {
     "import": "Excel'dan import",
     "success": "Ma'lumotlar muvaffaqiyatli import qilindi",

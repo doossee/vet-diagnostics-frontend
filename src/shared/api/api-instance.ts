@@ -1,6 +1,6 @@
 import { isArray } from "lodash";
-import { ALERT_MESSAGES, NULL_FIELD_LABELS } from "@/shared/constants";
-import { createToast } from "@/shared/hooks/use-toast";
+import { ALERT_MESSAGES } from "@/shared/constants";
+import { createToast, createNullFieldsToast } from "@/shared/hooks/use-toast";
 import { useLanguage } from "@/shared/hooks/use-language";
 import { useAuthData } from "@/shared/hooks/use-auth-data";
 import Axios, { AxiosError, AxiosResponse, AxiosRequestConfig } from "axios";
@@ -58,9 +58,7 @@ apiInstance.interceptors.response.use(
       const { message, nullFields } = errorData ?? {};
 
       if (nullFields?.length) {
-        const locale = useLanguage().getLocale;
-        const fieldNames = nullFields.map(f => NULL_FIELD_LABELS[f]?.[locale] ?? NULL_FIELD_LABELS[f]?.ru ?? f).join(", ");
-        createToast(`${ALERT_MESSAGES.NULL_FIELDS_PREFIX[locale]}: ${fieldNames}`, "WARNING");
+        createNullFieldsToast(nullFields);
       } else if (isArray(message)) {
         message.map((m) => createToast(m, "WARNING"));
       } else {

@@ -80,6 +80,7 @@
   "mucosaType": "Тип слизистой оболочки",
   "mucosaAppearance": "Внешний вид слизистой оболочки",
   "specificProphylaxis": "Специфическая профилактика",
+  "numericValue": "Значение",
   "name": "Название",
   "child": "Дочерние",
   "all": "Все",

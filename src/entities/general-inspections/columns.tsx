@@ -18,7 +18,7 @@ export const createGeneralInspectionColumns = (handleEditItem: (item: ClinicalEx
     },
   },
   {
-    title: "Сессия",
+    title: t("sessions.session"),
     key: "session",
     hideInInfoTable: true,
     render(item: ClinicalExam) {

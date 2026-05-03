@@ -14,7 +14,7 @@ export const createUrineTestColumns = (handleEditItem: (item: UrineExam) => void
     },
   },
   {
-    title: "Сессия",
+    title: t("sessions.session"),
     key: "session",
     hideInInfoTable: true,
     render(item: UrineExam) {

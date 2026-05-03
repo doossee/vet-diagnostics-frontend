@@ -85,7 +85,7 @@ export function AppBreadcrumb() {
       }
       if (subPath) {
         const SUB_PATH_LABELS: Record<string, string> = {
-          prediction: "AI Прогноз",
+          prediction: t("prediction.aiTitle"),
         };
         paths.push({
           root: SUB_PATH_LABELS[subPath] ?? subPath,

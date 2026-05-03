@@ -4,6 +4,7 @@ import type React from "react";
 import { useMemo } from "react";
 import { cn } from "@/shared/lib/utils";
 import { useState, useEffect } from "react";
+import { useI18n } from "@/shared/hooks/use-i18n";
 import type { PaginatedEntity } from "@/shared/types";
 import { Button } from "@/shared/components/ui/button";
 import { useInView } from "react-intersection-observer";
@@ -62,6 +63,8 @@ function TreeNodes<T>({
   const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = queryFn(parentId);
   const options = pageableToArray(data);
 
+  const { t } = useI18n();
+
   const filteredOptions = useMemo(() => {
     return customFilter ? options.filter(customFilter) : options;
   }, [options, customFilter]);
@@ -84,7 +87,7 @@ function TreeNodes<T>({
     return (
       <div className="px-3 py-4 text-sm text-muted-foreground text-center">
         <Inbox className="mx-auto h-8 w-8 opacity-50" />
-        <p className="mt-2">Нет элементов</p>
+        <p className="mt-2">{t("noItems")}</p>
       </div>
     );
   }
@@ -187,7 +190,7 @@ function TreeNodes<T>({
 
 export function TreeSelect<T>({
   disabled,
-  placeholder = "Выберите элемент",
+  placeholder,
   defaultValue,
   minWidth,
   onSelect,
@@ -201,6 +204,7 @@ export function TreeSelect<T>({
   getOptionLabel = (option: any) => option.name || option.label || String(option),
   getOptionId = (option: any) => option.id || String(option),
 }: TreeSelectProps<T>) {
+  const { t } = useI18n();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<T | null>(null);
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
@@ -277,7 +281,7 @@ export function TreeSelect<T>({
             {value ? (
               <span className="truncate font-normal">{getOptionLabel(value)}</span>
             ) : (
-              <span className="text-muted-foreground font-normal">{placeholder}</span>
+              <span className="text-muted-foreground font-normal">{placeholder ?? t("selectItem")}</span>
             )}
 
             <div className="flex items-center gap-1">

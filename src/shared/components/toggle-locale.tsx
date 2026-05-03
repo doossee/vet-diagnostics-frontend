@@ -3,18 +3,23 @@
 import { useLocale } from "next-intl";
 import { LOCALES } from "@/shared/constants";
 import { Button } from "@/shared/components/ui/button";
-import { usePathname, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "@/shared/i18n/routing";
 import { useLanguage } from "@/shared/hooks/use-language";
 
 export function ToggleLocale() {
   const router = useRouter();
   const locale = useLocale();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const { setLocale } = useLanguage();
 
   const changeLocale = (lang: string) => {
-    const newpath = pathname.replace("/" + locale, "");
-    router.replace(`/${lang}${newpath}`);
+    const query = searchParams.toString();
+    router.replace(
+      (query ? `${pathname}?${query}` : pathname) as any,
+      { locale: lang as "ru" | "uz" }
+    );
     setLocale(lang);
   };
 

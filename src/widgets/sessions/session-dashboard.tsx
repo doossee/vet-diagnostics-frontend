@@ -66,7 +66,11 @@ function SessionInfoPanel({ id, isLoading }: { id: string; isLoading: boolean })
     if (!confirm(t("sessions.confirmSubmit"))) return;
     submitMutation.mutate(id, {
       onSuccess: () => createToast(ALERT_MESSAGES.SESSION_SUBMITTED, "SUCCESS"),
-      onError: () => createToast(ALERT_MESSAGES.SESSION_SUBMIT_ERROR, "WARNING"),
+      onError: (error: any) => {
+        if (!error?.response?.data?.nullFields?.length) {
+          createToast(ALERT_MESSAGES.SESSION_SUBMIT_ERROR, "WARNING");
+        }
+      },
     });
   };
 
@@ -161,7 +165,7 @@ function PredictSummaryCard({ sessionId, prediction, anomalyAlerts, isLoading }:
         <CardContent className="space-y-4">
           <Skeleton className="h-16 w-full rounded-lg" />
           <div className="space-y-2.5">
-            {Array.from({ length: 5 }).map((_, i) => (
+            {Array.from({ length: 3 }).map((_, i) => (
               <div key={i}>
                 <div className="flex items-center justify-between mb-1 gap-2">
                   <Skeleton className="h-4 w-40 rounded" />
@@ -200,7 +204,7 @@ function PredictSummaryCard({ sessionId, prediction, anomalyAlerts, isLoading }:
       percent: Math.round(d.probability * 100),
     }))
     .sort((a, b) => b.probability - a.probability)
-    .slice(0, 5);
+    .slice(0, 3);
 
   const top = top5[0];
   const isHealthy = !top || top.probability * 100 < 1;

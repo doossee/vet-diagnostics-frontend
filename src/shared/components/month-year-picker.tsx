@@ -4,14 +4,18 @@ import * as React from "react";
 import { ChevronDown, X } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
 import { Button } from "./ui/button";
+import { useI18n } from "@/shared/hooks/use-i18n";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 
-const MONTHS = [
-  "Январь", "Февраль", "Март", "Апрель",
-  "Май", "Июнь", "Июль", "Август",
-  "Сентябрь", "Октябрь", "Ноябрь", "Декабрь",
-];
+const MONTHS: Record<string, string[]> = {
+  ru: ["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"],
+  uz: ["Yanvar","Fevral","Mart","Aprel","May","Iyun","Iyul","Avgust","Sentabr","Oktabr","Noyabr","Dekabr"],
+};
+
+function getMonthNames(locale: string) {
+  return MONTHS[locale] ?? MONTHS.ru;
+}
 
 interface MonthYearPickerProps {
   year?: number | null;
@@ -28,12 +32,14 @@ export function MonthYearPicker({
   year,
   month,
   onChange,
-  placeholder = "Выберите месяц и год",
+  placeholder,
   disabled,
   maxYear = new Date().getFullYear(),
   minYear = 1990,
   className,
 }: MonthYearPickerProps) {
+  const { t, locale } = useI18n();
+  const MONTHS = React.useMemo(() => getMonthNames(locale), [locale]);
   const [open, setOpen] = React.useState(false);
 
   const displayValue = year && month
@@ -74,7 +80,7 @@ export function MonthYearPicker({
           {displayValue ? (
             <span className="truncate">{displayValue}</span>
           ) : (
-            <span className="text-muted-foreground">{placeholder}</span>
+            <span className="text-muted-foreground">{placeholder ?? t("selectMonthYear")}</span>
           )}
           <div className="flex items-center gap-1 shrink-0">
             {displayValue && (
@@ -90,7 +96,7 @@ export function MonthYearPicker({
         <div className="flex gap-2">
           <Select value={month ? String(month) : undefined} onValueChange={handleMonthChange}>
             <SelectTrigger className="flex-1">
-              <SelectValue placeholder="Месяц" />
+              <SelectValue placeholder={t("selectMonth")} />
             </SelectTrigger>
             <SelectContent>
               {MONTHS.map((name, i) => (
@@ -103,7 +109,7 @@ export function MonthYearPicker({
 
           <Select value={year ? String(year) : undefined} onValueChange={handleYearChange}>
             <SelectTrigger className="w-24">
-              <SelectValue placeholder="Год" />
+              <SelectValue placeholder={t("selectYear")} />
             </SelectTrigger>
             <SelectContent>
               {years.map((y) => (

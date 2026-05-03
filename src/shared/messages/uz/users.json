@@ -1,0 +1,10 @@
+{
+  "firstName": "Ism",
+  "lastName": "Familiya",
+  "middleName": "Otasining ismi",
+  "createFarmer": "Fermer Qo'shish",
+  "editFarmer": "Fermerni O'zgartirish",
+  "createVeterinarian": "Veterinar Qo'shish",
+  "editVeterinarian": "Veterinarni O'zgartirish",
+  "changeUserData": "Malumotlarni o'zgartirish"
+}

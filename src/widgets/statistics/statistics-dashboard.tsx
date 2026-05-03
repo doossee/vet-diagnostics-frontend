@@ -43,37 +43,20 @@ import {
 import { PREDICT_DISEASES } from "@/shared/constants";
 import { useI18n } from "@/shared/hooks/use-i18n";
 
-// ─── Date range presets ───────────────────────────────────────────────────────
-
 const PRESETS = [
-  { label: "Неделя", getRange: () => ({ from: subDays(new Date(), 6), to: new Date() }) },
-  { label: "Месяц", getRange: () => ({ from: subMonths(new Date(), 1), to: new Date() }) },
-  { label: "3 мес.", getRange: () => ({ from: subMonths(new Date(), 3), to: new Date() }) },
-  { label: "Год", getRange: () => ({ from: subYears(new Date(), 1), to: new Date() }) },
+  { key: "week",    labelKey: "statistics.periodWeek"    as const, getRange: () => ({ from: subDays(new Date(), 6), to: new Date() }) },
+  { key: "month",   labelKey: "statistics.periodMonth"   as const, getRange: () => ({ from: subMonths(new Date(), 1), to: new Date() }) },
+  { key: "3months", labelKey: "statistics.period3months" as const, getRange: () => ({ from: subMonths(new Date(), 3), to: new Date() }) },
+  { key: "year",    labelKey: "statistics.periodYear"    as const, getRange: () => ({ from: subYears(new Date(), 1), to: new Date() }) },
 ];
 
 function toIsoStart(d: Date) { return startOfDay(d).toISOString().slice(0, 10); }
 function toIsoEnd(d: Date) { return endOfDay(d).toISOString().slice(0, 10); }
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
-
-function formatPeriod(period: string) {
+function formatPeriod(period: string, t: any) {
   const [year, month] = period.split("-");
-  const months = ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"];
-  return `${months[parseInt(month) - 1]} ${year}`;
+  return `${t(`statistics.months.${parseInt(month)}`)} ${year}`;
 }
-
-// ─── Chart configs ────────────────────────────────────────────────────────────
-
-const barChartConfig = {
-  count: { label: "Кол-во случаев", color: "hsl(var(--chart-1))" },
-} satisfies ChartConfig;
-
-const trendChartConfig = {
-  total: { label: "Всего сессий", color: "hsl(var(--chart-1))" },
-} satisfies ChartConfig;
-
-// ─── Sub-components ──────────────────────────────────────────────────────────
 
 interface StatCardProps {
   title: string;
@@ -113,10 +96,8 @@ function SkeletonCard() {
   );
 }
 
-// ─── Main component ───────────────────────────────────────────────────────────
-
 export function StatisticsDashboard() {
-  const { locale } = useI18n();
+  const { locale, t } = useI18n();
   const getDiseaseName = (diseaseIndex: string, fallback: string) =>
     PREDICT_DISEASES[diseaseIndex]?.[locale] ?? fallback;
 
@@ -124,7 +105,7 @@ export function StatisticsDashboard() {
   const [range, setRange] = useState<DateRange>(defaultRange);
   const [appliedRange, setAppliedRange] = useState<DateRange>(defaultRange);
   const [calOpen, setCalOpen] = useState(false);
-  const [activePreset, setActivePreset] = useState<string | null>("Месяц");
+  const [activePreset, setActivePreset] = useState<string | null>("month");
 
   const params = {
     startDate: appliedRange.from ? `${toIsoStart(appliedRange.from)}T00:00:00.000Z` : undefined,
@@ -144,25 +125,33 @@ export function StatisticsDashboard() {
     const r = preset.getRange();
     setRange(r);
     setAppliedRange(r);
-    setActivePreset(preset.label);
+    setActivePreset(preset.key);
     setCalOpen(false);
   };
 
   const handleReset = () => {
     setRange(defaultRange);
     setAppliedRange(defaultRange);
-    setActivePreset("Месяц");
+    setActivePreset("month");
   };
 
   const formatRange = () => {
-    if (!appliedRange.from) return "Выберите период";
+    if (!appliedRange.from) return t("statistics.selectPeriod");
     if (!appliedRange.to) return format(appliedRange.from, "dd.MM.yyyy", { locale: ru });
     return `${format(appliedRange.from, "dd.MM.yyyy", { locale: ru })} — ${format(appliedRange.to, "dd.MM.yyyy", { locale: ru })}`;
   };
 
+  const barChartConfig: ChartConfig = {
+    count: { label: t("statistics.countLabel"), color: "hsl(var(--chart-1))" },
+  };
+
+  const trendChartConfig: ChartConfig = {
+    total: { label: t("statistics.totalSessionsLabel"), color: "hsl(var(--chart-1))" },
+  };
+
   const trendData = (trends?.data ?? []).map((item) => {
     const row: Record<string, number | string> = {
-      period: formatPeriod(item.period),
+      period: formatPeriod(item.period, t),
       total: item.total,
     };
     item.diseases
@@ -177,7 +166,6 @@ export function StatisticsDashboard() {
   const localizedTop5 = top5.map((d) => ({ ...d, localizedName: getDiseaseName(d.diseaseIndex, d.diseaseName) }));
   const maxCount = top5[0]?.count ?? 1;
 
-  // Build dynamic trend series from actual data
   const trendDiseaseNames = Array.from(
     new Set(
       (trends?.data ?? []).flatMap((p) =>
@@ -198,24 +186,22 @@ export function StatisticsDashboard() {
           <div className="flex flex-wrap items-center gap-2">
             <CalendarRange className="size-4 text-muted-foreground shrink-0" />
 
-            {/* Quick presets */}
             <div className="flex gap-1 flex-wrap">
               {PRESETS.map((p) => (
                 <Button
-                  key={p.label}
+                  key={p.key}
                   size="sm"
-                  variant={activePreset === p.label ? "default" : "outline"}
+                  variant={activePreset === p.key ? "default" : "outline"}
                   className="h-8 px-3 text-xs"
                   onClick={() => handlePreset(p)}
                 >
-                  {p.label}
+                  {t(p.labelKey)}
                 </Button>
               ))}
             </div>
 
             <div className="w-px h-6 bg-border hidden sm:block" />
 
-            {/* Date range popover */}
             <Popover open={calOpen} onOpenChange={setCalOpen}>
               <PopoverTrigger asChild>
                 <Button variant="outline" size="sm" className="h-8 gap-2 text-sm font-normal min-w-[220px] justify-between">
@@ -238,14 +224,14 @@ export function StatisticsDashboard() {
                   toYear={new Date().getFullYear()}
                 />
                 <div className="flex justify-end gap-2 p-3 border-t">
-                  <Button size="sm" variant="outline" onClick={() => setCalOpen(false)}>Отмена</Button>
-                  <Button size="sm" onClick={handleApply} disabled={!range.from || !range.to}>Применить</Button>
+                  <Button size="sm" variant="outline" onClick={() => setCalOpen(false)}>{t("statistics.cancel")}</Button>
+                  <Button size="sm" onClick={handleApply} disabled={!range.from || !range.to}>{t("statistics.apply")}</Button>
                 </div>
               </PopoverContent>
             </Popover>
 
             <Button size="sm" variant="ghost" className="h-8 text-xs text-muted-foreground" onClick={handleReset}>
-              Сбросить
+              {t("statistics.reset")}
             </Button>
           </div>
         </CardContent>
@@ -258,31 +244,31 @@ export function StatisticsDashboard() {
         ) : (
           <>
             <StatCard
-              title="Всего сессий"
+              title={t("statistics.totalSessions")}
               value={(overview?.totalSessions ?? 0).toLocaleString()}
               icon={<FileText className="size-5" />}
-              description="За период"
+              description={t("statistics.forPeriod")}
             />
             <StatCard
-              title="Отправлено"
+              title={t("statistics.submitted")}
               value={(overview?.submittedSessions ?? 0).toLocaleString()}
               icon={<CheckCircle className="size-5" />}
               accent="text-green-600"
             />
             <StatCard
-              title="Черновик"
+              title={t("statistics.draft")}
               value={(overview?.draftSessions ?? 0).toLocaleString()}
               icon={<PenLine className="size-5" />}
               accent="text-yellow-600"
             />
             <StatCard
-              title="Готово"
+              title={t("statistics.ready")}
               value={(overview?.readySessions ?? 0).toLocaleString()}
               icon={<Clock className="size-5" />}
               accent="text-blue-600"
             />
             <StatCard
-              title="Животных обследовано"
+              title={t("statistics.animalsExamined")}
               value={(overview?.totalAnimalsExamined ?? 0).toLocaleString()}
               icon={<PawPrint className="size-5" />}
               accent="text-purple-600"
@@ -291,7 +277,7 @@ export function StatisticsDashboard() {
               <CardContent className="pt-2">
                 <div className="flex items-start justify-between">
                   <div className="space-y-1">
-                    <p className="text-sm text-muted-foreground">Частый диагноз</p>
+                    <p className="text-sm text-muted-foreground">{t("statistics.commonDisease")}</p>
                     <p className="text-base font-bold text-red-600 leading-tight">
                       {overview?.mostCommonDisease
                         ? getDiseaseName(overview.mostCommonDisease.diseaseIndex, overview.mostCommonDisease.diseaseName)
@@ -299,7 +285,7 @@ export function StatisticsDashboard() {
                     </p>
                     {overview?.mostCommonDisease && (
                       <p className="text-xs text-muted-foreground">
-                        {overview.mostCommonDisease.count} случаев
+                        {overview.mostCommonDisease.count} {t("statistics.cases")}
                       </p>
                     )}
                   </div>
@@ -313,15 +299,16 @@ export function StatisticsDashboard() {
 
       {/* Charts row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Bar chart — top diseases */}
         <Card className="shadow-none rounded lg:col-span-2">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-sm md:text-base">
               <BarChart3 className="size-5" />
-              Топ заболеваний по количеству случаев
+              {t("statistics.topDiseasesChart")}
             </CardTitle>
             {diseases && (
-              <CardDescription>Проанализировано {diseases.totalSessionsAnalyzed} сессий</CardDescription>
+              <CardDescription>
+                {t("statistics.analyzedSessions", { count: diseases.totalSessionsAnalyzed })}
+              </CardDescription>
             )}
           </CardHeader>
           <CardContent>
@@ -352,14 +339,13 @@ export function StatisticsDashboard() {
           </CardContent>
         </Card>
 
-        {/* Top 5 list */}
         <Card className="shadow-none rounded">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-sm md:text-base">
               <Activity className="size-5" />
-              Рейтинг заболеваний
+              {t("statistics.diseaseRating")}
             </CardTitle>
-            <CardDescription>Топ 5 по частоте</CardDescription>
+            <CardDescription>{t("statistics.top5")}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             {diseasesLoading ? (
@@ -403,9 +389,9 @@ export function StatisticsDashboard() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-sm md:text-base">
             <TrendingUp className="size-5" />
-            Динамика сессий по месяцам
+            {t("statistics.sessionDynamics")}
           </CardTitle>
-          <CardDescription>Общее количество сессий и топ заболевания за период</CardDescription>
+          <CardDescription>{t("statistics.sessionDynamicsDesc")}</CardDescription>
         </CardHeader>
         <CardContent>
           {trendsLoading ? (
@@ -433,7 +419,7 @@ export function StatisticsDashboard() {
                 <Area
                   type="monotone"
                   dataKey="total"
-                  name="Всего сессий"
+                  name={t("statistics.totalSessionsLabel")}
                   stroke="hsl(var(--chart-1))"
                   fill="url(#gradTotal)"
                   strokeWidth={2}
@@ -461,17 +447,17 @@ export function StatisticsDashboard() {
       {!diseasesLoading && top5.length > 0 && (
         <Card className="shadow-none rounded">
           <CardHeader>
-            <CardTitle className="text-sm md:text-base">Полный список заболеваний</CardTitle>
-            <CardDescription>Отсортировано по количеству случаев</CardDescription>
+            <CardTitle className="text-sm md:text-base">{t("statistics.fullDiseaseList")}</CardTitle>
+            <CardDescription>{t("statistics.sortedByCases")}</CardDescription>
           </CardHeader>
           <CardContent className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b text-muted-foreground">
                   <th className="py-2 pr-4 text-left font-medium w-8">#</th>
-                  <th className="py-2 pr-4 text-left font-medium">Заболевание</th>
-                  <th className="py-2 pr-4 text-right font-medium">Случаев</th>
-                  <th className="py-2 text-right font-medium">Доля</th>
+                  <th className="py-2 pr-4 text-left font-medium">{t("statistics.colDisease")}</th>
+                  <th className="py-2 pr-4 text-right font-medium">{t("statistics.colCases")}</th>
+                  <th className="py-2 text-right font-medium">{t("statistics.colShare")}</th>
                 </tr>
               </thead>
               <tbody>

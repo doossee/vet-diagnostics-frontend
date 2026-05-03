@@ -1,0 +1,11 @@
+{
+  "createDistrict": "Создать район",
+  "editDistrict": "Редактировать район",
+  "vetStationName": "Название станции",
+  "vetStationAddress": "Адрес станции",
+  "createVetStation": "Создать ветстанцию",
+  "editVetStation": "Редактировать ветстанцию",
+  "countOfDistricts": "Количество районов",
+  "createRegion": "Создать регион",
+  "editRegion": "Редактировать регион"
+}

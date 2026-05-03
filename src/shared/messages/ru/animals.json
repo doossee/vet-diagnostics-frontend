@@ -1,0 +1,24 @@
+{
+  "animalTypes": {
+    "name": "Название типа",
+    "createButton": "Создать тип животного",
+    "createAnimalType": "Создать тип",
+    "editAnimalType": "Редактировать тип"
+  },
+  "animals": {
+    "name": "Название животного",
+    "animalType": "Тип животного",
+    "weight": "Вес",
+    "color": "Цвет животного",
+    "idCode": "ID код",
+    "breed": "Порода",
+    "age": "Возраст животного",
+    "arrivalDate": "Дата прибытия",
+    "createButton": "Добавить животное",
+    "createAnimal": "Добавить животное",
+    "editAnimal": "Редактировать животное",
+    "animalInfo": "Данные животного",
+    "generalInspection": "Клинические проверка",
+    "vaccine": "Вакцина"
+  }
+}

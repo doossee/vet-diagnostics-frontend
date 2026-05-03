@@ -24,7 +24,8 @@ import { SESSION_STATUSES } from "@/entities/sessions/utils/constants/session-st
 import { SessionExamModal, SessionExamType } from "./session-exam-modal";
 import { createToast } from "@/shared/hooks/use-toast";
 
-type SeverityLevel = { label: string; badgeClass: string; barClass: string; borderClass: string; bgClass: string };
+type SeverityLabelKey = "prediction.severityCritical" | "prediction.severityHigh" | "prediction.severityMedium" | "prediction.severityModerate" | "prediction.severityLow";
+type SeverityLevel = { labelKey: SeverityLabelKey; badgeClass: string; barClass: string; borderClass: string; bgClass: string };
 
 function formatPercent(probability: number): string {
   const pct = probability * 100;
@@ -35,11 +36,11 @@ function formatPercent(probability: number): string {
 }
 
 function getSeverity(percent: number): SeverityLevel {
-  if (percent >= 70) return { label: "Критический", badgeClass: "bg-red-100 text-red-700 border-red-300", barClass: "[&>div]:bg-red-500", borderClass: "border-red-200", bgClass: "bg-red-50 dark:bg-red-950/20" };
-  if (percent >= 50) return { label: "Высокий", badgeClass: "bg-orange-100 text-orange-700 border-orange-300", barClass: "[&>div]:bg-orange-500", borderClass: "border-orange-200", bgClass: "bg-orange-50 dark:bg-orange-950/20" };
-  if (percent >= 30) return { label: "Средний", badgeClass: "bg-yellow-100 text-yellow-700 border-yellow-300", barClass: "[&>div]:bg-yellow-500", borderClass: "border-yellow-200", bgClass: "bg-yellow-50 dark:bg-yellow-950/20" };
-  if (percent >= 10) return { label: "Умеренный", badgeClass: "bg-blue-100 text-blue-700 border-blue-300", barClass: "[&>div]:bg-blue-500", borderClass: "border-blue-200", bgClass: "bg-blue-50 dark:bg-blue-950/20" };
-  return { label: "Низкий", badgeClass: "bg-green-100 text-green-700 border-green-300", barClass: "[&>div]:bg-green-500", borderClass: "border-green-200", bgClass: "bg-green-50 dark:bg-green-950/20" };
+  if (percent >= 70) return { labelKey: "prediction.severityCritical", badgeClass: "bg-red-100 text-red-700 border-red-300", barClass: "[&>div]:bg-red-500", borderClass: "border-red-200", bgClass: "bg-red-50 dark:bg-red-950/20" };
+  if (percent >= 50) return { labelKey: "prediction.severityHigh", badgeClass: "bg-orange-100 text-orange-700 border-orange-300", barClass: "[&>div]:bg-orange-500", borderClass: "border-orange-200", bgClass: "bg-orange-50 dark:bg-orange-950/20" };
+  if (percent >= 30) return { labelKey: "prediction.severityMedium", badgeClass: "bg-yellow-100 text-yellow-700 border-yellow-300", barClass: "[&>div]:bg-yellow-500", borderClass: "border-yellow-200", bgClass: "bg-yellow-50 dark:bg-yellow-950/20" };
+  if (percent >= 10) return { labelKey: "prediction.severityModerate", badgeClass: "bg-blue-100 text-blue-700 border-blue-300", barClass: "[&>div]:bg-blue-500", borderClass: "border-blue-200", bgClass: "bg-blue-50 dark:bg-blue-950/20" };
+  return { labelKey: "prediction.severityLow", badgeClass: "bg-green-100 text-green-700 border-green-300", barClass: "[&>div]:bg-green-500", borderClass: "border-green-200", bgClass: "bg-green-50 dark:bg-green-950/20" };
 }
 
 function getAlertSeverityInfo(alerts: import("@/shared/types").AnomalyAlert[]) {
@@ -143,7 +144,7 @@ function PredictSummaryCard({ sessionId, prediction, anomalyAlerts, isLoading }:
   anomalyAlerts?: import("@/shared/types").AnomalyAlert[];
   isLoading?: boolean;
 }) {
-  const { locale } = useI18n();
+  const { locale, t } = useI18n();
 
   if (isLoading) {
     return (
@@ -152,7 +153,7 @@ function PredictSummaryCard({ sessionId, prediction, anomalyAlerts, isLoading }:
           <div className="flex items-center justify-between gap-2">
             <CardTitle className="flex items-center gap-2 text-sm md:text-base">
               <Brain className="size-5 md:size-6" />
-              AI Прогноз
+              {t("prediction.aiTitle")}
             </CardTitle>
             <Skeleton className="h-8 w-28 rounded-md" />
           </div>
@@ -181,11 +182,11 @@ function PredictSummaryCard({ sessionId, prediction, anomalyAlerts, isLoading }:
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-sm md:text-base">
             <Brain className="size-5 md:size-6" />
-            AI Прогноз
+            {t("prediction.aiTitle")}
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground">Прогноз ещё не сформирован. Отправьте сессию для получения результата.</p>
+          <p className="text-sm text-muted-foreground">{t("prediction.notFormed")} {t("prediction.submitHint")}</p>
         </CardContent>
       </Card>
     );
@@ -202,6 +203,7 @@ function PredictSummaryCard({ sessionId, prediction, anomalyAlerts, isLoading }:
     .slice(0, 5);
 
   const top = top5[0];
+  const isHealthy = !top || top.probability * 100 < 1;
   const topSeverity = getSeverity(top?.percent ?? 0);
   const alertCounts = getAlertSeverityInfo(anomalyAlerts ?? []);
   const totalAlerts = (anomalyAlerts ?? []).filter(a => a.status !== "RESOLVED").length;
@@ -212,24 +214,34 @@ function PredictSummaryCard({ sessionId, prediction, anomalyAlerts, isLoading }:
         <div className="flex items-center justify-between gap-2">
           <CardTitle className="flex items-center gap-2 text-sm md:text-base">
             <Brain className="size-5 md:size-6" />
-            AI Прогноз
+            {t("prediction.aiTitle")}
           </CardTitle>
           <Link href={routes.SESSIONS.PREDICT(sessionId)}>
             <Button size="sm">
               <ExternalLink className="size-4" />
-              Подробнее
+              {t("prediction.details")}
             </Button>
           </Link>
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        {top && (
+        {isHealthy ? (
+          <div className="rounded-lg border border-green-200 bg-green-50 dark:bg-green-950/20 px-4 py-3">
+            <p className="text-xs text-muted-foreground mb-1">{t("prediction.topDiagnosis")}</p>
+            <div className="flex items-center justify-between gap-2 flex-wrap">
+              <span className="font-bold text-base leading-tight text-green-700">{t("prediction.healthy")}</span>
+              <Badge variant="outline" className="text-xs font-semibold px-2 py-0.5 bg-green-100 text-green-700 border-green-300">
+                {t("prediction.healthyDesc")}
+              </Badge>
+            </div>
+          </div>
+        ) : top && (
           <div className={`rounded-lg border ${topSeverity.borderClass} ${topSeverity.bgClass} px-4 py-3`}>
-            <p className="text-xs text-muted-foreground mb-1">Наиболее вероятный диагноз</p>
+            <p className="text-xs text-muted-foreground mb-1">{t("prediction.topDiagnosis")}</p>
             <div className="flex items-center justify-between gap-2 flex-wrap">
               <span className="font-bold text-base leading-tight">{top.name}</span>
               <Badge variant="outline" className={`text-xs font-semibold px-2 py-0.5 ${topSeverity.badgeClass}`}>
-                {formatPercent(top.probability)}% — {topSeverity.label}
+                {formatPercent(top.probability)}% — {t(topSeverity.labelKey)}
               </Badge>
             </div>
           </div>
@@ -237,7 +249,6 @@ function PredictSummaryCard({ sessionId, prediction, anomalyAlerts, isLoading }:
 
         <div className="space-y-2.5">
           {top5.map((item, idx) => {
-            const sev = getSeverity(item.percent);
             return (
               <div key={item.key}>
                 <div className="flex items-center justify-between mb-1 gap-2">
@@ -255,30 +266,30 @@ function PredictSummaryCard({ sessionId, prediction, anomalyAlerts, isLoading }:
 
         {totalAlerts > 0 && (
           <div className="rounded-lg border bg-muted/30 px-3 py-2.5">
-            <p className="text-xs text-muted-foreground mb-2">Обнаруженные аномалии</p>
+            <p className="text-xs text-muted-foreground mb-2">{t("prediction.anomalies")}</p>
             <div className="flex gap-3 flex-wrap">
               {alertCounts.CRITICAL > 0 && (
                 <div className="flex items-center gap-1.5">
                   <span className="size-2 rounded-full bg-red-500 shrink-0" />
-                  <span className="text-xs font-medium text-red-700">{alertCounts.CRITICAL} критических</span>
+                  <span className="text-xs font-medium text-red-700">{t("prediction.criticalCount", { count: alertCounts.CRITICAL })}</span>
                 </div>
               )}
               {alertCounts.HIGH > 0 && (
                 <div className="flex items-center gap-1.5">
                   <span className="size-2 rounded-full bg-orange-500 shrink-0" />
-                  <span className="text-xs font-medium text-orange-700">{alertCounts.HIGH} высоких</span>
+                  <span className="text-xs font-medium text-orange-700">{t("prediction.highCount", { count: alertCounts.HIGH })}</span>
                 </div>
               )}
               {alertCounts.MEDIUM > 0 && (
                 <div className="flex items-center gap-1.5">
                   <span className="size-2 rounded-full bg-yellow-500 shrink-0" />
-                  <span className="text-xs font-medium text-yellow-700">{alertCounts.MEDIUM} средних</span>
+                  <span className="text-xs font-medium text-yellow-700">{t("prediction.mediumCount", { count: alertCounts.MEDIUM })}</span>
                 </div>
               )}
               {alertCounts.LOW > 0 && (
                 <div className="flex items-center gap-1.5">
                   <span className="size-2 rounded-full bg-blue-500 shrink-0" />
-                  <span className="text-xs font-medium text-blue-700">{alertCounts.LOW} низких</span>
+                  <span className="text-xs font-medium text-blue-700">{t("prediction.lowCount", { count: alertCounts.LOW })}</span>
                 </div>
               )}
             </div>
@@ -294,8 +305,7 @@ export function SessionDashboard({ id }: { id: string }) {
   const { data, isLoading } = useGetMedicalSessionById(id);
   const [activeModal, setActiveModal] = useState<SessionExamType | null>(null);
   const canEdit = data?.status !== "SUBMITTED";
-  console.log(data);
-  
+
   const sessionLabel = data
     ? `${data.animal?.animalNameCode} — ${format(new Date(data.date), "dd.MM.yyyy")}`
     : undefined;

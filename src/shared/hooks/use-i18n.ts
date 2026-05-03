@@ -1,9 +1,9 @@
 import { LanguageLocales } from "../types";
-import uzJson from "@/shared/messages/uz.json";
 import { useLocale, useTranslations } from "next-intl";
+import type { Messages } from "@/shared/messages";
 
-export type Messages = typeof uzJson;
-// TODO: type i18n
+export type { Messages };
+
 export function useI18n() {
   const t = useTranslations<keyof Messages>();
   const locale = useLocale() as LanguageLocales;

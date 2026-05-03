@@ -1,0 +1,11 @@
+{
+  "createDistrict": "Tuman yaratish",
+  "editDistrict": "Tumanni o'zgartirish",
+  "vetStationName": "Stansiya nomi",
+  "vetStationAddress": "Stansiya manzili",
+  "createVetStation": "Vet stansiya yaratish",
+  "editVetStation": "Vet stansiyani o'zgartirish",
+  "countOfDistricts": "Tumanlar soni",
+  "createRegion": "Viloyat yaratish",
+  "editRegion": "Viloyatni o'zgartirish"
+}

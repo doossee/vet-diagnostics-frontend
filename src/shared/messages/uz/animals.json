@@ -1,0 +1,24 @@
+{
+  "animalTypes": {
+    "name": "Tur nomi",
+    "createButton": "Hayvon turi yaratish",
+    "createAnimalType": "Tur yaratish",
+    "editAnimalType": "Turni o'zgartirish"
+  },
+  "animals": {
+    "name": "Hayvon nomi",
+    "animalType": "Hayvon turi",
+    "weight": "Vazni",
+    "color": "Hayvon tusi",
+    "idCode": "Id Kodi",
+    "breed": "Zoti",
+    "age": "Hayvon yoshi",
+    "arrivalDate": "Keltirilgan kuni",
+    "createButton": "Hayvon qo'shish",
+    "createAnimal": "Hayvon qo'shish",
+    "editAnimal": "Hayvonni o'zgartirish",
+    "animalInfo": "Hayvon ma'lumotlari",
+    "generalInspection": "Klinik Tekshiruv",
+    "vaccine": "Vaksina"
+  }
+}

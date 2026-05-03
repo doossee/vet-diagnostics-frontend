@@ -1,0 +1,10 @@
+{
+  "firstName": "Имя",
+  "lastName": "Фамилия",
+  "middleName": "Отчество",
+  "createFarmer": "Добавить фермера",
+  "editFarmer": "Редактировать фермера",
+  "createVeterinarian": "Добавить ветеринара",
+  "editVeterinarian": "Редактировать ветеринара",
+  "changeUserData": "Изменить данные"
+}

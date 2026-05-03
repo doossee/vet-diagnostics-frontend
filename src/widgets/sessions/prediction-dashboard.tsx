@@ -12,130 +12,117 @@ import { useGetMedicalSessionById, useGetFeedbacksByPrediction } from "@/entitie
 import { useCreateFeedback } from "@/entities/sessions/services/mutations";
 import { useAuthData } from "@/shared/hooks/use-auth-data";
 import { createToast } from "@/shared/hooks/use-toast";
-import { PREDICT_DISEASES, normalizePredictions, normalizeInputVector, INPUT_VECTOR_KEYS } from "@/shared/constants";
+import { PREDICT_DISEASES, normalizePredictions, normalizeInputVector, INPUT_VECTOR_KEYS, NULL_FIELD_LABELS } from "@/shared/constants";
 import { useI18n } from "@/shared/hooks/use-i18n";
 
-const INPUT_VECTOR_META: Record<string, { name: string; unit: string }> = {
-  // 1–7: общие показатели крови и физиология
-  pulse:                { name: "Пульс",                        unit: "уд/мин"     },
-  respiratoryRate:      { name: "Дыхание",                      unit: "вдохов/мин" },
-  temperature:          { name: "Температура",                  unit: "°C"         },
-  erythrocyteCount:     { name: "Эритроциты",                   unit: "млн/мкл"    },
-  leukocyteCount:       { name: "Лейкоциты",                    unit: "тыс./мкл"   },
-  thrombocyteCount:     { name: "Тромбоциты",                   unit: "тыс./мкл"   },
-  coe:                  { name: "СОЭ",                          unit: "мм/ч"       },
-  // 8–9: состав крови
-  waterPercentage:      { name: "Вода",                         unit: "%"          },
-  dryResidue:           { name: "Сухой остаток",                unit: "%"          },
-  // 10–16: биохимия крови — белки
-  glutathione:          { name: "Глутатион",                    unit: "ммоль/л"    },
-  hemoglobin:           { name: "Гемоглобин",                   unit: "г/л"        },
-  totalProtein:         { name: "Общий белок",                  unit: "г/л"        },
-  albumin:              { name: "Альбумины",                    unit: "%"          },
-  alphaGlobulin:        { name: "Альфа-глобулины",              unit: "%"          },
-  betaGlobulin:         { name: "Бета-глобулины",               unit: "%"          },
-  gammaGlobulin:        { name: "Гамма-глобулины",              unit: "%"          },
-  // 17–22: азотистый обмен и резервы
-  residualNitrogen:     { name: "Остаточный азот",              unit: "ммоль/л"    },
-  urea:                 { name: "Мочевина",                     unit: "ммоль/л"    },
-  uricAcid:             { name: "Мочевая кислота",              unit: "ммоль/л"    },
-  creatinine:           { name: "Креатинин",                    unit: "мкмоль/л"   },
-  alkalineReserve:      { name: "Щелочный резерв",              unit: "об% СО₂"    },
-  glucose:              { name: "Глюкоза",                      unit: "ммоль/л"    },
-  // 23–31: липиды и органические кислоты
-  ketoneBodies:         { name: "Кетоновые тела",               unit: "г/л"        },
-  totalBilirubin:       { name: "Билирубин общий",              unit: "мкмоль/л"   },
-  directBilirubin:      { name: "Билирубин прямой",             unit: "мкмоль/л"   },
-  totalCholesterol:     { name: "Холестерол общий",             unit: "ммоль/л"    },
-  totalLipids:          { name: "Общие липиды",                 unit: "г/л"        },
-  phospholipids:        { name: "Фосфолипиды",                  unit: "г/л"        },
-  lacticAcid:           { name: "Молочная кислота",             unit: "ммоль/л"    },
-  pyruvicAcid:          { name: "Пировиноградная кислота",      unit: "ммоль/л"    },
-  citricAcid:           { name: "Лимонная кислота",             unit: "ммоль/л"    },
-  // 32–41: витамины и микроэлементы
-  carotene:             { name: "Каротин",                      unit: "мкмоль/л"   },
-  vitaminA:             { name: "Витамин А",                    unit: "мкмоль/л"   },
-  vitaminC:             { name: "Витамин С",                    unit: "мкмоль/л"   },
-  organicPhosphorus:    { name: "Общий фосфор",                 unit: "ммоль/л"    },
-  totalCalcium:         { name: "Общий кальций",                unit: "ммоль/л"    },
-  creatine:             { name: "Креатин",                      unit: "ммоль/л"    },
-  copper:               { name: "Медь",                         unit: "ммоль/л"    },
-  zinc:                 { name: "Цинк",                         unit: "ммоль/л"    },
-  manganese:            { name: "Марганец",                     unit: "ммоль/л"    },
-  cobalt:               { name: "Кобальт",                      unit: "ммоль/л"    },
-  // 42–57: моча
-  urineColor:           { name: "Цвет мочи",                    unit: ""           },
-  urineSmell:           { name: "Запах мочи",                   unit: ""           },
-  urineClarity:         { name: "Прозрачность мочи",            unit: ""           },
-  urineConsistency:     { name: "Консистенция мочи",            unit: ""           },
-  urinePh:              { name: "pH мочи",                      unit: "pH"         },
-  urineAcetone:         { name: "Ацетон (моча)",                unit: "ммоль/л"    },
-  urineProtein:         { name: "Белок (моча)",                 unit: "г/л"        },
-  urineBilirubin:       { name: "Билирубин (моча)",             unit: "мкмоль/л"   },
-  urineUrobilinogen:    { name: "Уробилирубин (моча)",          unit: "мкмоль/л"   },
-  urineSugar:           { name: "Сахар (моча)",                 unit: "ммоль/л"    },
-  urineLeukocytes:      { name: "Лейкоциты (моча)",             unit: "кол-во"     },
-  urineEpithelium:      { name: "Эпителий (моча)",              unit: "кол-во"     },
-  urineMicrobialBodies: { name: "Микробные тела (моча)",        unit: "кол-во"     },
-  urineErythrocytes:    { name: "Эритроциты (моча)",            unit: "кол-во"     },
-  urineSaltCrystals:    { name: "Кристалы солей (моча)",        unit: ""           },
-  urineAmount:          { name: "Количество мочи",              unit: "л/сутки"    },
-  // 58–63: кал
-  fecesSmell:           { name: "Запах кала",                   unit: ""           },
-  fecesColor:           { name: "Цвет кала",                    unit: ""           },
-  fecesConsistency:     { name: "Консистенция кала",            unit: ""           },
-  fecesForm:            { name: "Форма кала",                   unit: ""           },
-  fecesAmount:          { name: "Количество кала",              unit: "кг"         },
-  fecesUndigestedFood:  { name: "Непереваренная пища",          unit: "%"          },
-  // 64–67: выделения слизистых
-  mucosaOral:           { name: "Оральные выделения",           unit: ""           },
-  mucosaNasal:          { name: "Назальные выделения",          unit: ""           },
-  mucosaOcular:         { name: "Окулярные выделения",          unit: ""           },
-  mucosaVaginal:        { name: "Влагалищные выделения",        unit: ""           },
-  // 68–71: общее состояние
-  rumination:           { name: "Жвачка (румминация)",          unit: ""           },
-  obesity:              { name: "Ожирение",                     unit: ""           },
-  bodyType:             { name: "Тип тела",                     unit: ""           },
-  bodyPosition:         { name: "Поза тела",                    unit: ""           },
-  // 72–78: кожа
-  wool:                 { name: "Шерсть",                       unit: ""           },
-  skinColor:            { name: "Цвет кожи",                    unit: ""           },
-  skinHumidity:         { name: "Влажность кожи",               unit: ""           },
-  skinSmell:            { name: "Запах кожи",                   unit: ""           },
-  skinTemp:             { name: "Температура кожи",             unit: ""           },
-  skinSurface:          { name: "Поверхность кожи",             unit: ""           },
-  skinElasticity:       { name: "Эластичность кожи",            unit: ""           },
-  // 79–85: лимфоузлы
-  lymphSize:            { name: "Размер лимфоузла",             unit: ""           },
-  lymphShape:           { name: "Форма лимфоузла",              unit: ""           },
-  lymphSurface:         { name: "Поверхность лимфоузла",        unit: ""           },
-  lymphConsistency:     { name: "Консистенция лимфоузла",       unit: ""           },
-  lymphTemp:            { name: "Температура лимфоузла",        unit: ""           },
-  lymphPain:            { name: "Боль лимфоузла",               unit: ""           },
-  lymphMobility:        { name: "Подвижность лимфоузла",        unit: ""           },
-  // дополнительные ключи (не в values.txt)
-  vitaminB:             { name: "Витамин В",                    unit: "мкмоль/л"   },
-  temperament:          { name: "Темперамент",                  unit: ""           },
-  skinPain:             { name: "Боль кожи",                    unit: ""           },
-  skinSensitivity:      { name: "Чувствительность кожи",        unit: ""           },
-  constitution:         { name: "Конституция",                  unit: ""           },
-  infusoriaCount:       { name: "Инфузории рубца",              unit: "кол-во"     },
-  rumenFluidState:      { name: "Состояние рубца",              unit: ""           },
+const INPUT_VECTOR_META: Record<string, { unit: string }> = {
+  pulse:                { unit: "уд/мин"     },
+  respiratoryRate:      { unit: "вдохов/мин" },
+  temperature:          { unit: "°C"         },
+  erythrocyteCount:     { unit: "млн/мкл"    },
+  leukocyteCount:       { unit: "тыс./мкл"   },
+  thrombocyteCount:     { unit: "тыс./мкл"   },
+  coe:                  { unit: "мм/ч"       },
+  waterPercentage:      { unit: "%"          },
+  dryResidue:           { unit: "%"          },
+  glutathione:          { unit: "ммоль/л"    },
+  hemoglobin:           { unit: "г/л"        },
+  totalProtein:         { unit: "г/л"        },
+  albumin:              { unit: "%"          },
+  alphaGlobulin:        { unit: "%"          },
+  betaGlobulin:         { unit: "%"          },
+  gammaGlobulin:        { unit: "%"          },
+  residualNitrogen:     { unit: "ммоль/л"    },
+  urea:                 { unit: "ммоль/л"    },
+  uricAcid:             { unit: "ммоль/л"    },
+  creatinine:           { unit: "мкмоль/л"   },
+  alkalineReserve:      { unit: "об% СО₂"    },
+  glucose:              { unit: "ммоль/л"    },
+  ketoneBodies:         { unit: "г/л"        },
+  totalBilirubin:       { unit: "мкмоль/л"   },
+  directBilirubin:      { unit: "мкмоль/л"   },
+  totalCholesterol:     { unit: "ммоль/л"    },
+  totalLipids:          { unit: "г/л"        },
+  phospholipids:        { unit: "г/л"        },
+  lacticAcid:           { unit: "ммоль/л"    },
+  pyruvicAcid:          { unit: "ммоль/л"    },
+  citricAcid:           { unit: "ммоль/л"    },
+  carotene:             { unit: "мкмоль/л"   },
+  vitaminA:             { unit: "мкмоль/л"   },
+  vitaminC:             { unit: "мкмоль/л"   },
+  organicPhosphorus:    { unit: "ммоль/л"    },
+  totalCalcium:         { unit: "ммоль/л"    },
+  creatine:             { unit: "ммоль/л"    },
+  copper:               { unit: "ммоль/л"    },
+  zinc:                 { unit: "ммоль/л"    },
+  manganese:            { unit: "ммоль/л"    },
+  cobalt:               { unit: "ммоль/л"    },
+  urineColor:           { unit: ""           },
+  urineSmell:           { unit: ""           },
+  urineClarity:         { unit: ""           },
+  urineConsistency:     { unit: ""           },
+  urinePh:              { unit: "pH"         },
+  urineAcetone:         { unit: "ммоль/л"    },
+  urineProtein:         { unit: "г/л"        },
+  urineBilirubin:       { unit: "мкмоль/л"   },
+  urineUrobilinogen:    { unit: "мкмоль/л"   },
+  urineSugar:           { unit: "ммоль/л"    },
+  urineLeukocytes:      { unit: "кол-во"     },
+  urineEpithelium:      { unit: "кол-во"     },
+  urineMicrobialBodies: { unit: "кол-во"     },
+  urineErythrocytes:    { unit: "кол-во"     },
+  urineSaltCrystals:    { unit: ""           },
+  urineAmount:          { unit: "л/сутки"    },
+  fecesSmell:           { unit: ""           },
+  fecesColor:           { unit: ""           },
+  fecesConsistency:     { unit: ""           },
+  fecesForm:            { unit: ""           },
+  fecesAmount:          { unit: "кг"         },
+  fecesUndigestedFood:  { unit: "%"          },
+  mucosaOral:           { unit: ""           },
+  mucosaNasal:          { unit: ""           },
+  mucosaOcular:         { unit: ""           },
+  mucosaVaginal:        { unit: ""           },
+  rumination:           { unit: ""           },
+  obesity:              { unit: ""           },
+  bodyType:             { unit: ""           },
+  bodyPosition:         { unit: ""           },
+  wool:                 { unit: ""           },
+  skinColor:            { unit: ""           },
+  skinHumidity:         { unit: ""           },
+  skinSmell:            { unit: ""           },
+  skinTemp:             { unit: ""           },
+  skinSurface:          { unit: ""           },
+  skinElasticity:       { unit: ""           },
+  lymphSize:            { unit: ""           },
+  lymphShape:           { unit: ""           },
+  lymphSurface:         { unit: ""           },
+  lymphConsistency:     { unit: ""           },
+  lymphTemp:            { unit: ""           },
+  lymphPain:            { unit: ""           },
+  lymphMobility:        { unit: ""           },
+  vitaminB:             { unit: "мкмоль/л"   },
+  temperament:          { unit: ""           },
+  skinPain:             { unit: ""           },
+  skinSensitivity:      { unit: ""           },
+  constitution:         { unit: ""           },
+  infusoriaCount:       { unit: "кол-во"     },
+  rumenFluidState:      { unit: ""           },
 };
 
-const INPUT_VECTOR_GROUPS: { label: string; firstKey: string }[] = [
-  { label: "Общие показатели",       firstKey: "pulse"             },
-  { label: "Состав крови",           firstKey: "waterPercentage"   },
-  { label: "Белки крови",            firstKey: "glutathione"       },
-  { label: "Азотистый обмен",        firstKey: "residualNitrogen"  },
-  { label: "Липиды и кислоты",       firstKey: "ketoneBodies"      },
-  { label: "Витамины и минералы",    firstKey: "carotene"          },
-  { label: "Моча",                   firstKey: "urineColor"        },
-  { label: "Кал",                    firstKey: "fecesSmell"        },
-  { label: "Выделения слизистых",    firstKey: "mucosaOral"        },
-  { label: "Общее состояние",        firstKey: "rumination"        },
-  { label: "Кожа и шерсть",         firstKey: "wool"              },
-  { label: "Лимфоузлы",             firstKey: "lymphSize"         },
+const INPUT_VECTOR_GROUPS: { label: { ru: string; uz: string }; firstKey: string }[] = [
+  { label: { ru: "Общие показатели",    uz: "Umumiy ko'rsatkichlar"        }, firstKey: "pulse"             },
+  { label: { ru: "Состав крови",        uz: "Qon tarkibi"                  }, firstKey: "waterPercentage"   },
+  { label: { ru: "Белки крови",         uz: "Qon oqsillari"                }, firstKey: "glutathione"       },
+  { label: { ru: "Азотистый обмен",     uz: "Azot almashinuvi"             }, firstKey: "residualNitrogen"  },
+  { label: { ru: "Липиды и кислоты",    uz: "Lipidlar va kislotalar"       }, firstKey: "ketoneBodies"      },
+  { label: { ru: "Витамины и минералы", uz: "Vitaminlar va minerallar"     }, firstKey: "carotene"          },
+  { label: { ru: "Моча",               uz: "Siydik"                        }, firstKey: "urineColor"        },
+  { label: { ru: "Кал",                uz: "Najas"                         }, firstKey: "fecesSmell"        },
+  { label: { ru: "Выделения слизистых", uz: "Shilliq parda ajralmalari"    }, firstKey: "mucosaOral"        },
+  { label: { ru: "Общее состояние",     uz: "Umumiy holat"                 }, firstKey: "rumination"        },
+  { label: { ru: "Кожа и шерсть",      uz: "Teri va jun"                  }, firstKey: "wool"              },
+  { label: { ru: "Лимфоузлы",          uz: "Limfa tugunlari"              }, firstKey: "lymphSize"         },
 ];
 
 function formatPercent(probability: number): string {
@@ -147,10 +134,10 @@ function formatPercent(probability: number): string {
 }
 
 function getSeverityBadge(percent: number) {
-  if (percent >= 70) return { label: "Высокий", className: "bg-red-100 text-red-700 border-red-200" };
-  if (percent >= 50) return { label: "Средний", className: "bg-orange-100 text-orange-700 border-orange-200" };
-  if (percent >= 30) return { label: "Умеренный", className: "bg-yellow-100 text-yellow-700 border-yellow-200" };
-  return { label: "Низкий", className: "bg-green-100 text-green-700 border-green-200" };
+  if (percent >= 70) return { labelKey: "prediction.severityHigh" as const, className: "bg-red-100 text-red-700 border-red-200" };
+  if (percent >= 50) return { labelKey: "prediction.severityMedium" as const, className: "bg-orange-100 text-orange-700 border-orange-200" };
+  if (percent >= 30) return { labelKey: "prediction.severityModerate" as const, className: "bg-yellow-100 text-yellow-700 border-yellow-200" };
+  return { labelKey: "prediction.severityLow" as const, className: "bg-green-100 text-green-700 border-green-200" };
 }
 
 function FeedbackForm({ predictionId, role, userData, onSubmitted }: {
@@ -159,6 +146,7 @@ function FeedbackForm({ predictionId, role, userData, onSubmitted }: {
   userData: any;
   onSubmitted: () => void;
 }) {
+  const { t } = useI18n();
   const { mutateAsync: createFeedback, isPending } = useCreateFeedback();
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
@@ -179,7 +167,7 @@ function FeedbackForm({ predictionId, role, userData, onSubmitted }: {
       setRating(0);
       onSubmitted();
     } catch (e: any) {
-      const msg = e?.response?.data?.message ?? e?.message ?? "Ошибка отправки";
+      const msg = e?.response?.data?.message ?? e?.message ?? t("prediction.sendError");
       createToast(Array.isArray(msg) ? msg.join(", ") : msg, "WARNING");
     }
   };
@@ -187,7 +175,7 @@ function FeedbackForm({ predictionId, role, userData, onSubmitted }: {
   return (
     <>
       <div>
-        <p className="text-sm text-muted-foreground mb-2">Оценка точности прогноза</p>
+        <p className="text-sm text-muted-foreground mb-2">{t("prediction.ratingLabel")}</p>
         <div className="flex gap-1">
           {[1, 2, 3, 4, 5].map((star) => (
             <button
@@ -214,9 +202,9 @@ function FeedbackForm({ predictionId, role, userData, onSubmitted }: {
       </div>
 
       <div>
-        <p className="text-sm text-muted-foreground mb-2">Комментарий</p>
+        <p className="text-sm text-muted-foreground mb-2">{t("prediction.commentLabel")}</p>
         <Textarea
-          placeholder="Введите ваш комментарий по результату прогноза..."
+          placeholder={t("prediction.commentPlaceholder")}
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           rows={3}
@@ -230,7 +218,7 @@ function FeedbackForm({ predictionId, role, userData, onSubmitted }: {
         className="w-full sm:w-auto"
       >
         <Send className="size-4 mr-2" />
-        {isPending ? "Отправка..." : "Отправить"}
+        {isPending ? t("prediction.sending") : t("prediction.send")}
       </Button>
     </>
   );
@@ -239,7 +227,7 @@ function FeedbackForm({ predictionId, role, userData, onSubmitted }: {
 type Props = { id: string };
 
 export function PredictionDashboard({ id }: Props) {
-  const { locale } = useI18n();
+  const { locale, t } = useI18n();
   const { userData } = useAuthData();
   const { data: session, isLoading } = useGetMedicalSessionById(id);
 
@@ -263,6 +251,7 @@ export function PredictionDashboard({ id }: Props) {
   }, [prediction, locale]);
 
   const topDiagnosis = allDiagnoses[0];
+  const isHealthy = allDiagnoses.length > 0 && topDiagnosis.probability * 100 < 1;
   const topBadge = getSeverityBadge(topDiagnosis?.percent ?? 0);
 
   const inputEntries = useMemo(() => {
@@ -297,8 +286,8 @@ export function PredictionDashboard({ id }: Props) {
       <Card className="shadow-none rounded">
         <CardContent className="py-10 text-center text-muted-foreground">
           <Brain className="size-10 mx-auto mb-3 opacity-30" />
-          <p>Прогноз ещё не сформирован.</p>
-          <p className="text-sm mt-1">Отправьте сессию, чтобы получить AI-результат.</p>
+          <p>{t("prediction.notFormed")}</p>
+          <p className="text-sm mt-1">{t("prediction.submitHint")}</p>
         </CardContent>
       </Card>
     );
@@ -307,29 +296,43 @@ export function PredictionDashboard({ id }: Props) {
   return (
     <div className="space-y-6">
 
-      {/* 1. Наиболее вероятный диагноз — full width */}
-      <Card className="shadow-none rounded border-l-4 border-l-red-500">
-        <CardContent className="py-0">
-          <p className="text-xs text-muted-foreground mb-2">Наиболее вероятный диагноз</p>
-          <div className="flex items-end gap-3 flex-wrap">
-            <Brain className="size-6 text-red-500 shrink-0" />
-            <span className="text-xl font-bold">{topDiagnosis?.name ?? "—"}</span>
-            <Badge className={topBadge.className}>
-              {topDiagnosis ? formatPercent(topDiagnosis.probability) : "0"}% — {topBadge.label}
-            </Badge>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Top diagnosis */}
+      {isHealthy ? (
+        <Card className="shadow-none rounded border-l-4 border-l-green-500">
+          <CardContent className="py-0">
+            <p className="text-xs text-muted-foreground mb-2">{t("prediction.topDiagnosis")}</p>
+            <div className="flex items-end gap-3 flex-wrap">
+              <Brain className="size-6 text-green-500 shrink-0" />
+              <span className="text-xl font-bold text-green-700">{t("prediction.healthy")}</span>
+              <Badge className="bg-green-100 text-green-700 border-green-200">
+                {t("prediction.healthyDesc")}
+              </Badge>
+            </div>
+          </CardContent>
+        </Card>
+      ) : (
+        <Card className="shadow-none rounded border-l-4 border-l-red-500">
+          <CardContent className="py-0">
+            <p className="text-xs text-muted-foreground mb-2">{t("prediction.topDiagnosis")}</p>
+            <div className="flex items-end gap-3 flex-wrap">
+              <Brain className="size-6 text-red-500 shrink-0" />
+              <span className="text-xl font-bold">{topDiagnosis?.name ?? "—"}</span>
+              <Badge className={topBadge.className}>
+                {topDiagnosis ? formatPercent(topDiagnosis.probability) : "0"}% — {t(topBadge.labelKey)}
+              </Badge>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
-      {/* 2. Вероятные диагнозы | 85 значений */}
+      {/* Probable diagnoses | Input values */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
 
-        {/* Вероятные диагнозы */}
         <Card className="shadow-none rounded flex flex-col max-h-[520px]">
           <CardHeader className="shrink-0 pb-2">
             <CardTitle className="flex items-center gap-2 text-sm md:text-base">
               <TrendingUp className="size-5 md:size-6" />
-              Вероятные диагнозы ({allDiagnoses.length})
+              {t("prediction.probableDiagnoses")} ({allDiagnoses.length})
             </CardTitle>
           </CardHeader>
           <CardContent className="flex-1 overflow-y-auto space-y-1.5 pb-3">
@@ -347,7 +350,7 @@ export function PredictionDashboard({ id }: Props) {
                         {formatPercent(item.probability)}%
                       </span>
                       <Badge variant="outline" className={`text-[9px] px-1 py-0 h-3.5 leading-none rounded-sm ${badge.className}`}>
-                        {badge.label}
+                        {t(badge.labelKey)}
                       </Badge>
                     </div>
                   </div>
@@ -358,28 +361,28 @@ export function PredictionDashboard({ id }: Props) {
           </CardContent>
         </Card>
 
-        {/* Входные значения */}
         <Card className="shadow-none rounded flex flex-col max-h-[520px]">
           <CardHeader className="shrink-0 pb-2">
             <CardTitle className="flex items-center gap-2 text-sm md:text-base">
               <FlaskConical className="size-5 md:size-6" />
-              Входные значения ({inputEntries.length})
+              {t("prediction.inputValues")} ({inputEntries.length})
             </CardTitle>
           </CardHeader>
           <CardContent className="flex-1 overflow-y-auto pb-3">
             {inputEntries.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Нет данных</p>
+              <p className="text-sm text-muted-foreground">{t("prediction.noData")}</p>
             ) : (
               <div className="space-y-0">
                 {inputEntries.map(([key, value], index) => {
                   const meta = INPUT_VECTOR_META[key];
                   const group = INPUT_VECTOR_GROUPS.find((g) => g.firstKey === key);
+                  const fieldName = NULL_FIELD_LABELS[key]?.[locale] ?? NULL_FIELD_LABELS[key]?.ru ?? key;
                   return (
                     <div key={key}>
                       {group && (
                         <div className={`flex items-center gap-2 ${index === 0 ? "mb-1" : "mt-3 mb-1"}`}>
                           <span className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground/60 shrink-0">
-                            {group.label}
+                            {group.label[locale] ?? group.label.ru}
                           </span>
                           <div className="flex-1 h-px bg-border/40" />
                         </div>
@@ -387,7 +390,7 @@ export function PredictionDashboard({ id }: Props) {
                       <div className="flex items-center justify-between gap-2 py-[5px] border-b border-border/30 last:border-0">
                         <span className="text-sm text-muted-foreground leading-none">
                           <span className="tabular-nums text-muted-foreground/50 mr-1">{index + 1}.</span>
-                          {meta?.name ?? key}
+                          {fieldName}
                         </span>
                         <span className="text-sm font-semibold shrink-0 tabular-nums pr-1">
                           {value}
@@ -403,12 +406,12 @@ export function PredictionDashboard({ id }: Props) {
         </Card>
       </div>
 
-      {/* 3. Комментарии */}
+      {/* Comments */}
       <Card className="shadow-none rounded">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-sm md:text-base">
             <MessageSquare className="size-5 md:size-6" />
-            Комментарии
+            {t("prediction.comments")}
             {(feedbacksData?.meta?.total ?? 0) > 0 && (
               <Badge variant="outline" className="ml-1 text-xs">{feedbacksData!.meta.total}</Badge>
             )}
@@ -416,11 +419,14 @@ export function PredictionDashboard({ id }: Props) {
         </CardHeader>
         <CardContent className="space-y-4">
 
-          {/* Список существующих комментариев */}
           {(feedbacksData?.data ?? []).length > 0 && (
             <div className="space-y-3 mb-2">
               {feedbacksData!.data.map((fb) => {
-                const author = fb.veterinarianId ? "Ветеринар" : fb.adminId ? "Администратор" : "Пользователь";
+                const author = fb.veterinarianId
+                  ? t("prediction.authorVeterinarian")
+                  : fb.adminId
+                  ? t("prediction.authorAdmin")
+                  : t("prediction.authorUser");
                 return (
                   <div key={fb.id} className="rounded-lg border px-3 py-2.5 space-y-1.5">
                     <div className="flex items-center justify-between gap-2 flex-wrap">
@@ -449,7 +455,6 @@ export function PredictionDashboard({ id }: Props) {
             </div>
           )}
 
-          {/* Форма отправки — только для ветеринаров и администраторов */}
           {canComment && prediction && (
             <FeedbackForm
               predictionId={prediction.id}

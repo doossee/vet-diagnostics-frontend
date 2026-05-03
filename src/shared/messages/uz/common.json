@@ -1,0 +1,67 @@
+{
+  "vetPlatform": "Veterinariya platformasi",
+  "show": "Ko'rish",
+  "close": "Yopish",
+  "theme": {
+    "light": "Yorug'",
+    "dark": "Qorong'u",
+    "system": "Tizim"
+  },
+  "form": {
+    "add": "Yaratish",
+    "submit": "Saqlash",
+    "animal": "Hayvon",
+    "submitting": "Yuborilmoqda",
+    "farmer": "Fermer",
+    "veterinarian": "Veterinar",
+    "type": "Turi",
+    "date": "Sanasi",
+    "birthDate": "Tug'ilgan kuni",
+    "startDate": "Boshlanish vaqti",
+    "endDate": "Tugash vaqti",
+    "color": "Rangi",
+    "disease": "Kasallik",
+    "diseaseType": "Kasallik turi",
+    "gender": "Jinsi",
+    "name": "Ism Familiyasi",
+    "phone": "Telefon raqami",
+    "notes": "Izohlar",
+    "status": "Status",
+    "address": "Manzili",
+    "regionName": "Viloyat nomi",
+    "districtName": "Tuman nomi",
+    "confirmPassword": "Parolni takrorlang",
+    "password": "Parol",
+    "selectDate": "Sanani belgilang",
+    "next": "Keyingisi",
+    "skip": "O'tkazib yuborish"
+  },
+  "table": {
+    "search": "Qidirish",
+    "actions": "Boshqarish",
+    "edit": "O'zgartirish",
+    "delete": "O'chirish",
+    "loading": "Yuklanmoqda",
+    "none": "Malumotlar yo'q"
+  },
+  "filters": {
+    "all": "Barchasi",
+    "byType": "Tur bo'yicha saralash",
+    "byGender": "Jinsi bo'yicha saralash",
+    "byBreed": "Zoti bo'yicha saralash",
+    "byColor": "Rangi bo'yicha saralash",
+    "byRegion": "Viloyat bo'yicha saralash",
+    "byDistrict": "Tuman bo'yicha saralash",
+    "byAnimal": "Hayvon bo'yicha saralash"
+  },
+  "noData": {
+    "title": "Maʼlumot topilmadi",
+    "description": "Ushbu sahifada hozircha maʼlumot yo'q. Siz yangi yozuv qo'shishingiz yoki sahifani yangilashingiz mumkin."
+  },
+  "excel": {
+    "import": "Excel'dan import",
+    "success": "Ma'lumotlar muvaffaqiyatli import qilindi",
+    "error": "Faylni import qilishda xatolik yuz berdi",
+    "loading": "Yuklanmoqda..."
+  }
+}

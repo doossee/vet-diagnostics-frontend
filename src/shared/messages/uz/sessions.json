@@ -1,0 +1,10 @@
+{
+  "create": "Sessiya yaratish",
+  "edit": "Sessiyani o'zgartirish",
+  "confirmSubmit": "Sessiyani yakunlamoqchimisiz?",
+  "submit": "Sessiyani yuborish",
+  "submitting": "Yuborilmoqda...",
+  "statusDraft": "Qoralama",
+  "statusReady": "Tayyor",
+  "statusSubmitted": "Yuborilgan"
+}

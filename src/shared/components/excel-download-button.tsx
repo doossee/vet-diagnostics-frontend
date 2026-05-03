@@ -6,6 +6,8 @@ import { Button } from "@/shared/components/ui/button";
 import { apiInstance } from "@/shared/api/api-instance";
 import { createToast } from "@/shared/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
+import { ALERT_MESSAGES } from "@/shared/constants";
+import { useLanguage } from "@/shared/hooks/use-language";
 
 interface ExcelImportButtonProps {
   importUrl: string;
@@ -13,10 +15,11 @@ interface ExcelImportButtonProps {
   disabled?: boolean;
 }
 
-export function ExcelDownloadButton({ importUrl, label = "Импорт из Excel", disabled }: ExcelImportButtonProps) {
+export function ExcelDownloadButton({ importUrl, label, disabled }: ExcelImportButtonProps) {
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const queryClient = useQueryClient();
+  const { getLocale } = useLanguage();
 
   function handleClick() {
     inputRef.current?.click();
@@ -31,16 +34,19 @@ export function ExcelDownloadButton({ importUrl, label = "Импорт из Exce
       const formData = new FormData();
       formData.append("file", file);
       await apiInstance({ url: importUrl, method: "POST", headers: { "Content-Type": "multipart/form-data" }, data: formData });
-      createToast("Данные успешно импортированы", "SUCCESS");
+      createToast(ALERT_MESSAGES.EXCEL_IMPORT_SUCCESS, "SUCCESS");
       queryClient.invalidateQueries();
     } catch (error) {
-      createToast("Ошибка при импорте файла", "WARNING");
+      createToast(ALERT_MESSAGES.EXCEL_IMPORT_ERROR, "WARNING");
       console.error("Import failed", error);
     } finally {
       setLoading(false);
       if (inputRef.current) inputRef.current.value = "";
     }
   }
+
+  const defaultLabel = { ru: "Импорт из Excel", uz: "Excel'dan import" };
+  const displayLabel = label ?? defaultLabel[getLocale];
 
   return (
     <>
@@ -59,7 +65,7 @@ export function ExcelDownloadButton({ importUrl, label = "Импорт из Exce
       >
         <FileSpreadsheet className="size-4" />
         <span className="hidden md:inline-block">
-          {loading ? "Загрузка..." : label}
+          {loading ? ALERT_MESSAGES.LOADING[getLocale] : displayLabel}
         </span>
       </Button>
     </>

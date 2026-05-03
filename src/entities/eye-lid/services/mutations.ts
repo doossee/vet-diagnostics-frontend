@@ -1,6 +1,7 @@
 import { EyeLidSchema } from "@/features/eye-lid";
 import { MucosaAppearance, UpdateBody } from "@/shared/types";
 import { EyeLidQueryKeys } from "../utils/constants/query-keys";
+import { ADDITIONAL_CRUD_QUERY_KEYS } from "@/entities/additional-crud/utils/constants/query-keys";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createQueryData, removeQueryData, updateQueryData } from "@/shared/helpers/query-updater";
 import { mucosaAppearanceControllerCreate, mucosaAppearanceControllerDelete, mucosaAppearanceControllerUpdate } from "@/shared/api/api-new";
@@ -13,6 +14,7 @@ export function useCreateEyeLid() {
     onSuccess: (data) => {
       createQueryData<MucosaAppearance>(client, [EyeLidQueryKeys.EYE_LIDS], data);
       client.invalidateQueries({ queryKey: [EyeLidQueryKeys.EYE_LIDS] });
+      client.invalidateQueries({ queryKey: [ADDITIONAL_CRUD_QUERY_KEYS.MUCOSA_APPEARANCES_LOOKUP] });
     },
   });
 }
@@ -25,6 +27,7 @@ export function useUpdateEyeLid() {
     onSuccess: (data) => {
       updateQueryData<MucosaAppearance>(client, [EyeLidQueryKeys.EYE_LIDS], data);
       client.invalidateQueries({ queryKey: [EyeLidQueryKeys.EYE_LIDS] });
+      client.invalidateQueries({ queryKey: [ADDITIONAL_CRUD_QUERY_KEYS.MUCOSA_APPEARANCES_LOOKUP] });
     },
   });
 }
@@ -37,6 +40,7 @@ export function useDeleteEyeLid() {
     onSuccess: (data) => {
       removeQueryData<MucosaAppearance>(client, [EyeLidQueryKeys.EYE_LIDS], data.id);
       client.invalidateQueries({ queryKey: [EyeLidQueryKeys.EYE_LIDS] });
+      client.invalidateQueries({ queryKey: [ADDITIONAL_CRUD_QUERY_KEYS.MUCOSA_APPEARANCES_LOOKUP] });
     },
   });
 }

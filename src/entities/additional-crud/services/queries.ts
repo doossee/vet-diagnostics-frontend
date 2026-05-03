@@ -13,7 +13,8 @@ import { fecesConsistencyControllerFindAll, fecesSmellControllerFindAll, fecesFo
   obesityTypeControllerFindAll, skinColorControllerFindAll, skinElasticityControllerFindAll,
   skinHumidityControllerFindAll, skinPainControllerFindAll, skinSensitivityControllerFindAll,
   skinSmellControllerFindAll, skinSurfaceControllerFindAll, skinTempControllerFindAll,
-  temperamentControllerFindAll, woolTypeControllerFindAll, rumenFluidStateControllerFindAll
+  temperamentControllerFindAll, woolTypeControllerFindAll, rumenFluidStateControllerFindAll,
+  urineColorControllerFindAll, fecesColorControllerFindAll, mucosaAppearanceControllerFindAll,
  } from "@/shared/api/api-new";
 
 // DUNG
@@ -433,6 +434,72 @@ export function useGetWoolTypes(enabled?: boolean) {
     ADDITIONAL_CRUD_QUERY_KEYS.WOOL_TYPES,
     () => woolTypeControllerFindAll(),
     enabled
+  );
+}
+
+// STATIC LOOKUPS FOR PREDICTION DASHBOARD (no filter needed)
+// ===========================================================
+
+export function useGetUrineColorsLookup() {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.URINE_COLORS_LOOKUP,
+    () => urineColorControllerFindAll({ perPage: 100 }),
+  );
+}
+
+export function useGetUrineSmellsLookup() {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.URINE_SMELLS_LOOKUP,
+    () => urineSmellControllerFindAll({ perPage: 100 }),
+  );
+}
+
+export function useGetUrineClaritiesLookup() {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.URINE_CLARITIES_LOOKUP,
+    () => urineClarityControllerFindAll({ perPage: 100 }),
+  );
+}
+
+export function useGetUrineConsistenciesLookup() {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.URINE_CONSISTENCIES_LOOKUP,
+    () => urineConsistencyControllerFindAll({ perPage: 100 }),
+  );
+}
+
+export function useGetFecesColorsLookup() {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.FECES_COLORS_LOOKUP,
+    () => fecesColorControllerFindAll({ perPage: 100 }),
+  );
+}
+
+export function useGetFecesSmellsLookup() {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.FECES_SMELLS_LOOKUP,
+    () => fecesSmellControllerFindAll({ perPage: 100 }),
+  );
+}
+
+export function useGetFecesConsistenciesLookup() {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.FECES_CONSISTENCIES_LOOKUP,
+    () => fecesConsistencyControllerFindAll({ perPage: 100 }),
+  );
+}
+
+export function useGetFecesFormsLookup() {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.FECES_FORMS_LOOKUP,
+    () => fecesFormControllerFindAll({ perPage: 100 }),
+  );
+}
+
+export function useGetMucosaAppearancesLookup() {
+  return useGetStaticAdditionalCrudQuery(
+    ADDITIONAL_CRUD_QUERY_KEYS.MUCOSA_APPEARANCES_LOOKUP,
+    () => mucosaAppearanceControllerFindAll({ perPage: 100 }),
   );
 }
 

@@ -14,6 +14,18 @@ import { useAuthData } from "@/shared/hooks/use-auth-data";
 import { createToast } from "@/shared/hooks/use-toast";
 import { PREDICT_DISEASES, normalizePredictions, normalizeInputVector, INPUT_VECTOR_KEYS, NULL_FIELD_LABELS } from "@/shared/constants";
 import { useI18n } from "@/shared/hooks/use-i18n";
+import {
+  useGetObesityTypes, useGetBodyTypes, useGetBodyPositions, useGetWoolTypes,
+  useGetSkinColors, useGetSkinHumidities, useGetSkinSmells, useGetSkinTemps,
+  useGetSkinSurfaces, useGetSkinElasticities,
+  useGetLymphSizes, useGetLymphShapes, useGetLymphSurfaces, useGetLymphConsistencies,
+  useGetLymphTemps, useGetLymphPains, useGetLymphMobilities,
+  useGetTemperaments, useGetSkinPains, useGetSkinSensitivities,
+  useGetConstitutions, useGetRumenFluidStates,
+  useGetUrineColorsLookup, useGetUrineSmellsLookup, useGetUrineClaritiesLookup, useGetUrineConsistenciesLookup,
+  useGetFecesColorsLookup, useGetFecesSmellsLookup, useGetFecesConsistenciesLookup, useGetFecesFormsLookup,
+  useGetMucosaAppearancesLookup,
+} from "@/entities/additional-crud/services/queries";
 
 const INPUT_VECTOR_META: Record<string, { unit: string }> = {
   pulse:                { unit: "уд/мин"     },
@@ -138,6 +150,101 @@ function getSeverityBadge(percent: number) {
   if (percent >= 50) return { labelKey: "prediction.severityMedium" as const, className: "bg-orange-100 text-orange-700 border-orange-200" };
   if (percent >= 30) return { labelKey: "prediction.severityModerate" as const, className: "bg-yellow-100 text-yellow-700 border-yellow-200" };
   return { labelKey: "prediction.severityLow" as const, className: "bg-green-100 text-green-700 border-green-200" };
+}
+
+type LookupItem = { numericValue: number; name: { ru: string; uz: string } };
+
+function mkLookupMap(items: LookupItem[] | undefined, locale: string): Map<number, string> {
+  const map = new Map<number, string>();
+  if (!items) return map;
+  for (const item of items) {
+    map.set(item.numericValue, item.name[locale as "ru" | "uz"] ?? item.name.ru ?? String(item.numericValue));
+  }
+  return map;
+}
+
+function useInputVectorLookups(locale: string): Record<string, Map<number, string>> {
+  const { data: obesityData }         = useGetObesityTypes();
+  const { data: bodyTypeData }        = useGetBodyTypes();
+  const { data: bodyPositionData }    = useGetBodyPositions();
+  const { data: woolData }            = useGetWoolTypes();
+  const { data: skinColorData }       = useGetSkinColors();
+  const { data: skinHumidityData }    = useGetSkinHumidities();
+  const { data: skinSmellData }       = useGetSkinSmells();
+  const { data: skinTempData }        = useGetSkinTemps();
+  const { data: skinSurfaceData }     = useGetSkinSurfaces();
+  const { data: skinElasticityData }  = useGetSkinElasticities();
+  const { data: lymphSizeData }       = useGetLymphSizes();
+  const { data: lymphShapeData }      = useGetLymphShapes();
+  const { data: lymphSurfaceData }    = useGetLymphSurfaces();
+  const { data: lymphConsistData }    = useGetLymphConsistencies();
+  const { data: lymphTempData }       = useGetLymphTemps();
+  const { data: lymphPainData }       = useGetLymphPains();
+  const { data: lymphMobilityData }   = useGetLymphMobilities();
+  const { data: temperamentData }     = useGetTemperaments();
+  const { data: skinPainData }        = useGetSkinPains();
+  const { data: skinSensData }        = useGetSkinSensitivities();
+  const { data: constitutionData }    = useGetConstitutions();
+  const { data: rumenFluidData }      = useGetRumenFluidStates();
+
+  const { data: urineColorData }      = useGetUrineColorsLookup();
+  const { data: urineSmellData }      = useGetUrineSmellsLookup();
+  const { data: urineClarityData }    = useGetUrineClaritiesLookup();
+  const { data: urineConsistData }    = useGetUrineConsistenciesLookup();
+  const { data: fecesColorData }      = useGetFecesColorsLookup();
+  const { data: fecesSmellData }      = useGetFecesSmellsLookup();
+  const { data: fecesConsistData }    = useGetFecesConsistenciesLookup();
+  const { data: fecesFormData }       = useGetFecesFormsLookup();
+  const { data: mucosaData }          = useGetMucosaAppearancesLookup();
+
+  return useMemo(() => {
+    const mk = (items: any) => mkLookupMap(items?.data, locale);
+    const mucosaMap = mk(mucosaData);
+    return {
+      obesity:          mk(obesityData),
+      bodyType:         mk(bodyTypeData),
+      bodyPosition:     mk(bodyPositionData),
+      wool:             mk(woolData),
+      skinColor:        mk(skinColorData),
+      skinHumidity:     mk(skinHumidityData),
+      skinSmell:        mk(skinSmellData),
+      skinTemp:         mk(skinTempData),
+      skinSurface:      mk(skinSurfaceData),
+      skinElasticity:   mk(skinElasticityData),
+      lymphSize:        mk(lymphSizeData),
+      lymphShape:       mk(lymphShapeData),
+      lymphSurface:     mk(lymphSurfaceData),
+      lymphConsistency: mk(lymphConsistData),
+      lymphTemp:        mk(lymphTempData),
+      lymphPain:        mk(lymphPainData),
+      lymphMobility:    mk(lymphMobilityData),
+      temperament:      mk(temperamentData),
+      skinPain:         mk(skinPainData),
+      skinSensitivity:  mk(skinSensData),
+      constitution:     mk(constitutionData),
+      rumenFluidState:  mk(rumenFluidData),
+      urineColor:       mk(urineColorData),
+      urineSmell:       mk(urineSmellData),
+      urineClarity:     mk(urineClarityData),
+      urineConsistency: mk(urineConsistData),
+      fecesColor:       mk(fecesColorData),
+      fecesSmell:       mk(fecesSmellData),
+      fecesConsistency: mk(fecesConsistData),
+      fecesForm:        mk(fecesFormData),
+      mucosaOral:       mucosaMap,
+      mucosaNasal:      mucosaMap,
+      mucosaOcular:     mucosaMap,
+      mucosaVaginal:    mucosaMap,
+    };
+  }, [
+    obesityData, bodyTypeData, bodyPositionData, woolData,
+    skinColorData, skinHumidityData, skinSmellData, skinTempData, skinSurfaceData, skinElasticityData,
+    lymphSizeData, lymphShapeData, lymphSurfaceData, lymphConsistData, lymphTempData, lymphPainData, lymphMobilityData,
+    temperamentData, skinPainData, skinSensData, constitutionData, rumenFluidData,
+    urineColorData, urineSmellData, urineClarityData, urineConsistData,
+    fecesColorData, fecesSmellData, fecesConsistData, fecesFormData,
+    mucosaData, locale,
+  ]);
 }
 
 function FeedbackForm({ predictionId, role, userData, onSubmitted }: {
@@ -268,6 +375,8 @@ export function PredictionDashboard({ id }: Props) {
   },
   [prediction?.inputVector]);
 
+  const lookupMaps = useInputVectorLookups(locale);
+
   const role = userData?.role;
   const canComment = role === "VETERINARIAN" || role === "ADMIN" || role === "SUPER_ADMIN";
 
@@ -377,6 +486,9 @@ export function PredictionDashboard({ id }: Props) {
                   const meta = INPUT_VECTOR_META[key];
                   const group = INPUT_VECTOR_GROUPS.find((g) => g.firstKey === key);
                   const fieldName = NULL_FIELD_LABELS[key]?.[locale] ?? NULL_FIELD_LABELS[key]?.ru ?? key;
+                  const lookupName = lookupMaps[key]?.get(value);
+                  const displayValue = lookupName ?? String(value);
+                  const isLookup = !!lookupName;
                   return (
                     <div key={key}>
                       {group && (
@@ -393,8 +505,14 @@ export function PredictionDashboard({ id }: Props) {
                           {fieldName}
                         </span>
                         <span className="text-sm font-semibold shrink-0 tabular-nums pr-1">
-                          {value}
-                          {meta?.unit ? <span className="text-xs font-normal text-muted-foreground ml-1">({meta.unit})</span> : null}
+                          {isLookup ? (
+                            <span className="font-medium text-foreground">{displayValue}</span>
+                          ) : (
+                            <>
+                              {displayValue}
+                              {meta?.unit ? <span className="text-xs font-normal text-muted-foreground ml-1">({meta.unit})</span> : null}
+                            </>
+                          )}
                         </span>
                       </div>
                     </div>

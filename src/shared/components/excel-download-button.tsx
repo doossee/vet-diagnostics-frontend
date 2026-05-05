@@ -7,7 +7,7 @@ import { apiInstance } from "@/shared/api/api-instance";
 import { createToast } from "@/shared/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { ALERT_MESSAGES } from "@/shared/constants";
-import { useLanguage } from "@/shared/hooks/use-language";
+import { useLocale } from "next-intl";
 
 interface ExcelImportButtonProps {
   importUrl: string;
@@ -19,7 +19,7 @@ export function ExcelDownloadButton({ importUrl, label, disabled }: ExcelImportB
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const queryClient = useQueryClient();
-  const { getLocale } = useLanguage();
+  const locale = useLocale() as "ru" | "uz";
 
   function handleClick() {
     inputRef.current?.click();
@@ -46,7 +46,7 @@ export function ExcelDownloadButton({ importUrl, label, disabled }: ExcelImportB
   }
 
   const defaultLabel = { ru: "Импорт из Excel", uz: "Excel'dan import" };
-  const displayLabel = label ?? defaultLabel[getLocale];
+  const displayLabel = label ?? defaultLabel[locale];
 
   return (
     <>
@@ -65,7 +65,7 @@ export function ExcelDownloadButton({ importUrl, label, disabled }: ExcelImportB
       >
         <FileSpreadsheet className="size-4" />
         <span className="hidden md:inline-block">
-          {loading ? ALERT_MESSAGES.LOADING[getLocale] : displayLabel}
+          {loading ? ALERT_MESSAGES.LOADING[locale] : displayLabel}
         </span>
       </Button>
     </>

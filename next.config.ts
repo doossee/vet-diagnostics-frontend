@@ -4,6 +4,8 @@ import createNextIntlPlugin from 'next-intl/plugin'
 const withNextIntl = createNextIntlPlugin('./src/shared/i18n/request.ts')
 
 const nextConfig: NextConfig = {
+  // Produce a self-contained .next/standalone server for a slim Docker image
+  output: "standalone",
   reactStrictMode: true,
   rewrites(): any {
     return [
